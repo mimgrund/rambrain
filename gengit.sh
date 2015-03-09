@@ -1,0 +1,13 @@
+gitdiff=$(git diff|xxd -i -)
+if [ "$gitdiff" ]
+then 
+gitdiff=$gitdiff
+else
+gitdiff="0x00"
+fi
+cat - >git_info.h <<EOF
+const char gitCommit [] = {$(git log -1|head -1|xxd -i -),0x00};
+const char gitDiff [] = {$gitdiff, 0x00};
+EOF
+
+
