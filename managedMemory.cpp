@@ -9,10 +9,15 @@ managedMemory::managedMemory(unsigned int size){
   chunk->status = MEM_ROOT; 
 }
 
-unsigned int managedMemory::getMemoryLimit(unsigned int size)
+unsigned int managedMemory::getMemoryLimit(unsigned int size) const
 {
   return memory_max;
 }
+unsigned int managedMemory::getUsedMemory() const
+{
+  return memory_used;
+}
+
 
 bool managedMemory::setMemoryLimit(unsigned int size)
 {
@@ -113,7 +118,7 @@ bool managedMemory::unsetUse(memoryID id)
 bool managedMemory::setUse(memoryID id)
 {
   managedMemoryChunk chunk = resolveMemChunk(id);
-  setUse(chunk);
+  return setUse(chunk);
 }
 
 bool managedMemory::unsetUse(managedMemoryChunk& chunk)

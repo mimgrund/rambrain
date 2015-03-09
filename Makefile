@@ -35,3 +35,5 @@ install : lib
 	ln -sf $(LIBPATH)/$(LIB) $(LIBPATH)/libmembrain.so.1
 	ln -sf $(LIBPATH)/membrain.so.1 $(LIBPATH)/libmembrain.so
 
+test : git_info.h $(CMPFILES) $(SRCFILES) test.o
+	$(LINK) $(CMPFILES) test.o $(LIBLINK) -lgtest  -o membrain_test

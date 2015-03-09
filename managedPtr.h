@@ -9,10 +9,10 @@ public:
     chunk = managedMemory::defaultManager->mmalloc(sizeof(T)*n_elem,parent);
   };
   bool setUse(){
-    managedMemory::defaultManager->setUse(*chunk);
+    return managedMemory::defaultManager->setUse(*chunk);
   }
   bool unsetUse(){
-    managedMemory::defaultManager->unsetUse(*chunk);
+    return managedMemory::defaultManager->unsetUse(*chunk);
   }
   
   ~managedPtr(){

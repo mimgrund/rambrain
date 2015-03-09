@@ -33,7 +33,9 @@ class managedMemory{
 public:
   managedMemory(unsigned int size=1073741824);
   bool setMemoryLimit(unsigned int size);
-  unsigned int getMemoryLimit(unsigned int size);
+  unsigned int getMemoryLimit(unsigned int size) const;
+  unsigned int getUsedMemory() const;
+  
   bool setUse(memoryID id);
   bool unsetUse(memoryID id);
   bool setUse(managedMemoryChunk &chunk);
