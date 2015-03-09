@@ -3,7 +3,7 @@ GIT_DIFF = $(shell sh -c 'git diff>gitdiff.bin')
 
 SOURCES= managedMemory managedPtr
 LIBRARIES = m
-LIB = membrain.so.1.0
+LIB = libmembrain.so.1.0
 LIBPATH = /usr/lib64
 INCPATH = /usr/include
 CFLAGS = -Wall -fPIC -g -D__GIT_VERSION=\"$(GIT_VERSION)\"
@@ -29,8 +29,9 @@ git_info.h : $(SRCFILES) gengit.sh
 
 install : lib
 	mkdir -p $(INCPATH)/membrain
-	cp mana*.h $(INCPATH)/membrain
+	cp *.h $(INCPATH)/membrain
+   
 	mv $(LIB) $(LIBPATH)
-	ln -sf $(LIBPATH)/$(LIB) $(LIBPATH)/membrain.so.1
-	ln -sf $(LIBPATH)/membrain.so.1 $(LIBPATH)/membrain.so
+	ln -sf $(LIBPATH)/$(LIB) $(LIBPATH)/libmembrain.so.1
+	ln -sf $(LIBPATH)/membrain.so.1 $(LIBPATH)/libmembrain.so
 
