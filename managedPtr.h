@@ -5,9 +5,20 @@
 template <class T>
 class managedPtr{
 public:
-  managedPtr(memoryID parent, unsigned int n_elem){
-    chunk = managedMemory::defaultManager->mmalloc(sizeof(T)*n_elem,parent);
+  managedPtr(unsigned int n_elem){
+    this->n_elem = n_elem;
+    chunk = managedMemory::defaultManager->mmalloc(sizeof(T)*n_elem);
+    //Now call constructor and save possible children's sake:
+    memoryID savedParent = managedMemory::parent;
+    managedMemory::parent = chunk->id;
+    setUse();
+    for(unsigned int n = 0;n<n_elem;n++){
+      new (((T*)chunk->locPtr)+n) T();
+    }
+    unsetUse();
+    managedMemory::parent = savedParent;
   };
+  
   bool setUse(){
     return managedMemory::defaultManager->setUse(*chunk);
   }
@@ -16,10 +27,15 @@ public:
   }
   
   ~managedPtr(){
+    for(unsigned int n = 0;n<n_elem;n++){
+      (((T*)chunk->locPtr)+n)->~T();
+    }
     managedMemory::defaultManager->mfree(chunk->id);
+    
   }
 private:
   managedMemoryChunk *chunk;
+  unsigned int n_elem;
   
   T* getLocPtr(){
     if(chunk->status==MEM_ALLOCATED_INUSE)

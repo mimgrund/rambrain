@@ -21,8 +21,8 @@ public:
   memoryStatus status;
   void * locPtr;
   unsigned int size;
-  memoryID id;
   memoryID parent;
+  memoryID id;
   memoryID next;
   memoryID child;
   
@@ -43,8 +43,9 @@ public:
   
   static managedMemory *defaultManager;
   static memoryID root;
+  static memoryID parent;
 private:
-  managedMemoryChunk* mmalloc(unsigned int sizereq,const memoryID &parent);
+  managedMemoryChunk* mmalloc(unsigned int sizereq);
   bool mrealloc(memoryID id,unsigned int sizereq);
   void mfree(memoryID id);
   managedMemoryChunk &resolveMemChunk(const memoryID &id);
@@ -57,13 +58,16 @@ private:
   unsigned int memory_max; //1GB 
   unsigned int memory_used=0;
   
+  std::map<memoryID,managedMemoryChunk*> memChunks;
+  
   memoryAtime atime=0;
   memoryID memID_pace=0;
+  
   
   template<class T>
   friend class managedPtr;
   
-  std::map<memoryID,managedMemoryChunk*> memChunks;
+  
 };
 
 #endif

@@ -5,7 +5,7 @@ managedMemory::managedMemory(unsigned int size){
   memory_max = size;
   if(!defaultManager)
     defaultManager = this;
-  managedMemoryChunk *chunk = mmalloc(0,0); //Create root element.
+  managedMemoryChunk *chunk = mmalloc(0); //Create root element.
   chunk->status = MEM_ROOT; 
 }
 
@@ -24,7 +24,7 @@ bool managedMemory::setMemoryLimit(unsigned int size)
   return false; //Resetting this is not implemented yet.
 }
 
-managedMemoryChunk* managedMemory::mmalloc(unsigned int sizereq, const memoryID& parent)
+managedMemoryChunk* managedMemory::mmalloc(unsigned int sizereq)
 {
   if(sizereq+memory_used>memory_max){
     if(!swapOut(sizereq)){
@@ -59,7 +59,7 @@ managedMemoryChunk* managedMemory::mmalloc(unsigned int sizereq, const memoryID&
     
   }
   
-  memChunks.insert({chunk->id,chunk});
+  memChunks.insert({chunk->id,chunk});  
   return chunk;
 }
 
@@ -75,7 +75,9 @@ bool managedMemory::swapIn(managedMemoryChunk& chunk)
     case MEM_SWAPPED:
       errmsg("Swapping not implemented yet");
       return false;
-      
+    case MEM_ALLOCATED:
+    case MEM_ALLOCATED_INUSE:
+      warnmsg("Trying to swap back sth already in RAM");
   }
   return true;
 }
@@ -103,6 +105,8 @@ bool managedMemory::setUse(managedMemoryChunk& chunk)
 	return setUse(chunk);
       else
 	return false;
+    case MEM_ROOT:
+      return false;
       
   }
   return false;
@@ -139,7 +143,7 @@ void managedMemory::mfree(memoryID id)
     errmsg("Trying to free memory that is in use.");
     return;
   }
-  if(chunk->child!=-1){
+  if(chunk->child!=0){
     errmsg("Trying to free memory that has still alive children.");
     return;
   }
@@ -174,6 +178,8 @@ void managedMemory::mfree(memoryID id)
 
 managedMemory* managedMemory::defaultManager=NULL;
 memoryID managedMemory::root=0;
+memoryID managedMemory::parent=0;
+
 //memoryChunk class:
 
 managedMemoryChunk::managedMemoryChunk(const memoryID& parent, const memoryID& me)

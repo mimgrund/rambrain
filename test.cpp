@@ -14,7 +14,7 @@ TEST(BasicManagement,AllocatePointers){
   managedMemory manager(800);
   
   //Allocate 50% of space for an double array
-  managedPtr<double> gPtr(managedMemory::root,50);
+  managedPtr<double> gPtr(50);
   
   //Try to rad from it
   adhereTo<double> gPtrI(gPtr);
@@ -27,9 +27,24 @@ TEST(BasicManagement,AllocatePointers){
   
   for(int n=0;n<50;n++){
     lPtr[n] = 1.; //Should not segfault
-  }
-  
-  
-  
+  } 
 }
+
+
+class A{
+public:
+  managedPtr<double> testelements = managedPtr<double>(10);
+};
+
+TEST(BasicManagement,DeepAllocatePointers){
+  managedMemory manager(800);
+  
+  managedPtr<A> managedA(1);
+  
+  adhereTo<A> adhA( managedA);
+  A* locA = adhA;
+  
+  
+  
+};
 
