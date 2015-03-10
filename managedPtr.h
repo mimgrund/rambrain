@@ -72,5 +72,12 @@ public:
 };
 
 
+//Convenience macros
+#define ADHERETO(class,instance) adhereTo<class> instance##_glue(instance);\
+				 class* instance = instance##_glue;
+#define ADHERETOLOC(class,instance,locinstance) adhereTo<class> instance##_glue(instance);\
+				 class* locinstance = instance##_glue;
+
+
 
 #endif

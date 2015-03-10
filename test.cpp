@@ -31,24 +31,38 @@ TEST(BasicManagement,AllocatePointers){
 }
 
 
+
+
 class A{
 public:
   managedPtr<double> testelements = managedPtr<double>(10);
+  void test();
 };
 
+
+
+
+
+void A::test(){
+  ADHERETO(double,testelements);
+  testelements[0]=3;
+}
+				 
 TEST(BasicManagement,DeepAllocatePointers){
   managedMemory manager(800);
   
   managedPtr<A> managedA(2);
   
-  adhereTo<A> adhA( managedA);
-  A* locA = adhA;
+  ADHERETOLOC(A,managedA,locA);
+  
   ASSERT_TRUE(locA!=NULL);
   
-  adhereTo<double> adhTestelements = locA->testelements;
-  double * testelements = adhTestelements;
+//   adhereTo<double> adhTestelements = locA->testelements;
+//   double * testelements = adhTestelements;
+//   ASSERT_TRUE(testelements!=NULL);
   
-  ASSERT_TRUE(testelements!=NULL);
+  locA->test();
+  
   
   EXPECT_TRUE(manager.getNumberOfChildren(managedMemory::root)==1);
   EXPECT_TRUE(manager.getNumberOfChildren(2)==2);
@@ -57,8 +71,9 @@ TEST(BasicManagement,DeepAllocatePointers){
     
     EXPECT_TRUE(manager.getNumberOfChildren(managedMemory::root)==2);
     EXPECT_TRUE(manager.getUsedMemory()==2*16+2*80+10*4);
+    manager.printTree();
   }  
   EXPECT_TRUE(manager.getUsedMemory()==2*16+2*80);
-  
+  manager.printTree();
 };
 
