@@ -62,11 +62,11 @@ managedMemoryChunk* managedMemory::mmalloc(unsigned int sizereq)
     //fill in tree:
     managedMemoryChunk &pchunk = resolveMemChunk(parent);
     if(pchunk.child == invalid){
-      pchunk.child = chunk->id;
       chunk->next = invalid;//Einzelkind
-    }else{
       pchunk.child = chunk->id;
+    }else{
       chunk->next = pchunk.child;
+      pchunk.child = chunk->id;
     }
     
   }
@@ -164,6 +164,7 @@ void managedMemory::mfree(memoryID id)
     
     if(chunk->status==MEM_ALLOCATED)
       free(chunk->locPtr);
+    memory_used-= chunk->size;
     //get rid of hierarchy:
     if(chunk->id!=root){
 	managedMemoryChunk* pchunk = &resolveMemChunk(chunk->parent);
@@ -180,7 +181,7 @@ void managedMemory::mfree(memoryID id)
     }
     
     //Delete element itself
-    memChunks.erase(id);    
+    memChunks.erase(id); 
     delete chunk;
   }
 }
@@ -207,6 +208,53 @@ memoryID const managedMemory::root=1;
 memoryID const managedMemory::invalid=0;
 memoryID managedMemory::parent=1;
 
+
+unsigned int managedMemory::getNumberOfChildren(const memoryID& id)
+{
+  const managedMemoryChunk &chunk = resolveMemChunk(id);
+  if(chunk.child==invalid)
+    return 0;
+  unsigned int no=1;
+  const managedMemoryChunk *child = &resolveMemChunk(chunk.child);
+  while(child->next!=invalid){
+    child = &resolveMemChunk(child->next);
+    no++;
+  }
+  return no;
+}
+
+void managedMemory::printTree(managedMemoryChunk *current,unsigned int nspaces)
+{
+  if(!current)
+    current = &resolveMemChunk(root);
+  do{
+    for(unsigned int n=0;n<nspaces;n++)
+      printf("  ");
+    printf("(%d : size %d Bytes, atime %d, ",current->id,current->size,current->atime);
+    switch(current->status){
+      case MEM_ROOT:
+	printf("Root Element");
+	break;
+      case MEM_SWAPPED:
+	printf("Swapped out");
+	break;
+      case MEM_ALLOCATED:
+	printf("Allocated");
+	break;
+      case MEM_ALLOCATED_INUSE:
+	printf("Allocated&inUse");
+	break;
+    }
+    printf(")\n");
+    if(current->child!=invalid)
+      printTree(&resolveMemChunk(current->child),nspaces+1);
+    if(current->next!=invalid)
+      current = &resolveMemChunk(current->next);
+    else
+      break;;
+  }while(1==1);
+}
+
 //memoryChunk class:
 
 managedMemoryChunk::managedMemoryChunk(const memoryID& parent, const memoryID& me)
@@ -216,6 +264,6 @@ managedMemoryChunk::managedMemoryChunk(const memoryID& parent, const memoryID& m
 
 managedMemoryChunk& managedMemory::resolveMemChunk(const memoryID& id)
 {
-  return *(memChunks[id]);
+  return *memChunks[id];
 }
 

@@ -45,7 +45,10 @@ public:
   bool unsetUse(memoryID id);
   bool setUse(managedMemoryChunk &chunk);
   bool unsetUse(managedMemoryChunk &chunk);
-  
+ 
+  //Tree Management
+  unsigned int getNumberOfChildren(const memoryID& id); 
+  void printTree(managedMemoryChunk *current=NULL,unsigned int nspaces=0);
   
   static managedMemory *defaultManager;
   static const memoryID root;

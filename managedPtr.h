@@ -2,6 +2,7 @@
 #define MANAGEDPTR_H
 #include "managedMemory.h"
 #include "common.h"
+
 template <class T>
 class managedPtr{
 public:
@@ -50,6 +51,7 @@ private:
   friend class adhereTo;
 };
 
+
 template <class T>
 class adhereTo{
 public:
@@ -68,5 +70,7 @@ public:
   private:
   managedPtr<T> *data;
 };
+
+
 
 #endif
