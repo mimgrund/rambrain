@@ -43,6 +43,12 @@ TEST(BasicManagement,DeepAllocatePointers){
   
   adhereTo<A> adhA( managedA);
   A* locA = adhA;
+  ASSERT_TRUE(locA!=NULL);
+  
+  adhereTo<double> adhTestelements = locA->testelements;
+  double * testelements = adhTestelements;
+  
+  ASSERT_TRUE(testelements!=NULL);
   
   
   

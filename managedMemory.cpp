@@ -3,11 +3,21 @@
 
 managedMemory::managedMemory(unsigned int size){
   memory_max = size;
-  if(!defaultManager)
-    defaultManager = this;
+  defaultManager = this;
   managedMemoryChunk *chunk = mmalloc(0); //Create root element.
   chunk->status = MEM_ROOT; 
 }
+
+managedMemory::~managedMemory()
+{
+  if(defaultManager==this)
+    defaultManager=NULL;
+  //Clean up objects:
+  recursiveMfree(root);
+  
+  
+}
+
 
 unsigned int managedMemory::getMemoryLimit(unsigned int size) const
 {
@@ -32,6 +42,7 @@ managedMemoryChunk* managedMemory::mmalloc(unsigned int sizereq)
       throw;
     }
   }
+  
   //We are left with enough free space to malloc.
   managedMemoryChunk *chunk = new managedMemoryChunk(parent,memID_pace++);
   chunk->status = MEM_ALLOCATED;
@@ -43,15 +54,16 @@ managedMemoryChunk* managedMemory::mmalloc(unsigned int sizereq)
   chunk->atime = atime++;
   memory_used += sizereq;
   chunk->size = sizereq;
-  chunk->child = 0;
-  chunk->parent = 0;
-  if(memChunks.size()==0){//We're inserting root elem.
-    chunk->next =0;
+  chunk->child = invalid;
+  chunk->parent = parent;
+  if(chunk->id==root){//We're inserting root elem.
+    chunk->next =invalid;
   }else{
     //fill in tree:
-    managedMemoryChunk pchunk = resolveMemChunk(parent);
-    if(pchunk.child == 0){
+    managedMemoryChunk &pchunk = resolveMemChunk(parent);
+    if(pchunk.child == invalid){
       pchunk.child = chunk->id;
+      chunk->next = invalid;//Einzelkind
     }else{
       pchunk.child = chunk->id;
       chunk->next = pchunk.child;
@@ -143,7 +155,7 @@ void managedMemory::mfree(memoryID id)
     errmsg("Trying to free memory that is in use.");
     return;
   }
-  if(chunk->child!=0){
+  if(chunk->child!=invalid){
     errmsg("Trying to free memory that has still alive children.");
     return;
   }
@@ -156,15 +168,14 @@ void managedMemory::mfree(memoryID id)
     if(chunk->id!=root){
 	managedMemoryChunk* pchunk = &resolveMemChunk(chunk->parent);
 	if(pchunk->child == chunk->id)
-	  pchunk->child = 0;
+	  pchunk->child = chunk->next;
 	else{
 	  pchunk = &resolveMemChunk(pchunk->child);
 	  do{
-	    pchunk = &resolveMemChunk(pchunk->next);
 	    if(pchunk->next == chunk->id){
 	      pchunk->next = chunk->next;
 	    };
-	  }while(pchunk->next!=0);  
+	  }while(pchunk->next!=invalid);  
 	}
     }
     
@@ -174,11 +185,27 @@ void managedMemory::mfree(memoryID id)
   }
 }
 
+void managedMemory::recursiveMfree(memoryID id)
+{
+  managedMemoryChunk *oldchunk = &resolveMemChunk(id);
+  managedMemoryChunk *next;
+  do{
+    if(oldchunk->child!=invalid)
+      recursiveMfree(oldchunk->child);
+    if(oldchunk->next!=invalid)
+      next= &resolveMemChunk(oldchunk->child);
+    else
+      break;
+    mfree(oldchunk->id);
+    oldchunk = next;
+  }while(1==1);
+}
 
 
 managedMemory* managedMemory::defaultManager=NULL;
-memoryID managedMemory::root=0;
-memoryID managedMemory::parent=0;
+memoryID const managedMemory::root=1;
+memoryID const managedMemory::invalid=0;
+memoryID managedMemory::parent=1;
 
 //memoryChunk class:
 

@@ -32,22 +32,30 @@ public:
 class managedMemory{
 public:
   managedMemory(unsigned int size=1073741824);
+  ~managedMemory();
+  
+  //Memory Management options
   bool setMemoryLimit(unsigned int size);
   unsigned int getMemoryLimit(unsigned int size) const;
   unsigned int getUsedMemory() const;
   
+  
+  //Chunk Management
   bool setUse(memoryID id);
   bool unsetUse(memoryID id);
   bool setUse(managedMemoryChunk &chunk);
   bool unsetUse(managedMemoryChunk &chunk);
   
+  
   static managedMemory *defaultManager;
-  static memoryID root;
+  static const memoryID root;
+  static const memoryID invalid;
   static memoryID parent;
 private:
   managedMemoryChunk* mmalloc(unsigned int sizereq);
   bool mrealloc(memoryID id,unsigned int sizereq);
   void mfree(memoryID id);
+  void recursiveMfree(memoryID id);
   managedMemoryChunk &resolveMemChunk(const memoryID &id);
   
   bool swapOut(unsigned int min_size);
@@ -61,7 +69,7 @@ private:
   std::map<memoryID,managedMemoryChunk*> memChunks;
   
   memoryAtime atime=0;
-  memoryID memID_pace=0;
+  memoryID memID_pace=1;
   
   
   template<class T>
