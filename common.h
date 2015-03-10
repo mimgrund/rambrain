@@ -20,6 +20,6 @@ inline static double sqr(double x){
 #define infomsgf(format,...) {char tmp[1024];snprintf(tmp,1024,format,__VA_ARGS__);infomsg(tmp);}
 #define warnmsgf(format,...) {char tmp[1024];snprintf(tmp,1024,format,__VA_ARGS__);warnmsg(tmp);}
 
-#define VECTOR_FOREACH(vec,iter) for(int iter = 0; iter < vec.size();iter++)
+#define VECTOR_FOREACH(vec,iter) for(int iter = 0; iter < vec.size(); ++iter)
 
 #endif
