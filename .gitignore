@@ -6,3 +6,5 @@ membrain.includes
 managedMemory.o
 managedPtr.o
 libmembrain.so.1.0
+git_info.h
+*.*~
