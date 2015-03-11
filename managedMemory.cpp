@@ -106,11 +106,12 @@ bool managedMemory::setUse ( managedMemoryChunk& chunk )
 {
     switch ( chunk.status ) {
     case MEM_ALLOCATED_INUSE:
-        infomsg ( "Chunk already in use! Double importing not supported yet" );
-        return false;
+        ++chunk.useCnt;
+        return true;
 
     case MEM_ALLOCATED:
         chunk.status = MEM_ALLOCATED_INUSE;
+        ++chunk.useCnt;
         touch ( chunk );
         return true;
 
@@ -164,7 +165,8 @@ bool managedMemory::setUse ( memoryID id )
 bool managedMemory::unsetUse ( managedMemoryChunk& chunk )
 {
     if ( chunk.status==MEM_ALLOCATED_INUSE ) {
-        chunk.status = MEM_ALLOCATED;
+      
+        chunk.status = (--chunk.useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE );
         return true;
     } else {
         throw;
@@ -290,7 +292,7 @@ void managedMemory::printTree ( managedMemoryChunk *current,unsigned int nspaces
 //memoryChunk class:
 
 managedMemoryChunk::managedMemoryChunk ( const memoryID& parent, const memoryID& me )
-    : parent ( parent ),id ( me )
+    : useCnt( 0 ), parent ( parent ),id ( me )
 {
 }
 
@@ -302,5 +304,6 @@ managedMemoryChunk& managedMemory::resolveMemChunk ( const memoryID& id )
 bool managedMemory::touch ( managedMemoryChunk& chunk )
 {
     chunk.atime = atime++;
+    return true;
 }
 

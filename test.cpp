@@ -62,9 +62,9 @@ TEST ( BasicManagement,DeepAllocatePointers )
 
     ASSERT_TRUE ( locA!=NULL );
 
-//   adhereTo<double> adhTestelements = locA->testelements;
-//   double * testelements = adhTestelements;
-//   ASSERT_TRUE(testelements!=NULL);
+    adhereTo<double> adhTestelements = locA->testelements;
+    double * testelements = adhTestelements;
+    ASSERT_TRUE(testelements!=NULL);
 
     locA->test();
 

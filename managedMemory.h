@@ -20,6 +20,7 @@ class managedMemoryChunk
 public:
     managedMemoryChunk ( const memoryID &parent, const memoryID &me );
     memoryStatus status;
+    unsigned short useCnt;
     void * locPtr;
     unsigned int size;
     memoryID parent;
