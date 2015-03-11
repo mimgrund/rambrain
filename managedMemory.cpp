@@ -51,7 +51,7 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
         errmsgf ( "Classical malloc on a size of %d failed.",sizereq );
         throw;
     }
-    chunk->atime = atime++;
+    touch ( *chunk );
     memory_used += sizereq;
     chunk->size = sizereq;
     chunk->child = invalid;
@@ -111,7 +111,7 @@ bool managedMemory::setUse ( managedMemoryChunk& chunk )
 
     case MEM_ALLOCATED:
         chunk.status = MEM_ALLOCATED_INUSE;
-        chunk.atime = atime++;
+        touch ( chunk );
         return true;
 
     case MEM_SWAPPED:
@@ -297,5 +297,10 @@ managedMemoryChunk::managedMemoryChunk ( const memoryID& parent, const memoryID&
 managedMemoryChunk& managedMemory::resolveMemChunk ( const memoryID& id )
 {
     return *memChunks[id];
+}
+
+bool managedMemory::touch ( managedMemoryChunk& chunk )
+{
+    chunk.atime = atime++;
 }
 

@@ -63,10 +63,10 @@ private:
     void recursiveMfree ( memoryID id );
     managedMemoryChunk &resolveMemChunk ( const memoryID &id );
 
-    bool swapOut ( unsigned int min_size );
-    bool swapIn ( memoryID id );
-    bool swapIn ( managedMemoryChunk &chunk );
-
+    virtual bool swapOut ( unsigned int min_size );
+    virtual bool swapIn ( memoryID id );
+    virtual bool swapIn ( managedMemoryChunk &chunk );
+    virtual bool touch ( managedMemoryChunk &chunk );
 
     unsigned int memory_max; //1GB
     unsigned int memory_used=0;
