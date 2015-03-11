@@ -1,16 +1,14 @@
 #include "managedMemory.h"
 #include "common.h"
 
-managedMemory::managedMemory ( unsigned int size )
-{
+managedMemory::managedMemory ( unsigned int size ) {
     memory_max = size;
     defaultManager = this;
     managedMemoryChunk *chunk = mmalloc ( 0 );                //Create root element.
     chunk->status = MEM_ROOT;
 }
 
-managedMemory::~managedMemory()
-{
+managedMemory::~managedMemory() {
     if ( defaultManager==this ) {
         defaultManager=NULL;
     }
@@ -19,23 +17,19 @@ managedMemory::~managedMemory()
 }
 
 
-unsigned int managedMemory::getMemoryLimit ( unsigned int size ) const
-{
+unsigned int managedMemory::getMemoryLimit ( unsigned int size ) const {
     return memory_max;
 }
-unsigned int managedMemory::getUsedMemory() const
-{
+unsigned int managedMemory::getUsedMemory() const {
     return memory_used;
 }
 
 
-bool managedMemory::setMemoryLimit ( unsigned int size )
-{
+bool managedMemory::setMemoryLimit ( unsigned int size ) {
     return false;                                             //Resetting this is not implemented yet.
 }
 
-managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
-{
+managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq ) {
     if ( sizereq+memory_used>memory_max ) {
         if ( !swapOut ( sizereq ) ) {
             errmsgf ( "Could not swap out >%d Bytes\nOut of Memory.",sizereq );
@@ -51,7 +45,10 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
         errmsgf ( "Classical malloc on a size of %d failed.",sizereq );
         throw;
     }
+
+    schedulerRegister ( *chunk );
     touch ( *chunk );
+
     memory_used += sizereq;
     chunk->size = sizereq;
     chunk->child = invalid;
@@ -75,13 +72,11 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
     return chunk;
 }
 
-bool managedMemory::swapOut ( unsigned int min_size )
-{
+bool managedMemory::swapOut ( unsigned int min_size ) {
     //TODO: Implement swapping strategy
     return false;
 }
-bool managedMemory::swapIn ( managedMemoryChunk& chunk )
-{
+bool managedMemory::swapIn ( managedMemoryChunk& chunk ) {
     switch ( chunk.status ) {
     case MEM_ROOT:
         return false;
@@ -96,14 +91,12 @@ bool managedMemory::swapIn ( managedMemoryChunk& chunk )
 }
 
 
-bool managedMemory::swapIn ( memoryID id )
-{
+bool managedMemory::swapIn ( memoryID id ) {
     managedMemoryChunk chunk = resolveMemChunk ( id );
     return swapIn ( chunk );
 }
 
-bool managedMemory::setUse ( managedMemoryChunk& chunk )
-{
+bool managedMemory::setUse ( managedMemoryChunk& chunk ) {
     switch ( chunk.status ) {
     case MEM_ALLOCATED_INUSE:
         ++chunk.useCnt;
@@ -129,8 +122,7 @@ bool managedMemory::setUse ( managedMemoryChunk& chunk )
     return false;
 }
 
-bool managedMemory::mrealloc ( memoryID id, unsigned int sizereq )
-{
+bool managedMemory::mrealloc ( memoryID id, unsigned int sizereq ) {
     managedMemoryChunk &chunk = resolveMemChunk ( id );
     if ( !setUse ( chunk ) ) {
         return false;
@@ -149,24 +141,21 @@ bool managedMemory::mrealloc ( memoryID id, unsigned int sizereq )
 }
 
 
-bool managedMemory::unsetUse ( memoryID id )
-{
+bool managedMemory::unsetUse ( memoryID id ) {
     managedMemoryChunk chunk = resolveMemChunk ( id );
     return unsetUse ( chunk );
 }
 
 
-bool managedMemory::setUse ( memoryID id )
-{
+bool managedMemory::setUse ( memoryID id ) {
     managedMemoryChunk chunk = resolveMemChunk ( id );
     return setUse ( chunk );
 }
 
-bool managedMemory::unsetUse ( managedMemoryChunk& chunk )
-{
+bool managedMemory::unsetUse ( managedMemoryChunk& chunk ) {
     if ( chunk.status==MEM_ALLOCATED_INUSE ) {
-      
-        chunk.status = (--chunk.useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE );
+
+        chunk.status = ( --chunk.useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE );
         return true;
     } else {
         throw;
@@ -174,8 +163,7 @@ bool managedMemory::unsetUse ( managedMemoryChunk& chunk )
 }
 
 
-void managedMemory::mfree ( memoryID id )
-{
+void managedMemory::mfree ( memoryID id ) {
     managedMemoryChunk * chunk = memChunks[id];
     if ( chunk->status==MEM_ALLOCATED_INUSE ) {
         errmsg ( "Trying to free memory that is in use." );
@@ -187,7 +175,7 @@ void managedMemory::mfree ( memoryID id )
     }
 
     if ( chunk ) {
-
+        schedulerDelete ( *chunk );
         if ( chunk->status==MEM_ALLOCATED ) {
             free ( chunk->locPtr );
         }
@@ -213,8 +201,7 @@ void managedMemory::mfree ( memoryID id )
     }
 }
 
-void managedMemory::recursiveMfree ( memoryID id )
-{
+void managedMemory::recursiveMfree ( memoryID id ) {
     managedMemoryChunk *oldchunk = &resolveMemChunk ( id );
     managedMemoryChunk *next;
     do {
@@ -238,8 +225,7 @@ memoryID const managedMemory::invalid=0;
 memoryID managedMemory::parent=1;
 
 
-unsigned int managedMemory::getNumberOfChildren ( const memoryID& id )
-{
+unsigned int managedMemory::getNumberOfChildren ( const memoryID& id ) {
     const managedMemoryChunk &chunk = resolveMemChunk ( id );
     if ( chunk.child==invalid ) {
         return 0;
@@ -253,8 +239,7 @@ unsigned int managedMemory::getNumberOfChildren ( const memoryID& id )
     return no;
 }
 
-void managedMemory::printTree ( managedMemoryChunk *current,unsigned int nspaces )
-{
+void managedMemory::printTree ( managedMemoryChunk *current,unsigned int nspaces ) {
     if ( !current ) {
         current = &resolveMemChunk ( root );
     }
@@ -292,18 +277,16 @@ void managedMemory::printTree ( managedMemoryChunk *current,unsigned int nspaces
 //memoryChunk class:
 
 managedMemoryChunk::managedMemoryChunk ( const memoryID& parent, const memoryID& me )
-    : useCnt( 0 ), parent ( parent ),id ( me )
-{
+    : useCnt ( 0 ), parent ( parent ),id ( me ) {
 }
 
-managedMemoryChunk& managedMemory::resolveMemChunk ( const memoryID& id )
-{
+managedMemoryChunk& managedMemory::resolveMemChunk ( const memoryID& id ) {
     return *memChunks[id];
 }
 
-bool managedMemory::touch ( managedMemoryChunk& chunk )
-{
+bool managedMemory::touch ( managedMemoryChunk& chunk ) {
     chunk.atime = atime++;
     return true;
 }
 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

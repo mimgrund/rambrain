@@ -27,8 +27,8 @@ public:
     memoryID id;
     memoryID next;
     memoryID child;
-
     memoryAtime atime;
+    void * schedBuf;//Give the mem scheduler a place for a buffer.
 };
 
 class managedMemory
@@ -68,9 +68,12 @@ private:
     virtual bool swapIn ( memoryID id );
     virtual bool swapIn ( managedMemoryChunk &chunk );
     virtual bool touch ( managedMemoryChunk &chunk );
+    virtual void schedulerRegister ( managedMemoryChunk &chunk ) {};
+    virtual void schedulerDelete ( managedMemoryChunk &chunk ) {};
 
     unsigned int memory_max; //1GB
     unsigned int memory_used=0;
+    unsigned int memory_swapped = 0;
 
     std::map<memoryID,managedMemoryChunk*> memChunks;
 

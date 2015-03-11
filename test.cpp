@@ -2,15 +2,13 @@
 #include "managedPtr.h"
 #include <gtest/gtest.h>
 
-int main ( int argc, char ** argv )
-{
+int main ( int argc, char ** argv ) {
     ::testing::InitGoogleTest ( &argc,argv );
     return RUN_ALL_TESTS();
 };
 
 
-TEST ( BasicManagement,AllocatePointers )
-{
+TEST ( BasicManagement,AllocatePointers ) {
 
     //Allocate Manager
     managedMemory manager ( 800 );
@@ -35,8 +33,7 @@ TEST ( BasicManagement,AllocatePointers )
 
 
 
-class A
-{
+class A {
 public:
     managedPtr<double> testelements = managedPtr<double> ( 10 );
     void test();
@@ -46,14 +43,12 @@ public:
 
 
 
-void A::test()
-{
+void A::test() {
     ADHERETO ( double,testelements );
     testelements[0]=3;
 }
 
-TEST ( BasicManagement,DeepAllocatePointers )
-{
+TEST ( BasicManagement,DeepAllocatePointers ) {
     managedMemory manager ( 800 );
 
     managedPtr<A> managedA ( 2 );
@@ -64,7 +59,7 @@ TEST ( BasicManagement,DeepAllocatePointers )
 
     adhereTo<double> adhTestelements = locA->testelements;
     double * testelements = adhTestelements;
-    ASSERT_TRUE(testelements!=NULL);
+    ASSERT_TRUE ( testelements!=NULL );
 
     locA->test();
 
@@ -82,3 +77,4 @@ TEST ( BasicManagement,DeepAllocatePointers )
     manager.printTree();
 };
 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
