@@ -26,11 +26,10 @@ private:
     //loop pointers:
     cyclicAtime *active=NULL;
     cyclicAtime *counterActive=NULL;
-    memoryAtime counterAtime;
     unsigned int diff=0;
 
-    double swapOutFrac = .8;
-    double swapInFrac = .9;
+    float swapOutFrac = .8;
+    float swapInFrac = .9;
 };
 
 

@@ -87,4 +87,26 @@ TEST ( BasicManagement,DeepAllocatePointers )
     manager.printTree();
 };
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+TEST ( BasicManagement, cyclicSwappingStrategy )
+{
+    //Allocate Dummy swap
+    managedDummySwap swap(100*1024);
+    //Allocate Manager
+    cyclicManagedMemory manager ( &swap, 1024);
+
+    managedPtr<double> *ptrs[100];
+    for(int n=0; n<100; n++) {
+        ptrs[n] = new managedPtr<double>(10);
+    }
+    manager.printTree();
+    for(int n=0; n<100; n++) {
+        adhereTo<double> aLoc(*ptrs[n]);
+    }
+
+    for(int n=0; n<100; n++) {
+        delete ptrs[n];
+    }
+
+};
+
+
