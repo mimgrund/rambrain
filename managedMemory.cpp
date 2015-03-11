@@ -1,12 +1,17 @@
 #include "managedMemory.h"
 #include "common.h"
 
-managedMemory::managedMemory ( unsigned int size )
+managedMemory::managedMemory (managedSwap *swap, unsigned int size  )
 {
     memory_max = size;
     defaultManager = this;
     managedMemoryChunk *chunk = mmalloc ( 0 );                //Create root element.
     chunk->status = MEM_ROOT;
+    this->swap = swap;
+    if(!swap) {
+        errmsg("You need to define a swap manager!");
+        throw;
+    }
 }
 
 managedMemory::~managedMemory()
@@ -46,14 +51,14 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
     //We are left with enough free space to malloc.
     managedMemoryChunk *chunk = new managedMemoryChunk ( parent,memID_pace++ );
     chunk->status = MEM_ALLOCATED;
-    chunk->locPtr = malloc ( sizereq );
-    if ( !chunk->locPtr ) {
-        errmsgf ( "Classical malloc on a size of %d failed.",sizereq );
-        throw;
+    if(sizereq!=0) {
+        chunk->locPtr = malloc ( sizereq );
+        if ( !chunk->locPtr ) {
+            errmsgf ( "Classical malloc on a size of %d failed.",sizereq );
+            throw;
+        }
     }
 
-    schedulerRegister ( *chunk );
-    touch ( *chunk );
 
     memory_used += sizereq;
     chunk->size = sizereq;
@@ -61,7 +66,12 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
     chunk->parent = parent;
     if ( chunk->id==root ) {                                  //We're inserting root elem.
         chunk->next =invalid;
+        chunk->atime = 0;
     } else {
+        //Register this chunk in swapping logic:
+        schedulerRegister ( *chunk );
+        touch ( *chunk );
+
         //fill in tree:
         managedMemoryChunk &pchunk = resolveMemChunk ( parent );
         if ( pchunk.child == invalid ) {
@@ -83,21 +93,6 @@ bool managedMemory::swapOut ( unsigned int min_size )
     //TODO: Implement swapping strategy
     return false;
 }
-bool managedMemory::swapIn ( managedMemoryChunk& chunk )
-{
-    switch ( chunk.status ) {
-    case MEM_ROOT:
-        return false;
-    case MEM_SWAPPED:
-        errmsg ( "Swapping not implemented yet" );
-        return false;
-    case MEM_ALLOCATED:
-    case MEM_ALLOCATED_INUSE:
-        warnmsg ( "Trying to swap back sth already in RAM" );
-    }
-    return true;
-}
-
 
 bool managedMemory::swapIn ( memoryID id )
 {
@@ -190,7 +185,8 @@ void managedMemory::mfree ( memoryID id )
     }
 
     if ( chunk ) {
-        schedulerDelete ( *chunk );
+        if(chunk->id!=root)
+            schedulerDelete ( *chunk );
         if ( chunk->status==MEM_ALLOCATED ) {
             free ( chunk->locPtr );
         }
@@ -225,13 +221,14 @@ void managedMemory::recursiveMfree ( memoryID id )
             recursiveMfree ( oldchunk->child );
         }
         if ( oldchunk->next!=invalid ) {
-            next= &resolveMemChunk ( oldchunk->child );
+            next= &resolveMemChunk ( oldchunk->next );
         } else {
             break;
         }
         mfree ( oldchunk->id );
         oldchunk = next;
     } while ( 1==1 );
+    mfree ( oldchunk->id );
 }
 
 
@@ -292,6 +289,7 @@ void managedMemory::printTree ( managedMemoryChunk *current,unsigned int nspaces
     } while ( 1==1 );
 }
 
+
 //memoryChunk class:
 
 managedMemoryChunk::managedMemoryChunk ( const memoryID& parent, const memoryID& me )
@@ -304,10 +302,3 @@ managedMemoryChunk& managedMemory::resolveMemChunk ( const memoryID& id )
     return *memChunks[id];
 }
 
-bool managedMemory::touch ( managedMemoryChunk& chunk )
-{
-    chunk.atime = atime++;
-    return true;
-}
-
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

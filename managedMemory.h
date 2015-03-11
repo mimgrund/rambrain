@@ -1,40 +1,19 @@
 #ifndef MANAGEDMEMORY_H
 #define MANAGEDMEMORY_H
+
 #include <stdlib.h>
 #include <map>
+
+#include "managedMemoryChunk.h"
+#include "managedSwap.h"
 
 template<class T>
 class managedPtr;
 
-enum memoryStatus {MEM_ALLOCATED_INUSE,
-                   MEM_ALLOCATED,
-                   MEM_SWAPPED,
-                   MEM_ROOT
-                  };
-
-typedef unsigned int memoryID;
-typedef unsigned int memoryAtime;
-
-class managedMemoryChunk
-{
-public:
-    managedMemoryChunk ( const memoryID &parent, const memoryID &me );
-    memoryStatus status;
-    unsigned short useCnt;
-    void * locPtr;
-    unsigned int size;
-    memoryID parent;
-    memoryID id;
-    memoryID next;
-    memoryID child;
-    memoryAtime atime;
-    void * schedBuf;//Give the mem scheduler a place for a buffer.
-};
-
 class managedMemory
 {
 public:
-    managedMemory ( unsigned int size=1073741824 );
+    managedMemory ( managedSwap *swap,unsigned int size=1073741824);
     ~managedMemory();
 
     //Memory Management options
@@ -57,19 +36,24 @@ public:
     static const memoryID root;
     static const memoryID invalid;
     static memoryID parent;
-private:
+protected:
     managedMemoryChunk* mmalloc ( unsigned int sizereq );
     bool mrealloc ( memoryID id,unsigned int sizereq );
     void mfree ( memoryID id );
     void recursiveMfree ( memoryID id );
     managedMemoryChunk &resolveMemChunk ( const memoryID &id );
 
-    virtual bool swapOut ( unsigned int min_size );
+
+    //Swapping strategy
+    virtual bool swapOut ( unsigned int min_size ) = 0;
     virtual bool swapIn ( memoryID id );
-    virtual bool swapIn ( managedMemoryChunk &chunk );
-    virtual bool touch ( managedMemoryChunk &chunk );
-    virtual void schedulerRegister ( managedMemoryChunk &chunk ) {};
-    virtual void schedulerDelete ( managedMemoryChunk &chunk ) {};
+    virtual bool swapIn ( managedMemoryChunk &chunk )= 0;
+    virtual bool touch ( managedMemoryChunk &chunk )= 0;
+    virtual void schedulerRegister ( managedMemoryChunk &chunk )=0;
+    virtual void schedulerDelete ( managedMemoryChunk &chunk )=0;
+
+    //Swap Storage manager iface:
+    managedSwap *swap=0;
 
     unsigned int memory_max; //1GB
     unsigned int memory_used=0;

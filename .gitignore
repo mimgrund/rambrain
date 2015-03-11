@@ -4,6 +4,9 @@ membrain.creator.user
 membrain.files
 membrain.includes
 managedMemory.o
+test.o
+cyclicManagedMemory.o
+managedDummySwap.o
 managedPtr.o
 libmembrain.so.1.0
 git_info.h

@@ -1,7 +1,7 @@
 GIT_VERSION = $(shell sh -c 'git log -1|head -1|cut -d " " -f2')
 GIT_DIFF = $(shell sh -c 'git diff>gitdiff.bin')
 
-SOURCES= managedMemory managedPtr
+SOURCES= managedMemory managedPtr managedDummySwap cyclicManagedMemory
 LIBRARIES = m
 LIB = libmembrain.so.1.0
 LIBPATH = /usr/lib64

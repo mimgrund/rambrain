@@ -1,7 +1,7 @@
-#include "managedMemory.h"
+#include "cyclicManagedMemory.h"
 #include "managedPtr.h"
 #include <gtest/gtest.h>
-
+#include "managedDummySwap.h"
 int main ( int argc, char ** argv )
 {
     ::testing::InitGoogleTest ( &argc,argv );
@@ -9,11 +9,12 @@ int main ( int argc, char ** argv )
 };
 
 
-TEST ( BasicManagement,AllocatePointers )
+TEST ( cyclicManagedMemory,AllocatePointers )
 {
-
+    //Allocate Dummy swap
+    managedDummySwap swap(100);
     //Allocate Manager
-    managedMemory manager ( 800 );
+    cyclicManagedMemory manager ( &swap, 800 );
 
     //Allocate 50% of space for an double array
     managedPtr<double> gPtr ( 50 );
@@ -54,7 +55,11 @@ void A::test()
 
 TEST ( BasicManagement,DeepAllocatePointers )
 {
-    managedMemory manager ( 800 );
+    //Allocate Dummy swap
+    managedDummySwap swap(100);
+    //Allocate Manager
+    cyclicManagedMemory manager ( &swap, 800 );
+
 
     managedPtr<A> managedA ( 2 );
 
