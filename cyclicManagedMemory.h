@@ -16,6 +16,8 @@ class cyclicManagedMemory : public managedMemory
 {
 public:
     cyclicManagedMemory ( managedSwap* swap, unsigned int size );
+    void printCycle();
+    bool checkCycle();
 private:
     virtual bool swapIn ( managedMemoryChunk& chunk );
     virtual bool swapOut ( unsigned int min_size );
@@ -31,6 +33,8 @@ private:
     float swapOutFrac = .8;
     float swapInFrac = .9;
 };
+
+#define MUTUAL_CONNECT(A,B) A->next = B; B->prev = A;
 
 
 /*Philosophy:

@@ -21,7 +21,6 @@ TEST ( cyclicManagedMemory,AllocatePointers )
 
     //Try to rad from it
     adhereTo<double> gPtrI ( gPtr );
-
     double * lPtr = gPtrI;
 
     ASSERT_TRUE ( lPtr!=NULL );
@@ -70,10 +69,10 @@ TEST ( BasicManagement,DeepAllocatePointers )
     adhereTo<double> adhTestelements = locA->testelements;
     double * testelements = adhTestelements;
     ASSERT_TRUE ( testelements!=NULL );
-
+    ASSERT_TRUE(manager.checkCycle());
+    
     locA->test();
-
-
+    
     EXPECT_TRUE ( manager.getNumberOfChildren ( managedMemory::root ) ==1 );
     EXPECT_TRUE ( manager.getNumberOfChildren ( 2 ) ==2 );
     {
@@ -81,42 +80,48 @@ TEST ( BasicManagement,DeepAllocatePointers )
 
         EXPECT_TRUE ( manager.getNumberOfChildren ( managedMemory::root ) ==2 );
         EXPECT_TRUE ( manager.getUsedMemory() ==2*16+2*80+10*4 );
-        manager.printTree();
     }
     EXPECT_TRUE ( manager.getUsedMemory() ==2*16+2*80 );
-    manager.printTree();
+  
 };
 
 TEST ( BasicManagement, cyclicSwappingStrategy )
 {
     //Allocate Dummy swap
-    managedDummySwap swap(100*1024);
+    managedDummySwap swap(10*1024);
     //Allocate Manager
-    cyclicManagedMemory manager ( &swap, 10024);
+    cyclicManagedMemory manager ( &swap, 1024);
 
     managedPtr<double> *ptrs[100];
     for(int n=0; n<100; n++) {
         ptrs[n] = new managedPtr<double>(10);
+        ASSERT_TRUE(manager.checkCycle());
     }
-
-    //Write fun to tree, but require swapping:
-    for(int n=0; n<100; n++) {
-        adhereTo<double> aLoc(*ptrs[n]);
-        double *darr = aLoc;
-        for(int m=0; m<10; m++) {
-            darr[m] = n*13+m;
+    
+    ASSERT_TRUE(manager.checkCycle());
+    for(int o=0; o<100; o++) {
+        ASSERT_TRUE(manager.checkCycle());
+        //Write fun to tree, but require swapping:
+        for(int n=0; n<100; n++) {
+            ASSERT_TRUE(manager.checkCycle());
+            adhereTo<double> aLoc(*ptrs[n]);
+            double *darr = aLoc;
+            for(int m=0; m<10; m++) {
+                darr[m] = n*13+m*o;
+            }
+        }
+        //Now check equality:
+        for(int n=0; n<100; n++) {
+            adhereTo<double> aLoc(*ptrs[n]);
+            double *darr = aLoc;
+            for(int m=0; m<10; m++) {
+                EXPECT_EQ(darr[m],n*13+m*o);
+            }
         }
     }
-
-    //Now check equality:
-    for(int n=0; n<100; n++) {
-        adhereTo<double> aLoc(*ptrs[n]);
-        double *darr = aLoc;
-        for(int m=0; m<10; m++) {
-            EXPECT_EQ(darr[m],n*13+m);
-        }
-
-    }
+#ifdef SWAPSTATS
+    manager.printSwapstats();
+#endif
 
     for(int n=0; n<100; n++) {
         delete ptrs[n];

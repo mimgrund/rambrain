@@ -7,8 +7,11 @@
 #include "managedMemoryChunk.h"
 #include "managedSwap.h"
 
+#define SWAPSTATS
+
 template<class T>
 class managedPtr;
+
 
 class managedMemory
 {
@@ -20,6 +23,7 @@ public:
     bool setMemoryLimit ( unsigned int size );
     unsigned int getMemoryLimit ( unsigned int size ) const;
     unsigned int getUsedMemory() const;
+    unsigned int getSwappedMemory() const;
 
 
     //Chunk Management
@@ -51,6 +55,7 @@ protected:
     virtual bool touch ( managedMemoryChunk &chunk )= 0;
     virtual void schedulerRegister ( managedMemoryChunk &chunk )=0;
     virtual void schedulerDelete ( managedMemoryChunk &chunk )=0;
+    void ensureEnoughSpaceFor ( unsigned int sizereq );
 
     //Swap Storage manager iface:
     managedSwap *swap=0;
@@ -60,7 +65,7 @@ protected:
     unsigned int memory_swapped = 0;
 
 
-
+protected:
     std::map<memoryID,managedMemoryChunk*> memChunks;
 
     memoryAtime atime=0;
@@ -70,7 +75,19 @@ protected:
     template<class T>
     friend class managedPtr;
 
+#ifdef SWAPSTATS
+protected:
+    unsigned int n_swap_out=0;
+    unsigned int n_swap_in=0;
+    unsigned int swap_out_bytes=0;
+    unsigned int swap_in_bytes=0;
+    unsigned int swap_hits = 0;
+    unsigned int swap_misses = 0;
+public:
+    void printSwapstats();
+    void resetSwapstats();
 
+#endif
 };
 
 #endif

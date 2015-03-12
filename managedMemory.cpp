@@ -32,6 +32,11 @@ unsigned int managedMemory::getUsedMemory() const
 {
     return memory_used;
 }
+unsigned int managedMemory::getSwappedMemory() const
+{
+    return memory_swapped;
+}
+
 
 
 bool managedMemory::setMemoryLimit ( unsigned int size )
@@ -39,7 +44,7 @@ bool managedMemory::setMemoryLimit ( unsigned int size )
     return false;                                             //Resetting this is not implemented yet.
 }
 
-managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
+void managedMemory::ensureEnoughSpaceFor ( unsigned int sizereq )
 {
     if ( sizereq+memory_used>memory_max ) {
         if ( !swapOut ( sizereq ) ) {
@@ -47,6 +52,12 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
             throw;
         }
     }
+}
+
+
+managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
+{
+    ensureEnoughSpaceFor(sizereq);
 
     //We are left with enough free space to malloc.
     managedMemoryChunk *chunk = new managedMemoryChunk ( parent,memID_pace++ );
@@ -98,17 +109,29 @@ bool managedMemory::setUse ( managedMemoryChunk& chunk )
 {
     switch ( chunk.status ) {
     case MEM_ALLOCATED_INUSE:
-        ++chunk.useCnt;
-        return true;
-
-    case MEM_ALLOCATED:
-        chunk.status = MEM_ALLOCATED_INUSE;
+#ifdef SWAPSTATS
+        ++swap_hits;
+#endif
         ++chunk.useCnt;
         touch ( chunk );
         return true;
 
+    case MEM_ALLOCATED:
+#ifdef SWAPSTATS
+        ++swap_hits;
+#endif
+        chunk.status = MEM_ALLOCATED_INUSE;
+        chunk.useCnt = 1;
+        touch ( chunk );
+        return true;
+
     case MEM_SWAPPED:
+#ifdef SWAPSTATS
+        ++swap_misses;
+        --swap_hits;
+#endif
         if ( swapIn ( chunk ) ) {
+
             return setUse ( chunk );
         } else {
             errmsgf("Could not swap in a chunk of size %d",chunk.size);
@@ -302,3 +325,19 @@ managedMemoryChunk& managedMemory::resolveMemChunk ( const memoryID& id )
     return *memChunks[id];
 }
 
+#ifdef SWAPSTATS
+void managedMemory::printSwapstats()
+{
+    infomsgf("A total of %d swapouts occured, writing out %d bytes\
+          \n\tA total of %d swapins occured, reading in %d bytes\
+          \n\twe used already loaded elements %d times, %d had to be fetched\
+          \n\tthus, the hits over misses rate was %.2f",n_swap_out,swap_out_bytes,n_swap_in,swap_in_bytes,\
+             swap_hits,swap_misses, ((float)swap_hits/swap_misses));
+}
+
+void managedMemory::resetSwapstats()
+{
+    swap_hits=swap_misses=swap_in_bytes=swap_out_bytes=n_swap_in=n_swap_out=0;
+}
+
+#endif
