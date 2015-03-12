@@ -90,19 +90,19 @@ TEST ( BasicManagement, cyclicSwappingStrategy )
     //Allocate Dummy swap
     managedDummySwap swap(10*1024);
     //Allocate Manager
-    cyclicManagedMemory manager ( &swap, 1024);
+    cyclicManagedMemory manager ( &swap, 10024);
 
-    managedPtr<double> *ptrs[100];
-    for(int n=0; n<100; n++) {
+    managedPtr<double> *ptrs[1000];
+    for(int n=0; n<1000; n++) {
         ptrs[n] = new managedPtr<double>(10);
         ASSERT_TRUE(manager.checkCycle());
     }
     
     ASSERT_TRUE(manager.checkCycle());
-    for(int o=0; o<100; o++) {
+    for(int o=0; o<1000; o++) {
         ASSERT_TRUE(manager.checkCycle());
         //Write fun to tree, but require swapping:
-        for(int n=0; n<100; n++) {
+        for(int n=0; n<1000; n++) {
             ASSERT_TRUE(manager.checkCycle());
             adhereTo<double> aLoc(*ptrs[n]);
             double *darr = aLoc;
@@ -111,7 +111,7 @@ TEST ( BasicManagement, cyclicSwappingStrategy )
             }
         }
         //Now check equality:
-        for(int n=0; n<100; n++) {
+        for(int n=0; n<1000; n++) {
             adhereTo<double> aLoc(*ptrs[n]);
             double *darr = aLoc;
             for(int m=0; m<10; m++) {
@@ -123,7 +123,7 @@ TEST ( BasicManagement, cyclicSwappingStrategy )
     manager.printSwapstats();
 #endif
 
-    for(int n=0; n<100; n++) {
+    for(int n=0; n<1000; n++) {
         delete ptrs[n];
     }
 

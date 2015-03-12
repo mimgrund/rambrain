@@ -328,10 +328,11 @@ managedMemoryChunk& managedMemory::resolveMemChunk ( const memoryID& id )
 #ifdef SWAPSTATS
 void managedMemory::printSwapstats()
 {
-    infomsgf("A total of %d swapouts occured, writing out %d bytes\
-          \n\tA total of %d swapins occured, reading in %d bytes\
+    infomsgf("A total of %d swapouts occured, writing out %d bytes (%.3e Bytes/avg)\
+          \n\tA total of %d swapins occured, reading in %d bytes (%.3e Bytes/avg)\
           \n\twe used already loaded elements %d times, %d had to be fetched\
-          \n\tthus, the hits over misses rate was %.2f",n_swap_out,swap_out_bytes,n_swap_in,swap_in_bytes,\
+          \n\tthus, the hits over misses rate was %.5f",n_swap_out,swap_out_bytes,\
+          ((float)swap_out_bytes)/n_swap_out,n_swap_in,swap_in_bytes,((float)swap_in_bytes)/n_swap_in,\
              swap_hits,swap_misses, ((float)swap_hits/swap_misses));
 }
 
