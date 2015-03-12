@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "git diff:"
-diff="$(git diff --cached --name-only)"
+diff="$(git diff --name-only)"
 
 if [ -z "$diff" ];
 then
