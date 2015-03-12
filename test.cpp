@@ -70,9 +70,9 @@ TEST ( BasicManagement,DeepAllocatePointers )
     double * testelements = adhTestelements;
     ASSERT_TRUE ( testelements!=NULL );
     ASSERT_TRUE(manager.checkCycle());
-    
+
     locA->test();
-    
+
     EXPECT_TRUE ( manager.getNumberOfChildren ( managedMemory::root ) ==1 );
     EXPECT_TRUE ( manager.getNumberOfChildren ( 2 ) ==2 );
     {
@@ -82,7 +82,7 @@ TEST ( BasicManagement,DeepAllocatePointers )
         EXPECT_TRUE ( manager.getUsedMemory() ==2*16+2*80+10*4 );
     }
     EXPECT_TRUE ( manager.getUsedMemory() ==2*16+2*80 );
-  
+
 };
 
 TEST ( BasicManagement, cyclicSwappingStrategy )
@@ -97,7 +97,7 @@ TEST ( BasicManagement, cyclicSwappingStrategy )
         ptrs[n] = new managedPtr<double>(10);
         ASSERT_TRUE(manager.checkCycle());
     }
-    
+
     ASSERT_TRUE(manager.checkCycle());
     for(int o=0; o<1000; o++) {
         ASSERT_TRUE(manager.checkCycle());

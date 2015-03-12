@@ -57,20 +57,20 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk& chunk )
 bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
 {
     chunk.atime = atime++;
-    
+
     //Put this object to begin of loop:
     cyclicAtime *element = (cyclicAtime *)chunk.schedBuf;
-    
+
     if(counterActive==element);
-        counterActive=counterActive->prev;
-    
+    counterActive=counterActive->prev;
+
     if(active==element)
         return true;
-    if(active->prev == element){
+    if(active->prev == element) {
         active = element;
         return true;
     };
-    if(active->next == element){
+    if(active->next == element) {
         cyclicAtime *before = active->prev;
         cyclicAtime *after = element->next;
         MUTUAL_CONNECT(before,element);
@@ -78,14 +78,14 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
         MUTUAL_CONNECT(active,after);
         active = element;
     }
-    
-    
-    
+
+
+
     cyclicAtime *oldplace_before = element->prev;
     cyclicAtime *oldplace_after = element->next;
     cyclicAtime *before = active->prev;
     cyclicAtime *after = active->next;
-    
+
     MUTUAL_CONNECT(oldplace_before,oldplace_after);
     MUTUAL_CONNECT(before,element);
     MUTUAL_CONNECT(element,after);
@@ -116,27 +116,27 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 
 //Idea: swap out more than required, as the free space may be filled with premptive swap-ins
 
-bool cyclicManagedMemory::checkCycle() {
+bool cyclicManagedMemory::checkCycle()
+{
     unsigned int no_reg = memChunks.size()-1;
     unsigned int encountered = 0;
     cyclicAtime *cur = active;
     cyclicAtime *oldcur;
-    do{
+    do {
         ++encountered;
         oldcur = cur;
         cur = cur->next;
-        if(oldcur!=cur->prev){
+        if(oldcur!=cur->prev) {
             errmsg("Mutual connecion failure");
             return false;
         }
-        
-    }while(cur!=active);
-    
-    if(encountered!=no_reg)
-    {
+
+    } while(cur!=active);
+
+    if(encountered!=no_reg) {
         errmsgf("Not all elements accessed. %d expected,  %d encountered",no_reg,encountered);
         return false;
-    }else
+    } else
         return true;
 
 }
@@ -226,18 +226,18 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
     moveEnd=NULL;
     cleanFrom = counterActive;
     bool inSwappedSection=true;
-    
+
     //TODO: Implement this for less than 3 elements!
-    
+
     while(fromPos!=countPos) {
         if(inSwappedSection) {
             if(fromPos->chunk->status!=MEM_SWAPPED) {
                 inSwappedSection=false;
-                if(moveEnd){
-                     //  xxxxxxxxxxoooooooxxxxxxooooooo
-                     //  ------A--><--B--><-C--><--D
-                     // Change order from A-B-C-D to A-C-B-D
-                                  
+                if(moveEnd) {
+                    //  xxxxxxxxxxoooooooxxxxxxooooooo
+                    //  ------A--><--B--><-C--><--D
+                    // Change order from A-B-C-D to A-C-B-D
+
                     cyclicAtime *endNonswap = fromPos; //A
                     cyclicAtime *startIsoswap = fromPos->next; //B
                     cyclicAtime *endIsoswap = moveEnd; //B
@@ -249,10 +249,9 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
                     MUTUAL_CONNECT(endIsoNonswap,startIsoswap);
                     MUTUAL_CONNECT(endIsoswap,startClean);
                     cleanFrom=startIsoswap;
-                    moveEnd=NULL;               
+                    moveEnd=NULL;
                 }
-            }
-            else{
+            } else {
                 if(moveEnd)
                     cleanFrom = fromPos;
             }
@@ -265,11 +264,11 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         }
         fromPos = fromPos->prev;
     }
-    if(moveEnd){
+    if(moveEnd) {
         //  xxxxxxxxxxoooooooxxxxxxooooooo
         //  ------A--><--B--><-C--><--D
         // Change order from A-B-C-D to A-C-B-D
-        
+
         cyclicAtime *endNonswap = fromPos; //A
         cyclicAtime *startIsoswap = fromPos->next; //B
         cyclicAtime *endIsoswap = moveEnd; //B
@@ -281,10 +280,10 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         MUTUAL_CONNECT(endIsoNonswap,startIsoswap);
         MUTUAL_CONNECT(endIsoswap,startClean);
         cleanFrom=startIsoswap;
-        moveEnd=NULL;               
+        moveEnd=NULL;
     }
     counterActive = cleanFrom;
-    
+
     if(swapSuccess) {
 
         memory_swapped+=unload_size;

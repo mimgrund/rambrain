@@ -332,7 +332,7 @@ void managedMemory::printSwapstats()
           \n\tA total of %d swapins occured, reading in %d bytes (%.3e Bytes/avg)\
           \n\twe used already loaded elements %d times, %d had to be fetched\
           \n\tthus, the hits over misses rate was %.5f",n_swap_out,swap_out_bytes,\
-          ((float)swap_out_bytes)/n_swap_out,n_swap_in,swap_in_bytes,((float)swap_in_bytes)/n_swap_in,\
+             ((float)swap_out_bytes)/n_swap_out,n_swap_in,swap_in_bytes,((float)swap_in_bytes)/n_swap_in,\
              swap_hits,swap_misses, ((float)swap_hits/swap_misses));
 }
 
