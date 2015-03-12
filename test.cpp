@@ -92,15 +92,30 @@ TEST ( BasicManagement, cyclicSwappingStrategy )
     //Allocate Dummy swap
     managedDummySwap swap(100*1024);
     //Allocate Manager
-    cyclicManagedMemory manager ( &swap, 1024);
+    cyclicManagedMemory manager ( &swap, 10024);
 
     managedPtr<double> *ptrs[100];
     for(int n=0; n<100; n++) {
         ptrs[n] = new managedPtr<double>(10);
     }
-    manager.printTree();
+
+    //Write fun to tree, but require swapping:
     for(int n=0; n<100; n++) {
         adhereTo<double> aLoc(*ptrs[n]);
+        double *darr = aLoc;
+        for(int m=0; m<10; m++) {
+            darr[m] = n*13+m;
+        }
+    }
+
+    //Now check equality:
+    for(int n=0; n<100; n++) {
+        adhereTo<double> aLoc(*ptrs[n]);
+        double *darr = aLoc;
+        for(int m=0; m<10; m++) {
+            EXPECT_EQ(darr[m],n*13+m);
+        }
+
     }
 
     for(int n=0; n<100; n++) {

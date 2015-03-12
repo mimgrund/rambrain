@@ -59,6 +59,8 @@ protected:
     unsigned int memory_used=0;
     unsigned int memory_swapped = 0;
 
+
+
     std::map<memoryID,managedMemoryChunk*> memChunks;
 
     memoryAtime atime=0;

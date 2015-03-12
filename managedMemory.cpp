@@ -88,12 +88,6 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
     return chunk;
 }
 
-bool managedMemory::swapOut ( unsigned int min_size )
-{
-    //TODO: Implement swapping strategy
-    return false;
-}
-
 bool managedMemory::swapIn ( memoryID id )
 {
     managedMemoryChunk chunk = resolveMemChunk ( id );
@@ -117,7 +111,8 @@ bool managedMemory::setUse ( managedMemoryChunk& chunk )
         if ( swapIn ( chunk ) ) {
             return setUse ( chunk );
         } else {
-            return false;
+            errmsgf("Could not swap in a chunk of size %d",chunk.size);
+            throw;
         }
 
     case MEM_ROOT:
@@ -201,8 +196,13 @@ void managedMemory::mfree ( memoryID id )
                 do {
                     if ( pchunk->next == chunk->id ) {
                         pchunk->next = chunk->next;
+                        break;
                     };
-                } while ( pchunk->next!=invalid );
+                    if(pchunk->next==invalid)
+                        break;
+                    else
+                        pchunk = &resolveMemChunk(pchunk->next);
+                } while ( 1==1 );
             }
         }
 
