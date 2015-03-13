@@ -32,7 +32,9 @@ private:
 
     float swapOutFrac = .8;
     float swapInFrac = .9;
+
     bool preemtiveSwapIn=true;//TODO: Change strategy dynamically.
+    unsigned int preemptiveBytes = 0;
 
 };
 

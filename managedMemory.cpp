@@ -80,6 +80,7 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
         chunk->atime = 0;
     } else {
         //Register this chunk in swapping logic:
+        chunk->atime =atime++;
         schedulerRegister ( *chunk );
         touch ( *chunk );
 
@@ -331,9 +332,10 @@ void managedMemory::printSwapstats()
     infomsgf("A total of %d swapouts occured, writing out %d bytes (%.3e Bytes/avg)\
           \n\tA total of %d swapins occured, reading in %d bytes (%.3e Bytes/avg)\
           \n\twe used already loaded elements %d times, %d had to be fetched\
-          \n\tthus, the hits over misses rate was %.5f",n_swap_out,swap_out_bytes,\
+          \n\tthus, the hits over misses rate was %.5f\
+          \n\tfraction of swapped out ram (currently) %.2e",n_swap_out,swap_out_bytes,\
              ((float)swap_out_bytes)/n_swap_out,n_swap_in,swap_in_bytes,((float)swap_in_bytes)/n_swap_in,\
-             swap_hits,swap_misses, ((float)swap_hits/swap_misses));
+             swap_hits,swap_misses, ((float)swap_hits/swap_misses),((float)memory_swapped)/(memory_used+memory_swapped));
 }
 
 void managedMemory::resetSwapstats()

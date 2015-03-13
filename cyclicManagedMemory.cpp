@@ -56,7 +56,9 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk& chunk )
 //Touch happens automatically after use, create, swapIn
 bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
 {
-    chunk.atime = atime++;
+    if(counterActive->chunk->atime>chunk.atime)//This chunk was preemptively loaded
+        preemptiveBytes-=chunk.size;
+
 
     //Put this object to begin of loop:
     cyclicAtime *element = (cyclicAtime *)chunk.schedBuf;
@@ -67,10 +69,15 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
     if(active==element)
         return true;
 
+    chunk.atime = atime++; //increase atime only if we accessed a different element in between
+
     if(active->prev == element) {
         active = element;
         return true;
     };
+
+
+
     if(active->next == element) {
         cyclicAtime *before = active->prev;
         cyclicAtime *after = element->next;
@@ -98,15 +105,29 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
 
 bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 {
+    // We use the old border to ensure that sth is not swapped in again that was just swapped out.
     cyclicAtime *oldBorder = counterActive;
-    ensureEnoughSpaceFor(chunk.size);
-    //Let us be preemptive here.
+
+
+    unsigned int actual_obj_size=chunk.size;
+    //We want to read in what the user requested plus fill up the preemptive area with opportune guesses
+
+//         fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
+
 
     if(preemtiveSwapIn) {
+        unsigned int targetReadinVol = actual_obj_size + (swapInFrac -swapOutFrac)*memory_max-preemptiveBytes;
+
+        //Swap out if we want to read in more than what we thought:
+        if(targetReadinVol+memory_used>memory_max) {
+            unsigned int targetSwapoutVol = actual_obj_size + (1. -swapOutFrac)*memory_max-preemptiveBytes;
+            //         fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,targetSwapoutVol);
+            swapOut(targetSwapoutVol);
+
+        }
         cyclicAtime *readEl = (cyclicAtime *) chunk.schedBuf;
         cyclicAtime *cur = readEl;
         cyclicAtime *endSwapin = readEl;
-        unsigned int targetReadinVol = (swapInFrac -swapOutFrac)*memory_max;
         unsigned int selectedReadinVol = 0;
         unsigned int numberSelected = 0;
         do {
@@ -141,25 +162,31 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 
             memory_used+= selectedReadinVol;
             memory_swapped -= selectedReadinVol;
+            preemptiveBytes += selectedReadinVol-actual_obj_size;
+            chunk.atime = atime++;
+
 #ifdef SWAPSTATS
             swap_in_bytes+= selectedReadinVol;
             n_swap_in+=1;
 #endif
             return true;
         }
-    } else if(swap->swapIn(&chunk)) {
-        memory_used+= chunk.size;
-        memory_swapped-= chunk.size;
-#ifdef SWAPSTATS
-        swap_in_bytes+= chunk.size;
-        n_swap_in+=1;
-#endif
-        if(chunk.schedBuf==counterActive)
-            counterActive=counterActive->prev;
-        return true;
     } else {
-        return false;
-    };
+        ensureEnoughSpaceFor(actual_obj_size);
+        if(swap->swapIn(&chunk)) {
+            memory_used+= chunk.size;
+            memory_swapped-= chunk.size;
+#ifdef SWAPSTATS
+            swap_in_bytes+= chunk.size;
+            n_swap_in+=1;
+#endif
+            if(chunk.schedBuf==counterActive)
+                counterActive=counterActive->prev;
+            return true;
+        } else {
+            return false;
+        };
+    }
 
 }
 
