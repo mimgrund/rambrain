@@ -135,12 +135,12 @@ TEST ( cyclicManagedMemory, ramdomArrayAccess )
 {
     const  int memsize=10240;
     const  int allocarrn = 4000;
-    
+
     //Allocate Dummy swap
     managedDummySwap swap(10*memsize);
     //Allocate Manager
     cyclicManagedMemory manager ( &swap, memsize);
-    
+
     managedPtr<double> *ptrs[allocarrn];
     for(int n=0; n<allocarrn; ++n) {
         ptrs[n] = new managedPtr<double>(10);
@@ -151,7 +151,7 @@ TEST ( cyclicManagedMemory, ramdomArrayAccess )
         }
         ASSERT_TRUE(manager.checkCycle());
     }
-    
+
     ASSERT_TRUE(manager.checkCycle());
     for(int o=0; o<100; ++o) {
         ASSERT_TRUE(manager.checkCycle());
@@ -159,9 +159,9 @@ TEST ( cyclicManagedMemory, ramdomArrayAccess )
         for(int n=0; n<allocarrn; ++n) {
             unsigned int randomi = random()*allocarrn/RAND_MAX;
             adhereTo<double> aLoc(*ptrs[randomi]);
-            
+
             ASSERT_TRUE(manager.checkCycle());
-            
+
             double *darr = aLoc;
             for(int m=0; m<10; m++) {
                 darr[m] = randomi*13+m*o;
@@ -183,16 +183,16 @@ TEST ( cyclicManagedMemory, ramdomArrayAccess )
                 darr[m] = -1;
             }
         }
-        
+
     }
-    #ifdef SWAPSTATS
+#ifdef SWAPSTATS
     manager.printSwapstats();
-    #endif
-    
+#endif
+
     for(int n=0; n<allocarrn; n++) {
         delete ptrs[n];
     }
-    
+
 };
 
 

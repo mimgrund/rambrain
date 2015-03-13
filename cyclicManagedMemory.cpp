@@ -66,7 +66,7 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
 
     if(active==element)
         return true;
-    
+
     if(active->prev == element) {
         active = element;
         return true;
@@ -101,34 +101,34 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
     cyclicAtime *oldBorder = counterActive;
     ensureEnoughSpaceFor(chunk.size);
     //Let us be preemptive here.
-  
-    if(preemtiveSwapIn){
+
+    if(preemtiveSwapIn) {
         cyclicAtime *readEl = (cyclicAtime *) chunk.schedBuf;
         cyclicAtime *cur = readEl;
         cyclicAtime *endSwapin = readEl;
         unsigned int targetReadinVol = (swapInFrac -swapOutFrac)*memory_max;
         unsigned int selectedReadinVol = 0;
         unsigned int numberSelected = 0;
-        do{
+        do {
             selectedReadinVol+=cur->chunk->size;
             cur = cur->prev;
             ++numberSelected;
-        }while(selectedReadinVol+cur->chunk->size<targetReadinVol&&cur != oldBorder);
-        
+        } while(selectedReadinVol+cur->chunk->size<targetReadinVol&&cur != oldBorder);
+
         managedMemoryChunk *chunks[numberSelected];
         unsigned int n=0;
-        do{
+        do {
             chunks[n++] = readEl->chunk;
             readEl = readEl->prev;
-        }while(readEl!=cur);
-        if(!swap->swapIn(chunks,numberSelected)){
+        } while(readEl!=cur);
+        if(!swap->swapIn(chunks,numberSelected)) {
             errmsg("managedSwap failed to swap in :-(");
             return false;//This should not happen, we do not have any strategy to handle this.
-            
-        }else{
+
+        } else {
             cyclicAtime *beginSwapin = readEl->next;
             cyclicAtime *oldafter = endSwapin->next;
-            if(oldafter!=active){
+            if(oldafter!=active) {
                 //TODO: Implement this for <3 elements
                 cyclicAtime *oldbefore = readEl;
                 cyclicAtime *before = active->prev;
@@ -137,17 +137,17 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
                 MUTUAL_CONNECT(before,beginSwapin);
             }
             active = endSwapin;
- 
-            
+
+
             memory_used+= selectedReadinVol;
             memory_swapped -= selectedReadinVol;
-            #ifdef SWAPSTATS
+#ifdef SWAPSTATS
             swap_in_bytes+= selectedReadinVol;
             n_swap_in+=1;
-            #endif
+#endif
             return true;
         }
-    }else if(swap->swapIn(&chunk)) {
+    } else if(swap->swapIn(&chunk)) {
         memory_used+= chunk.size;
         memory_swapped-= chunk.size;
 #ifdef SWAPSTATS
@@ -172,7 +172,7 @@ bool cyclicManagedMemory::checkCycle()
     unsigned int encountered = 0;
     cyclicAtime *cur = active;
     cyclicAtime *oldcur;
-    
+
     bool inActiveOnlySection = true;
     bool inSwapsection = true;
     do {
@@ -183,21 +183,21 @@ bool cyclicManagedMemory::checkCycle()
             errmsg("Mutual connecion failure");
             return false;
         }
-        
-        if(inActiveOnlySection){
-            if(oldcur->chunk->status==MEM_SWAPPED){
+
+        if(inActiveOnlySection) {
+            if(oldcur->chunk->status==MEM_SWAPPED) {
                 errmsg("Swapped elements in active section!");
                 return false;
             }
-        }else{
-            if(oldcur->chunk->status==MEM_SWAPPED&&!inSwapsection){
+        } else {
+            if(oldcur->chunk->status==MEM_SWAPPED&&!inSwapsection) {
                 errmsg("Isolated swapped element block not tracked by counterActive found!");
                 return false;
             }
             if(oldcur->chunk->status!=MEM_SWAPPED)
                 inSwapsection = false;
         }
-        
+
         if(oldcur==counterActive)
             inActiveOnlySection=false;
 
@@ -269,7 +269,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
             ++unload;
         }
         countPos=countPos->prev;
-        if(fromPos==countPos||countPos==active)
+        if(fromPos==countPos)
             break;
 
     }
@@ -285,6 +285,8 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         if(fromPos->chunk->status==MEM_ALLOCATED) {
             *unloadElem = fromPos->chunk;
             ++unloadElem;
+            if(fromPos==active)
+                active = fromPos->prev;
         }
         fromPos = fromPos->prev;
     }
