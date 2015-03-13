@@ -52,7 +52,7 @@ void A::test()
     testelements[0]=3;
 }
 
-TEST ( BasicManagement,DeepAllocatePointers )
+TEST ( cyclicManagedMemory,DeepAllocatePointers )
 {
     //Allocate Dummy swap
     managedDummySwap swap(100);
@@ -85,24 +85,26 @@ TEST ( BasicManagement,DeepAllocatePointers )
 
 };
 
-TEST ( BasicManagement, cyclicSwappingStrategy )
+TEST ( cyclicManagedMemory, arrayAccess )
 {
+    const  int memsize=10240;
+    const int allocarrn = 4000;
     //Allocate Dummy swap
-    managedDummySwap swap(10*1024);
+    managedDummySwap swap(memsize*10);
     //Allocate Manager
-    cyclicManagedMemory manager ( &swap, 10024);
+    cyclicManagedMemory manager ( &swap, memsize);
 
-    managedPtr<double> *ptrs[1000];
-    for(int n=0; n<1000; n++) {
+    managedPtr<double> *ptrs[allocarrn];
+    for(int n=0; n<allocarrn; n++) {
         ptrs[n] = new managedPtr<double>(10);
         ASSERT_TRUE(manager.checkCycle());
     }
 
     ASSERT_TRUE(manager.checkCycle());
-    for(int o=0; o<1000; o++) {
+    for(int o=0; o<100; o++) {
         ASSERT_TRUE(manager.checkCycle());
         //Write fun to tree, but require swapping:
-        for(int n=0; n<1000; n++) {
+        for(int n=0; n<allocarrn; n++) {
             ASSERT_TRUE(manager.checkCycle());
             adhereTo<double> aLoc(*ptrs[n]);
             double *darr = aLoc;
@@ -111,7 +113,7 @@ TEST ( BasicManagement, cyclicSwappingStrategy )
             }
         }
         //Now check equality:
-        for(int n=0; n<1000; n++) {
+        for(int n=0; n<allocarrn; n++) {
             adhereTo<double> aLoc(*ptrs[n]);
             double *darr = aLoc;
             for(int m=0; m<10; m++) {
@@ -123,10 +125,74 @@ TEST ( BasicManagement, cyclicSwappingStrategy )
     manager.printSwapstats();
 #endif
 
-    for(int n=0; n<1000; n++) {
+    for(int n=0; n<allocarrn; n++) {
         delete ptrs[n];
     }
 
+};
+
+TEST ( cyclicManagedMemory, ramdomArrayAccess )
+{
+    const  int memsize=10240;
+    const  int allocarrn = 4000;
+    
+    //Allocate Dummy swap
+    managedDummySwap swap(10*memsize);
+    //Allocate Manager
+    cyclicManagedMemory manager ( &swap, memsize);
+    
+    managedPtr<double> *ptrs[allocarrn];
+    for(int n=0; n<allocarrn; ++n) {
+        ptrs[n] = new managedPtr<double>(10);
+        adhereTo<double> aLoc(*ptrs[n]);
+        double *darr = aLoc;
+        for(int m=0; m<10; ++m) {
+            darr[m] = -1;
+        }
+        ASSERT_TRUE(manager.checkCycle());
+    }
+    
+    ASSERT_TRUE(manager.checkCycle());
+    for(int o=0; o<100; ++o) {
+        ASSERT_TRUE(manager.checkCycle());
+        //Write fun to tree, but require swapping:
+        for(int n=0; n<allocarrn; ++n) {
+            unsigned int randomi = random()*allocarrn/RAND_MAX;
+            adhereTo<double> aLoc(*ptrs[randomi]);
+            
+            ASSERT_TRUE(manager.checkCycle());
+            
+            double *darr = aLoc;
+            for(int m=0; m<10; m++) {
+                darr[m] = randomi*13+m*o;
+            }
+        }
+        //Now check equality:
+        for(int n=0; n<allocarrn; n++) {
+            adhereTo<double> aLoc(*ptrs[n]);
+            double *darr = aLoc;
+            for(int m=0; m<10; ++m) {
+                EXPECT_TRUE(darr[m]==-1||(darr[m]==n*13+m*o));
+            }
+        }
+        //reset numbers again:
+        for(int n=0; n<allocarrn; ++n) {
+            adhereTo<double> aLoc(*ptrs[n]);
+            double *darr = aLoc;
+            for(int m=0; m<10; ++m) {
+                darr[m] = -1;
+            }
+        }
+        
+    }
+    #ifdef SWAPSTATS
+    manager.printSwapstats();
+    #endif
+    
+    for(int n=0; n<allocarrn; n++) {
+        delete ptrs[n];
+    }
+    
 };
 
 

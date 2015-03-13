@@ -32,6 +32,8 @@ private:
 
     float swapOutFrac = .8;
     float swapInFrac = .9;
+    bool preemtiveSwapIn=true;//TODO: Change strategy dynamically.
+    
 };
 
 #define MUTUAL_CONNECT(A,B) A->next = B; B->prev = A;

@@ -61,11 +61,12 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
     //Put this object to begin of loop:
     cyclicAtime *element = (cyclicAtime *)chunk.schedBuf;
 
-    if(counterActive==element);
-    counterActive=counterActive->prev;
+    if(counterActive==element)
+        counterActive=counterActive->prev;
 
     if(active==element)
         return true;
+    
     if(active->prev == element) {
         active = element;
         return true;
@@ -77,6 +78,7 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
         MUTUAL_CONNECT(element,active);
         MUTUAL_CONNECT(active,after);
         active = element;
+        return true;
     }
 
 
@@ -84,7 +86,7 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
     cyclicAtime *oldplace_before = element->prev;
     cyclicAtime *oldplace_after = element->next;
     cyclicAtime *before = active->prev;
-    cyclicAtime *after = active->next;
+    cyclicAtime *after = active;
 
     MUTUAL_CONNECT(oldplace_before,oldplace_after);
     MUTUAL_CONNECT(before,element);
@@ -96,8 +98,56 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
 
 bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 {
+    cyclicAtime *oldBorder = counterActive;
     ensureEnoughSpaceFor(chunk.size);
-    if(swap->swapIn(&chunk)) {
+    //Let us be preemptive here.
+  
+    if(preemtiveSwapIn){
+        cyclicAtime *readEl = (cyclicAtime *) chunk.schedBuf;
+        cyclicAtime *cur = readEl;
+        cyclicAtime *endSwapin = readEl;
+        unsigned int targetReadinVol = (swapInFrac -swapOutFrac)*memory_max;
+        unsigned int selectedReadinVol = 0;
+        unsigned int numberSelected = 0;
+        do{
+            selectedReadinVol+=cur->chunk->size;
+            cur = cur->prev;
+            ++numberSelected;
+        }while(selectedReadinVol+cur->chunk->size<targetReadinVol&&cur != oldBorder);
+        
+        managedMemoryChunk *chunks[numberSelected];
+        unsigned int n=0;
+        do{
+            chunks[n++] = readEl->chunk;
+            readEl = readEl->prev;
+        }while(readEl!=cur);
+        if(!swap->swapIn(chunks,numberSelected)){
+            errmsg("managedSwap failed to swap in :-(");
+            return false;//This should not happen, we do not have any strategy to handle this.
+            
+        }else{
+            cyclicAtime *beginSwapin = readEl->next;
+            cyclicAtime *oldafter = endSwapin->next;
+            if(oldafter!=active){
+                //TODO: Implement this for <3 elements
+                cyclicAtime *oldbefore = readEl;
+                cyclicAtime *before = active->prev;
+                MUTUAL_CONNECT(oldbefore,oldafter);
+                MUTUAL_CONNECT(endSwapin,active);
+                MUTUAL_CONNECT(before,beginSwapin);
+            }
+            active = endSwapin;
+ 
+            
+            memory_used+= selectedReadinVol;
+            memory_swapped -= selectedReadinVol;
+            #ifdef SWAPSTATS
+            swap_in_bytes+= selectedReadinVol;
+            n_swap_in+=1;
+            #endif
+            return true;
+        }
+    }else if(swap->swapIn(&chunk)) {
         memory_used+= chunk.size;
         memory_swapped-= chunk.size;
 #ifdef SWAPSTATS
@@ -122,6 +172,9 @@ bool cyclicManagedMemory::checkCycle()
     unsigned int encountered = 0;
     cyclicAtime *cur = active;
     cyclicAtime *oldcur;
+    
+    bool inActiveOnlySection = true;
+    bool inSwapsection = true;
     do {
         ++encountered;
         oldcur = cur;
@@ -130,6 +183,23 @@ bool cyclicManagedMemory::checkCycle()
             errmsg("Mutual connecion failure");
             return false;
         }
+        
+        if(inActiveOnlySection){
+            if(oldcur->chunk->status==MEM_SWAPPED){
+                errmsg("Swapped elements in active section!");
+                return false;
+            }
+        }else{
+            if(oldcur->chunk->status==MEM_SWAPPED&&!inSwapsection){
+                errmsg("Isolated swapped element block not tracked by counterActive found!");
+                return false;
+            }
+            if(oldcur->chunk->status!=MEM_SWAPPED)
+                inSwapsection = false;
+        }
+        
+        if(oldcur==counterActive)
+            inActiveOnlySection=false;
 
     } while(cur!=active);
 
@@ -199,14 +269,12 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
             ++unload;
         }
         countPos=countPos->prev;
-        if(fromPos==countPos)
+        if(fromPos==countPos||countPos==active)
             break;
 
     }
     if(fromPos==countPos) { //We've been round one time and could not make it.
-        printTree();
         errmsgf("Cannot swap as too much memory is used to satisfy swap requirement.\n\tHappened after passing %d elements",passed);
-        printCycle();
         return false;
     }
 
@@ -252,7 +320,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
                     moveEnd=NULL;
                 }
             } else {
-                if(moveEnd)
+                if(!moveEnd)
                     cleanFrom = fromPos;
             }
         } else {
@@ -282,7 +350,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         cleanFrom=startIsoswap;
         moveEnd=NULL;
     }
-    counterActive = cleanFrom;
+    counterActive = cleanFrom->prev;
 
     if(swapSuccess) {
 
