@@ -16,7 +16,7 @@ public:
 };
 
 
-TEST ( cyclicManagedMemory,AllocatePointers )
+TEST ( cyclicManagedMemory, Unit_AllocatePointers )
 {
     //Allocate Dummy swap
     managedDummySwap swap(100);
@@ -39,7 +39,7 @@ TEST ( cyclicManagedMemory,AllocatePointers )
     }
 }
 
-TEST ( cyclicManagedMemory,DeepAllocatePointers )
+TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
 {
     //Allocate Dummy swap
     managedDummySwap swap(100);
@@ -72,7 +72,7 @@ TEST ( cyclicManagedMemory,DeepAllocatePointers )
 
 }
 
-TEST ( cyclicManagedMemory, arrayAccess )
+TEST ( cyclicManagedMemory, Integration_ArrayAccess )
 {
     const  int memsize=10240;
     const int allocarrn = 4000;
@@ -119,7 +119,7 @@ TEST ( cyclicManagedMemory, arrayAccess )
 }
 
 
-TEST ( cyclicManagedMemory, ramdomArrayAccess )
+TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
 {
     const  int memsize=10240;
     const  int allocarrn = 4000;

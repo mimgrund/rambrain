@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "managedPtr.h"
 
-TEST(managedPtr, ParentIDs)
+TEST(managedPtr, Unit_ParentIDs)
 {
     memoryID parent = managedMemory::defaultManager->parent;
 

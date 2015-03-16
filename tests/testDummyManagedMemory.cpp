@@ -2,7 +2,7 @@
 #include "dummyManagedMemory.h"
 #include "exceptions.h"
 
-TEST(dummyManagedMemory, ThrowsExceptions)
+TEST(dummyManagedMemory, Unit_ThrowsExceptions)
 {
     dummyManagedMemory mgr;
 

@@ -2,12 +2,12 @@
 #include "managedMemory.h"
 #include "dummyManagedMemory.h"
 
-TEST(managedMemory, DefaultManagerPresent)
+TEST(managedMemory, Unit_DefaultManagerPresent)
 {
     EXPECT_TRUE(managedMemory::defaultManager != NULL);
 }
 
-TEST(managedMemory, DefaultManagerPresentAfterAllocation)
+TEST(managedMemory, Unit_DefaultManagerPresentAfterAllocation)
 {
     managedMemory* mm = new dummyManagedMemory();
     managedMemory::defaultManager = mm;
@@ -17,7 +17,7 @@ TEST(managedMemory, DefaultManagerPresentAfterAllocation)
     EXPECT_TRUE(managedMemory::defaultManager != NULL);
 }
 
-TEST(managedMemory, BaseMemoryUsage)
+TEST(managedMemory, Unit_BaseMemoryUsage)
 {
     unsigned int mem = 1000u;
     managedMemory::defaultManager->setMemoryLimit(mem);
