@@ -1,6 +1,6 @@
 #include "managedMemory.h"
 #include "common.h"
-
+#include "exceptions.h"
 #include "dummyManagedMemory.h"
 
 managedMemory* managedMemory::dummyManager = new dummyManagedMemory();
@@ -21,7 +21,7 @@ managedMemory::managedMemory (managedSwap *swap, unsigned int size  )
     this->swap = swap;
     if(!swap) {
         errmsg("You need to define a swap manager!");
-        throw;
+        throw incompleteSetupException("no swap manager defined");
     }
 }
 
@@ -60,7 +60,7 @@ void managedMemory::ensureEnoughSpaceFor ( unsigned int sizereq )
     if ( sizereq+memory_used>memory_max ) {
         if ( !swapOut ( sizereq ) ) {
             errmsgf ( "Could not swap out >%d Bytes\nOut of Memory.",sizereq );
-            throw;
+            throw memoryException("Could not swap memory");
         }
     }
 }
@@ -77,7 +77,7 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
         chunk->locPtr = malloc ( sizereq );
         if ( !chunk->locPtr ) {
             errmsgf ( "Classical malloc on a size of %d failed.",sizereq );
-            throw;
+            throw memoryException("Malloc failed");
         }
     }
 
@@ -147,7 +147,7 @@ bool managedMemory::setUse ( managedMemoryChunk& chunk )
             return setUse ( chunk );
         } else {
             errmsgf("Could not swap in a chunk of size %d",chunk.size);
-            throw;
+            throw memoryException("Could not swap memory");
         }
 
     case MEM_ROOT:
@@ -197,7 +197,7 @@ bool managedMemory::unsetUse ( managedMemoryChunk& chunk )
         chunk.status = ( --chunk.useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE );
         return true;
     } else {
-        throw;
+        throw unexpectedStateException("Can not unset use of not used memory");
     }
 }
 

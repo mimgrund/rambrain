@@ -3,8 +3,8 @@
 
 #include "managedMemory.h"
 #include "managedDummySwap.h"
+#include "exceptions.h"
 
-//! \todo make this dummy implementation throw stuff around when trying to use it
 class dummyManagedMemory : public managedMemory
 {
 public:
@@ -12,11 +12,21 @@ public:
     ~dummyManagedMemory() {}
 
 protected:
-    inline virtual bool swapOut ( unsigned int min_size ) { return false; }
-    inline virtual bool swapIn ( managedMemoryChunk &chunk ) { return false; }
-    inline virtual bool touch ( managedMemoryChunk &chunk ) { return false; }
-    inline virtual void schedulerRegister ( managedMemoryChunk & ) {}
-    inline virtual void schedulerDelete ( managedMemoryChunk & ) {}
+    inline virtual bool swapOut ( unsigned int  ) {
+        throw dummyObjectException();
+    }
+    inline virtual bool swapIn ( managedMemoryChunk & ) {
+        throw dummyObjectException();
+    }
+    inline virtual bool touch ( managedMemoryChunk & ) {
+        throw dummyObjectException();
+    }
+    inline virtual void schedulerRegister ( managedMemoryChunk & ) {
+        throw dummyObjectException();
+    }
+    inline virtual void schedulerDelete ( managedMemoryChunk & ) {
+        throw dummyObjectException();
+    }
 
 };
 
