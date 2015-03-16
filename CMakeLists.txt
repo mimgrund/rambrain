@@ -18,6 +18,10 @@ if (CMAKE_CXX_COMPILER_ID MATCHES Clang)
 	add_definitions (-fcolor-diagnostics -fansi-escape-codes)
 endif()
 
+execute_process(COMMAND git log -1 COMMAND head -1 COMMAND cut -d " " -f2 OUTPUT_VARIABLE GIT_VERSION)
+message("Git version is ${GIT_VERSION}")
+add_definitions(-D__GIT_VERSION=\"${GIT_VERSION}\")
+
 add_subdirectory (src)
 add_subdirectory (external)
 
