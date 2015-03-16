@@ -178,7 +178,7 @@ TEST ( cyclicManagedMemory, ramdomArrayAccess )
         //Now check equality:
         for(int n=0; n<allocarrn; n++) {
             adhereTo<double> aLoc(*ptrs[n]);
-            double *darr = aLoc;
+            const double *darr = aLoc;
             for(int m=0; m<10; ++m) {
                 EXPECT_TRUE(darr[m]==-1||(darr[m]==n*13+m*o));
             }

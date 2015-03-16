@@ -29,7 +29,7 @@ public:
     //Chunk Management
     bool setUse ( memoryID id );
     bool unsetUse ( memoryID id );
-    bool setUse ( managedMemoryChunk &chunk );
+    bool setUse ( managedMemoryChunk& chunk, bool writeAccess );
     bool unsetUse ( managedMemoryChunk &chunk );
 
     //Tree Management

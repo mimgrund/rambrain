@@ -270,7 +270,10 @@ void cyclicManagedMemory::printCycle()
         case MEM_SWAPPED:
             status[0] = 'S';
             break;
-        case MEM_ALLOCATED_INUSE:
+        case MEM_ALLOCATED_INUSE_WRITE:
+            status[0] = 'W';
+            break;
+        case MEM_ALLOCATED_INUSE_READ:
             status[0] = 'U';
             break;
         case MEM_ROOT:

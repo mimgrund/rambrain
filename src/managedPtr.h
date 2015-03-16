@@ -13,7 +13,7 @@ public:
         //Now call constructor and save possible children's sake:
         memoryID savedParent = managedMemory::parent;
         managedMemory::parent = chunk->id;
-        setUse();
+        setUse(true);
         for ( unsigned int n = 0; n<n_elem; n++ ) {
             new ( ( ( T* ) chunk->locPtr ) +n ) T();
         }
@@ -21,8 +21,8 @@ public:
         managedMemory::parent = savedParent;
     };
 
-    bool setUse() {
-        return managedMemory::defaultManager->setUse ( *chunk );
+    bool setUse(bool writable=true) {
+        return managedMemory::defaultManager->setUse ( *chunk , writable);
     }
     bool unsetUse() {
         return managedMemory::defaultManager->unsetUse ( *chunk );
@@ -35,12 +35,23 @@ public:
         managedMemory::defaultManager->mfree ( chunk->id );
 
     }
+
+    //TODO: Make managedPtr copyable (smart pointify...)
 private:
     managedMemoryChunk *chunk;
     unsigned int n_elem;
 
     T* getLocPtr() {
-        if ( chunk->status==MEM_ALLOCATED_INUSE ) {
+        if ( chunk->status&MEM_ALLOCATED_INUSE_WRITE ) {
+            return ( T* ) chunk->locPtr;
+        } else {
+            errmsg ( "You have to sign Usage of the data first" );
+            return NULL;
+        }
+    };
+
+    const T* getConstLocPtr() {
+        if ( chunk->status&MEM_ALLOCATED_INUSE_READ ) {
             return ( T* ) chunk->locPtr;
         } else {
             errmsg ( "You have to sign Usage of the data first" );
@@ -60,13 +71,16 @@ public:
     adhereTo ( managedPtr<T> &data, bool loadImidiately=false ) {
         this->data = &data;
         if ( loadImidiately ) {
-            loaded =data.setUse();
-
+            loaded =data.setUse(true);
         }
     };
     operator  T*() {
-        loaded = data->setUse();
+        loaded = data->setUse(true);
         return data->getLocPtr();
+    };
+    operator  const T*() {
+        loaded = data->setUse(false);
+        return data->getConstLocPtr();
     };
     ~adhereTo() {
         if(loaded)
@@ -87,4 +101,4 @@ private:
 
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+

@@ -1,10 +1,13 @@
 #ifndef MANAGEDMEMORYCHUNK_H
 #define MANAGEDMEMORYCHUNK_H
 
-enum memoryStatus {MEM_ALLOCATED_INUSE,
-                   MEM_ALLOCATED,
-                   MEM_SWAPPED,
-                   MEM_ROOT
+
+//memoryStatus&&MEM_ALLOCATED_INUSE_READ should return one for MEM_ALLOCATED_INUSE_WRITE, too.
+enum memoryStatus {MEM_ROOT=0,
+                   MEM_ALLOCATED_INUSE_READ=1,
+                   MEM_ALLOCATED_INUSE_WRITE=3,
+                   MEM_ALLOCATED=4,
+                   MEM_SWAPPED=8
                   };
 
 typedef unsigned int memoryID;

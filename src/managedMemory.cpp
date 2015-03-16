@@ -106,14 +106,17 @@ bool managedMemory::swapIn ( memoryID id )
     return swapIn ( chunk );
 }
 
-bool managedMemory::setUse ( managedMemoryChunk& chunk )
+bool managedMemory::setUse ( managedMemoryChunk& chunk, bool writeAccess=false )
 {
     switch ( chunk.status ) {
-    case MEM_ALLOCATED_INUSE:
+    case MEM_ALLOCATED_INUSE_WRITE:
+        chunk.status = MEM_ALLOCATED_INUSE_WRITE;
+    case MEM_ALLOCATED_INUSE_READ:
 #ifdef SWAPSTATS
         ++swap_hits;
 #endif
         ++chunk.useCnt;
+
         touch ( chunk );
         return true;
 
@@ -121,7 +124,7 @@ bool managedMemory::setUse ( managedMemoryChunk& chunk )
 #ifdef SWAPSTATS
         ++swap_hits;
 #endif
-        chunk.status = MEM_ALLOCATED_INUSE;
+        chunk.status = writeAccess?MEM_ALLOCATED_INUSE_WRITE:MEM_ALLOCATED_INUSE_READ;
         chunk.useCnt = 1;
         touch ( chunk );
         return true;
@@ -181,9 +184,9 @@ bool managedMemory::setUse ( memoryID id )
 
 bool managedMemory::unsetUse ( managedMemoryChunk& chunk )
 {
-    if ( chunk.status==MEM_ALLOCATED_INUSE ) {
+    if ( chunk.status&MEM_ALLOCATED_INUSE_READ) {
 
-        chunk.status = ( --chunk.useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE );
+        chunk.status = ( --chunk.useCnt == 0 ? MEM_ALLOCATED : chunk.status );
         return true;
     } else {
         throw;
@@ -194,7 +197,7 @@ bool managedMemory::unsetUse ( managedMemoryChunk& chunk )
 void managedMemory::mfree ( memoryID id )
 {
     managedMemoryChunk * chunk = memChunks[id];
-    if ( chunk->status==MEM_ALLOCATED_INUSE ) {
+    if ( chunk->status&MEM_ALLOCATED_INUSE_READ ) {
         errmsg ( "Trying to free memory that is in use." );
         return;
     }
@@ -298,8 +301,11 @@ void managedMemory::printTree ( managedMemoryChunk *current,unsigned int nspaces
         case MEM_ALLOCATED:
             printf ( "Allocated" );
             break;
-        case MEM_ALLOCATED_INUSE:
-            printf ( "Allocated&inUse" );
+        case MEM_ALLOCATED_INUSE_WRITE:
+            printf ( "Allocated&inUse (writable)" );
+            break;
+        case MEM_ALLOCATED_INUSE_READ:
+            printf ( "Allocated&inUse (readonly)" );
             break;
         }
         printf ( ")\n" );
