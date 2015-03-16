@@ -13,8 +13,9 @@ bool managedDummySwap::swapOut ( managedMemoryChunk* chunk )
     void *buf = malloc(chunk->size);
     if(buf) {
         chunk->swapBuf = buf;
-        memcpy(buf,chunk->locPtr,chunk->size);
+        memcpy(chunk->swapBuf,chunk->locPtr,chunk->size);
         free(chunk->locPtr);
+        chunk->locPtr = NULL; // not strictly required.
         chunk->status = MEM_SWAPPED;
         swapUsed += chunk->size;
         return true;
@@ -37,8 +38,9 @@ bool managedDummySwap::swapIn ( managedMemoryChunk* chunk )
     void *buf = malloc(chunk->size);
     if(buf) {
         chunk->locPtr = buf;
-        memcpy(chunk->locPtr,buf,chunk->size);
+        memcpy(chunk->locPtr,chunk->swapBuf,chunk->size);
         free(chunk->swapBuf);
+        chunk->swapBuf = NULL; // Not strictly required
         chunk->status = MEM_ALLOCATED;
         swapUsed -= chunk->size;
         return true;

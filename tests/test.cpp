@@ -21,7 +21,6 @@ TEST ( cyclicManagedMemory,AllocatePointers )
 
     //Try to rad from it
     adhereTo<double> gPtrI ( gPtr );
-
     double * lPtr = gPtrI;
 
     ASSERT_TRUE ( lPtr!=NULL );
@@ -53,7 +52,7 @@ void A::test()
     testelements[0]=3;
 }
 
-TEST ( BasicManagement,DeepAllocatePointers )
+TEST ( cyclicManagedMemory,DeepAllocatePointers )
 {
     //Allocate Dummy swap
     managedDummySwap swap(100);
@@ -70,9 +69,9 @@ TEST ( BasicManagement,DeepAllocatePointers )
     adhereTo<double> adhTestelements = locA->testelements;
     double * testelements = adhTestelements;
     ASSERT_TRUE ( testelements!=NULL );
+    ASSERT_TRUE(manager.checkCycle());
 
     locA->test();
-
 
     EXPECT_TRUE ( manager.getNumberOfChildren ( managedMemory::root ) ==1 );
     EXPECT_TRUE ( manager.getNumberOfChildren ( 2 ) ==2 );
@@ -81,10 +80,136 @@ TEST ( BasicManagement,DeepAllocatePointers )
 
         EXPECT_TRUE ( manager.getNumberOfChildren ( managedMemory::root ) ==2 );
         EXPECT_TRUE ( manager.getUsedMemory() ==2*16+2*80+10*4 );
-        manager.printTree();
     }
     EXPECT_TRUE ( manager.getUsedMemory() ==2*16+2*80 );
-    manager.printTree();
+
 };
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+TEST ( cyclicManagedMemory, arrayAccess )
+{
+    const  int memsize=10240;
+    const int allocarrn = 4000;
+    //Allocate Dummy swap
+    managedDummySwap swap(memsize*10);
+    //Allocate Manager
+    cyclicManagedMemory manager ( &swap, memsize);
+
+    managedPtr<double> *ptrs[allocarrn];
+    for(int n=0; n<allocarrn; n++) {
+        ptrs[n] = new managedPtr<double>(10);
+        ASSERT_TRUE(manager.checkCycle());
+    }
+
+    ASSERT_TRUE(manager.checkCycle());
+    for(int o=0; o<100; o++) {
+        ASSERT_TRUE(manager.checkCycle());
+        //Write fun to tree, but require swapping:
+        for(int n=0; n<allocarrn; n++) {
+            ASSERT_TRUE(manager.checkCycle());
+            adhereTo<double> aLoc(*ptrs[n]);
+            double *darr = aLoc;
+            for(int m=0; m<10; m++) {
+                darr[m] = n*13+m*o;
+            }
+        }
+        //Now check equality:
+        for(int n=0; n<allocarrn; n++) {
+            adhereTo<double> aLoc(*ptrs[n]);
+            double *darr = aLoc;
+            for(int m=0; m<10; m++) {
+                EXPECT_EQ(darr[m],n*13+m*o);
+            }
+        }
+    }
+#ifdef SWAPSTATS
+    manager.printSwapstats();
+#endif
+
+    for(int n=0; n<allocarrn; n++) {
+        delete ptrs[n];
+    }
+
+};
+
+//#define SWAPSTATSLONG
+
+TEST ( cyclicManagedMemory, ramdomArrayAccess )
+{
+    const  int memsize=10240;
+    const  int allocarrn = 4000;
+
+    //Allocate Dummy swap
+    managedDummySwap swap(10*memsize);
+    //Allocate Manager
+    cyclicManagedMemory manager ( &swap, memsize);
+
+    managedPtr<double> *ptrs[allocarrn];
+    for(int n=0; n<allocarrn; ++n) {
+        ptrs[n] = new managedPtr<double>(10);
+        adhereTo<double> aLoc(*ptrs[n]);
+        double *darr = aLoc;
+        for(int m=0; m<10; ++m) {
+            darr[m] = -1;
+        }
+        ASSERT_TRUE(manager.checkCycle());
+#ifdef SWAPSTATSLONG
+        manager.printMemUsage();
+#endif
+    }
+
+    ASSERT_TRUE(manager.checkCycle());
+    for(int o=0; o<100; ++o) {
+        ASSERT_TRUE(manager.checkCycle());
+        //Write fun to tree, but require swapping:
+        for(int n=0; n<allocarrn; ++n) {
+            unsigned int randomi = random()*allocarrn/RAND_MAX;
+            adhereTo<double> aLoc(*ptrs[randomi]);
+
+            ASSERT_TRUE(manager.checkCycle());
+
+            double *darr = aLoc;
+            for(int m=0; m<10; m++) {
+                darr[m] = randomi*13+m*o;
+            }
+#ifdef SWAPSTATSLONG
+            manager.printMemUsage();
+#endif
+        }
+        //Now check equality:
+        for(int n=0; n<allocarrn; n++) {
+            adhereTo<double> aLoc(*ptrs[n]);
+            double *darr = aLoc;
+            for(int m=0; m<10; ++m) {
+                EXPECT_TRUE(darr[m]==-1||(darr[m]==n*13+m*o));
+            }
+#ifdef SWAPSTATSLONG
+            manager.printMemUsage();
+#endif
+        }
+        //reset numbers again:
+        for(int n=0; n<allocarrn; ++n) {
+            adhereTo<double> aLoc(*ptrs[n]);
+            double *darr = aLoc;
+            for(int m=0; m<10; ++m) {
+                darr[m] = -1;
+            }
+#ifdef SWAPSTATSLONG
+            manager.printMemUsage();
+#endif
+        }
+
+    }
+#ifdef SWAPSTATS
+    manager.printSwapstats();
+#endif
+
+    for(int n=0; n<allocarrn; n++) {
+        delete ptrs[n];
+#ifdef SWAPSTATSLONG
+        manager.printMemUsage();
+#endif
+    }
+
+};
+
+

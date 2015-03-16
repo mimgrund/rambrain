@@ -16,6 +16,13 @@ class cyclicManagedMemory : public managedMemory
 {
 public:
     cyclicManagedMemory ( managedSwap* swap, unsigned int size );
+    void printCycle();
+    void printMemUsage();
+    bool checkCycle();
+    //Returns old value:
+    bool setPreemptiveLoading(bool preemptive);
+
+
 private:
     virtual bool swapIn ( managedMemoryChunk& chunk );
     virtual bool swapOut ( unsigned int min_size );
@@ -26,12 +33,17 @@ private:
     //loop pointers:
     cyclicAtime *active=NULL;
     cyclicAtime *counterActive=NULL;
-    memoryAtime counterAtime;
     unsigned int diff=0;
 
-    double swapOutFrac = .8;
-    double swapInFrac = .9;
+    float swapOutFrac = .8;
+    float swapInFrac = .9;
+
+    bool preemtiveSwapIn=true;//TODO: Change strategy dynamically.
+    unsigned int preemptiveBytes = 0;
+
 };
+
+#define MUTUAL_CONNECT(A,B) A->next = B; B->prev = A;
 
 
 /*Philosophy:

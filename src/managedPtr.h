@@ -60,18 +60,21 @@ public:
     adhereTo ( managedPtr<T> &data, bool loadImidiately=false ) {
         this->data = &data;
         if ( loadImidiately ) {
-            data.setUse();
+            loaded =data.setUse();
+
         }
     };
     operator  T*() {
-        data->setUse();
+        loaded = data->setUse();
         return data->getLocPtr();
     };
     ~adhereTo() {
-        data->unsetUse();
+        if(loaded)
+            data->unsetUse();
     };
 private:
     managedPtr<T> *data;
+    bool loaded=false;
 };
 
 
