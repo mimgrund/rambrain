@@ -1,9 +1,20 @@
 #include "managedMemory.h"
 #include "common.h"
 
+#include "dummyManagedMemory.h"
+
+managedMemory* managedMemory::dummyManager = new dummyManagedMemory();
+managedMemory* managedMemory::defaultManager = managedMemory::dummyManager;
+memoryID const managedMemory::root=1;
+memoryID const managedMemory::invalid=0;
+memoryID managedMemory::parent=1;
+
 managedMemory::managedMemory (managedSwap *swap, unsigned int size  )
 {
     memory_max = size;
+    if (defaultManager != dummyManager) {
+        delete defaultManager;
+    }
     defaultManager = this;
     managedMemoryChunk *chunk = mmalloc ( 0 );                //Create root element.
     chunk->status = MEM_ROOT;
@@ -16,8 +27,8 @@ managedMemory::managedMemory (managedSwap *swap, unsigned int size  )
 
 managedMemory::~managedMemory()
 {
-    if ( defaultManager==this ) {
-        defaultManager=NULL;
+    if ( defaultManager==this) {
+        defaultManager = dummyManager;
     }
     //Clean up objects:
     recursiveMfree ( root );
@@ -257,10 +268,6 @@ void managedMemory::recursiveMfree ( memoryID id )
 }
 
 
-managedMemory* managedMemory::defaultManager=NULL;
-memoryID const managedMemory::root=1;
-memoryID const managedMemory::invalid=0;
-memoryID managedMemory::parent=1;
 
 
 unsigned int managedMemory::getNumberOfChildren ( const memoryID& id )

@@ -19,7 +19,7 @@ public:
         }
         unsetUse();
         managedMemory::parent = savedParent;
-    };
+    }
 
     bool setUse() {
         return managedMemory::defaultManager->setUse ( *chunk );
@@ -63,15 +63,15 @@ public:
             loaded =data.setUse();
 
         }
-    };
+    }
     operator  T*() {
         loaded = data->setUse();
         return data->getLocPtr();
-    };
+    }
     ~adhereTo() {
         if(loaded)
             data->unsetUse();
-    };
+    }
 private:
     managedPtr<T> *data;
     bool loaded=false;
@@ -87,4 +87,3 @@ private:
 
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

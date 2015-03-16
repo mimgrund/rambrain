@@ -3,6 +3,11 @@ cmake_minimum_required (VERSION 2.8)
 project (membrain)
 
 option (BUILD_TESTS "Build tests" ON)
+option (SWAPSTATS "Swap stats" ON)
+
+if(SWAPSTATS)
+    add_definitions(-DSWAPSTATS)
+endif()
 
 find_package (Threads REQUIRED)
 if (NOT CMAKE_USE_PTHREADS_INIT)
