@@ -44,6 +44,8 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk& chunk )
 
     if ( chunk.status==MEM_SWAPPED ) {
         memory_swapped -= chunk.size;
+    } else if(counterActive->chunk->atime>chunk.atime) { //preemptively loaded
+        preemptiveBytes-= chunk.size;
     }
     if(active==element)
         active=element->next;
@@ -102,6 +104,17 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
     return true;
 }
 
+bool cyclicManagedMemory::setPreemptiveLoading ( bool preemptive )
+{
+    bool old = preemtiveSwapIn;
+    preemtiveSwapIn = preemptive;
+    return old;
+}
+void cyclicManagedMemory::printMemUsage()
+{
+    fprintf(stderr,"%u\t%u\t%u\n",memory_used,memory_swapped,preemptiveBytes);
+}
+
 
 bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 {
@@ -112,12 +125,11 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
     unsigned int actual_obj_size=chunk.size;
     //We want to read in what the user requested plus fill up the preemptive area with opportune guesses
 
-//         fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
 
 
     if(preemtiveSwapIn) {
         unsigned int targetReadinVol = actual_obj_size + (swapInFrac -swapOutFrac)*memory_max-preemptiveBytes;
-
+        //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
         //Swap out if we want to read in more than what we thought:
         if(targetReadinVol+memory_used>memory_max) {
             unsigned int targetSwapoutVol = actual_obj_size + (1. -swapOutFrac)*memory_max-preemptiveBytes;

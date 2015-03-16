@@ -131,6 +131,8 @@ TEST ( cyclicManagedMemory, arrayAccess )
 
 };
 
+//#define SWAPSTATSLONG
+
 TEST ( cyclicManagedMemory, ramdomArrayAccess )
 {
     const  int memsize=10240;
@@ -150,6 +152,9 @@ TEST ( cyclicManagedMemory, ramdomArrayAccess )
             darr[m] = -1;
         }
         ASSERT_TRUE(manager.checkCycle());
+#ifdef SWAPSTATSLONG
+        manager.printMemUsage();
+#endif
     }
 
     ASSERT_TRUE(manager.checkCycle());
@@ -166,6 +171,9 @@ TEST ( cyclicManagedMemory, ramdomArrayAccess )
             for(int m=0; m<10; m++) {
                 darr[m] = randomi*13+m*o;
             }
+#ifdef SWAPSTATSLONG
+            manager.printMemUsage();
+#endif
         }
         //Now check equality:
         for(int n=0; n<allocarrn; n++) {
@@ -174,6 +182,9 @@ TEST ( cyclicManagedMemory, ramdomArrayAccess )
             for(int m=0; m<10; ++m) {
                 EXPECT_TRUE(darr[m]==-1||(darr[m]==n*13+m*o));
             }
+#ifdef SWAPSTATSLONG
+            manager.printMemUsage();
+#endif
         }
         //reset numbers again:
         for(int n=0; n<allocarrn; ++n) {
@@ -182,6 +193,9 @@ TEST ( cyclicManagedMemory, ramdomArrayAccess )
             for(int m=0; m<10; ++m) {
                 darr[m] = -1;
             }
+#ifdef SWAPSTATSLONG
+            manager.printMemUsage();
+#endif
         }
 
     }
@@ -191,6 +205,9 @@ TEST ( cyclicManagedMemory, ramdomArrayAccess )
 
     for(int n=0; n<allocarrn; n++) {
         delete ptrs[n];
+#ifdef SWAPSTATSLONG
+        manager.printMemUsage();
+#endif
     }
 
 };

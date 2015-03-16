@@ -208,8 +208,9 @@ void managedMemory::mfree ( memoryID id )
             schedulerDelete ( *chunk );
         if ( chunk->status==MEM_ALLOCATED ) {
             free ( chunk->locPtr );
+            memory_used-= chunk->size;
         }
-        memory_used-= chunk->size;
+
         //get rid of hierarchy:
         if ( chunk->id!=root ) {
             managedMemoryChunk* pchunk = &resolveMemChunk ( chunk->parent );

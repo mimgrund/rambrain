@@ -17,7 +17,12 @@ class cyclicManagedMemory : public managedMemory
 public:
     cyclicManagedMemory ( managedSwap* swap, unsigned int size );
     void printCycle();
+    void printMemUsage();
     bool checkCycle();
+    //Returns old value:
+    bool setPreemptiveLoading(bool preemptive);
+
+
 private:
     virtual bool swapIn ( managedMemoryChunk& chunk );
     virtual bool swapOut ( unsigned int min_size );
