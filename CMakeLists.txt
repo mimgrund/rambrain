@@ -1,8 +1,13 @@
-lkcmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 2.8)
 
 project (membrain)
 
 option (BUILD_TESTS "Build tests" ON)
+
+find_package (Threads REQUIRED)
+if (NOT CMAKE_USE_PTHREADS_INIT)
+        error ("Could NOT find pthreads.")
+endif ()
 
 set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 set (LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)

@@ -3,4 +3,4 @@ file (GLOB SOURCES
 )
 
 add_library (membrain ${SOURCES})
-install (TARGETS hplotlib DESTINATION lib)
+install (TARGETS membrain DESTINATION lib)
