@@ -4,7 +4,7 @@
 
 TEST(managedMemory, DefaultManagerPresent)
 {
-    ASSERT_TRUE(managedMemory::defaultManager != NULL);
+    EXPECT_TRUE(managedMemory::defaultManager != NULL);
 }
 
 TEST(managedMemory, DefaultManagerPresentAfterAllocation)
@@ -14,6 +14,15 @@ TEST(managedMemory, DefaultManagerPresentAfterAllocation)
 
     delete mm;
 
-    ASSERT_TRUE(managedMemory::defaultManager != NULL);
+    EXPECT_TRUE(managedMemory::defaultManager != NULL);
 }
 
+TEST(managedMemory, BaseMemoryUsage)
+{
+    unsigned int mem = 1000u;
+    managedMemory::defaultManager->setMemoryLimit(mem);
+
+    EXPECT_EQ(mem, managedMemory::defaultManager->getMemoryLimit());
+    EXPECT_EQ(0u, managedMemory::defaultManager->getUsedMemory());
+    EXPECT_EQ(0u, managedMemory::defaultManager->getSwappedMemory());
+}

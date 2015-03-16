@@ -19,7 +19,7 @@ public:
 
     //Memory Management options
     bool setMemoryLimit ( unsigned int size );
-    unsigned int getMemoryLimit ( unsigned int size ) const;
+    unsigned int getMemoryLimit () const;
     unsigned int getUsedMemory() const;
     unsigned int getSwappedMemory() const;
 

@@ -35,7 +35,7 @@ managedMemory::~managedMemory()
 }
 
 
-unsigned int managedMemory::getMemoryLimit ( unsigned int size ) const
+unsigned int managedMemory::getMemoryLimit () const
 {
     return memory_max;
 }

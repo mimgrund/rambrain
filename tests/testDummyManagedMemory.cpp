@@ -7,7 +7,7 @@ TEST(dummyManagedMemory, ThrowsExceptions)
     dummyManagedMemory mgr;
 
     EXPECT_THROW(mgr.setMemoryLimit(0), dummyObjectException);
-    EXPECT_THROW(mgr.getMemoryLimit(0), dummyObjectException);
+    EXPECT_THROW(mgr.getMemoryLimit(), dummyObjectException);
     EXPECT_THROW(mgr.getUsedMemory(), dummyObjectException);
     EXPECT_THROW(mgr.getSwappedMemory(), dummyObjectException);
 
