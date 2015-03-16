@@ -11,4 +11,4 @@ file(GLOB TEST_SOURCES
 )
 
 add_executable (membrain-tests ${TEST_SOURCES})
-target_link_libraries (membrain-tests gmock gtest membrain)
+target_link_libraries (membrain-tests gmock gtest pthread membrain)
