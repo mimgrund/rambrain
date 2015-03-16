@@ -12,6 +12,6 @@ file(GLOB TEST_SOURCES
 
 add_executable (membrain-tests ${TEST_SOURCES})
 
-add_custom_command(TARGET membrain-tests PRE_BUILD COMMAND ./gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+add_custom_command(TARGET membrain-tests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 target_link_libraries (membrain-tests gmock gtest pthread membrain)
