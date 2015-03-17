@@ -67,5 +67,8 @@ void managedDummySwap::swapDelete ( managedMemoryChunk* chunk )
 }
 
 
-
+unsigned int managedDummySwap::getUsedSwap()
+{
+    return swapUsed;
+}
 

@@ -34,15 +34,20 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk& chunk )
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
 
     //Hook out element:
-    if ( element->next==element->prev ) {
+    if ( element->next==element ) {
         active = NULL;
         counterActive=NULL;
         return;
 
     }
-    element->next->prev = element->prev;
-    element->prev->next = element->next;
 
+    if ( element->next == element->prev ) {
+        cyclicAtime *remaining = element->next;
+        remaining->next = remaining->prev = remaining;
+    } else {
+        element->next->prev = element->prev;
+        element->prev->next = element->next;
+    }
     if ( chunk.status==MEM_SWAPPED ) {
         memory_swapped -= chunk.size;
     } else if ( counterActive->chunk->atime>chunk.atime ) { //preemptively loaded
@@ -113,7 +118,8 @@ bool cyclicManagedMemory::setPreemptiveLoading ( bool preemptive )
 }
 void cyclicManagedMemory::printMemUsage()
 {
-    fprintf ( stderr,"%u\t%u\t%u\n",memory_used,memory_swapped,preemptiveBytes );
+    unsigned int claimed_use = swap->getUsedSwap();
+    fprintf ( stderr,"%u\t%u=%u\t%u\n",memory_used,claimed_use,memory_swapped,preemptiveBytes );
 }
 
 
@@ -134,8 +140,17 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
         //Swap out if we want to read in more than what we thought:
         if ( targetReadinVol+memory_used>memory_max ) {
             unsigned int targetSwapoutVol = actual_obj_size + ( 1. -swapOutFrac ) *memory_max-preemptiveBytes;
-            //         fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,targetSwapoutVol);
-            swapOut ( targetSwapoutVol );
+
+            if ( !swapOut ( targetSwapoutVol ) ) {
+                if ( memory_used+actual_obj_size>memory_max ) {
+                    if ( swapOut ( memory_used+actual_obj_size-memory_max ) )
+                        targetReadinVol = actual_obj_size;
+                    else
+                        Throw ( memoryException ( "Out of Memory." ) );
+                } else
+                    targetReadinVol = actual_obj_size;
+            }
+
 
         }
         cyclicAtime *readEl = ( cyclicAtime * ) chunk.schedBuf;
@@ -144,10 +159,14 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
         unsigned int selectedReadinVol = 0;
         unsigned int numberSelected = 0;
         do {
+            if ( selectedReadinVol+cur->chunk->size>targetReadinVol ) {
+                cur = cur->prev;
+                break;
+            }
             selectedReadinVol+=cur->chunk->size;
             cur = cur->prev;
             ++numberSelected;
-        } while ( selectedReadinVol+cur->chunk->size<targetReadinVol&&cur != oldBorder );
+        } while ( cur != oldBorder );
 
         managedMemoryChunk *chunks[numberSelected];
         unsigned int n=0;
@@ -156,8 +175,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
             readEl = readEl->prev;
         } while ( readEl!=cur );
         if ( !swap->swapIn ( chunks,numberSelected ) ) {
-            errmsg ( "managedSwap failed to swap in :-(" );
-            return false;//This should not happen, we do not have any strategy to handle this.
+            Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
 
         } else {
             cyclicAtime *beginSwapin = readEl->next;
@@ -212,6 +230,13 @@ bool cyclicManagedMemory::checkCycle()
     unsigned int encountered = 0;
     cyclicAtime *cur = active;
     cyclicAtime *oldcur;
+
+    if ( !cur ) {
+        if ( no_reg==0&&counterActive==NULL )
+            return true;
+        else
+            return false;
+    }
 
     bool inActiveOnlySection = true;
     bool inSwapsection = true;
@@ -414,6 +439,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         return false;
     }
 }
+
 
 
 
