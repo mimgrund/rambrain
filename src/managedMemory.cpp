@@ -52,6 +52,23 @@ unsigned int managedMemory::getSwappedMemory() const
 
 bool managedMemory::setMemoryLimit ( unsigned int size )
 {
+    if(size>memory_max) {
+        memory_max = size;
+        return true;
+    } else {
+        if(size<memory_used) {
+            //Try to swap out as much memory as needed:
+            unsigned int tobefreed = (memory_used-size);
+            if(!swapOut(tobefreed))
+                return false;
+            memory_max = size;
+            swapOut(0); // Swap out further to adapt to new memory limits. This must not necessarily succeed.
+            return true;
+        } else {
+            memory_max = size;
+            return true;
+        }
+    }
     return false;                                             //Resetting this is not implemented yet.
 }
 
