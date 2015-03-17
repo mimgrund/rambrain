@@ -11,3 +11,4 @@ managedPtr.o
 libmembrain.so.1.0
 git_info.h
 *.*~
+CMakeLists.txt.user

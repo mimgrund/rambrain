@@ -16,6 +16,8 @@ class cyclicManagedMemory : public managedMemory
 {
 public:
     cyclicManagedMemory ( managedSwap* swap, unsigned int size );
+    virtual ~cyclicManagedMemory() {}
+
     void printCycle();
     void printMemUsage();
     bool checkCycle();

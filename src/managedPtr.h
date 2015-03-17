@@ -19,7 +19,7 @@ public:
         }
         unsetUse();
         managedMemory::parent = savedParent;
-    };
+    }
 
     bool setUse(bool writable=true) {
         return managedMemory::defaultManager->setUse ( *chunk , writable);
@@ -73,7 +73,7 @@ public:
         if ( loadImidiately ) {
             loaded =data.setUse(true);
         }
-    };
+    }
     operator  T*() {
         loaded = data->setUse(true);
         return data->getLocPtr();
@@ -85,7 +85,7 @@ public:
     ~adhereTo() {
         if(loaded)
             data->unsetUse();
-    };
+    }
 private:
     managedPtr<T> *data;
     bool loaded=false;
@@ -101,4 +101,3 @@ private:
 
 
 #endif
-

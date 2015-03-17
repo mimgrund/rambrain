@@ -1,15 +1,22 @@
+#include <gtest/gtest.h>
 #include "cyclicManagedMemory.h"
 #include "managedPtr.h"
-#include <gtest/gtest.h>
 #include "managedDummySwap.h"
-int main ( int argc, char ** argv )
+
+//#define SWAPSTATSLONG
+
+class A
 {
-    ::testing::InitGoogleTest ( &argc,argv );
-    return RUN_ALL_TESTS();
+public:
+    managedPtr<double> testelements = managedPtr<double> ( 10 );
+    void test() {
+        ADHERETO ( double,testelements );
+        testelements[0]=3;
+    }
 };
 
 
-TEST ( cyclicManagedMemory,AllocatePointers )
+TEST ( cyclicManagedMemory, Unit_AllocatePointers )
 {
     //Allocate Dummy swap
     managedDummySwap swap(100);
@@ -32,27 +39,7 @@ TEST ( cyclicManagedMemory,AllocatePointers )
     }
 }
 
-
-
-
-class A
-{
-public:
-    managedPtr<double> testelements = managedPtr<double> ( 10 );
-    void test();
-};
-
-
-
-
-
-void A::test()
-{
-    ADHERETO ( double,testelements );
-    testelements[0]=3;
-}
-
-TEST ( cyclicManagedMemory,DeepAllocatePointers )
+TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
 {
     //Allocate Dummy swap
     managedDummySwap swap(100);
@@ -83,9 +70,9 @@ TEST ( cyclicManagedMemory,DeepAllocatePointers )
     }
     EXPECT_TRUE ( manager.getUsedMemory() ==2*16+2*80 );
 
-};
+}
 
-TEST ( cyclicManagedMemory, arrayAccess )
+TEST ( cyclicManagedMemory, Integration_ArrayAccess )
 {
     const  int memsize=10240;
     const int allocarrn = 4000;
@@ -129,11 +116,10 @@ TEST ( cyclicManagedMemory, arrayAccess )
         delete ptrs[n];
     }
 
-};
+}
 
-//#define SWAPSTATSLONG
 
-TEST ( cyclicManagedMemory, ramdomArrayAccess )
+TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
 {
     const  int memsize=10240;
     const  int allocarrn = 4000;
@@ -210,6 +196,4 @@ TEST ( cyclicManagedMemory, ramdomArrayAccess )
 #endif
     }
 
-};
-
-
+}
