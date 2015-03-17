@@ -32,7 +32,7 @@ public:
             ( ( ( T* ) chunk->locPtr ) +n )->~T();
         }
         managedMemory::defaultManager->mfree ( chunk->id );
-        managedMemory::defaultManager->noThrow = false;
+        managedMemory::defaultManager->noThrow = oldthrow;
     }
 
     bool setUse() {
@@ -98,5 +98,6 @@ private:
 
 
 #endif
+
 
 

@@ -146,7 +146,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
                     if ( swapOut ( memory_used+actual_obj_size-memory_max ) )
                         targetReadinVol = actual_obj_size;
                     else
-                        Throw ( memoryException ( "Out of Memory." ) );
+                        return Throw ( memoryException ( "Out of Memory." ) );
                 } else
                     targetReadinVol = actual_obj_size;
             }
@@ -175,7 +175,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
             readEl = readEl->prev;
         } while ( readEl!=cur );
         if ( !swap->swapIn ( chunks,numberSelected ) ) {
-            Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
+            return Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
 
         } else {
             cyclicAtime *beginSwapin = readEl->next;
@@ -215,7 +215,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
                 counterActive=counterActive->prev;
             return true;
         } else {
-            Throw ( memoryException ( "Could not swap in an element." ) );
+            return Throw ( memoryException ( "Could not swap in an element." ) );
         };
     }
 
@@ -358,7 +358,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
 
     bool swapSuccess = ( real_unloaded==unload ) ;
     if ( !swapSuccess ) {
-        Throw ( memoryException ( "Could not swap out all elements. Swap full?" ) );
+        return Throw ( memoryException ( "Could not swap out all elements. Swap full?" ) );
 
     }
     fromPos = counterActive;
@@ -439,6 +439,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         return false;
     }
 }
+
 
 
 

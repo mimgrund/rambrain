@@ -17,4 +17,5 @@ public:
     virtual unsigned int getUsedSwap();
 };
 
-#endiff
+#endif
+

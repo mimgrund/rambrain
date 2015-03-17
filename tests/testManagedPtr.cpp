@@ -8,8 +8,6 @@
 
 TEST ( managedPtr, Unit_NoMemoryManager )
 {
-    memoryID parent = managedMemory::defaultManager->parent;
-
     EXPECT_THROW ( managedPtr<double> ptr1 ( 10 ), memoryException );
 
     managedDummySwap swap ( 100 );
@@ -72,4 +70,5 @@ TEST ( managedPtr, Unit_DeleteWhileInUse )
     EXPECT_THROW(delete managedMemory, memoryException);*/
 
 }
+
 

@@ -72,7 +72,7 @@ protected:
 
     static managedMemory *dummyManager;
     static bool noThrow;
-    static void Throw ( memoryException e );
+    static bool Throw ( memoryException e );
 
 
     template<class T>
@@ -94,5 +94,6 @@ public:
 };
 
 #endif
+
 
 

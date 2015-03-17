@@ -99,6 +99,7 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
         chunk->locPtr = malloc ( sizereq );
         if ( !chunk->locPtr ) {
             Throw ( memoryException ( "Malloc failed" ) );
+            return NULL;
         }
     }
 
@@ -167,8 +168,7 @@ bool managedMemory::setUse ( managedMemoryChunk& chunk )
 
             return setUse ( chunk );
         } else {
-            errmsgf ( "Could not swap in a chunk of size %d",chunk.size );
-            Throw ( memoryException ( "Could not swap memory" ) );
+            return Throw ( memoryException ( "Could not swap memory" ) );
         }
 
     case MEM_ROOT:
@@ -218,16 +218,18 @@ bool managedMemory::unsetUse ( managedMemoryChunk& chunk )
         chunk.status = ( --chunk.useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE );
         return true;
     } else {
-        Throw ( memoryException ( "Can not unset use of not used memory" ) );
+        return Throw ( memoryException ( "Can not unset use of not used memory" ) );
     }
 }
 
-void managedMemory::Throw ( memoryException e )
+bool managedMemory::Throw ( memoryException e )
 {
-    if ( noThrow )
-        errmsg ( e.what() )
-        else
-            throw e;
+    if ( noThrow ) {
+        errmsg ( e.what() );
+        return false;
+    } else {
+        throw e;
+    }
 }
 
 
@@ -237,9 +239,11 @@ void managedMemory::mfree ( memoryID id )
     managedMemoryChunk * chunk = memChunks[id];
     if ( chunk->status==MEM_ALLOCATED_INUSE ) {
         Throw ( memoryException ( "Can not free memory which is in use" ) );
+        return;
     }
     if ( chunk->child!=invalid ) {
         Throw ( memoryException ( "Can not free memory which has active children" ) );
+        return;
     }
 
     if ( chunk ) {
@@ -383,5 +387,6 @@ void managedMemory::resetSwapstats()
 }
 
 #endif
+
 
 
