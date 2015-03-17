@@ -86,6 +86,10 @@ public:
 private:
     managedPtr<T> *data;
     bool loaded=false;
+
+    // Test classes
+    friend class adhereTo_Unit_LoadUnload_Test;
+    friend class adhereTo_Unit_TwiceAdhered_Test;
 };
 
 
@@ -98,6 +102,7 @@ private:
 
 
 #endif
+
 
 
 

@@ -3,8 +3,6 @@
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
 #include "exceptions.h"
-#include "cyclicManagedMemory.h"
-#include "managedDummySwap.h"
 
 TEST ( managedPtr, Unit_NoMemoryManager )
 {
@@ -70,5 +68,6 @@ TEST ( managedPtr, Unit_DeleteWhileInUse )
     EXPECT_THROW(delete managedMemory, memoryException);*/
 
 }
+
 
 
