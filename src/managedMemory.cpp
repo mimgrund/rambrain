@@ -9,10 +9,10 @@ memoryID const managedMemory::root=1;
 memoryID const managedMemory::invalid=0;
 memoryID managedMemory::parent=1;
 
-managedMemory::managedMemory (managedSwap *swap, unsigned int size  )
+managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
 {
     memory_max = size;
-    if (defaultManager != dummyManager) {
+    if ( defaultManager != dummyManager ) {
         //! \todo this is evil! What if it is allocated on the stack?
         delete defaultManager;
     }
@@ -20,16 +20,16 @@ managedMemory::managedMemory (managedSwap *swap, unsigned int size  )
     managedMemoryChunk *chunk = mmalloc ( 0 );                //Create root element.
     chunk->status = MEM_ROOT;
     this->swap = swap;
-    if(!swap) {
+    if ( !swap ) {
         //! \todo merge these together? or at least give possibility to suppress the errmsg, this  is annoying at least in tests; Not only here but in general
-        errmsg("You need to define a swap manager!");
-        throw incompleteSetupException("no swap manager defined");
+        errmsg ( "You need to define a swap manager!" );
+        throw incompleteSetupException ( "no swap manager defined" );
     }
 }
 
 managedMemory::~managedMemory()
 {
-    if ( defaultManager==this) {
+    if ( defaultManager==this ) {
         defaultManager = dummyManager;
     }
     //Clean up objects:
@@ -54,6 +54,23 @@ unsigned int managedMemory::getSwappedMemory() const
 
 bool managedMemory::setMemoryLimit ( unsigned int size )
 {
+    if ( size>memory_max ) {
+        memory_max = size;
+        return true;
+    } else {
+        if ( size<memory_used ) {
+            //Try to swap out as much memory as needed:
+            unsigned int tobefreed = ( memory_used-size );
+            if ( !swapOut ( tobefreed ) )
+                return false;
+            memory_max = size;
+            swapOut ( 0 ); // Swap out further to adapt to new memory limits. This must not necessarily succeed.
+            return true;
+        } else {
+            memory_max = size;
+            return true;
+        }
+    }
     return false;                                             //Resetting this is not implemented yet.
 }
 
@@ -62,7 +79,7 @@ void managedMemory::ensureEnoughSpaceFor ( unsigned int sizereq )
     if ( sizereq+memory_used>memory_max ) {
         if ( !swapOut ( sizereq ) ) {
             errmsgf ( "Could not swap out >%d Bytes\nOut of Memory.",sizereq );
-            throw memoryException("Could not swap memory");
+            throw memoryException ( "Could not swap memory" );
         }
     }
 }
@@ -70,16 +87,16 @@ void managedMemory::ensureEnoughSpaceFor ( unsigned int sizereq )
 
 managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
 {
-    ensureEnoughSpaceFor(sizereq);
+    ensureEnoughSpaceFor ( sizereq );
 
     //We are left with enough free space to malloc.
     managedMemoryChunk *chunk = new managedMemoryChunk ( parent,memID_pace++ );
     chunk->status = MEM_ALLOCATED;
-    if(sizereq!=0) {
+    if ( sizereq!=0 ) {
         chunk->locPtr = malloc ( sizereq );
         if ( !chunk->locPtr ) {
             errmsgf ( "Classical malloc on a size of %d failed.",sizereq );
-            throw memoryException("Malloc failed");
+            throw memoryException ( "Malloc failed" );
         }
     }
 
@@ -148,8 +165,8 @@ bool managedMemory::setUse ( managedMemoryChunk& chunk )
 
             return setUse ( chunk );
         } else {
-            errmsgf("Could not swap in a chunk of size %d",chunk.size);
-            throw memoryException("Could not swap memory");
+            errmsgf ( "Could not swap in a chunk of size %d",chunk.size );
+            throw memoryException ( "Could not swap memory" );
         }
 
     case MEM_ROOT:
@@ -199,7 +216,7 @@ bool managedMemory::unsetUse ( managedMemoryChunk& chunk )
         chunk.status = ( --chunk.useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE );
         return true;
     } else {
-        throw unexpectedStateException("Can not unset use of not used memory");
+        throw unexpectedStateException ( "Can not unset use of not used memory" );
     }
 }
 
@@ -218,7 +235,7 @@ void managedMemory::mfree ( memoryID id )
     }
 
     if ( chunk ) {
-        if(chunk->id!=root)
+        if ( chunk->id!=root )
             schedulerDelete ( *chunk );
         if ( chunk->status==MEM_ALLOCATED ) {
             free ( chunk->locPtr );
@@ -237,10 +254,10 @@ void managedMemory::mfree ( memoryID id )
                         pchunk->next = chunk->next;
                         break;
                     };
-                    if(pchunk->next==invalid)
+                    if ( pchunk->next==invalid )
                         break;
                     else
-                        pchunk = &resolveMemChunk(pchunk->next);
+                        pchunk = &resolveMemChunk ( pchunk->next );
                 } while ( 1==1 );
             }
         }
@@ -340,13 +357,13 @@ managedMemoryChunk& managedMemory::resolveMemChunk ( const memoryID& id )
 #ifdef SWAPSTATS
 void managedMemory::printSwapstats()
 {
-    infomsgf("A total of %d swapouts occured, writing out %d bytes (%.3e Bytes/avg)\
+    infomsgf ( "A total of %d swapouts occured, writing out %d bytes (%.3e Bytes/avg)\
           \n\tA total of %d swapins occured, reading in %d bytes (%.3e Bytes/avg)\
           \n\twe used already loaded elements %d times, %d had to be fetched\
           \n\tthus, the hits over misses rate was %.5f\
           \n\tfraction of swapped out ram (currently) %.2e",n_swap_out,swap_out_bytes,\
-             ((float)swap_out_bytes)/n_swap_out,n_swap_in,swap_in_bytes,((float)swap_in_bytes)/n_swap_in,\
-             swap_hits,swap_misses, ((float)swap_hits/swap_misses),((float)memory_swapped)/(memory_used+memory_swapped));
+               ( ( float ) swap_out_bytes ) /n_swap_out,n_swap_in,swap_in_bytes, ( ( float ) swap_in_bytes ) /n_swap_in,\
+               swap_hits,swap_misses, ( ( float ) swap_hits/swap_misses ), ( ( float ) memory_swapped ) / ( memory_used+memory_swapped ) );
 }
 
 void managedMemory::resetSwapstats()
