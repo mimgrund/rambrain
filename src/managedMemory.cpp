@@ -78,7 +78,6 @@ void managedMemory::ensureEnoughSpaceFor ( unsigned int sizereq )
 {
     if ( sizereq+memory_used>memory_max ) {
         if ( !swapOut ( sizereq ) ) {
-            errmsgf ( "Could not swap out >%d Bytes\nOut of Memory.",sizereq );
             throw memoryException ( "Could not swap memory" );
         }
     }
@@ -95,7 +94,6 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
     if ( sizereq!=0 ) {
         chunk->locPtr = malloc ( sizereq );
         if ( !chunk->locPtr ) {
-            errmsgf ( "Classical malloc on a size of %d failed.",sizereq );
             throw memoryException ( "Malloc failed" );
         }
     }
@@ -225,13 +223,10 @@ void managedMemory::mfree ( memoryID id )
 {
     managedMemoryChunk * chunk = memChunks[id];
     if ( chunk->status==MEM_ALLOCATED_INUSE ) {
-        errmsg ( "Trying to free memory that is in use." );
-        throw memoryException("Can not free memory which is in use");
+        throw memoryException ( "Can not free memory which is in use" );
     }
     if ( chunk->child!=invalid ) {
-        errmsg ( "Trying to free memory that has still alive children." );
-        throw memoryException("Can not free memory which has active children");
-        return;
+        throw memoryException ( "Can not free memory which has active children" );
     }
 
     if ( chunk ) {
@@ -372,3 +367,4 @@ void managedMemory::resetSwapstats()
 }
 
 #endif
+

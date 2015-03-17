@@ -1,7 +1,8 @@
 #include "cyclicManagedMemory.h"
 #include "common.h"
+#include "exceptions.h"
 
-cyclicManagedMemory::cyclicManagedMemory (managedSwap *swap, unsigned int size) : managedMemory ( swap,size )
+cyclicManagedMemory::cyclicManagedMemory ( managedSwap *swap, unsigned int size ) : managedMemory ( swap,size )
 {
 
 }
@@ -20,8 +21,8 @@ void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk& chunk )
     } else { //We're inserting somewhen.
         cyclicAtime *before = active->prev;
         cyclicAtime *after = active;
-        MUTUAL_CONNECT(before,neu);
-        MUTUAL_CONNECT(neu,after);
+        MUTUAL_CONNECT ( before,neu );
+        MUTUAL_CONNECT ( neu,after );
     }
     active = neu;
 }
@@ -44,13 +45,13 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk& chunk )
 
     if ( chunk.status==MEM_SWAPPED ) {
         memory_swapped -= chunk.size;
-    } else if(counterActive->chunk->atime>chunk.atime) { //preemptively loaded
+    } else if ( counterActive->chunk->atime>chunk.atime ) { //preemptively loaded
         preemptiveBytes-= chunk.size;
     }
-    if(active==element)
+    if ( active==element )
         active=element->next;
 
-    if(counterActive==element)
+    if ( counterActive==element )
         counterActive=element->prev;
 
     delete element;
@@ -58,34 +59,34 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk& chunk )
 //Touch happens automatically after use, create, swapIn
 bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
 {
-    if(counterActive->chunk->atime>chunk.atime)//This chunk was preemptively loaded
+    if ( counterActive->chunk->atime>chunk.atime ) //This chunk was preemptively loaded
         preemptiveBytes-=chunk.size;
 
 
     //Put this object to begin of loop:
-    cyclicAtime *element = (cyclicAtime *)chunk.schedBuf;
+    cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
 
-    if(counterActive==element)
+    if ( counterActive==element )
         counterActive=counterActive->prev;
 
-    if(active==element)
+    if ( active==element )
         return true;
 
     chunk.atime = atime++; //increase atime only if we accessed a different element in between
 
-    if(active->prev == element) {
+    if ( active->prev == element ) {
         active = element;
         return true;
     };
 
 
 
-    if(active->next == element) {
+    if ( active->next == element ) {
         cyclicAtime *before = active->prev;
         cyclicAtime *after = element->next;
-        MUTUAL_CONNECT(before,element);
-        MUTUAL_CONNECT(element,active);
-        MUTUAL_CONNECT(active,after);
+        MUTUAL_CONNECT ( before,element );
+        MUTUAL_CONNECT ( element,active );
+        MUTUAL_CONNECT ( active,after );
         active = element;
         return true;
     }
@@ -97,9 +98,9 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
     cyclicAtime *before = active->prev;
     cyclicAtime *after = active;
 
-    MUTUAL_CONNECT(oldplace_before,oldplace_after);
-    MUTUAL_CONNECT(before,element);
-    MUTUAL_CONNECT(element,after);
+    MUTUAL_CONNECT ( oldplace_before,oldplace_after );
+    MUTUAL_CONNECT ( before,element );
+    MUTUAL_CONNECT ( element,after );
     active = element;
     return true;
 }
@@ -112,7 +113,7 @@ bool cyclicManagedMemory::setPreemptiveLoading ( bool preemptive )
 }
 void cyclicManagedMemory::printMemUsage()
 {
-    fprintf(stderr,"%u\t%u\t%u\n",memory_used,memory_swapped,preemptiveBytes);
+    fprintf ( stderr,"%u\t%u\t%u\n",memory_used,memory_swapped,preemptiveBytes );
 }
 
 
@@ -127,17 +128,17 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 
 
 
-    if(preemtiveSwapIn) {
-        unsigned int targetReadinVol = actual_obj_size + (swapInFrac -swapOutFrac)*memory_max-preemptiveBytes;
+    if ( preemtiveSwapIn ) {
+        unsigned int targetReadinVol = actual_obj_size + ( swapInFrac -swapOutFrac ) *memory_max-preemptiveBytes;
         //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
         //Swap out if we want to read in more than what we thought:
-        if(targetReadinVol+memory_used>memory_max) {
-            unsigned int targetSwapoutVol = actual_obj_size + (1. -swapOutFrac)*memory_max-preemptiveBytes;
+        if ( targetReadinVol+memory_used>memory_max ) {
+            unsigned int targetSwapoutVol = actual_obj_size + ( 1. -swapOutFrac ) *memory_max-preemptiveBytes;
             //         fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,targetSwapoutVol);
-            swapOut(targetSwapoutVol);
+            swapOut ( targetSwapoutVol );
 
         }
-        cyclicAtime *readEl = (cyclicAtime *) chunk.schedBuf;
+        cyclicAtime *readEl = ( cyclicAtime * ) chunk.schedBuf;
         cyclicAtime *cur = readEl;
         cyclicAtime *endSwapin = readEl;
         unsigned int selectedReadinVol = 0;
@@ -146,28 +147,28 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
             selectedReadinVol+=cur->chunk->size;
             cur = cur->prev;
             ++numberSelected;
-        } while(selectedReadinVol+cur->chunk->size<targetReadinVol&&cur != oldBorder);
+        } while ( selectedReadinVol+cur->chunk->size<targetReadinVol&&cur != oldBorder );
 
         managedMemoryChunk *chunks[numberSelected];
         unsigned int n=0;
         do {
             chunks[n++] = readEl->chunk;
             readEl = readEl->prev;
-        } while(readEl!=cur);
-        if(!swap->swapIn(chunks,numberSelected)) {
-            errmsg("managedSwap failed to swap in :-(");
+        } while ( readEl!=cur );
+        if ( !swap->swapIn ( chunks,numberSelected ) ) {
+            errmsg ( "managedSwap failed to swap in :-(" );
             return false;//This should not happen, we do not have any strategy to handle this.
 
         } else {
             cyclicAtime *beginSwapin = readEl->next;
             cyclicAtime *oldafter = endSwapin->next;
-            if(oldafter!=active) {
+            if ( oldafter!=active ) {
                 //TODO: Implement this for <3 elements
                 cyclicAtime *oldbefore = readEl;
                 cyclicAtime *before = active->prev;
-                MUTUAL_CONNECT(oldbefore,oldafter);
-                MUTUAL_CONNECT(endSwapin,active);
-                MUTUAL_CONNECT(before,beginSwapin);
+                MUTUAL_CONNECT ( oldbefore,oldafter );
+                MUTUAL_CONNECT ( endSwapin,active );
+                MUTUAL_CONNECT ( before,beginSwapin );
             }
             active = endSwapin;
 
@@ -184,19 +185,19 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
             return true;
         }
     } else {
-        ensureEnoughSpaceFor(actual_obj_size);
-        if(swap->swapIn(&chunk)) {
+        ensureEnoughSpaceFor ( actual_obj_size );
+        if ( swap->swapIn ( &chunk ) ) {
             memory_used+= chunk.size;
             memory_swapped-= chunk.size;
 #ifdef SWAPSTATS
             swap_in_bytes+= chunk.size;
             n_swap_in+=1;
 #endif
-            if(chunk.schedBuf==counterActive)
+            if ( chunk.schedBuf==counterActive )
                 counterActive=counterActive->prev;
             return true;
         } else {
-            return false;
+            throw memoryException ( "Could not swap in an element." );
         };
     }
 
@@ -218,32 +219,32 @@ bool cyclicManagedMemory::checkCycle()
         ++encountered;
         oldcur = cur;
         cur = cur->next;
-        if(oldcur!=cur->prev) {
-            errmsg("Mutual connecion failure");
+        if ( oldcur!=cur->prev ) {
+            errmsg ( "Mutual connecion failure" );
             return false;
         }
 
-        if(inActiveOnlySection) {
-            if(oldcur->chunk->status==MEM_SWAPPED) {
-                errmsg("Swapped elements in active section!");
+        if ( inActiveOnlySection ) {
+            if ( oldcur->chunk->status==MEM_SWAPPED ) {
+                errmsg ( "Swapped elements in active section!" );
                 return false;
             }
         } else {
-            if(oldcur->chunk->status==MEM_SWAPPED&&!inSwapsection) {
-                errmsg("Isolated swapped element block not tracked by counterActive found!");
+            if ( oldcur->chunk->status==MEM_SWAPPED&&!inSwapsection ) {
+                errmsg ( "Isolated swapped element block not tracked by counterActive found!" );
                 return false;
             }
-            if(oldcur->chunk->status!=MEM_SWAPPED)
+            if ( oldcur->chunk->status!=MEM_SWAPPED )
                 inSwapsection = false;
         }
 
-        if(oldcur==counterActive)
+        if ( oldcur==counterActive )
             inActiveOnlySection=false;
 
-    } while(cur!=active);
+    } while ( cur!=active );
 
-    if(encountered!=no_reg) {
-        errmsgf("Not all elements accessed. %d expected,  %d encountered",no_reg,encountered);
+    if ( encountered!=no_reg ) {
+        errmsgf ( "Not all elements accessed. %d expected,  %d encountered",no_reg,encountered );
         return false;
     } else
         return true;
@@ -255,15 +256,15 @@ void cyclicManagedMemory::printCycle()
 {
     cyclicAtime *atime = active;
     checkCycle();
-    printf("%d (%d)<-counterActive\n",counterActive->chunk->id,counterActive->chunk->atime);
-    printf("%d => %d => %d\n",counterActive->prev->chunk->id,counterActive->chunk->id,counterActive->next->chunk->id);
-    printf("%d (%d)<-active\n",active->chunk->id,active->chunk->atime);
-    printf("%d => %d => %d\n",active->prev->chunk->id,active->chunk->id,active->next->chunk->id);
-    printf("\n");
+    printf ( "%d (%d)<-counterActive\n",counterActive->chunk->id,counterActive->chunk->atime );
+    printf ( "%d => %d => %d\n",counterActive->prev->chunk->id,counterActive->chunk->id,counterActive->next->chunk->id );
+    printf ( "%d (%d)<-active\n",active->chunk->id,active->chunk->atime );
+    printf ( "%d => %d => %d\n",active->prev->chunk->id,active->chunk->id,active->next->chunk->id );
+    printf ( "\n" );
     do {
         char  status[2];
         status[1] = 0x00;
-        switch(atime->chunk->status) {
+        switch ( atime->chunk->status ) {
         case MEM_ALLOCATED:
             status[0] = 'A';
             break;
@@ -277,21 +278,21 @@ void cyclicManagedMemory::printCycle()
             status[0] = 'R';
             break;
         }
-        if(atime == counterActive)
-            printf("%d (%d) %s <-counterActive\n",atime->chunk->id,atime->chunk->atime,status);
+        if ( atime == counterActive )
+            printf ( "%d (%d) %s <-counterActive\n",atime->chunk->id,atime->chunk->atime,status );
         else
-            printf("%d (%d) %s \n",atime->chunk->id,atime->chunk->atime,status);
+            printf ( "%d (%d) %s \n",atime->chunk->id,atime->chunk->atime,status );
         atime=atime->next;
-    } while(atime!=active);
-    printf("\n");
-    printf("\n");
+    } while ( atime!=active );
+    printf ( "\n" );
+    printf ( "\n" );
 }
 
 
 
 bool cyclicManagedMemory::swapOut ( unsigned int min_size )
 {
-    if (min_size>memory_max)
+    if ( min_size>memory_max )
         return false;
     unsigned int mem_alloc_max = memory_max*swapOutFrac; //<- This is target size
     unsigned int mem_swap_min = memory_used>mem_alloc_max?memory_used-mem_alloc_max:0;
@@ -301,35 +302,40 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
     cyclicAtime *countPos = counterActive;
     unsigned int unload_size=0,unload=0;
     unsigned int passed=0;
-    while(unload_size<mem_swap) {
+    while ( unload_size<mem_swap ) {
         ++passed;
-        if(countPos->chunk->status==MEM_ALLOCATED) {
+        if ( countPos->chunk->status==MEM_ALLOCATED ) {
             unload_size+=countPos->chunk->size;
             ++unload;
         }
         countPos=countPos->prev;
-        if(fromPos==countPos)
+        if ( fromPos==countPos )
             break;
 
     }
-    if(fromPos==countPos) { //We've been round one time and could not make it.
-        errmsgf("Cannot swap as too much memory is used to satisfy swap requirement.\n\tHappened after passing %d elements",passed);
+    if ( fromPos==countPos ) { //We've been round one time and could not make it.
         return false;
     }
 
     managedMemoryChunk *unloadlist[unload];
     managedMemoryChunk **unloadElem = unloadlist;
 
-    while(fromPos!=countPos) {
-        if(fromPos->chunk->status==MEM_ALLOCATED) {
+    while ( fromPos!=countPos ) {
+        if ( fromPos->chunk->status==MEM_ALLOCATED ) {
             *unloadElem = fromPos->chunk;
             ++unloadElem;
-            if(fromPos==active)
+            if ( fromPos==active )
                 active = fromPos->prev;
         }
         fromPos = fromPos->prev;
     }
-    bool swapSuccess = (swap->swapOut(unloadlist,unload)==unload) ;
+    unsigned int real_unloaded = swap->swapOut ( unloadlist,unload );
+
+    bool swapSuccess = ( real_unloaded==unload ) ;
+    if ( !swapSuccess ) {
+        throw memoryException ( "Could not swap out all elements. Swap full?" );
+
+    }
     fromPos = counterActive;
     cyclicAtime *moveEnd, *cleanFrom;
     moveEnd=NULL;
@@ -338,11 +344,11 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
 
     //TODO: Implement this for less than 3 elements!
 
-    while(fromPos!=countPos) {
-        if(inSwappedSection) {
-            if(fromPos->chunk->status!=MEM_SWAPPED) {
+    while ( fromPos!=countPos ) {
+        if ( inSwappedSection ) {
+            if ( fromPos->chunk->status!=MEM_SWAPPED ) {
                 inSwappedSection=false;
-                if(moveEnd) {
+                if ( moveEnd ) {
                     //  xxxxxxxxxxoooooooxxxxxxooooooo
                     //  ------A--><--B--><-C--><--D
                     // Change order from A-B-C-D to A-C-B-D
@@ -354,26 +360,26 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
                     cyclicAtime *endIsoNonswap = cleanFrom->prev;//C
                     cyclicAtime *startClean = cleanFrom;//D
                     //A-C:
-                    MUTUAL_CONNECT(endNonswap,startIsoNonswap);
-                    MUTUAL_CONNECT(endIsoNonswap,startIsoswap);
-                    MUTUAL_CONNECT(endIsoswap,startClean);
+                    MUTUAL_CONNECT ( endNonswap,startIsoNonswap );
+                    MUTUAL_CONNECT ( endIsoNonswap,startIsoswap );
+                    MUTUAL_CONNECT ( endIsoswap,startClean );
                     cleanFrom=startIsoswap;
                     moveEnd=NULL;
                 }
             } else {
-                if(!moveEnd)
+                if ( !moveEnd )
                     cleanFrom = fromPos;
             }
         } else {
-            if(fromPos->chunk->status==MEM_SWAPPED) {
+            if ( fromPos->chunk->status==MEM_SWAPPED ) {
                 inSwappedSection=true;
-                if(moveEnd==NULL)
+                if ( moveEnd==NULL )
                     moveEnd=fromPos;
             }
         }
         fromPos = fromPos->prev;
     }
-    if(moveEnd) {
+    if ( moveEnd ) {
         //  xxxxxxxxxxoooooooxxxxxxooooooo
         //  ------A--><--B--><-C--><--D
         // Change order from A-B-C-D to A-C-B-D
@@ -385,15 +391,15 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         cyclicAtime *endIsoNonswap = cleanFrom->prev;//C
         cyclicAtime *startClean = cleanFrom;//D
         //A-C:
-        MUTUAL_CONNECT(endNonswap,startIsoNonswap);
-        MUTUAL_CONNECT(endIsoNonswap,startIsoswap);
-        MUTUAL_CONNECT(endIsoswap,startClean);
+        MUTUAL_CONNECT ( endNonswap,startIsoNonswap );
+        MUTUAL_CONNECT ( endIsoNonswap,startIsoswap );
+        MUTUAL_CONNECT ( endIsoswap,startClean );
         cleanFrom=startIsoswap;
         moveEnd=NULL;
     }
     counterActive = cleanFrom->prev;
 
-    if(swapSuccess) {
+    if ( swapSuccess ) {
 
         memory_swapped+=unload_size;
         memory_used-=unload_size;
@@ -408,4 +414,5 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         return false;
     }
 }
+
 

@@ -11,6 +11,8 @@ class managedPtr
 public:
     managedPtr ( unsigned int n_elem ) {
         this->n_elem = n_elem;
+        if ( n_elem==0 )
+            throw memoryException ( "Cannot allocate zero sized object." );
         chunk = managedMemory::defaultManager->mmalloc ( sizeof ( T ) *n_elem );
         //Now call constructor and save possible children's sake:
         memoryID savedParent = managedMemory::parent;
@@ -25,7 +27,6 @@ public:
 
     ~managedPtr() {
         for ( unsigned int n = 0; n<n_elem; n++ ) {
-            //! \todo does this really behave correctly?
             ( ( ( T* ) chunk->locPtr ) +n )->~T();
         }
         managedMemory::defaultManager->mfree ( chunk->id );
@@ -46,8 +47,7 @@ private:
         if ( chunk->status==MEM_ALLOCATED_INUSE ) {
             return ( T* ) chunk->locPtr;
         } else {
-            errmsg ( "You have to sign Usage of the data first" );
-            throw unexpectedStateException("Can not get local pointer without setting usage first");
+            throw unexpectedStateException ( "Can not get local pointer without setting usage first" );
         }
     }
 
@@ -76,7 +76,7 @@ public:
         return data->getLocPtr();
     }
     ~adhereTo() {
-        if(loaded)
+        if ( loaded )
             data->unsetUse();
     }
 private:
@@ -94,3 +94,4 @@ private:
 
 
 #endif
+
