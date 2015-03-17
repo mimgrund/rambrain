@@ -18,3 +18,45 @@ TEST(managedPtr, Unit_ParentIDs)
 
     EXPECT_EQ(parent, managedMemory::defaultManager->parent);
 }
+
+TEST(managedPtr, Unit_ChunkInUse)
+{
+    managedDummySwap swap(100);
+    cyclicManagedMemory managedMemory(&swap, 100);
+    managedPtr<double> ptr(10);
+
+    ASSERT_EQ(MEM_ALLOCATED, ptr.chunk->status);
+
+    ptr.setUse();
+
+    ASSERT_EQ(MEM_ALLOCATED_INUSE, ptr.chunk->status);
+
+    ptr.unsetUse();
+
+    ASSERT_EQ(MEM_ALLOCATED, ptr.chunk->status);
+}
+
+TEST(managedPtr, Unit_GetLocPointer)
+{
+    managedDummySwap swap(100);
+    cyclicManagedMemory managedMemory(&swap, 100);
+    managedPtr<double> ptr(10);
+
+    EXPECT_THROW(ptr.getLocPtr(), unexpectedStateException);
+
+    ptr.setUse();
+
+    EXPECT_NO_THROW(ptr.getLocPtr());
+
+    ptr.unsetUse();
+}
+
+TEST(managedPtr, Unit_DeleteWhileInUse)
+{
+    managedDummySwap swap(100);
+    cyclicManagedMemory managedMemory(&swap, 100);
+    managedPtr<double>* ptr = new managedPtr<double>(10);
+    ptr->setUse();
+
+    EXPECT_THROW(delete ptr, memoryException);
+}

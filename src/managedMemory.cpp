@@ -209,10 +209,11 @@ void managedMemory::mfree ( memoryID id )
     managedMemoryChunk * chunk = memChunks[id];
     if ( chunk->status==MEM_ALLOCATED_INUSE ) {
         errmsg ( "Trying to free memory that is in use." );
-        return;
+        throw memoryException("Can not free memory which is in use");
     }
     if ( chunk->child!=invalid ) {
         errmsg ( "Trying to free memory that has still alive children." );
+        throw memoryException("Can not free memory which has active children");
         return;
     }
 

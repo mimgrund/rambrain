@@ -1,7 +1,9 @@
 #ifndef MANAGEDPTR_H
 #define MANAGEDPTR_H
+
 #include "managedMemory.h"
 #include "common.h"
+#include "exceptions.h"
 
 template <class T>
 class managedPtr
@@ -23,6 +25,7 @@ public:
 
     ~managedPtr() {
         for ( unsigned int n = 0; n<n_elem; n++ ) {
+            //! \todo does this really behave correctly?
             ( ( ( T* ) chunk->locPtr ) +n )->~T();
         }
         managedMemory::defaultManager->mfree ( chunk->id );
@@ -44,12 +47,16 @@ private:
             return ( T* ) chunk->locPtr;
         } else {
             errmsg ( "You have to sign Usage of the data first" );
-            return NULL;
+            throw unexpectedStateException("Can not get local pointer without setting usage first");
         }
-    };
+    }
 
     template<class G>
     friend class adhereTo;
+
+    // Test classes
+    friend class managedPtr_Unit_ChunkInUse_Test;
+    friend class managedPtr_Unit_GetLocPointer_Test;
 };
 
 
