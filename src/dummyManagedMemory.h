@@ -9,26 +9,27 @@ class dummyManagedMemory : public managedMemory
 {
 public:
     //! \todo How to delete the dummy swap?
-    dummyManagedMemory() : managedMemory(new managedDummySwap(0)) {}
+    dummyManagedMemory() : managedMemory ( new managedDummySwap ( 0 ) ) {}
     ~dummyManagedMemory() {}
 
 protected:
     inline virtual bool swapOut ( unsigned int  ) {
-        throw dummyObjectException();
+        throw memoryException ( "No memory manager in place." );
     }
     inline virtual bool swapIn ( managedMemoryChunk & ) {
-        throw dummyObjectException();
+        throw memoryException ( "No memory manager in place." );
     }
     inline virtual bool touch ( managedMemoryChunk & ) {
-        throw dummyObjectException();
+        throw memoryException ( "No memory manager in place." );
     }
     inline virtual void schedulerRegister ( managedMemoryChunk & ) {
-        throw dummyObjectException();
+        throw memoryException ( "No memory manager in place." );
     }
     inline virtual void schedulerDelete ( managedMemoryChunk & ) {
-        throw dummyObjectException();
+        throw memoryException ( "No memory manager in place." );
     }
 
 };
 
 #endif // DUMMYMANAGEDMEMORY_H
+
