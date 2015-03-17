@@ -10,8 +10,8 @@ else
     echo "Formatting files:"
     for file in $diff; do
 	    echo $file
+	    cat $file | astyle --style=kr --attach-inlines --indent=spaces=4 --suffix=none --pad-paren >.beautyback
 	    git show :$file | astyle --style=kr --attach-inlines --indent=spaces=4 --suffix=none --pad-paren >.beautyformatter
-	    mv $file .beautyback
             mv .beautyformatter $file
 	    git add $file
             mv .beautyback $file

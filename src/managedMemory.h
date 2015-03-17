@@ -14,7 +14,7 @@ class managedPtr;
 class managedMemory
 {
 public:
-    managedMemory ( managedSwap *swap,unsigned int size=1073741824);
+    managedMemory ( managedSwap *swap,unsigned int size=1073741824 );
     virtual ~managedMemory();
 
     //Memory Management options
@@ -50,10 +50,10 @@ protected:
     //Swapping strategy
     virtual bool swapOut ( unsigned int min_size ) = 0;
     virtual bool swapIn ( memoryID id );
-    virtual bool swapIn ( managedMemoryChunk &chunk )= 0;
-    virtual bool touch ( managedMemoryChunk &chunk )= 0;
-    virtual void schedulerRegister ( managedMemoryChunk &chunk )=0;
-    virtual void schedulerDelete ( managedMemoryChunk &chunk )=0;
+    virtual bool swapIn ( managedMemoryChunk &chunk ) = 0;
+    virtual bool touch ( managedMemoryChunk &chunk ) = 0;
+    virtual void schedulerRegister ( managedMemoryChunk &chunk ) =0;
+    virtual void schedulerDelete ( managedMemoryChunk &chunk ) =0;
     void ensureEnoughSpaceFor ( unsigned int sizereq );
 
     //Swap Storage manager iface:
@@ -91,3 +91,4 @@ public:
 };
 
 #endif
+

@@ -22,7 +22,7 @@ public:
     void printMemUsage();
     bool checkCycle();
     //Returns old value:
-    bool setPreemptiveLoading(bool preemptive);
+    bool setPreemptiveLoading ( bool preemptive );
 
 
 private:
@@ -62,4 +62,5 @@ private:
 
 
 #endif
+
 
