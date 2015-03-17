@@ -26,6 +26,8 @@ TEST ( managedSwap, Unit_SwapSize )
     ASSERT_EQ ( swapmem, swap.swapSize );
     ASSERT_EQ ( 0u, swap.swapUsed );
 
+    ptr1->unsetUse();
+
     managedPtr<double> *ptr2 = new managedPtr<double> ( dblamount );
 
     ASSERT_EQ ( swapmem, swap.swapSize );
@@ -41,17 +43,13 @@ TEST ( managedSwap, Unit_SwapSize )
     ASSERT_EQ ( swapmem, swap.swapSize );
     ASSERT_EQ ( dblsize, swap.swapUsed );
 
-    delete ptr2;
-
-    ASSERT_EQ ( swapmem, swap.swapSize );
-    ASSERT_EQ ( 0u, swap.swapUsed );
-
-    ptr1->unsetUse();
-
-    ASSERT_EQ ( swapmem, swap.swapSize );
-    ASSERT_EQ ( 0u, swap.swapUsed );
-
     delete ptr1;
+
+    ASSERT_EQ ( swapmem, swap.swapSize );
+    ASSERT_EQ ( 0u, swap.swapUsed );
+
+    delete ptr2;
 }
+
 
 
