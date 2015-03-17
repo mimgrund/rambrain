@@ -19,6 +19,10 @@ protected:
     unsigned int memory_swap_avail=0;
     unsigned int swapSize;
     unsigned int swapUsed;
+
+
+    // Test classes
+    friend class managedSwap_Unit_SwapSize_Test;
 };
 
 
