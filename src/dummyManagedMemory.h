@@ -8,6 +8,7 @@
 class dummyManagedMemory : public managedMemory
 {
 public:
+    //! \todo How to delete the dummy swap?
     dummyManagedMemory() : managedMemory(new managedDummySwap(0)) {}
     ~dummyManagedMemory() {}
 

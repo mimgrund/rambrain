@@ -21,19 +21,19 @@ public:
         managedMemory::parent = savedParent;
     }
 
-    bool setUse() {
-        return managedMemory::defaultManager->setUse ( *chunk );
-    }
-    bool unsetUse() {
-        return managedMemory::defaultManager->unsetUse ( *chunk );
-    }
-
     ~managedPtr() {
         for ( unsigned int n = 0; n<n_elem; n++ ) {
             ( ( ( T* ) chunk->locPtr ) +n )->~T();
         }
         managedMemory::defaultManager->mfree ( chunk->id );
 
+    }
+
+    bool setUse() {
+        return managedMemory::defaultManager->setUse ( *chunk );
+    }
+    bool unsetUse() {
+        return managedMemory::defaultManager->unsetUse ( *chunk );
     }
 private:
     managedMemoryChunk *chunk;

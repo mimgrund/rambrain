@@ -2,6 +2,7 @@
 #include "cyclicManagedMemory.h"
 #include "managedPtr.h"
 #include "managedDummySwap.h"
+#include "exceptions.h"
 
 //#define SWAPSTATSLONG
 
@@ -70,6 +71,28 @@ TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
     }
     EXPECT_TRUE ( manager.getUsedMemory() ==2*16+2*80 );
 
+}
+
+TEST (cyclicManagedMemory, Unit_NotEnoughMemOrSwapSpace)
+{
+    managedDummySwap swap1(0), swap2(1000);
+    cyclicManagedMemory* manager1 = new cyclicManagedMemory(&swap1, 0);
+
+    EXPECT_THROW(managedPtr<double> ptr1(10), memoryException);
+
+    manager1->setMemoryLimit(1000);
+
+    EXPECT_NO_THROW(managedPtr<double> ptr2(10));
+
+    cyclicManagedMemory* manager2 = new cyclicManagedMemory(&swap2, 0);
+
+    EXPECT_NO_THROW(managedPtr<double> ptr3(10));
+
+    manager2->setMemoryLimit(1000);
+
+    EXPECT_NO_THROW(managedPtr<double> ptr4(10));
+
+    delete manager2;
 }
 
 TEST ( cyclicManagedMemory, Integration_ArrayAccess )
