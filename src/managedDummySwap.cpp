@@ -60,6 +60,12 @@ unsigned int managedDummySwap::swapIn ( managedMemoryChunk** chunklist, unsigned
 }
 
 
+void managedDummySwap::swapDelete ( managedMemoryChunk* chunk )
+{
+    if ( chunk->status==MEM_SWAPPED )
+        swapUsed-= chunk->size;
+}
+
 
 
 

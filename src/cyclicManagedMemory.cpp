@@ -197,7 +197,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
                 counterActive=counterActive->prev;
             return true;
         } else {
-            throw memoryException ( "Could not swap in an element." );
+            Throw ( memoryException ( "Could not swap in an element." ) );
         };
     }
 
@@ -313,14 +313,14 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
             break;
 
     }
-    if ( fromPos==countPos ) { //We've been round one time and could not make it.
+    if ( fromPos==countPos &&unload_size<mem_swap ) { //We've been round one time and could not make it.
         return false;
     }
 
     managedMemoryChunk *unloadlist[unload];
     managedMemoryChunk **unloadElem = unloadlist;
 
-    while ( fromPos!=countPos ) {
+    do {
         if ( fromPos->chunk->status==MEM_ALLOCATED ) {
             *unloadElem = fromPos->chunk;
             ++unloadElem;
@@ -328,12 +328,12 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
                 active = fromPos->prev;
         }
         fromPos = fromPos->prev;
-    }
+    } while ( fromPos!=countPos );
     unsigned int real_unloaded = swap->swapOut ( unloadlist,unload );
 
     bool swapSuccess = ( real_unloaded==unload ) ;
     if ( !swapSuccess ) {
-        throw memoryException ( "Could not swap out all elements. Swap full?" );
+        Throw ( memoryException ( "Could not swap out all elements. Swap full?" ) );
 
     }
     fromPos = counterActive;
@@ -414,5 +414,6 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         return false;
     }
 }
+
 
 

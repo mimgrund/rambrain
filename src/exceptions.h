@@ -11,7 +11,6 @@ class membrainException : exception
 
 public:
     virtual ~membrainException() {}
-
 };
 
 
@@ -66,4 +65,5 @@ private:
 };
 
 #endif // EXCEPTIONS_H
+
 

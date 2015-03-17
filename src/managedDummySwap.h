@@ -13,6 +13,7 @@ public:
     virtual bool swapIn ( managedMemoryChunk* chunk );
     virtual unsigned int swapOut ( managedMemoryChunk** chunklist, unsigned int nchunks );
     virtual bool swapOut ( managedMemoryChunk* chunk );
+    virtual void swapDelete ( managedMemoryChunk *chunk );
 };
 
-#endif
+#endiff

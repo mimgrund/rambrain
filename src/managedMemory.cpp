@@ -8,6 +8,7 @@ managedMemory* managedMemory::defaultManager = managedMemory::dummyManager;
 memoryID const managedMemory::root=1;
 memoryID const managedMemory::invalid=0;
 memoryID managedMemory::parent=1;
+bool managedMemory::noThrow = false;
 
 managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
 {
@@ -29,11 +30,14 @@ managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
 
 managedMemory::~managedMemory()
 {
+    bool oldthrow = noThrow;
+    noThrow = true;
     if ( defaultManager==this ) {
         defaultManager = dummyManager;
     }
     //Clean up objects:
     recursiveMfree ( root );
+    noThrow = oldthrow;
 }
 
 
@@ -78,7 +82,7 @@ void managedMemory::ensureEnoughSpaceFor ( unsigned int sizereq )
 {
     if ( sizereq+memory_used>memory_max ) {
         if ( !swapOut ( sizereq ) ) {
-            throw memoryException ( "Could not swap memory" );
+            Throw ( memoryException ( "Could not swap memory" ) );
         }
     }
 }
@@ -94,7 +98,7 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
     if ( sizereq!=0 ) {
         chunk->locPtr = malloc ( sizereq );
         if ( !chunk->locPtr ) {
-            throw memoryException ( "Malloc failed" );
+            Throw ( memoryException ( "Malloc failed" ) );
         }
     }
 
@@ -164,7 +168,7 @@ bool managedMemory::setUse ( managedMemoryChunk& chunk )
             return setUse ( chunk );
         } else {
             errmsgf ( "Could not swap in a chunk of size %d",chunk.size );
-            throw memoryException ( "Could not swap memory" );
+            Throw ( memoryException ( "Could not swap memory" ) );
         }
 
     case MEM_ROOT:
@@ -214,27 +218,39 @@ bool managedMemory::unsetUse ( managedMemoryChunk& chunk )
         chunk.status = ( --chunk.useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE );
         return true;
     } else {
-        throw unexpectedStateException ( "Can not unset use of not used memory" );
+        Throw ( memoryException ( "Can not unset use of not used memory" ) );
     }
 }
+
+void managedMemory::Throw ( memoryException e )
+{
+    if ( noThrow )
+        errmsg ( e.what() )
+        else
+            throw e;
+}
+
 
 
 void managedMemory::mfree ( memoryID id )
 {
     managedMemoryChunk * chunk = memChunks[id];
     if ( chunk->status==MEM_ALLOCATED_INUSE ) {
-        throw memoryException ( "Can not free memory which is in use" );
+        Throw ( memoryException ( "Can not free memory which is in use" ) );
     }
     if ( chunk->child!=invalid ) {
-        throw memoryException ( "Can not free memory which has active children" );
+        Throw ( memoryException ( "Can not free memory which has active children" ) );
     }
 
     if ( chunk ) {
         if ( chunk->id!=root )
             schedulerDelete ( *chunk );
+
         if ( chunk->status==MEM_ALLOCATED ) {
             free ( chunk->locPtr );
             memory_used-= chunk->size;
+        } else {
+            swap->swapDelete ( chunk );
         }
 
         //get rid of hierarchy:
@@ -259,7 +275,7 @@ void managedMemory::mfree ( memoryID id )
 
         //Delete element itself
         memChunks.erase ( id );
-        delete chunk;
+        delete ( chunk );
     }
 }
 
@@ -367,4 +383,5 @@ void managedMemory::resetSwapstats()
 }
 
 #endif
+
 

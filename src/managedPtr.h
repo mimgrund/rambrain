@@ -26,11 +26,13 @@ public:
     }
 
     ~managedPtr() {
+        bool oldthrow = managedMemory::defaultManager->noThrow;
+        managedMemory::defaultManager->noThrow = true;
         for ( unsigned int n = 0; n<n_elem; n++ ) {
             ( ( ( T* ) chunk->locPtr ) +n )->~T();
         }
         managedMemory::defaultManager->mfree ( chunk->id );
-
+        managedMemory::defaultManager->noThrow = false;
     }
 
     bool setUse() {
@@ -39,6 +41,8 @@ public:
     bool unsetUse() {
         return managedMemory::defaultManager->unsetUse ( *chunk );
     }
+    //!\todo: smart Pointerize. at least copy constructor
+
 private:
     managedMemoryChunk *chunk;
     unsigned int n_elem;
@@ -94,4 +98,5 @@ private:
 
 
 #endif
+
 

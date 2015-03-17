@@ -6,6 +6,7 @@
 
 #include "managedMemoryChunk.h"
 #include "managedSwap.h"
+#include "exceptions.h"
 
 template<class T>
 class managedPtr;
@@ -70,6 +71,8 @@ protected:
 
 
     static managedMemory *dummyManager;
+    static bool noThrow;
+    static void Throw ( memoryException e );
 
 
     template<class T>
@@ -91,4 +94,5 @@ public:
 };
 
 #endif
+
 
