@@ -2,6 +2,7 @@
 #include "managedPtr.h"
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
+#include "exceptions.h"
 
 TEST(managedPtr, Unit_ParentIDs)
 {
@@ -10,7 +11,7 @@ TEST(managedPtr, Unit_ParentIDs)
 
     memoryID parent = managedMemory::defaultManager->parent;
 
-    managedPtr<double> ptr(10);
+    EXPECT_THROW(managedPtr<double> ptr(10), dummyObjectException);
 
     EXPECT_EQ(parent, managedMemory::defaultManager->parent);
 }
