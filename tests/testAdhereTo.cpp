@@ -35,9 +35,6 @@ TEST ( adhereTo, Unit_LoadUnload )
     delete global2;
     delete global3;
 
-    ASSERT_FALSE ( global1->loaded );
-    ASSERT_FALSE ( global2->loaded );
-    ASSERT_FALSE ( global3->loaded );
 }
 
 TEST ( adhereTo, Unit_AccessData )
@@ -85,7 +82,8 @@ TEST ( adhereTo, Unit_TwiceAdhered )
     adhereTo<double>* global2 = NULL;
     double* loc2 = NULL;
 
-    ASSERT_NO_THROW ( global2 = new adhereTo<double> ( ptr ) );
+
+    ASSERT_NO_THROW ( global2 = new adhereTo<double> ( ptr , true ) );
     ASSERT_TRUE ( global2->loaded );
     ASSERT_NO_THROW ( loc2 = *global2 );
     ASSERT_EQ ( loc1, loc2 );
@@ -115,4 +113,5 @@ TEST ( adhereTo, UNIT_MacroUsage )
     loc[i] = i;
     } );
 }
+
 

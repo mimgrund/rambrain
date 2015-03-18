@@ -76,7 +76,8 @@ public:
         }
     }
     operator  T*() {
-        loaded = data->setUse();
+        if ( !loaded )
+            loaded = data->setUse();
         return data->getLocPtr();
     }
     ~adhereTo() {
@@ -102,6 +103,7 @@ private:
 
 
 #endif
+
 
 
 
