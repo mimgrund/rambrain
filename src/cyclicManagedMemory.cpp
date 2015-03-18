@@ -71,11 +71,13 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk& chunk )
     //Put this object to begin of loop:
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
 
-    if ( counterActive==element )
-        counterActive=counterActive->prev;
+
 
     if ( active==element )
         return true;
+
+    if ( counterActive==element )
+        counterActive=counterActive->prev;
 
     chunk.atime = atime++; //increase atime only if we accessed a different element in between
 
@@ -135,6 +137,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 
 
     if ( preemtiveSwapIn ) {
+        printCycle();
         unsigned int targetReadinVol = actual_obj_size + ( swapInFrac -swapOutFrac ) *memory_max-preemptiveBytes;
         //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
         //Swap out if we want to read in more than what we thought:
@@ -153,11 +156,14 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 
 
         }
+        printCycle();
+        printf ( "And I am trying to read %d bytes\n",targetReadinVol );
         cyclicAtime *readEl = ( cyclicAtime * ) chunk.schedBuf;
         cyclicAtime *cur = readEl;
         cyclicAtime *endSwapin = readEl;
         unsigned int selectedReadinVol = 0;
         unsigned int numberSelected = 0;
+
         do {
             if ( selectedReadinVol+cur->chunk->size>targetReadinVol ) {
                 cur = cur->prev;
@@ -170,6 +176,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 
         managedMemoryChunk *chunks[numberSelected];
         unsigned int n=0;
+
         do {
             chunks[n++] = readEl->chunk;
             readEl = readEl->prev;
@@ -180,15 +187,20 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
         } else {
             cyclicAtime *beginSwapin = readEl->next;
             cyclicAtime *oldafter = endSwapin->next;
-            if ( oldafter!=active ) {
-                //TODO: Implement this for <3 elements
-                cyclicAtime *oldbefore = readEl;
-                cyclicAtime *before = active->prev;
-                MUTUAL_CONNECT ( oldbefore,oldafter );
-                MUTUAL_CONNECT ( endSwapin,active );
-                MUTUAL_CONNECT ( before,beginSwapin );
+            if ( endSwapin!=active ) { //swapped in element is already 'active' as all others have been swapped.
+                if ( oldafter!=active && beginSwapin!=active ) {
+                    //TODO: Implement this for <3 elements
+                    cyclicAtime *oldbefore = readEl;
+                    cyclicAtime *before = active->prev;
+                    MUTUAL_CONNECT ( oldbefore,oldafter );
+                    MUTUAL_CONNECT ( endSwapin,active );
+                    MUTUAL_CONNECT ( before,beginSwapin );
+                }
+//                  if(counterActive==active)
+//                      counterActive=endSwapin;
+                active = endSwapin;
             }
-            active = endSwapin;
+
 
 
             memory_used+= selectedReadinVol;
@@ -200,6 +212,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
             swap_in_bytes+= selectedReadinVol;
             n_swap_in+=1;
 #endif
+            printCycle();
             return true;
         }
     } else {
@@ -238,7 +251,7 @@ bool cyclicManagedMemory::checkCycle()
             return false;
     }
 
-    bool inActiveOnlySection = true;
+    bool inActiveOnlySection = ( active->chunk->status==MEM_SWAPPED?false:true );
     bool inSwapsection = true;
     do {
         ++encountered;
@@ -349,8 +362,9 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         if ( fromPos->chunk->status==MEM_ALLOCATED ) {
             *unloadElem = fromPos->chunk;
             ++unloadElem;
-            if ( fromPos==active )
+            if ( fromPos==active ) {
                 active = fromPos->prev;
+            }
         }
         fromPos = fromPos->prev;
     } while ( fromPos!=countPos );
@@ -439,6 +453,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         return false;
     }
 }
+
 
 
 

@@ -66,10 +66,12 @@ TEST ( managedSwap, Unit_VariousSize )
         managedPtr<double> *arr[8];
         for ( unsigned int p=0; p<8; ++p ) {
             arr[p] = new managedPtr<double> ( targetsize );
-            ASSERT_TRUE ( manager.checkCycle() );
+            if ( !manager.checkCycle() )
+                ASSERT_TRUE ( false );
             manager.printCycle();
             printf ( "---------------\n" );
         }
+
         manager.printTree();
         manager.printMemUsage();
         for ( unsigned int p=0; p<8; ++p ) {
@@ -99,6 +101,7 @@ TEST ( managedSwap, Unit_VariousSize )
     }
 
 }
+
 
 
 
