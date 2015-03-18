@@ -66,41 +66,28 @@ TEST ( managedSwap, Unit_VariousSize )
         managedPtr<double> *arr[8];
         for ( unsigned int p=0; p<8; ++p ) {
             arr[p] = new managedPtr<double> ( targetsize );
-            if ( !manager.checkCycle() )
-                ASSERT_TRUE ( false );
-            manager.printCycle();
-            printf ( "---------------\n" );
+            ASSERT_TRUE ( manager.checkCycle() );
         }
-
-        manager.printTree();
-        manager.printMemUsage();
         for ( unsigned int p=0; p<8; ++p ) {
             managedPtr<double> &a = *arr[p];
             ADHERETOLOC ( double,a,locA );
             locA[0] = o+p;
-            if ( !manager.checkCycle() )
-                ASSERT_TRUE ( false );
+            ASSERT_TRUE ( manager.checkCycle() );
         }
-        manager.printTree();
-        manager.printMemUsage();
         for ( unsigned int p=0; p<8; ++p ) {
             managedPtr<double> &a = *arr[p];
             ADHERETOLOC ( double,a,locA );
             EXPECT_EQ ( o+p,locA[0] );
             ASSERT_TRUE ( manager.checkCycle() );
         }
-        manager.printTree();
-        manager.printMemUsage();
         for ( unsigned int p=0; p<8; ++p ) {
             delete arr[p];
             ASSERT_TRUE ( manager.checkCycle() );
         }
-        manager.printTree();
-        manager.printMemUsage();
-        printf ( "--------------------------------\n" );
     }
 
 }
+
 
 
 

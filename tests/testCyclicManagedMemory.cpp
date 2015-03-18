@@ -145,8 +145,9 @@ TEST ( cyclicManagedMemory, Integration_ArrayAccess )
 
 TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
 {
-    const  int memsize=10240;
-    const  int allocarrn = 4000;
+    const  int fac = 1000;
+    const  int memsize=10.240*fac;
+    const  int allocarrn = 4*fac;
 
     //Allocate Dummy swap
     managedDummySwap swap ( allocarrn*100 );
@@ -221,4 +222,5 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
     }
 
 }
+
 

@@ -2,6 +2,16 @@
 #include "common.h"
 #include "exceptions.h"
 
+// #define VERYVERBOSE
+
+#ifdef VERYVERBOSE
+#define VERBOSEPRINT(x) printf("\n<--%s\n",x);printCycle();printf("\n%s---->\n",x);
+#else
+#define VERBOSEPRINT(x) ;
+#endif
+
+
+
 cyclicManagedMemory::cyclicManagedMemory ( managedSwap *swap, unsigned int size ) : managedMemory ( swap,size )
 {
 
@@ -9,6 +19,7 @@ cyclicManagedMemory::cyclicManagedMemory ( managedSwap *swap, unsigned int size 
 
 void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk& chunk )
 {
+
     cyclicAtime *neu = new cyclicAtime;
 
     //Couple chunk to atime and vice versa:
@@ -19,11 +30,14 @@ void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk& chunk )
         neu->prev = neu->next = neu;
         counterActive = neu;
     } else { //We're inserting somewhen.
+        VERBOSEPRINT ( "registerbegin" );
         cyclicAtime *before = active->prev;
         cyclicAtime *after = active;
         MUTUAL_CONNECT ( before,neu );
         MUTUAL_CONNECT ( neu,after );
     }
+    if ( counterActive==active&&counterActive->chunk->status==MEM_SWAPPED )
+        counterActive=neu;
     active = neu;
 }
 
@@ -127,6 +141,7 @@ void cyclicManagedMemory::printMemUsage()
 
 bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 {
+    VERBOSEPRINT ( "swapInEntry" );
     // We use the old border to ensure that sth is not swapped in again that was just swapped out.
     cyclicAtime *oldBorder = counterActive;
 
@@ -137,7 +152,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 
 
     if ( preemtiveSwapIn ) {
-        printCycle();
         unsigned int targetReadinVol = actual_obj_size + ( swapInFrac -swapOutFrac ) *memory_max-preemptiveBytes;
         //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
         //Swap out if we want to read in more than what we thought:
@@ -156,8 +170,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
 
 
         }
-        printCycle();
-        printf ( "And I am trying to read %d bytes\n",targetReadinVol );
+        VERBOSEPRINT ( "swapInAfterSwap" );
         cyclicAtime *readEl = ( cyclicAtime * ) chunk.schedBuf;
         cyclicAtime *cur = readEl;
         cyclicAtime *endSwapin = readEl;
@@ -165,10 +178,8 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
         unsigned int numberSelected = 0;
 
         do {
-            if ( selectedReadinVol+cur->chunk->size>targetReadinVol ) {
-                cur = cur->prev;
+            if ( selectedReadinVol+cur->chunk->size>targetReadinVol )
                 break;
-            }
             selectedReadinVol+=cur->chunk->size;
             cur = cur->prev;
             ++numberSelected;
@@ -177,17 +188,18 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
         managedMemoryChunk *chunks[numberSelected];
         unsigned int n=0;
 
-        do {
+        while ( readEl!=cur ) {
             chunks[n++] = readEl->chunk;
             readEl = readEl->prev;
-        } while ( readEl!=cur );
-        if ( !swap->swapIn ( chunks,numberSelected ) ) {
+        };
+        if ( ( swap->swapIn ( chunks,numberSelected ) !=n ) ) {
+            printf ( "oink!\n" );
             return Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
 
         } else {
             cyclicAtime *beginSwapin = readEl->next;
             cyclicAtime *oldafter = endSwapin->next;
-            if ( endSwapin!=active ) { //swapped in element is already 'active' as all others have been swapped.
+            if ( endSwapin!=active ) { //swapped in element is already 'active' when all others have been swapped.
                 if ( oldafter!=active && beginSwapin!=active ) {
                     //TODO: Implement this for <3 elements
                     cyclicAtime *oldbefore = readEl;
@@ -196,8 +208,8 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
                     MUTUAL_CONNECT ( endSwapin,active );
                     MUTUAL_CONNECT ( before,beginSwapin );
                 }
-//                  if(counterActive==active)
-//                      counterActive=endSwapin;
+                if ( counterActive==active&&counterActive->chunk->status==MEM_SWAPPED )
+                    counterActive=endSwapin;
                 active = endSwapin;
             }
 
@@ -212,7 +224,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk& chunk )
             swap_in_bytes+= selectedReadinVol;
             n_swap_in+=1;
 #endif
-            printCycle();
+            VERBOSEPRINT ( "swapInBeforeReturn" );
             return true;
         }
     } else {
@@ -330,6 +342,7 @@ void cyclicManagedMemory::printCycle()
 
 bool cyclicManagedMemory::swapOut ( unsigned int min_size )
 {
+    VERBOSEPRINT ( "swapOutEntry" );
     if ( min_size>memory_max )
         return false;
     unsigned int mem_alloc_max = memory_max*swapOutFrac; //<- This is target size
@@ -437,7 +450,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         moveEnd=NULL;
     }
     counterActive = cleanFrom->prev;
-
+    VERBOSEPRINT ( "swapOutReturn" );
     if ( swapSuccess ) {
 
         memory_swapped+=unload_size;
@@ -453,6 +466,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         return false;
     }
 }
+
 
 
 
