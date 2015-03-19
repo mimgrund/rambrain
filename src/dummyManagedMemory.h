@@ -9,7 +9,7 @@ class dummyManagedMemory : public managedMemory
 {
 public:
     dummyManagedMemory() : managedMemory ( &mswap,0 ) {}
-    ~dummyManagedMemory() {}
+    virtual ~dummyManagedMemory() {}
 
 protected:
     inline virtual bool swapOut ( unsigned int  ) {
@@ -34,6 +34,7 @@ private:
 };
 
 #endif // DUMMYMANAGEDMEMORY_H
+
 
 
 
