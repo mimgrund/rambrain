@@ -322,3 +322,56 @@ TEST ( cyclicManagedMemory, Unit_RandomAllocation )
     }
 }
 
+TEST ( cyclicManagedMemory, Unit_MissingPointerDeallocation )
+{
+    ASSERT_DEATH (
+        managedDummySwap swap ( 100 );
+        cyclicManagedMemory manager ( &swap, 100 );
+        managedPtr<double>* ptr = new managedPtr<double> ( 1 )
+    ,"pure virtual method called" );
+}
+
+TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceForOneElement )
+{
+    const unsigned int memsize = sizeof ( double ) / 2;
+    const unsigned int swapmem = memsize;
+
+    managedDummySwap swap ( swapmem );
+    cyclicManagedMemory manager ( &swap, memsize );
+
+    ASSERT_THROW ( managedPtr<double> ptr ( 1 ), memoryException );
+}
+
+TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceForArray )
+{
+    const unsigned int memsize = sizeof ( double ) * 2;
+    const unsigned int swapmem = memsize;
+
+    managedDummySwap swap ( swapmem );
+    cyclicManagedMemory manager ( &swap, memsize );
+
+    ASSERT_THROW ( managedPtr<double> ptr ( 10 ), memoryException );
+}
+
+TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceInTotal )
+{
+    const unsigned int memsize = sizeof ( double ) * 20;
+    const unsigned int swapmem = memsize;
+
+    managedDummySwap swap ( swapmem );
+    cyclicManagedMemory manager ( &swap, memsize );
+    managedPtr<double> *ptr1, *ptr2, *ptr3, *ptr4, *ptr5;
+    ptr1 = ptr2 = ptr3 = ptr4 = ptr5 = NULL;
+
+    ASSERT_NO_THROW ( ptr1 = new managedPtr<double> ( 10 ) );
+    ASSERT_NO_THROW ( ptr2 = new managedPtr<double> ( 10 ) );
+    ASSERT_NO_THROW ( ptr3 = new managedPtr<double> ( 10 ) );
+    ASSERT_NO_THROW ( ptr4 = new managedPtr<double> ( 10 ) );
+    ASSERT_THROW ( ptr5 = new managedPtr<double> ( 10 ), memoryException );
+
+    delete ptr1;
+    delete ptr2;
+    delete ptr3;
+    delete ptr4;
+}
+

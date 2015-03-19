@@ -59,6 +59,7 @@ TEST ( managedPtr, Unit_GetLocPointer )
 TEST ( managedPtr, Unit_DeleteWhileInUse )
 {
     /* TODO This test does not work, exception is handled by libc++ instead of gtest
+     * Idea: Death test, do we want to let everything die at this point?
     managedDummySwap swap(100);
     cyclicManagedMemory *managedMemory=new cyclicManagedMemory(&swap, 100);
     managedPtr<double>* ptr = new managedPtr<double>(10);
@@ -68,6 +69,7 @@ TEST ( managedPtr, Unit_DeleteWhileInUse )
     EXPECT_THROW(delete managedMemory, memoryException);*/
 
 }
+
 
 
 

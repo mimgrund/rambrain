@@ -8,7 +8,7 @@
 class dummyManagedMemory : public managedMemory
 {
 public:
-    //! \todo How to delete the dummy swap?
+    //!TODO How to delete the dummy swap?
     dummyManagedMemory() : managedMemory ( new managedDummySwap ( 0 ) ) {}
     ~dummyManagedMemory() {}
 
@@ -32,4 +32,5 @@ protected:
 };
 
 #endif // DUMMYMANAGEDMEMORY_H
+
 
