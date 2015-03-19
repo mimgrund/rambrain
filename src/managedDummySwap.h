@@ -15,7 +15,11 @@ public:
     virtual bool swapOut ( managedMemoryChunk* chunk );
     virtual void swapDelete ( managedMemoryChunk *chunk );
     virtual unsigned int getUsedSwap();
+
+    // Test classes
+    friend class managedDummySwap_Unit_SwapSize_Test;
 };
 
 #endif
+
 
