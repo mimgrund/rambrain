@@ -62,15 +62,15 @@ TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
 
     locA->test();
 
-    EXPECT_EQ ( 1, manager.getNumberOfChildren ( managedMemory::root ) );
-    EXPECT_EQ ( 2, manager.getNumberOfChildren ( 2 ) );
+    EXPECT_EQ ( 1u, manager.getNumberOfChildren ( managedMemory::root ) );
+    EXPECT_EQ ( 2u, manager.getNumberOfChildren ( 2 ) );
     {
         managedPtr<int> test ( 10 );
 
-        EXPECT_EQ ( 2, manager.getNumberOfChildren ( managedMemory::root ) );
-        EXPECT_EQ ( 2*16+2*80+10*4, manager.getUsedMemory() );
+        EXPECT_EQ ( 2u, manager.getNumberOfChildren ( managedMemory::root ) );
+        EXPECT_EQ ( 2u*16+2*80+10*4, manager.getUsedMemory() );
     }
-    EXPECT_EQ ( 2*16+2*80, manager.getUsedMemory() );
+    EXPECT_EQ ( 2u*16+2*80, manager.getUsedMemory() );
 
 }
 
@@ -223,6 +223,7 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
     }
 
 }
+
 
 
 

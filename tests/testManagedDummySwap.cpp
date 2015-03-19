@@ -56,40 +56,42 @@ TEST ( managedDummySwap, Unit_VariousSize )
     const unsigned int memsize = sizeof ( double ) * 10;
     const unsigned int swapmem = 100*memsize;
 
-
-
     managedDummySwap swap ( swapmem );
     cyclicManagedMemory manager ( &swap, memsize );
 
     for ( unsigned int o=0; o<10; ++o ) {
         const unsigned int targetsize = o+1;
+        const unsigned int totalspace = 8 * targetsize * sizeof ( double );
+        const int swappedmin = ( totalspace > memsize ? totalspace - memsize : 0u );
         managedPtr<double> *arr[8];
+
         for ( unsigned int p=0; p<8; ++p ) {
             arr[p] = new managedPtr<double> ( targetsize );
             ASSERT_TRUE ( manager.checkCycle() );
         }
+
+        ASSERT_GE ( swap.getUsedSwap(), swappedmin );
+
         for ( unsigned int p=0; p<8; ++p ) {
             managedPtr<double> &a = *arr[p];
             ADHERETOLOC ( double,a,locA );
             locA[0] = o+p;
             ASSERT_TRUE ( manager.checkCycle() );
         }
+
         for ( unsigned int p=0; p<8; ++p ) {
             managedPtr<double> &a = *arr[p];
             ADHERETOLOC ( double,a,locA );
-            EXPECT_EQ ( o+p,locA[0] );
+            EXPECT_EQ ( o+p, locA[0] );
             ASSERT_TRUE ( manager.checkCycle() );
         }
+
         for ( unsigned int p=0; p<8; ++p ) {
             delete arr[p];
             ASSERT_TRUE ( manager.checkCycle() );
         }
+
+        ASSERT_EQ ( 0u, swap.getUsedSwap() );
     }
-
 }
-
-
-
-
-
 
