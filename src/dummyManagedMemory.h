@@ -8,7 +8,7 @@
 class dummyManagedMemory : public managedMemory
 {
 public:
-    dummyManagedMemory() : managedMemory ( &mswap,0 ) {}
+    dummyManagedMemory() : managedMemory ( &mswap, 0 ) {}
     virtual ~dummyManagedMemory() {}
 
 protected:
@@ -34,6 +34,7 @@ private:
 };
 
 #endif // DUMMYMANAGEDMEMORY_H
+
 
 
 

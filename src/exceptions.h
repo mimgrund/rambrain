@@ -18,10 +18,10 @@ class incompleteSetupException : membrainException
 {
 
 public:
-    incompleteSetupException ( const string& details ) : details ( details ) {}
+    incompleteSetupException ( const string &details ) : details ( details ) {}
     virtual ~incompleteSetupException() {}
 
-    inline virtual const char* what() const throw() {
+    inline virtual const char *what() const throw() {
         return ( string ( "Incomplete setup of objects: " ) + details ).c_str();
     }
 
@@ -35,10 +35,10 @@ class memoryException : membrainException
 {
 
 public:
-    memoryException ( const string& details ) : details ( details ) {}
+    memoryException ( const string &details ) : details ( details ) {}
     virtual ~memoryException() {}
 
-    inline virtual const char* what() const throw() {
+    inline virtual const char *what() const throw() {
         return ( string ( "Memory exception: " ) + details ).c_str();
     }
 
@@ -52,10 +52,10 @@ class unexpectedStateException : membrainException
 {
 
 public:
-    unexpectedStateException ( const string& details ) : details ( details ) {}
+    unexpectedStateException ( const string &details ) : details ( details ) {}
     virtual ~unexpectedStateException() {}
 
-    inline virtual const char* what() const throw() {
+    inline virtual const char *what() const throw() {
         return ( string ( "Unexpected state detected: " ) + details ).c_str();
     }
 
@@ -65,5 +65,6 @@ private:
 };
 
 #endif // EXCEPTIONS_H
+
 
 

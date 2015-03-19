@@ -5,11 +5,11 @@
 
 dummyManagedMemory dummy;
 
-managedMemory* managedMemory::dummyManager = &dummy;
-managedMemory* managedMemory::defaultManager = managedMemory::dummyManager;
-memoryID const managedMemory::root=1;
-memoryID const managedMemory::invalid=0;
-memoryID managedMemory::parent=1;
+managedMemory *managedMemory::dummyManager = &dummy;
+managedMemory *managedMemory::defaultManager = managedMemory::dummyManager;
+memoryID const managedMemory::root = 1;
+memoryID const managedMemory::invalid = 0;
+memoryID managedMemory::parent = 1;
 bool managedMemory::noThrow = false;
 
 managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
@@ -30,7 +30,7 @@ managedMemory::~managedMemory()
 {
     bool oldthrow = noThrow;
     noThrow = true;
-    if ( defaultManager==this ) {
+    if ( defaultManager == this ) {
         defaultManager = dummyManager;
     }
     //Clean up objects:
@@ -56,15 +56,16 @@ unsigned int managedMemory::getSwappedMemory() const
 
 bool managedMemory::setMemoryLimit ( unsigned int size )
 {
-    if ( size>memory_max ) {
+    if ( size > memory_max ) {
         memory_max = size;
         return true;
     } else {
-        if ( size<memory_used ) {
+        if ( size < memory_used ) {
             //Try to swap out as much memory as needed:
-            unsigned int tobefreed = ( memory_used-size );
-            if ( !swapOut ( tobefreed ) )
+            unsigned int tobefreed = ( memory_used - size );
+            if ( !swapOut ( tobefreed ) ) {
                 return false;
+            }
             memory_max = size;
             swapOut ( 0 ); // Swap out further to adapt to new memory limits. This must not necessarily succeed.
             return true;
@@ -78,7 +79,7 @@ bool managedMemory::setMemoryLimit ( unsigned int size )
 
 void managedMemory::ensureEnoughSpaceFor ( unsigned int sizereq )
 {
-    if ( sizereq+memory_used>memory_max ) {
+    if ( sizereq + memory_used > memory_max ) {
         if ( !swapOut ( sizereq ) ) {
             Throw ( memoryException ( "Could not swap memory" ) );
         }
@@ -86,14 +87,14 @@ void managedMemory::ensureEnoughSpaceFor ( unsigned int sizereq )
 }
 
 
-managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
+managedMemoryChunk *managedMemory::mmalloc ( unsigned int sizereq )
 {
     ensureEnoughSpaceFor ( sizereq );
 
     //We are left with enough free space to malloc.
-    managedMemoryChunk *chunk = new managedMemoryChunk ( parent,memID_pace++ );
+    managedMemoryChunk *chunk = new managedMemoryChunk ( parent, memID_pace++ );
     chunk->status = MEM_ALLOCATED;
-    if ( sizereq!=0 ) {
+    if ( sizereq != 0 ) {
         chunk->locPtr = malloc ( sizereq );
         if ( !chunk->locPtr ) {
             Throw ( memoryException ( "Malloc failed" ) );
@@ -106,12 +107,12 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
     chunk->size = sizereq;
     chunk->child = invalid;
     chunk->parent = parent;
-    if ( chunk->id==root ) {                                  //We're inserting root elem.
-        chunk->next =invalid;
+    if ( chunk->id == root ) {                                //We're inserting root elem.
+        chunk->next = invalid;
         chunk->atime = 0;
     } else {
         //Register this chunk in swapping logic:
-        chunk->atime =atime++;
+        chunk->atime = atime++;
         schedulerRegister ( *chunk );
         touch ( *chunk );
 
@@ -127,7 +128,7 @@ managedMemoryChunk* managedMemory::mmalloc ( unsigned int sizereq )
 
     }
 
-    memChunks.insert ( {chunk->id,chunk} );
+    memChunks.insert ( {chunk->id, chunk} );
     return chunk;
 }
 
@@ -137,7 +138,7 @@ bool managedMemory::swapIn ( memoryID id )
     return swapIn ( chunk );
 }
 
-bool managedMemory::setUse ( managedMemoryChunk& chunk )
+bool managedMemory::setUse ( managedMemoryChunk &chunk )
 {
     switch ( chunk.status ) {
     case MEM_ALLOCATED_INUSE:
@@ -184,9 +185,9 @@ bool managedMemory::mrealloc ( memoryID id, unsigned int sizereq )
     }
     void *realloced = realloc ( chunk.locPtr, sizereq );
     if ( realloced ) {
-        memory_used -= chunk.size -sizereq;
+        memory_used -= chunk.size - sizereq;
         chunk.size = sizereq;
-        chunk.locPtr =realloced;
+        chunk.locPtr = realloced;
         unsetUse ( chunk );
         return true;
     } else {
@@ -209,9 +210,9 @@ bool managedMemory::setUse ( memoryID id )
     return setUse ( chunk );
 }
 
-bool managedMemory::unsetUse ( managedMemoryChunk& chunk )
+bool managedMemory::unsetUse ( managedMemoryChunk &chunk )
 {
-    if ( chunk.status==MEM_ALLOCATED_INUSE ) {
+    if ( chunk.status == MEM_ALLOCATED_INUSE ) {
 
         chunk.status = ( --chunk.useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE );
         return true;
@@ -234,30 +235,31 @@ bool managedMemory::Throw ( memoryException e )
 
 void managedMemory::mfree ( memoryID id )
 {
-    managedMemoryChunk * chunk = memChunks[id];
-    if ( chunk->status==MEM_ALLOCATED_INUSE ) {
+    managedMemoryChunk *chunk = memChunks[id];
+    if ( chunk->status == MEM_ALLOCATED_INUSE ) {
         Throw ( memoryException ( "Can not free memory which is in use" ) );
         return;
     }
-    if ( chunk->child!=invalid ) {
+    if ( chunk->child != invalid ) {
         Throw ( memoryException ( "Can not free memory which has active children" ) );
         return;
     }
 
     if ( chunk ) {
-        if ( chunk->id!=root )
+        if ( chunk->id != root ) {
             schedulerDelete ( *chunk );
+        }
 
-        if ( chunk->status==MEM_ALLOCATED ) {
+        if ( chunk->status == MEM_ALLOCATED ) {
             free ( chunk->locPtr );
-            memory_used-= chunk->size;
+            memory_used -= chunk->size;
         } else {
             swap->swapDelete ( chunk );
         }
 
         //get rid of hierarchy:
-        if ( chunk->id!=root ) {
-            managedMemoryChunk* pchunk = &resolveMemChunk ( chunk->parent );
+        if ( chunk->id != root ) {
+            managedMemoryChunk *pchunk = &resolveMemChunk ( chunk->parent );
             if ( pchunk->child == chunk->id ) {
                 pchunk->child = chunk->next;
             } else {
@@ -267,11 +269,12 @@ void managedMemory::mfree ( memoryID id )
                         pchunk->next = chunk->next;
                         break;
                     };
-                    if ( pchunk->next==invalid )
+                    if ( pchunk->next == invalid ) {
                         break;
-                    else
+                    } else {
                         pchunk = &resolveMemChunk ( pchunk->next );
-                } while ( 1==1 );
+                    }
+                } while ( 1 == 1 );
             }
         }
 
@@ -286,48 +289,48 @@ void managedMemory::recursiveMfree ( memoryID id )
     managedMemoryChunk *oldchunk = &resolveMemChunk ( id );
     managedMemoryChunk *next;
     do {
-        if ( oldchunk->child!=invalid ) {
+        if ( oldchunk->child != invalid ) {
             recursiveMfree ( oldchunk->child );
         }
-        if ( oldchunk->next!=invalid ) {
-            next= &resolveMemChunk ( oldchunk->next );
+        if ( oldchunk->next != invalid ) {
+            next = &resolveMemChunk ( oldchunk->next );
         } else {
             break;
         }
         mfree ( oldchunk->id );
         oldchunk = next;
-    } while ( 1==1 );
+    } while ( 1 == 1 );
     mfree ( oldchunk->id );
 }
 
 
 
 
-unsigned int managedMemory::getNumberOfChildren ( const memoryID& id )
+unsigned int managedMemory::getNumberOfChildren ( const memoryID &id )
 {
     const managedMemoryChunk &chunk = resolveMemChunk ( id );
-    if ( chunk.child==invalid ) {
+    if ( chunk.child == invalid ) {
         return 0;
     }
-    unsigned int no=1;
+    unsigned int no = 1;
     const managedMemoryChunk *child = &resolveMemChunk ( chunk.child );
-    while ( child->next!=invalid ) {
+    while ( child->next != invalid ) {
         child = &resolveMemChunk ( child->next );
         no++;
     }
     return no;
 }
 
-void managedMemory::printTree ( managedMemoryChunk *current,unsigned int nspaces )
+void managedMemory::printTree ( managedMemoryChunk *current, unsigned int nspaces )
 {
     if ( !current ) {
         current = &resolveMemChunk ( root );
     }
     do {
-        for ( unsigned int n=0; n<nspaces; n++ ) {
+        for ( unsigned int n = 0; n < nspaces; n++ ) {
             printf ( "  " );
         }
-        printf ( "(%d : size %d Bytes, atime %d, ",current->id,current->size,current->atime );
+        printf ( "(%d : size %d Bytes, atime %d, ", current->id, current->size, current->atime );
         switch ( current->status ) {
         case MEM_ROOT:
             printf ( "Root Element" );
@@ -343,26 +346,26 @@ void managedMemory::printTree ( managedMemoryChunk *current,unsigned int nspaces
             break;
         }
         printf ( ")\n" );
-        if ( current->child!=invalid ) {
-            printTree ( &resolveMemChunk ( current->child ),nspaces+1 );
+        if ( current->child != invalid ) {
+            printTree ( &resolveMemChunk ( current->child ), nspaces + 1 );
         }
-        if ( current->next!=invalid ) {
+        if ( current->next != invalid ) {
             current = &resolveMemChunk ( current->next );
         } else {
             break;
         };
-    } while ( 1==1 );
+    } while ( 1 == 1 );
 }
 
 
 //memoryChunk class:
 
-managedMemoryChunk::managedMemoryChunk ( const memoryID& parent, const memoryID& me )
-    : useCnt ( 0 ), parent ( parent ),id ( me )
+managedMemoryChunk::managedMemoryChunk ( const memoryID &parent, const memoryID &me )
+    : useCnt ( 0 ), parent ( parent ), id ( me )
 {
 }
 
-managedMemoryChunk& managedMemory::resolveMemChunk ( const memoryID& id )
+managedMemoryChunk &managedMemory::resolveMemChunk ( const memoryID &id )
 {
     return *memChunks[id];
 }
@@ -374,17 +377,18 @@ void managedMemory::printSwapstats()
           \n\tA total of %d swapins occured, reading in %d bytes (%.3e Bytes/avg)\
           \n\twe used already loaded elements %d times, %d had to be fetched\
           \n\tthus, the hits over misses rate was %.5f\
-          \n\tfraction of swapped out ram (currently) %.2e",n_swap_out,swap_out_bytes,\
-               ( ( float ) swap_out_bytes ) /n_swap_out,n_swap_in,swap_in_bytes, ( ( float ) swap_in_bytes ) /n_swap_in,\
-               swap_hits,swap_misses, ( ( float ) swap_hits/swap_misses ), ( ( float ) memory_swapped ) / ( memory_used+memory_swapped ) );
+          \n\tfraction of swapped out ram (currently) %.2e", n_swap_out, swap_out_bytes, \
+               ( ( float ) swap_out_bytes ) / n_swap_out, n_swap_in, swap_in_bytes, ( ( float ) swap_in_bytes ) / n_swap_in, \
+               swap_hits, swap_misses, ( ( float ) swap_hits / swap_misses ), ( ( float ) memory_swapped ) / ( memory_used + memory_swapped ) );
 }
 
 void managedMemory::resetSwapstats()
 {
-    swap_hits=swap_misses=swap_in_bytes=swap_out_bytes=n_swap_in=n_swap_out=0;
+    swap_hits = swap_misses = swap_in_bytes = swap_out_bytes = n_swap_in = n_swap_out = 0;
 }
 
 #endif
+
 
 
 

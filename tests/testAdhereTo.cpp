@@ -9,17 +9,17 @@ TEST ( adhereTo, Unit_LoadUnload )
     cyclicManagedMemory managedMemory ( &swap, 100 );
     managedPtr<double> ptr1 ( 2 ), ptr2 ( 2 ), ptr3 ( 2 );
 
-    adhereTo<double>* global1 = new adhereTo<double> ( ptr1 );
-    adhereTo<double>* global2 = new adhereTo<double> ( ptr2, true );
-    adhereTo<double>* global3 = new adhereTo<double> ( ptr3, false );
+    adhereTo<double> *global1 = new adhereTo<double> ( ptr1 );
+    adhereTo<double> *global2 = new adhereTo<double> ( ptr2, true );
+    adhereTo<double> *global3 = new adhereTo<double> ( ptr3, false );
 
     ASSERT_FALSE ( global1->loaded );
     ASSERT_TRUE ( global2->loaded );
     ASSERT_FALSE ( global3->loaded );
 
-    double* loc1 = *global1;
-    double* loc2 = *global2;
-    double* loc3 = *global3;
+    double *loc1 = *global1;
+    double *loc2 = *global2;
+    double *loc3 = *global3;
 
     for ( unsigned int i = 0; i < 2; ++i ) {
         ASSERT_NO_FATAL_FAILURE ( loc1[i] = i );
@@ -44,8 +44,8 @@ TEST ( adhereTo, Unit_AccessData )
     cyclicManagedMemory managedMemory ( &swap, 100 );
     managedPtr<double> ptr ( count );
 
-    adhereTo<double>* global = new adhereTo<double> ( ptr );
-    double* loc = *global;
+    adhereTo<double> *global = new adhereTo<double> ( ptr );
+    double *loc = *global;
 
     for ( unsigned int i = 0; i < count; ++i ) {
         loc[i] = i;
@@ -70,8 +70,8 @@ TEST ( adhereTo, Unit_TwiceAdhered )
     cyclicManagedMemory managedMemory ( &swap, 100 );
     managedPtr<double> ptr ( count );
 
-    adhereTo<double>* global1 = new adhereTo<double> ( ptr );
-    double* loc1 = *global1;
+    adhereTo<double> *global1 = new adhereTo<double> ( ptr );
+    double *loc1 = *global1;
 
     ASSERT_TRUE ( global1->loaded );
 
@@ -79,8 +79,8 @@ TEST ( adhereTo, Unit_TwiceAdhered )
         loc1[i] = i;
     }
 
-    adhereTo<double>* global2 = NULL;
-    double* loc2 = NULL;
+    adhereTo<double> *global2 = NULL;
+    double *loc2 = NULL;
 
 
     ASSERT_NO_THROW ( global2 = new adhereTo<double> ( ptr , true ) );
@@ -113,5 +113,6 @@ TEST ( adhereTo, UNIT_MacroUsage )
     loc[i] = i;
     } );
 }
+
 
 

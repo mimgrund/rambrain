@@ -15,7 +15,7 @@ struct cyclicAtime {
 class cyclicManagedMemory : public managedMemory
 {
 public:
-    cyclicManagedMemory ( managedSwap* swap, unsigned int size );
+    cyclicManagedMemory ( managedSwap *swap, unsigned int size );
     virtual ~cyclicManagedMemory() {}
 
     void printCycle();
@@ -26,21 +26,21 @@ public:
 
 
 private:
-    virtual bool swapIn ( managedMemoryChunk& chunk );
+    virtual bool swapIn ( managedMemoryChunk &chunk );
     virtual bool swapOut ( unsigned int min_size );
-    virtual bool touch ( managedMemoryChunk& chunk );
+    virtual bool touch ( managedMemoryChunk &chunk );
     virtual void schedulerRegister ( managedMemoryChunk &chunk );
     virtual void schedulerDelete ( managedMemoryChunk &chunk );
 
     //loop pointers:
-    cyclicAtime *active=NULL;
-    cyclicAtime *counterActive=NULL;
-    unsigned int diff=0;
+    cyclicAtime *active = NULL;
+    cyclicAtime *counterActive = NULL;
+    unsigned int diff = 0;
 
     float swapOutFrac = .8;
     float swapInFrac = .9;
 
-    bool preemtiveSwapIn=true;//TODO: Change strategy dynamically.
+    bool preemtiveSwapIn = true; //TODO: Change strategy dynamically.
     unsigned int preemptiveBytes = 0;
 
 };
@@ -62,6 +62,7 @@ private:
 
 
 #endif
+
 
 
 

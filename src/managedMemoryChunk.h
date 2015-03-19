@@ -18,7 +18,7 @@ public:
     //Local management
     memoryStatus status;
     unsigned short useCnt;
-    void * locPtr;
+    void *locPtr;
     unsigned int size;
 
     //Organization
@@ -29,10 +29,10 @@ public:
 
     //Swap scheduling:
     memoryAtime atime;
-    void * schedBuf;//Give the mem scheduler a place for a buffer.
+    void *schedBuf; //Give the mem scheduler a place for a buffer.
 
     //Swap raw management:
-    void * swapBuf;//Give the swapper a place for a buffer.
+    void *swapBuf; //Give the swapper a place for a buffer.
 };
 
-#endif
+#endiff

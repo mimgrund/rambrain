@@ -9,7 +9,7 @@ TEST ( managedMemory, Unit_DefaultManagerPresent )
 
 TEST ( managedMemory, Unit_DefaultManagerPresentAfterAllocation )
 {
-    managedMemory* mm = new dummyManagedMemory();
+    managedMemory *mm = new dummyManagedMemory();
     managedMemory::defaultManager = mm;
 
     delete mm;
@@ -26,4 +26,5 @@ TEST ( managedMemory, Unit_BaseMemoryUsage )
     EXPECT_EQ ( 0u, managedMemory::defaultManager->getUsedMemory() );
     EXPECT_EQ ( 0u, managedMemory::defaultManager->getSwappedMemory() );
 }
+
 

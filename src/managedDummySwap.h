@@ -9,10 +9,10 @@ class managedDummySwap : public managedSwap
 public:
     managedDummySwap ( unsigned int size );
 
-    virtual unsigned int swapIn ( managedMemoryChunk** chunklist, unsigned int nchunks );
-    virtual bool swapIn ( managedMemoryChunk* chunk );
-    virtual unsigned int swapOut ( managedMemoryChunk** chunklist, unsigned int nchunks );
-    virtual bool swapOut ( managedMemoryChunk* chunk );
+    virtual unsigned int swapIn ( managedMemoryChunk **chunklist, unsigned int nchunks );
+    virtual bool swapIn ( managedMemoryChunk *chunk );
+    virtual unsigned int swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks );
+    virtual bool swapOut ( managedMemoryChunk *chunk );
     virtual void swapDelete ( managedMemoryChunk *chunk );
     virtual unsigned int getUsedSwap();
 
@@ -21,5 +21,6 @@ public:
 };
 
 #endif
+
 
 
