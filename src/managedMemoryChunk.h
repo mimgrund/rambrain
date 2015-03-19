@@ -35,4 +35,5 @@ public:
     void *swapBuf; //Give the swapper a place for a buffer.
 };
 
-#endiff
+#endif
+
