@@ -29,7 +29,7 @@ public:
     bool setUse ( memoryID id );
     bool unsetUse ( memoryID id );
     bool setUse ( managedMemoryChunk &chunk, bool writeAccess );
-    bool unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets=1);
+    bool unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets = 1 );
 
     //Tree Management
     unsigned int getNumberOfChildren ( const memoryID &id );

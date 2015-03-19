@@ -53,6 +53,10 @@ TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
 
     managedPtr<A> managedA ( 2 );
 
+    unsigned int sizeA = sizeof ( A );
+    unsigned int sizeInt = sizeof ( int );
+    unsigned int sizeDouble = sizeof ( double );
+
     ADHERETOLOC ( A, managedA, locA );
 
     ASSERT_TRUE ( locA != NULL );
@@ -70,9 +74,9 @@ TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
         managedPtr<int> test ( 10 );
 
         EXPECT_EQ ( 2u, manager.getNumberOfChildren ( managedMemory::root ) );
-        EXPECT_EQ ( 2u * 16 + 2 * 80 + 10 * 4, manager.getUsedMemory() );
+        EXPECT_EQ ( 2 * ( sizeA + 10 * sizeDouble ) + 10 * sizeInt, manager.getUsedMemory() );
     }
-    EXPECT_EQ ( 2u * 16 + 2 * 80, manager.getUsedMemory() );
+    EXPECT_EQ ( 2 * ( sizeA + 10 * sizeDouble ), manager.getUsedMemory() );
 
 }
 
@@ -329,8 +333,8 @@ TEST ( cyclicManagedMemory, Unit_MissingPointerDeallocation )
     ASSERT_DEATH (
         managedDummySwap swap ( 100 );
         cyclicManagedMemory manager ( &swap, 100 );
-        managedPtr<double> *ptr = new managedPtr<double> ( 1 )
-    , "pure virtual method called" );
+        managedPtr<double> *ptr = new managedPtr<double> ( 1 );
+        , "pure virtual method called" );
 }
 
 TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceForOneElement )
@@ -375,6 +379,7 @@ TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceInTotal )
     delete ptr2;
     delete ptr3;
     delete ptr4;
+    delete ptr5;
 }
 
 

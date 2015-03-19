@@ -217,7 +217,7 @@ bool managedMemory::setUse ( memoryID id )
     return setUse ( chunk );
 }
 
-bool managedMemory::unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets)
+bool managedMemory::unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets )
 {
     if ( chunk.status & MEM_ALLOCATED_INUSE_READ ) {
         chunk.useCnt -= no_unsets;

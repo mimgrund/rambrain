@@ -27,7 +27,7 @@ TEST ( adhereTo, Unit_LoadUnload )
         ASSERT_NO_FATAL_FAILURE ( loc3[i] = i );
     }
 
-    
+
     ASSERT_TRUE ( global1->loaded );
     ASSERT_TRUE ( global2->loaded );
     ASSERT_TRUE ( global3->loaded );
