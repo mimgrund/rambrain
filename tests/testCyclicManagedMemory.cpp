@@ -33,11 +33,12 @@ TEST ( cyclicManagedMemory, Unit_AllocatePointers )
 
     ASSERT_TRUE ( lPtr!=NULL );
 
-    ASSERT_TRUE ( manager.getUsedMemory() ==sizeof ( double ) *50 );
+    ASSERT_EQ ( sizeof ( double ) * 50, manager.getUsedMemory() );
 
+    ASSERT_NO_FATAL_FAILURE (
     for ( int n=0; n<50; n++ ) {
-        lPtr[n] = 1.; //Should not segfault
-    }
+    lPtr[n] = 1.; //Should not segfault
+    } );
 }
 
 TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
@@ -52,24 +53,24 @@ TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
 
     ADHERETOLOC ( A,managedA,locA );
 
-    ASSERT_TRUE ( locA!=NULL );
+    ASSERT_TRUE ( locA != NULL );
 
     adhereTo<double> adhTestelements = locA->testelements;
     double * testelements = adhTestelements;
-    ASSERT_TRUE ( testelements!=NULL );
+    ASSERT_TRUE ( testelements != NULL );
     ASSERT_TRUE ( manager.checkCycle() );
 
     locA->test();
 
-    EXPECT_TRUE ( manager.getNumberOfChildren ( managedMemory::root ) ==1 );
-    EXPECT_TRUE ( manager.getNumberOfChildren ( 2 ) ==2 );
+    EXPECT_EQ ( 1, manager.getNumberOfChildren ( managedMemory::root ) );
+    EXPECT_EQ ( 2, manager.getNumberOfChildren ( 2 ) );
     {
         managedPtr<int> test ( 10 );
 
-        EXPECT_TRUE ( manager.getNumberOfChildren ( managedMemory::root ) ==2 );
-        EXPECT_TRUE ( manager.getUsedMemory() ==2*16+2*80+10*4 );
+        EXPECT_EQ ( 2, manager.getNumberOfChildren ( managedMemory::root ) );
+        EXPECT_EQ ( 2*16+2*80+10*4, manager.getUsedMemory() );
     }
-    EXPECT_TRUE ( manager.getUsedMemory() ==2*16+2*80 );
+    EXPECT_EQ ( 2*16+2*80, manager.getUsedMemory() );
 
 }
 
@@ -128,7 +129,7 @@ TEST ( cyclicManagedMemory, Integration_ArrayAccess )
             adhereTo<double> aLoc ( *ptrs[n] );
             double *darr = aLoc;
             for ( int m=0; m<10; m++ ) {
-                EXPECT_EQ ( darr[m],n*13+m*o );
+                EXPECT_EQ ( n*13+m*o, darr[m] );
             }
         }
     }
@@ -191,7 +192,7 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
             adhereTo<double> aLoc ( *ptrs[n] );
             double *darr = aLoc;
             for ( int m=0; m<10; ++m ) {
-                EXPECT_TRUE ( darr[m]==-1|| ( darr[m]==n*13+m*o ) );
+                EXPECT_TRUE ( darr[m] == -1 || ( darr[m] == n*13+m*o ) );
             }
 #ifdef SWAPSTATSLONG
             manager.printMemUsage();
@@ -222,5 +223,6 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
     }
 
 }
+
 
 
