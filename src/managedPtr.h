@@ -83,33 +83,36 @@ class adhereTo
 public:
     adhereTo ( managedPtr<T> &data, bool loadImidiately = false ) {
         this->data = &data;
+        
         if ( loadImidiately ) {
-
-            loaded = data.setUse ( true );
-
+            loaded = (data.setUse ( true )?1:0);
         }
+        
     }
     operator  T *() {
-        if ( !loaded || !loadedWritable ) {
-            loaded = data->setUse ( true );
+        if ( loaded == 0 || !loadedWritable ) {
+            loaded += (data->setUse ( true )?1:0);
         }
         loadedWritable = true;
         return data->getLocPtr();
     };
     operator  const T *() {
-        loaded = data->setUse ( false );
+        if(loaded==0)
+            loaded += (data->setUse ( false )?1:0);
 
         return data->getConstLocPtr();
     };
     ~adhereTo() {
-        if ( loaded ) {
-            data->unsetUse();
+        if ( loaded > 0) {
+            while(loaded!=0)
+                loaded -= (data->unsetUse()?1:0);
         }
     }
 private:
     managedPtr<T> *data;
-    bool loaded = false;
+    unsigned int loaded = 0;
     bool loadedWritable = false;
+    
 
     // Test classes
     friend class adhereTo_Unit_LoadUnload_Test;
