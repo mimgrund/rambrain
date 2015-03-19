@@ -1,4 +1,6 @@
 #include <gtest/gtest.h>
+#include <time.h>
+#include <stdlib.h>
 #include "cyclicManagedMemory.h"
 #include "managedPtr.h"
 #include "managedDummySwap.h"
@@ -224,6 +226,99 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
 
 }
 
+TEST ( cyclicManagedMemory, Unit_VariousSize )
+{
+    const unsigned int memsize = sizeof ( double ) * 10;
+    const unsigned int swapmem = 100*memsize;
 
+    managedDummySwap swap ( swapmem );
+    cyclicManagedMemory manager ( &swap, memsize );
 
+    for ( unsigned int o=0; o<10; ++o ) {
+        const unsigned int targetsize = o+1;
+        const unsigned int totalspace = 8 * targetsize * sizeof ( double );
+        const unsigned int swappedmin = ( totalspace > memsize ? totalspace - memsize : 0u );
+        managedPtr<double> *arr[8];
+
+        for ( unsigned int p=0; p<8; ++p ) {
+            arr[p] = new managedPtr<double> ( targetsize );
+            ASSERT_TRUE ( manager.checkCycle() );
+        }
+
+        ASSERT_GE ( swap.getUsedSwap(), swappedmin );
+        ASSERT_EQ ( manager.getSwappedMemory(), swap.getUsedSwap() );
+
+        for ( unsigned int p=0; p<8; ++p ) {
+            managedPtr<double> &a = *arr[p];
+            ADHERETOLOC ( double,a,locA );
+            locA[0] = o+p;
+            ASSERT_TRUE ( manager.checkCycle() );
+        }
+
+        for ( unsigned int p=0; p<8; ++p ) {
+            managedPtr<double> &a = *arr[p];
+            ADHERETOLOC ( double,a,locA );
+            EXPECT_EQ ( o+p, locA[0] );
+            ASSERT_TRUE ( manager.checkCycle() );
+        }
+
+        for ( unsigned int p=0; p<8; ++p ) {
+            delete arr[p];
+            ASSERT_TRUE ( manager.checkCycle() );
+        }
+
+        ASSERT_EQ ( 0u, swap.getUsedSwap() );
+        ASSERT_EQ ( manager.getSwappedMemory(), swap.getUsedSwap() );
+    }
+}
+
+TEST ( cyclicManagedMemory, Unit_RandomAllocation )
+{
+    unsigned int seed = time ( NULL );
+    srand ( seed );
+    infomsgf ( "RNG seed is %d", seed );
+    const unsigned int memsize = sizeof ( double ) * 10;
+    const unsigned int swapmem = 10000*memsize;
+
+    managedDummySwap swap ( swapmem );
+    cyclicManagedMemory manager ( &swap, memsize );
+
+    for ( unsigned int o=0; o<10; ++o ) {
+        const unsigned int arraysize = rand_r ( &seed ) / RAND_MAX * 20 + 1;
+        const unsigned int targetsize = rand_r ( &seed ) / RAND_MAX * 20 + 1;
+        const unsigned int totalspace = arraysize * targetsize * sizeof ( double );
+        const unsigned int swappedmin = ( totalspace > memsize ? totalspace - memsize : 0u );
+        managedPtr<double> *arr[arraysize];
+
+        for ( unsigned int p=0; p<arraysize; ++p ) {
+            arr[p] = new managedPtr<double> ( targetsize );
+            ASSERT_TRUE ( manager.checkCycle() );
+        }
+
+        ASSERT_GE ( swap.getUsedSwap(), swappedmin );
+        ASSERT_EQ ( manager.getSwappedMemory(), swap.getUsedSwap() );
+
+        for ( unsigned int p=0; p<arraysize; ++p ) {
+            managedPtr<double> &a = *arr[p];
+            ADHERETOLOC ( double, a, locA );
+            locA[0] = o+p;
+            ASSERT_TRUE ( manager.checkCycle() );
+        }
+
+        for ( unsigned int p=0; p<arraysize; ++p ) {
+            managedPtr<double> &a = *arr[p];
+            ADHERETOLOC ( double, a, locA );
+            EXPECT_EQ ( o+p, locA[0] );
+            ASSERT_TRUE ( manager.checkCycle() );
+        }
+
+        for ( unsigned int p=0; p<arraysize; ++p ) {
+            delete arr[p];
+            ASSERT_TRUE ( manager.checkCycle() );
+        }
+
+        ASSERT_EQ ( 0u, swap.getUsedSwap() );
+        ASSERT_EQ ( manager.getSwappedMemory(), swap.getUsedSwap() );
+    }
+}
 
