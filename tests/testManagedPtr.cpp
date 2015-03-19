@@ -56,6 +56,36 @@ TEST ( managedPtr, Unit_GetLocPointer )
     ptr.unsetUse();
 }
 
+
+TEST ( managedPtr, Unit_SmartPointery )
+{
+    managedDummySwap swap ( 200 );
+    cyclicManagedMemory managedMemory ( &swap, 200 );
+
+    managedPtr<double> ptr ( 5 );
+    for ( int n = 0; n < 5; n++ ) {
+        ADHERETOLOC ( double, ptr, lptr );
+        lptr[n] = n;
+    }
+    managedPtr<double> ptr2 ( 5 );
+    for ( int n = 0; n < 5; n++ ) {
+        ADHERETOLOC ( double, ptr, lptr );
+        ADHERETOLOC ( double, ptr2, lptr2 );
+        lptr2[n] = 1 - n;
+    }
+    ptr = ptr2;
+    for ( int n = 0; n < 5; n++ ) {
+        ADHERETOLOC ( double, ptr, lptr );
+        ADHERETOLOC ( double, ptr2, lptr2 );
+        EXPECT_EQ ( 1 - n, lptr[n] );
+        EXPECT_EQ ( 1 - n, lptr2[n] );
+    }
+
+
+
+}
+
+
 TEST ( managedPtr, Unit_DeleteWhileInUse )
 {
     /* TODO This test does not work, exception is handled by libc++ instead of gtest

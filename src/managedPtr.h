@@ -9,8 +9,14 @@ template <class T>
 class managedPtr
 {
 public:
+    managedPtr ( const managedPtr<T> &ref ) : tracker ( ref.tracker ), n_elem ( ref.n_elem ), chunk ( ref.chunk ) {
+        ( *tracker )++;
+    }
+
     managedPtr ( unsigned int n_elem ) {
         this->n_elem = n_elem;
+        tracker = new unsigned int;
+        ( *tracker ) = 0;
         if ( n_elem == 0 ) {
             throw memoryException ( "Cannot allocate zero sized object." );
         }
@@ -24,10 +30,40 @@ public:
         }
         unsetUse();
         managedMemory::parent = savedParent;
+        ( *tracker ) = 1;
     }
 
 
     ~managedPtr() {
+        -- ( *tracker );
+        if ( *tracker  == 0 ) {
+            mDelete();
+        }
+    }
+
+    bool setUse ( bool writable = true ) {
+        return managedMemory::defaultManager->setUse ( *chunk , writable );
+    }
+
+    bool unsetUse ( unsigned int loaded = 1 ) {
+        return managedMemory::defaultManager->unsetUse ( *chunk , loaded );
+    }
+    managedPtr<T> &operator= ( const managedPtr<T> &ref ) {
+        if ( -- ( *tracker ) == 0 ) {
+            mDelete();
+        }
+        n_elem = ref.n_elem;
+        chunk = ref.chunk;
+        tracker = ref.tracker;
+        ++ ( *tracker );
+    }
+
+private:
+    managedMemoryChunk *chunk;
+    unsigned int *tracker;
+    unsigned int n_elem;
+
+    void mDelete() {
         bool oldthrow = managedMemory::defaultManager->noThrow;
         managedMemory::defaultManager->noThrow = true;
         for ( unsigned int n = 0; n < n_elem; n++ ) {
@@ -35,21 +71,8 @@ public:
         }
         managedMemory::defaultManager->mfree ( chunk->id );
         managedMemory::defaultManager->noThrow = oldthrow;
+        delete tracker;
     }
-
-    bool setUse ( bool writable = true ) {
-        return managedMemory::defaultManager->setUse ( *chunk , writable );
-    }
-
-    bool unsetUse() {
-        return managedMemory::defaultManager->unsetUse ( *chunk );
-    }
-    //!\TODO: smart Pointerize. at least copy constructor
-
-
-private:
-    managedMemoryChunk *chunk;
-    unsigned int n_elem;
 
     T *getLocPtr() {
         if ( chunk->status == MEM_ALLOCATED_INUSE_WRITE ) {
@@ -106,9 +129,7 @@ public:
     }
     ~adhereTo() {
         if ( loaded > 0 ) {
-            while ( loaded != 0 ) {
-                loaded -= ( data->unsetUse() ? 1 : 0 );
-            }
+            loaded = ( data->unsetUse ( loaded ) ? 0 : loaded );
         }
     }
 private:
