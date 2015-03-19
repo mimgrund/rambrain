@@ -114,7 +114,3 @@ TEST ( adhereTo, UNIT_MacroUsage )
     loc[i] = i;
     } );
 }
-
-
-
-

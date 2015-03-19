@@ -50,6 +50,3 @@ TEST ( managedDummySwap, Unit_SwapSize )
 
     delete ptr2;
 }
-
-
-

@@ -9,5 +9,3 @@ TEST ( dummyManagedMemory, Unit_ThrowsExceptions )
 
     EXPECT_THROW ( managedPtr<double> ichbinnichtexistent ( 1 ), memoryException );
 }
-
-

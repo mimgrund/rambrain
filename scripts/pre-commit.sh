@@ -11,10 +11,10 @@ else
     for file in $diff; do
 	    echo $file
 	    cp $file .beautyback
-	    astyle --style=kr --attach-inlines --indent=spaces=4 --suffix=none --pad-paren --pad-oper --pad-header --align-pointer=name --align-reference=name --add-brackets .beautyback
+	    astyle --style=kr --attach-inlines --indent=spaces=4 --suffix=none --pad-paren --pad-oper --pad-header --align-pointer=name --align-reference=name --add-brackets --quiet .beautyback
 	    
 	    git show :$file > .beautyformatter
-	    astyle --style=kr --attach-inlines --indent=spaces=4 --suffix=none --pad-paren --pad-oper --pad-header --align-pointer=name --align-reference=name --add-brackets beautyformatter
+	    astyle --style=kr --attach-inlines --indent=spaces=4 --suffix=none --pad-paren --pad-oper --pad-header --align-pointer=name --align-reference=name --add-brackets --quiet .beautyformatter
 	    
             mv .beautyformatter $file
 	    git add $file

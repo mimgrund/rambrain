@@ -14,7 +14,6 @@
 
 cyclicManagedMemory::cyclicManagedMemory ( managedSwap *swap, unsigned int size ) : managedMemory ( swap, size )
 {
-
 }
 
 void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk &chunk )
@@ -79,6 +78,7 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
 
     delete element;
 }
+
 //Touch happens automatically after use, create, swapIn
 bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
 {
@@ -86,11 +86,8 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
         preemptiveBytes -= chunk.size;
     }
 
-
     //Put this object to begin of loop:
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
-
-
 
     if ( active == element ) {
         return true;
@@ -118,8 +115,6 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
         active = element;
         return true;
     }
-
-
 
     cyclicAtime *oldplace_before = element->prev;
     cyclicAtime *oldplace_after = element->next;
@@ -258,7 +253,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 
 }
 
-
 //Idea: swap out more than required, as the free space may be filled with premptive swap-ins
 
 bool cyclicManagedMemory::checkCycle()
@@ -317,7 +311,6 @@ bool cyclicManagedMemory::checkCycle()
 
 }
 
-
 void cyclicManagedMemory::printCycle()
 {
     cyclicAtime *atime = active;
@@ -357,8 +350,6 @@ void cyclicManagedMemory::printCycle()
     printf ( "\n" );
     printf ( "\n" );
 }
-
-
 
 bool cyclicManagedMemory::swapOut ( unsigned int min_size )
 {
@@ -485,18 +476,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
 #endif
         return true;
     }
-
     else {
         return false;
     }
 }
-
-
-
-
-
-
-
-
-
-

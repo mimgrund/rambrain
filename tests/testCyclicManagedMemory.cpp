@@ -381,7 +381,3 @@ TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceInTotal )
     delete ptr4;
     delete ptr5;
 }
-
-
-
-
