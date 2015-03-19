@@ -6,6 +6,3 @@ int main ( int argc, char **argv )
     ::testing::GTEST_FLAG ( filter ) = "*.Unit_*";
     return RUN_ALL_TESTS();
 }
-
-
-

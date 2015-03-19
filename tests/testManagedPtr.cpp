@@ -69,8 +69,3 @@ TEST ( managedPtr, Unit_DeleteWhileInUse )
     EXPECT_THROW(delete managedMemory, memoryException);*/
 
 }
-
-
-
-
-

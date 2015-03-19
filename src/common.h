@@ -24,6 +24,3 @@ inline static double sqr ( double x )
 #define VECTOR_FOREACH(vec,iter) for(int iter = 0; iter < vec.size(); ++iter)
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
-
-

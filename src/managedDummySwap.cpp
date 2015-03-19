@@ -78,7 +78,3 @@ unsigned int managedDummySwap::getUsedSwap()
 {
     return swapUsed;
 }
-
-
-
-
