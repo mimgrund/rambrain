@@ -97,6 +97,7 @@ TEST ( cyclicManagedMemory, Unit_NotEnoughMemOrSwapSpace )
     EXPECT_NO_THROW ( managedPtr<double> ptr6 ( 10 ) );
 
     delete manager2;
+    delete manager1;
 }
 
 TEST ( cyclicManagedMemory, Integration_ArrayAccess )
@@ -374,4 +375,5 @@ TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceInTotal )
     delete ptr3;
     delete ptr4;
 }
+
 

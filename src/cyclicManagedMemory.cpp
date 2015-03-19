@@ -51,6 +51,7 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk& chunk )
     if ( element->next==element ) {
         active = NULL;
         counterActive=NULL;
+        delete element;
         return;
 
     }
@@ -466,6 +467,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         return false;
     }
 }
+
 
 
 

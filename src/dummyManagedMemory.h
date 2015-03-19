@@ -8,8 +8,7 @@
 class dummyManagedMemory : public managedMemory
 {
 public:
-    //!TODO How to delete the dummy swap?
-    dummyManagedMemory() : managedMemory ( new managedDummySwap ( 0 ) ) {}
+    dummyManagedMemory() : managedMemory ( &mswap,0 ) {}
     ~dummyManagedMemory() {}
 
 protected:
@@ -29,8 +28,12 @@ protected:
         throw memoryException ( "No memory manager in place." );
     }
 
+private:
+    managedDummySwap mswap = managedDummySwap ( 0 );
+
 };
 
 #endif // DUMMYMANAGEDMEMORY_H
+
 
 

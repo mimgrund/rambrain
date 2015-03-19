@@ -3,7 +3,9 @@
 #include "exceptions.h"
 #include "dummyManagedMemory.h"
 
-managedMemory* managedMemory::dummyManager = new dummyManagedMemory();
+dummyManagedMemory dummy;
+
+managedMemory* managedMemory::dummyManager = &dummy;
 managedMemory* managedMemory::defaultManager = managedMemory::dummyManager;
 memoryID const managedMemory::root=1;
 memoryID const managedMemory::invalid=0;
@@ -13,10 +15,6 @@ bool managedMemory::noThrow = false;
 managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
 {
     memory_max = size;
-    if ( defaultManager != dummyManager ) {
-        //! \todo this is evil! What if it is allocated on the stack?
-        delete defaultManager;
-    }
     defaultManager = this;
     managedMemoryChunk *chunk = mmalloc ( 0 );                //Create root element.
     chunk->status = MEM_ROOT;
@@ -387,6 +385,7 @@ void managedMemory::resetSwapstats()
 }
 
 #endif
+
 
 
 
