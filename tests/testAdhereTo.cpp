@@ -14,8 +14,11 @@ TEST ( adhereTo, Unit_LoadUnload )
     adhereTo<double> *global3 = new adhereTo<double> ( ptr3, false );
 
     ASSERT_FALSE ( global1->loaded );
+    ASSERT_FALSE ( global1->loadedWritable );
     ASSERT_TRUE ( global2->loaded );
+    ASSERT_TRUE ( global2->loadedWritable );
     ASSERT_FALSE ( global3->loaded );
+    ASSERT_FALSE ( global3->loadedWritable );
 
     double *loc1 = *global1;
     double *loc2 = *global2;
@@ -27,15 +30,56 @@ TEST ( adhereTo, Unit_LoadUnload )
         ASSERT_NO_FATAL_FAILURE ( loc3[i] = i );
     }
 
-    
     ASSERT_TRUE ( global1->loaded );
+    ASSERT_TRUE ( global1->loadedWritable );
     ASSERT_TRUE ( global2->loaded );
+    ASSERT_TRUE ( global2->loadedWritable );
     ASSERT_TRUE ( global3->loaded );
+    ASSERT_TRUE ( global3->loadedWritable );
 
     delete global1;
     delete global2;
     delete global3;
+}
 
+TEST ( adhereTo, Unit_LoadUnloadConst )
+{
+    managedDummySwap swap ( 100 );
+    cyclicManagedMemory managedMemory ( &swap, 100 );
+    managedPtr<double> ptr1 ( 2 ), ptr2 ( 2 ), ptr3 ( 2 );
+
+    adhereTo<double> *global1 = new adhereTo<double> ( ptr1 );
+    adhereTo<double> *global2 = new adhereTo<double> ( ptr2, true );
+    adhereTo<double> *global3 = new adhereTo<double> ( ptr3, false );
+
+    ASSERT_FALSE ( global1->loaded );
+    ASSERT_FALSE ( global1->loadedWritable );
+    ASSERT_TRUE ( global2->loaded );
+    ASSERT_TRUE ( global2->loadedWritable );
+    ASSERT_FALSE ( global3->loaded );
+    ASSERT_FALSE ( global3->loadedWritable );
+
+    const double *loc1 = *global1;
+    const double *loc2 = *global2;
+    const double *loc3 = *global3;
+    double dummy = 0.0;
+
+    for ( unsigned int i = 0; i < 2; ++i ) {
+        ASSERT_NO_FATAL_FAILURE ( dummy = loc1[i] );
+        ASSERT_NO_FATAL_FAILURE ( dummy = loc2[i] );
+        ASSERT_NO_FATAL_FAILURE ( dummy = loc3[i] );
+    }
+
+    ASSERT_TRUE ( global1->loaded );
+    ASSERT_FALSE ( global1->loadedWritable );
+    ASSERT_TRUE ( global2->loaded );
+    ASSERT_TRUE ( global2->loadedWritable );
+    ASSERT_TRUE ( global3->loaded );
+    ASSERT_FALSE ( global3->loadedWritable );
+
+    delete global1;
+    delete global2;
+    delete global3;
 }
 
 TEST ( adhereTo, Unit_AccessData )

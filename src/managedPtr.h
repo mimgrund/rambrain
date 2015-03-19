@@ -58,7 +58,7 @@ private:
             throw unexpectedStateException ( "Can not get local pointer without setting usage first" );
             return NULL;
         }
-    };
+    }
 
     const T *getConstLocPtr() {
         if ( chunk->status & MEM_ALLOCATED_INUSE_READ ) {
@@ -83,39 +83,43 @@ class adhereTo
 public:
     adhereTo ( managedPtr<T> &data, bool loadImidiately = false ) {
         this->data = &data;
-        
+
         if ( loadImidiately ) {
-            loaded = (data.setUse ( true )?1:0);
+            loaded = ( data.setUse ( true ) ? 1 : 0 );
+            loadedWritable = true;
         }
-        
+
     }
     operator  T *() {
         if ( loaded == 0 || !loadedWritable ) {
-            loaded += (data->setUse ( true )?1:0);
+            loaded += ( data->setUse ( true ) ? 1 : 0 );
         }
         loadedWritable = true;
         return data->getLocPtr();
-    };
+    }
     operator  const T *() {
-        if(loaded==0)
-            loaded += (data->setUse ( false )?1:0);
+        if ( loaded == 0 ) {
+            loaded += ( data->setUse ( false ) ? 1 : 0 );
+        }
 
         return data->getConstLocPtr();
-    };
+    }
     ~adhereTo() {
-        if ( loaded > 0) {
-            while(loaded!=0)
-                loaded -= (data->unsetUse()?1:0);
+        if ( loaded > 0 ) {
+            while ( loaded != 0 ) {
+                loaded -= ( data->unsetUse() ? 1 : 0 );
+            }
         }
     }
 private:
     managedPtr<T> *data;
     unsigned int loaded = 0;
     bool loadedWritable = false;
-    
+
 
     // Test classes
     friend class adhereTo_Unit_LoadUnload_Test;
+    friend class adhereTo_Unit_LoadUnloadConst_Test;
     friend class adhereTo_Unit_TwiceAdhered_Test;
 };
 
