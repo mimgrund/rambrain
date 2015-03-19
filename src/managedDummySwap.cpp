@@ -72,9 +72,3 @@ void managedDummySwap::swapDelete ( managedMemoryChunk *chunk )
         free ( chunk->swapBuf );
     }
 }
-
-
-unsigned int managedDummySwap::getUsedSwap()
-{
-    return swapUsed;
-}

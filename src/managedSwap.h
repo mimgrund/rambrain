@@ -14,9 +14,16 @@ public:
     virtual unsigned int swapIn ( managedMemoryChunk **chunklist, unsigned int nchunks ) = 0;
     virtual bool swapIn ( managedMemoryChunk *chunk ) = 0;
     virtual void swapDelete ( managedMemoryChunk *chunk ) = 0;
-    virtual unsigned int getUsedSwap() = 0;
+
+    virtual unsigned int getSwapSize() {
+        return swapSize;
+    }
+    virtual unsigned int getUsedSwap() {
+        return swapUsed;
+    }
 
 protected:
+    //TODO Following member is unused, delete?
     unsigned int memory_swap_avail = 0;
     unsigned int swapSize;
     unsigned int swapUsed;
