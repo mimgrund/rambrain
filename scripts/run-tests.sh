@@ -7,7 +7,7 @@ nocolor='\033[0m'
 echo "Running all tests wrapped in valgrind..."
 echo ""
 
-valgrind --leak-check=full --log-file=.valgrind bin/membrain-tests
+valgrind --leak-check=full --track-origins=yes --log-file=.valgrind bin/membrain-tests
 noleak=$(grep -c "All heap blocks were freed -- no leaks are possible" .valgrind)
 
 if [ $noleak -eq 1 ]
