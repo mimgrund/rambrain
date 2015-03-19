@@ -8,26 +8,35 @@
 class dummyManagedMemory : public managedMemory
 {
 public:
-    dummyManagedMemory() : managedMemory(new managedDummySwap(0)) {}
-    ~dummyManagedMemory() {}
+    dummyManagedMemory() : managedMemory ( &mswap, 0 ) {}
+    virtual ~dummyManagedMemory() {}
 
 protected:
     inline virtual bool swapOut ( unsigned int  ) {
-        throw dummyObjectException();
+        throw memoryException ( "No memory manager in place." );
     }
     inline virtual bool swapIn ( managedMemoryChunk & ) {
-        throw dummyObjectException();
+        throw memoryException ( "No memory manager in place." );
     }
     inline virtual bool touch ( managedMemoryChunk & ) {
-        throw dummyObjectException();
+        throw memoryException ( "No memory manager in place." );
     }
     inline virtual void schedulerRegister ( managedMemoryChunk & ) {
-        throw dummyObjectException();
+        throw memoryException ( "No memory manager in place." );
     }
     inline virtual void schedulerDelete ( managedMemoryChunk & ) {
-        throw dummyObjectException();
+        throw memoryException ( "No memory manager in place." );
     }
+
+private:
+    managedDummySwap mswap = managedDummySwap ( 0 );
 
 };
 
 #endif // DUMMYMANAGEDMEMORY_H
+
+
+
+
+
+

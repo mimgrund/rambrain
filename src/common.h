@@ -8,7 +8,7 @@ typedef double myScalar;
 
 inline static double sqr ( double x )
 {
-    return x*x;
+    return x * x;
 }
 #define NANCHECK(x) if(x!=x) errmsg("NaN! occured")
 #define NANBOOL(x) x!=x?true:false
@@ -25,3 +25,5 @@ inline static double sqr ( double x )
 
 #endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+
+
