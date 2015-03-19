@@ -51,6 +51,7 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk& chunk )
     if ( element->next==element ) {
         active = NULL;
         counterActive=NULL;
+	delete element;
         return;
 
     }
