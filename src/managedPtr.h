@@ -9,8 +9,12 @@ template <class T>
 class managedPtr
 {
 public:
+    managedPtr (const managedPtr<T> &ref) : tracker(ref.tracker), n_elem(ref.n_elem), chunk(ref.chunk) {(*tracker)++;}
+    
     managedPtr ( unsigned int n_elem ) {
         this->n_elem = n_elem;
+        tracker = new unsigned int;
+        (*tracker) = 1;
         if ( n_elem == 0 ) {
             throw memoryException ( "Cannot allocate zero sized object." );
         }
@@ -28,6 +32,34 @@ public:
 
 
     ~managedPtr() {
+        --(*tracker);
+        if(*tracker==0){
+            mDelete();
+        }
+    }
+
+    bool setUse ( bool writable = true ) {
+        return managedMemory::defaultManager->setUse ( *chunk , writable );
+    }
+
+    bool unsetUse( unsigned int loaded=1) {
+        return managedMemory::defaultManager->unsetUse ( *chunk ,loaded);
+    }
+    managedPtr<T> & operator=(const managedPtr<T> &ref){
+        if(--(*tracker)==0)
+            mDelete();
+        n_elem = ref.n_elem;
+        chunk = ref.chunk;
+        tracker = ref.tracker;
+        ++(*tracker);
+    }
+
+private:
+    managedMemoryChunk *chunk;
+    unsigned int *tracker;
+    unsigned int n_elem;
+
+    void mDelete(){
         bool oldthrow = managedMemory::defaultManager->noThrow;
         managedMemory::defaultManager->noThrow = true;
         for ( unsigned int n = 0; n < n_elem; n++ ) {
@@ -35,22 +67,9 @@ public:
         }
         managedMemory::defaultManager->mfree ( chunk->id );
         managedMemory::defaultManager->noThrow = oldthrow;
+        delete tracker;
     }
-
-    bool setUse ( bool writable = true ) {
-        return managedMemory::defaultManager->setUse ( *chunk , writable );
-    }
-
-    bool unsetUse() {
-        return managedMemory::defaultManager->unsetUse ( *chunk );
-    }
-    //!\TODO: smart Pointerize. at least copy constructor
-
-
-private:
-    managedMemoryChunk *chunk;
-    unsigned int n_elem;
-
+    
     T *getLocPtr() {
         if ( chunk->status == MEM_ALLOCATED_INUSE_WRITE ) {
             return ( T * ) chunk->locPtr;
@@ -58,7 +77,7 @@ private:
             throw unexpectedStateException ( "Can not get local pointer without setting usage first" );
             return NULL;
         }
-    };
+    }
 
     const T *getConstLocPtr() {
         if ( chunk->status & MEM_ALLOCATED_INUSE_READ ) {
@@ -83,36 +102,36 @@ class adhereTo
 public:
     adhereTo ( managedPtr<T> &data, bool loadImidiately = false ) {
         this->data = &data;
-        
+
         if ( loadImidiately ) {
-            loaded = (data.setUse ( true )?1:0);
+            loaded = ( data.setUse ( true ) ? 1 : 0 );
         }
-        
+
     }
     operator  T *() {
         if ( loaded == 0 || !loadedWritable ) {
-            loaded += (data->setUse ( true )?1:0);
+            loaded += ( data->setUse ( true ) ? 1 : 0 );
         }
         loadedWritable = true;
         return data->getLocPtr();
     };
     operator  const T *() {
-        if(loaded==0)
-            loaded += (data->setUse ( false )?1:0);
+        if ( loaded == 0 ) {
+            loaded += ( data->setUse ( false ) ? 1 : 0 );
+        }
 
         return data->getConstLocPtr();
     };
     ~adhereTo() {
-        if ( loaded > 0) {
-            while(loaded!=0)
-                loaded -= (data->unsetUse()?1:0);
+        if ( loaded > 0 ) {
+            loaded = (data->unsetUse(loaded)?0:loaded);
         }
     }
 private:
     managedPtr<T> *data;
     unsigned int loaded = 0;
     bool loadedWritable = false;
-    
+
 
     // Test classes
     friend class adhereTo_Unit_LoadUnload_Test;

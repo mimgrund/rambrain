@@ -217,11 +217,11 @@ bool managedMemory::setUse ( memoryID id )
     return setUse ( chunk );
 }
 
-bool managedMemory::unsetUse ( managedMemoryChunk &chunk )
+bool managedMemory::unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets)
 {
     if ( chunk.status & MEM_ALLOCATED_INUSE_READ ) {
-
-        chunk.status = ( --chunk.useCnt == 0 ? MEM_ALLOCATED : chunk.status );
+        chunk.useCnt -= no_unsets;
+        chunk.status = ( chunk.useCnt == 0 ? MEM_ALLOCATED : chunk.status );
         return true;
     } else {
         return Throw ( memoryException ( "Can not unset use of not used memory" ) );
