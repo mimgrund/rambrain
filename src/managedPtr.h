@@ -35,9 +35,8 @@ public:
 
 
     ~managedPtr() {
-        printf("Oink %d\n",*tracker);
-        --(*tracker);
-        if (*tracker  == 0 ) {
+        -- ( *tracker );
+        if ( *tracker  == 0 ) {
             mDelete();
         }
     }
