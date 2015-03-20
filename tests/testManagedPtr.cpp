@@ -73,7 +73,9 @@ TEST ( managedPtr, Unit_SmartPointery )
         ADHERETOLOC ( double, ptr2, lptr2 );
         lptr2[n] = 1 - n;
     }
+    EXPECT_EQ ( 5 * sizeof ( double ) * 2, managedMemory.getUsedMemory() );
     ptr = ptr2;
+    EXPECT_EQ ( 5 * sizeof ( double ), managedMemory.getUsedMemory() );
     for ( int n = 0; n < 5; n++ ) {
         ADHERETOLOC ( double, ptr, lptr );
         ADHERETOLOC ( double, ptr2, lptr2 );
@@ -81,8 +83,30 @@ TEST ( managedPtr, Unit_SmartPointery )
         EXPECT_EQ ( 1 - n, lptr2[n] );
     }
 
+    ptr = ptr2;
 
-
+    for ( int n = 0; n < 5; n++ ) {
+        ADHERETOLOC ( double, ptr, lptr );
+        ADHERETOLOC ( double, ptr2, lptr2 );
+        EXPECT_EQ ( 1 - n, lptr[n] );
+        EXPECT_EQ ( 1 - n, lptr2[n] );
+    }
+    ptr = ptr;
+    for ( int n = 0; n < 5; n++ ) {
+        ADHERETOLOC ( double, ptr, lptr );
+        ADHERETOLOC ( double, ptr2, lptr2 );
+        EXPECT_EQ ( 1 - n, lptr[n] );
+        EXPECT_EQ ( 1 - n, lptr2[n] );
+    }
+    managedPtr<double> ptr3 ( ptr );
+    for ( int n = 0; n < 5; n++ ) {
+        ADHERETOLOC ( double, ptr, lptr );
+        ADHERETOLOC ( double, ptr2, lptr2 );
+        ADHERETOLOC ( double, ptr3, lptr3 );
+        EXPECT_EQ ( 1 - n, lptr[n] );
+        EXPECT_EQ ( 1 - n, lptr2[n] );
+        EXPECT_EQ ( 1 - n, lptr3[n] );
+    }
 }
 
 

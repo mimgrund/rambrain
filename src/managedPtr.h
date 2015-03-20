@@ -49,6 +49,9 @@ public:
         return managedMemory::defaultManager->unsetUse ( *chunk , loaded );
     }
     managedPtr<T> &operator= ( const managedPtr<T> &ref ) {
+        if ( ref.chunk == chunk ) {
+            return *this;
+        }
         if ( -- ( *tracker ) == 0 ) {
             mDelete();
         }
@@ -56,6 +59,7 @@ public:
         chunk = ref.chunk;
         tracker = ref.tracker;
         ++ ( *tracker );
+        return *this;
     }
 
 private:
