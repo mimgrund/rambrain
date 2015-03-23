@@ -15,6 +15,7 @@ managedFileSwap::managedFileSwap ( unsigned int size, const char *filemask, unsi
     }
 
     oneFile += pageSize - padding;
+    pageFileSize = oneFile;
     if ( size % oneFile != 0 ) {
         pageFileNumber = size / oneFile + 1;
     } else {
@@ -47,9 +48,10 @@ managedFileSwap::managedFileSwap ( unsigned int size, const char *filemask, unsi
         }
         pfloc->file = n;
         pfloc->offset = 0;
-        pfloc->size = pageFileSize;
+        pfloc->size = pageSize;
         pfloc->freetracker = NULL;
         pfloc->next = NULL;
+        pfloc->status = PAGE_FREE;
         old = pfloc;
     }
 
@@ -57,14 +59,14 @@ managedFileSwap::managedFileSwap ( unsigned int size, const char *filemask, unsi
     unsigned int ws_ratio = .1 * pageFileSize; //TODO: unhardcode that buddy
     unsigned int ws_max = 100 * 1024 * 1024; //TODO: unhardcode that buddy
     windowNumber = 10;
-    windowSize = min ( ws_max, ws_max );
+    windowSize = min ( ws_max, ws_ratio );
 
     //Initialize one swap-window into first swap file:
     windows = new pageFileWindow *[windowNumber];
     for ( unsigned int n = 0; n < windowNumber; ++n ) {
         windows[n] = 0;
     }
-
+    old->size = windowSize;
     windows[0] = new pageFileWindow ( *old, *this );
 
 }
@@ -107,11 +109,12 @@ bool managedFileSwap::openSwapFiles()
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
         snprintf ( fname, 1024, filemask, n );
-        swapFiles[n] = fopen ( fname, "w" );
+        swapFiles[n] = fopen ( fname, "r+" );
         if ( !swapFiles[n] ) {
             throw memoryException ( "Could not open swap file." );
             return false;
         }
+        ftruncate ( fileno ( swapFiles[n] ), pageFileSize );
     }
     return true;
 }
@@ -154,6 +157,7 @@ pageFileWindow::pageFileWindow ( const pageFileLocation &location, managedFileSw
     file = location.file;
     if ( pm_padding > 0 ) {
         offset -= pm_padding;
+        length += pm_padding;
     }
     length += pm_end_padding;
     const unsigned int fd = fileno ( swap.swapFiles[location.file] );
