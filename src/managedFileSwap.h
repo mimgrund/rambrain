@@ -3,18 +3,21 @@
 #include "managedSwap.h"
 #include <stdio.h>
 
-enum pageChunkStatus {PAGE_PART_START,
-                      PAGE_PART_END,
-                      PAGE_FREE
+enum pageChunkStatus {PAGE_FREE = 1,
+                      PAGE_PART = 2,
+                      PAGE_END = 4,
+                      PAGE_WASREAD = 8
                      };
 
 
+//This will be stored in managedMemoryChunk::swapBuf :
 struct pageFileLocationStruct {
     unsigned int file;
     unsigned int offset;
     unsigned int size;
-    struct pageFileLocationStruct *next;
-    struct pageFileLocationStruct **freetracker;
+    struct pageFileLocationStruct *next_prt;
+    struct pageFileLocationStruct *next_glob;
+    struct pageFileLocationStruct *prev_glob;
     pageChunkStatus status;
 };
 
@@ -81,6 +84,8 @@ private:
     //page file malloc:
     pageFileLocation *pfmalloc ( unsigned int size );
     void pffree ( pageFileLocation *pagePtr );
+    pageFileLocation *allocInFree ( pageFileLocation *freeChunk, pageFileLocation *prevChunk, unsigned int size );
+
     pageFileLocation *free_entry = NULL;
 
     friend pageFileWindow;
