@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <chrono>
 #include "managedPtr.h"
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
@@ -122,4 +123,107 @@ TEST ( managedPtr, Unit_DeleteWhileInUse )
     EXPECT_THROW(delete ptr, memoryException);
     EXPECT_THROW(delete managedMemory, memoryException);*/
 
+}
+
+
+TEST ( managedPtr, Unit_DirectAccess )
+{
+    managedDummySwap swap ( 200 );
+    cyclicManagedMemory managedMemory ( &swap, 200 );
+
+    managedPtr<double> ptr ( 5 );
+    for ( int n = 0; n < 5; n++ ) {
+        ptr[n] = n;
+    }
+
+    for ( int n = 0; n < 5; n++ ) {
+        EXPECT_EQ ( n, ptr[n] );
+    }
+}
+
+
+TEST ( managedPtr, Unit_DirectAccessSwapped )
+{
+    const unsigned int alloc = 10u;
+    const unsigned int memsize = 1.5 * alloc * sizeof ( double );
+    const unsigned int swapsize = 10 * memsize;
+
+    managedDummySwap swap ( swapsize );
+    cyclicManagedMemory managedMemory ( &swap, memsize );
+
+    managedPtr<double> ptr1 ( alloc );
+    managedPtr<double> ptr2 ( alloc );
+    for ( int n = 0; n < alloc; n++ ) {
+        ptr1[n] = n;
+        ptr2[n] = -n;
+    }
+
+    for ( int n = 0; n < alloc; n++ ) {
+        EXPECT_EQ ( n, ptr1[n] );
+        EXPECT_EQ ( -n, ptr2[n] );
+    }
+}
+
+
+TEST ( managedPtr, Integration_DirectVsSmartAccess )
+{
+    const unsigned int alloc = 20000u;
+    const unsigned int memsize = 1.5 * alloc * sizeof ( double );
+    const unsigned int swapsize = 10 * memsize;
+    const unsigned int runs = 10;
+
+    managedDummySwap swap ( swapsize );
+    cyclicManagedMemory managedMemory ( &swap, memsize );
+
+    managedPtr<double> ptr1 ( alloc );
+    {
+        ADHERETOLOC ( double, ptr1, lptr1 );
+        for ( int n = 0; n < alloc; n++ ) {
+            lptr1[n] = n;
+        }
+    }
+    managedPtr<double> ptr2 ( alloc );
+    {
+        ADHERETOLOC ( double, ptr2, lptr2 );
+        for ( int n = 0; n < alloc; n++ ) {
+            lptr2[n] = -n;
+        }
+    }
+
+    chrono::high_resolution_clock::time_point t1 = chrono::high_resolution_clock::now();
+
+    {
+        ADHERETOLOC ( double, ptr1, lptr1 );
+        for ( unsigned int r = 0; r < runs; ++r ) {
+            for ( int n = 0; n < alloc; n++ ) {
+                EXPECT_EQ ( n, lptr1[n] );
+            }
+        }
+    }
+    {
+        ADHERETOLOC ( double, ptr2, lptr2 );
+        for ( unsigned int r = 0; r < runs; ++r ) {
+            for ( int n = 0; n < alloc; n++ ) {
+                EXPECT_EQ ( -n, lptr2[n] );
+            }
+        }
+    }
+
+    chrono::high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now();
+    unsigned int mssmart = std::chrono::duration_cast<chrono::milliseconds> ( t2 - t1 ).count();
+    infomsgf ( "Smart access ran for %d ms", mssmart );
+
+    t1 = chrono::high_resolution_clock::now();
+
+    for ( unsigned int r = 0; r < runs; ++r ) {
+        for ( int n = 0; n < alloc; n++ ) {
+            EXPECT_EQ ( n, ptr1[n] );
+            EXPECT_EQ ( -n, ptr2[n] );
+        }
+    }
+
+    t2 = chrono::high_resolution_clock::now();
+    unsigned int msdirect = std::chrono::duration_cast<chrono::milliseconds> ( t2 - t1 ).count();
+    infomsgf ( "Direct access ran for %d ms", msdirect );
+    infomsgf ( "Direct access cost %g as much time as smart access", 1.0 * msdirect / mssmart );
 }

@@ -6,6 +6,17 @@
 #include "exceptions.h"
 
 template <class T>
+class adhereTo;
+
+
+//Convenience macros
+#define ADHERETO(class,instance) adhereTo<class> instance##_glue(instance);\
+                 class* instance = instance##_glue;
+#define ADHERETOLOC(class,instance,locinstance) adhereTo<class> instance##_glue(instance);\
+                 class* locinstance = instance##_glue;
+
+
+template <class T>
 class managedPtr
 {
 public:
@@ -48,6 +59,7 @@ public:
     bool unsetUse ( unsigned int loaded = 1 ) {
         return managedMemory::defaultManager->unsetUse ( *chunk , loaded );
     }
+
     managedPtr<T> &operator= ( const managedPtr<T> &ref ) {
         if ( ref.chunk == chunk ) {
             return *this;
@@ -60,6 +72,17 @@ public:
         tracker = ref.tracker;
         ++ ( *tracker );
         return *this;
+    }
+
+    DEPRECATED T &operator[] ( int i ) {
+        managedPtr<T> &self = *this;
+        ADHERETOLOC ( T, self, loc );
+        return loc[i];
+    }
+    DEPRECATED const T &operator[] ( int i ) const {
+        const managedPtr<T> &self = *this;
+        ADHERETOLOC ( T, self, loc );
+        return loc[i];
     }
 
 private:
@@ -147,14 +170,5 @@ private:
     friend class adhereTo_Unit_LoadUnloadConst_Test;
     friend class adhereTo_Unit_TwiceAdhered_Test;
 };
-
-
-//Convenience macros
-#define ADHERETO(class,instance) adhereTo<class> instance##_glue(instance);\
-				 class* instance = instance##_glue;
-#define ADHERETOLOC(class,instance,locinstance) adhereTo<class> instance##_glue(instance);\
-				 class* locinstance = instance##_glue;
-
-
 
 #endif
