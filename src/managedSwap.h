@@ -23,8 +23,6 @@ public:
     }
 
 protected:
-    //TODO Following member is unused, delete?
-    unsigned int memory_swap_avail = 0;
     unsigned int swapSize;
     unsigned int swapUsed;
 

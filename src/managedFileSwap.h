@@ -1,38 +1,42 @@
 #ifndef MANAGEDFILESWAP_H
 #define MANAGEDFILESWAP_H
 #include "managedSwap.h"
-
+#include <stdio.h>
 
 enum pageChunkStatus {PAGE_PART_START,
                       PAGE_PART_END,
                       PAGE_FREE
                      };
 
-};
 
-struct pageFileLocation {
+struct pageFileLocationStruct {
     unsigned int file;
-    unsigned int pm_page;
     unsigned int offset;
     unsigned int size;
-    pageFileLocation *next;
-    pageFileLocation **freetracker;
+    struct pageFileLocationStruct *next;
+    struct pageFileLocationStruct **freetracker;
+    pageChunkStatus status;
 };
 
+typedef struct pageFileLocationStruct pageFileLocation;
 
+class managedFileSwap;
 
 class pageFileWindow
 {
 public:
-    pageFileWindow ( FILE *, unsigned int pm_offset, unsigned int pm_length );
+    pageFileWindow ( const pageFileLocation &location, managedFileSwap &swap );
     ~pageFileWindow();
 
 
     void triggerSync ( bool async = true );
     float percentageClean();
-    void *getMem ( const struct pageFileLocation & );
-
-
+    void *getMem ( const pageFileLocation &loc );
+private:
+    void *buf;
+    unsigned int offset;
+    unsigned int length;
+    unsigned int file;
 };
 
 
@@ -42,7 +46,7 @@ class managedFileSwap : public managedSwap
 {
 public:
 
-    managedFileSwap ( unsigned int size, const char *filemask, unsigned int oneFileMB = 1024 );
+    managedFileSwap ( unsigned int size, const char *filemask, unsigned int oneFile = 1024 );
     ~managedFileSwap();
 
     virtual void swapDelete ( managedMemoryChunk *chunk );
@@ -51,15 +55,17 @@ public:
     virtual unsigned int swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks );
     virtual bool swapOut ( managedMemoryChunk *chunk );
 
+    static const unsigned int pageSize;
+
 private:
-    struct pageFileLocation determineOffsets ( unsigned int g_offset, unsigned int length );
+    pageFileLocation determinePFLoc ( unsigned int g_offset, unsigned int length );
     bool openSwapFiles();
     void closeSwapFiles();
 
     const char *filemask;
-    const unsigned int pageSize;
+
     unsigned int pageFileNumber;
-    unsigned int fileSize;
+    unsigned int pageFileSize;
 
     unsigned int windowSize;
     unsigned int windowNumber;
@@ -67,16 +73,17 @@ private:
 
     FILE **swapFiles = NULL;
     pageFileWindow **windows = NULL;
-    void *getMem ( const struct pageFileLocation & );
+    void *getMem ( const pageFileLocation & );
 
     bool filesOpen = false;
 
 
     //page file malloc:
-    struct pageFileLocation *pfmalloc ( unsigned int size );
+    pageFileLocation *pfmalloc ( unsigned int size );
     void pffree ( pageFileLocation *pagePtr );
-    struct pageFileLocation *free_entry = NULL;
+    pageFileLocation *free_entry = NULL;
 
+    friend pageFileWindow;
 
 };
 
