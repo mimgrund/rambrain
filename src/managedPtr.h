@@ -74,12 +74,12 @@ public:
         return *this;
     }
 
-    T &operator[] ( int i ) {
+    DEPRECATED T &operator[] ( int i ) {
         managedPtr<T> &self = *this;
         ADHERETOLOC ( T, self, loc );
         return loc[i];
     }
-    const T &operator[] ( int i ) const {
+    DEPRECATED const T &operator[] ( int i ) const {
         const managedPtr<T> &self = *this;
         ADHERETOLOC ( T, self, loc );
         return loc[i];
