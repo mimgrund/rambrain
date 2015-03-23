@@ -107,7 +107,7 @@ bool managedFileSwap::openSwapFiles()
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
         snprintf ( fname, 1024, filemask, n );
-        swapFiles[n] = fopen ( fname, "rw" );
+        swapFiles[n] = fopen ( fname, "w" );
         if ( !swapFiles[n] ) {
             throw memoryException ( "Could not open swap file." );
             return false;
