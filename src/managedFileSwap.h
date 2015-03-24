@@ -6,7 +6,8 @@
 enum pageChunkStatus {PAGE_FREE = 1,
                       PAGE_PART = 2,
                       PAGE_END = 4,
-                      PAGE_WASREAD = 8
+                      PAGE_WASREAD = 8,
+                      PAGE_UNKNOWN_STATE = 16
                      };
 
 typedef unsigned int global_offset;
@@ -31,15 +32,19 @@ public:
     pageFileWindow ( const pageFileLocation &location, managedFileSwap &swap );
     ~pageFileWindow();
 
+    bool isInWindow ( const pageFileLocation &location, unsigned int &offset_start, unsigned int &offset_end );
+    bool isInWindow ( const pageFileLocation &location, unsigned int &length );
+    bool isInWindow ( const pageFileLocation );
 
     void triggerSync ( bool async = true );
     float percentageClean();
-    void *getMem ( const pageFileLocation &loc );
+    void *getMem ( const pageFileLocation &loc, unsigned int &size );
 private:
     void *buf;
     unsigned int offset;
     unsigned int length;
     unsigned int file;
+    unsigned int window;
 };
 
 
@@ -73,11 +78,19 @@ private:
 
     unsigned int windowSize;
     unsigned int windowNumber;
-
+    unsigned int lastCreatedWindow = 0;
 
     FILE **swapFiles = NULL;
+
+    //Window handling:
     pageFileWindow **windows = NULL;
-    void *getMem ( const pageFileLocation & );
+    void *getMem ( const pageFileLocation &, unsigned int &size );
+    pageFileWindow *getWindowTo ( const pageFileLocation & );
+
+    //Memory copy:
+    void copyMem ( void *ramBuf, const pageFileLocation &ref );
+    void copyMem ( const pageFileLocation &ref, void *ramBuf );
+
 
     bool filesOpen = false;
 
