@@ -54,7 +54,7 @@ managedFileSwap::managedFileSwap ( unsigned int size, const char *filemask, unsi
     unsigned int ws_max = 128 * 1024 * 1024; //TODO: unhardcode that buddy
     windowNumber = 10;
     windowSize = min ( ws_max, ws_ratio );
-    windowSize += pageSize - ( windowSize % pageSize );
+    windowSize += ( windowSize % pageSize ) > 0 ? ( pageSize - ( windowSize % pageSize ) ) : 0;
     if ( pageFileSize % windowSize != 0 ) {
         warnmsg ( "requested single swap filesize is not a multiple of pageSize*16 or 128MiB" );
     }
@@ -251,9 +251,12 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
 //Actual interface:
 void managedFileSwap::swapDelete ( managedMemoryChunk *chunk )
 {
-    pageFileLocation *loc = ( pageFileLocation * ) chunk->swapBuf;
-    pffree ( loc );
+    if ( chunk->swapBuf ) { //Must not be swapped, as read-only access should lead to keeping the swapped out locs for the moment.
+        pageFileLocation *loc = ( pageFileLocation * ) chunk->swapBuf;
+        pffree ( loc );
+    }
 }
+
 bool managedFileSwap::swapIn ( managedMemoryChunk *chunk )
 {
     void *buf = malloc ( chunk->size );
@@ -272,6 +275,7 @@ bool managedFileSwap::swapIn ( managedMemoryChunk *chunk )
         return false;
     }
 }
+
 unsigned int managedFileSwap::swapIn ( managedMemoryChunk **chunklist, unsigned int nchunks )
 {
     unsigned int n_swapped = 0;
@@ -533,7 +537,3 @@ bool pageFileWindow::isInWindow ( const pageFileLocation location )
 
 
 }
-
-
-
-

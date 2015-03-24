@@ -107,6 +107,7 @@ managedMemoryChunk *managedMemory::mmalloc ( unsigned int sizereq )
     chunk->size = sizereq;
     chunk->child = invalid;
     chunk->parent = parent;
+    chunk->swapBuf = NULL;
     if ( chunk->id == root ) {                                //We're inserting root elem.
         chunk->next = invalid;
         chunk->atime = 0;
