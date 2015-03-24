@@ -2,26 +2,26 @@
 #define MANAGEDFILESWAP_H
 #include "managedSwap.h"
 #include <stdio.h>
-
+#include <map>
 enum pageChunkStatus {PAGE_FREE = 1,
                       PAGE_PART = 2,
                       PAGE_END = 4,
                       PAGE_WASREAD = 8
                      };
 
+typedef unsigned int global_offset;
 
 //This will be stored in managedMemoryChunk::swapBuf :
 struct pageFileLocationStruct {
     unsigned int file;
     unsigned int offset;
     unsigned int size;
-    struct pageFileLocationStruct *next_prt;
-    struct pageFileLocationStruct *next_glob;
-    struct pageFileLocationStruct *prev_glob;
+    struct pageFileLocationStruct *glob_off_next;//This points if used to the next part, if free to the next free chunk.
     pageChunkStatus status;
 };
-
 typedef struct pageFileLocationStruct pageFileLocation;
+
+
 
 class managedFileSwap;
 
@@ -61,7 +61,8 @@ public:
     static const unsigned int pageSize;
 
 private:
-    pageFileLocation determinePFLoc ( unsigned int g_offset, unsigned int length );
+    pageFileLocation determinePFLoc ( global_offset g_offset, unsigned int length );
+    inline global_offset determineGlobalOffset ( const pageFileLocation &ref );
     bool openSwapFiles();
     void closeSwapFiles();
 
@@ -84,9 +85,10 @@ private:
     //page file malloc:
     pageFileLocation *pfmalloc ( unsigned int size );
     void pffree ( pageFileLocation *pagePtr );
-    pageFileLocation *allocInFree ( pageFileLocation *freeChunk, pageFileLocation *prevChunk, unsigned int size );
+    pageFileLocation *allocInFree ( pageFileLocation *freeChunk, unsigned int size );
 
-    pageFileLocation *free_entry = NULL;
+    std::map<global_offset, pageFileLocation *> free_space;
+    std::map<global_offset, pageFileLocation *> all_space;
 
     friend pageFileWindow;
 

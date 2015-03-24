@@ -38,24 +38,15 @@ managedFileSwap::managedFileSwap ( unsigned int size, const char *filemask, unsi
     }
 
     //Initialize swapmalloc:
-    free_entry = NULL;
-    pageFileLocation *old = NULL;
     for ( unsigned int n = 0; n < pageFileNumber; n++ ) {
         pageFileLocation *pfloc = new pageFileLocation;
-        if ( !free_entry ) {
-            free_entry = pfloc;
-        }
-        if ( old ) {
-            old->next_glob = old->next_prt = pfloc;
-        }
         pfloc->file = n;
         pfloc->offset = 0;
-        pfloc->size = pageSize;
-        pfloc->next_glob = NULL;
-        pfloc->next_prt = NULL;
-        pfloc->prev_glob = old;
+        pfloc->size = pageFileSize;
+        pfloc->glob_off_next = NULL; // We may use 0 for invalid, as the first one is never the next.
         pfloc->status = PAGE_FREE;
-        old = pfloc;
+        free_space[n * pageFileSize] = pfloc;
+        all_space[n * pageFileSize] = pfloc;
     }
 
     //Initialize Windows:
@@ -65,14 +56,14 @@ managedFileSwap::managedFileSwap ( unsigned int size, const char *filemask, unsi
     windowSize = min ( ws_max, ws_ratio );
 
     //Initialize one swap-window into first swap file:
-    windows = new pageFileWindow *[windowNumber];
+    windows = ( pageFileWindow ** ) malloc ( sizeof ( pageFileWindow * ) *windowNumber );
     for ( unsigned int n = 0; n < windowNumber; ++n ) {
         windows[n] = 0;
     }
-    old->size = windowSize;
-    windows[0] = new pageFileWindow ( *old, *this );
-    char *test = ( char * ) windows[0]->getMem ( *old );
-    for ( int n = 0; n < windowSize; ++n ) {
+    pageFileLocation *absoluteBegin = ( free_space.begin()->second );
+    windows[0] = new pageFileWindow ( *absoluteBegin, *this );
+    char *test = ( char * ) windows[0]->getMem ( *absoluteBegin );
+    for ( unsigned int n = 0; n < windowSize; ++n ) {
         test[n] = n % 256;
     }
 
@@ -81,15 +72,21 @@ managedFileSwap::managedFileSwap ( unsigned int size, const char *filemask, unsi
 managedFileSwap::~managedFileSwap()
 {
     if ( windows ) {
-        for ( int n = 0; n < windowNumber; ++n )
+        for ( unsigned int n = 0; n < windowNumber; ++n )
             if ( windows[n] ) {
                 delete windows[n];
             }
-        delete windows;
-        windows = NULL;
+        free ( windows );
     };
     closeSwapFiles();
     free ( ( void * ) filemask );
+    if ( all_space.size() > 0 ) {
+        std::map<unsigned int, pageFileLocation *>::iterator it = all_space.begin();
+        do {
+            delete it->second;
+            it++;
+        } while ( it != all_space.end() );
+    }
 }
 
 
@@ -99,8 +96,7 @@ void managedFileSwap::closeSwapFiles()
         for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
             fclose ( swapFiles[n] );
         }
-        delete swapFiles;
-        swapFiles == NULL;
+        free ( swapFiles );
     }
 
 }
@@ -112,7 +108,7 @@ bool managedFileSwap::openSwapFiles()
         throw memoryException ( "Swap files already opened. Close first" );
         return false;
     }
-    swapFiles = new FILE *[pageFileNumber];
+    swapFiles = ( FILE ** ) malloc ( sizeof ( FILE * ) *pageFileNumber );
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
         snprintf ( fname, 1024, filemask, n );
@@ -134,83 +130,125 @@ pageFileLocation *managedFileSwap::pfmalloc ( unsigned int size )
     /*Priority: -Use first free chunk that fits completely
      *          -Distribute over free locations
                 Later on/TODO: look for read-in memory that can be overwritten*/
-    pageFileLocation *cur = free_entry;
-    pageFileLocation *prev = NULL;
-    while ( cur ) {
-        if ( cur->size >= size ) {
-            break;
+    std::map<unsigned int, pageFileLocation *>::iterator it = free_space.begin();
+    pageFileLocation *found = NULL;
+    do {
+        if ( it->second->size >= size ) {
+            found = it->second;
         }
-        prev = cur;
-        cur = cur->next;
-
-    }
+    } while ( ++it != free_space.end() );
     pageFileLocation *res = NULL;
-    if ( cur ) { //Found enough space for struct
-        //Unlink free space:
-        pageFileLocation *prev_glob = cur->prev_glob;
-        pageFileLocation *next_glob = allocInFree ( cur, prev );
+    pageFileLocation *former = NULL;
+    if ( found ) {
+        pageFileLocation *res = allocInFree ( found, size );
+        res->status = PAGE_END;//Don't forget to set the status of the allocated memory.
+    } else { //We need to write out the data in parts.
 
 
-        res = new pageFileLocation;
-        res->file = cur->file;
-        res->offset = cur->offset;
-        res->size = size;
-        res->status = PAGE_END;
-        res->prev_glob = prev_glob;
-        res->next_glob = next_glob;
-        res->next_prt = NULL;
-
-    } else { //Let's find enough space for us
-        unsigned int totsize = 0;
-
-        cur = free_entry;
-        while ( cur ) {
-            totsize += cur->size;
-            if ( totsize >= size ) {
+        //check for enough space:
+        unsigned int total_space = 0;
+        it = free_space.begin();
+        while ( true ) {
+            total_space += it->second->size;
+            if ( total_space >= size ) {
                 break;
             }
-            prev = cur;
-            cur = cur->next_prt;
         }
-        if ( cur ) { //We found enough memory to comply.
-            //Hang this memory out of free chunks:
-
-            pageFileLocation *cur2 = free_entry;
-            do {
+        while ( ++it != free_space.end() );
+        std::map<unsigned int, pageFileLocation *>::iterator it2 = free_space.begin();
 
 
-                cur2 = cur2->next;
-            } while ( cur2 != cur->next );
+        if ( total_space >= size ) { //We can concat enough free chunks to satisfy memory requirements
+            while ( true ) {
+                unsigned int avail_space = it2->second->size;
+                unsigned int alloc_here = min ( avail_space, total_space );
+                pageFileLocation *neu = allocInFree ( it2->second, alloc_here );
+                total_space -= alloc_here;
+                neu->status = total_space == 0 ? PAGE_END : PAGE_PART;
+                if ( !res ) {
+                    res = neu;
+                }
+                if ( former ) {
+                    former->glob_off_next = neu;
+                }
+                former = res;
+                if ( it2 == it ) {
+                    break;
+                } else {
+                    it++;
+                }
+            };
 
         } else {
-            return throw memoryException ( "Out of swap memory" );
+            throw memoryException ( "Out of swap space" );
         }
 
     }
-
+    return res;
 }
 
-pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, pageFileLocation *prevChunk, unsigned int size )
+pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, unsigned int size )
 {
-    //Is there still free space in chunk?
-    unsigned int newfreespace = freeChunk->size - size;
-    pageFileLocation *next;
-    if ( newfreespace > sizeof ( pageFileLocation ) ) { //Raw criterion for mem-wastage
-        freeChunk->size = newfreespace;
-        freeChunk->offset += size;//no swapChunks can span over swapfile border.
-        next = freeChunk;
-    } else { //Take out this free chunk as a whole:
-        next = freeChunk->next_prt;
-        delete freeChunk;
-    }
-    if ( prevChunk ) {
-        prevChunk->next_prt = freeChunk;
+    //Hook out the block of free space:
+    global_offset formerfree_off = determineGlobalOffset ( *freeChunk );
+    free_space.erase ( formerfree_off );
+    //We want to allocate a new chunk or use the chunk at hand.
+    if ( freeChunk->size - size < sizeof ( pageFileLocation ) ) { //Memory to manage free space exceeds free space (actually more than)
+        //Thus, use the free chunk for your data.
+        freeChunk->size = size;
+        free_space.erase ( determineGlobalOffset ( *freeChunk ) );
+        return freeChunk;
     } else {
-        free_entry = freeChunk;
+        pageFileLocation *neu = new pageFileLocation ( *freeChunk );
+        freeChunk->offset += size;
+        freeChunk->size -= size;
+        freeChunk->glob_off_next = NULL;
+        global_offset newfreeloc = determineGlobalOffset ( *freeChunk );
+        free_space[newfreeloc] = freeChunk;
+        neu->size = size;
+        all_space[formerfree_off] = neu;
+        return neu;
+
     }
-    return next;
+
 }
 
+void managedFileSwap::pffree ( pageFileLocation *pagePtr )
+{
+    pageFileLocation *free_start = pagePtr;
+    while ( true ) { //We possibly need multiple frees.
+        std::map<unsigned int, pageFileLocation *>::iterator it = free_space.find ( determineGlobalOffset ( *pagePtr ) );
+        if ( pagePtr->status == PAGE_END || pagePtr->glob_off_next->offset == 0 || ++it->second != pagePtr->glob_off_next ) { //end of buf || end of pagefile || end of fragment reached
+
+
+            pageFileLocation *cur = free_start->glob_off_next;
+            pageFileLocation *next = free_start;
+            if ( cur && cur != pagePtr ) //Delete all possible others.
+                while ( cur != pagePtr ) {
+                    next = cur->glob_off_next;
+                    all_space.erase ( determineGlobalOffset ( *cur ) );
+                    delete cur;
+                    cur = next;
+                }
+
+
+            //The first page will be the chunk taking all space:
+            free_start->size = pagePtr->offset + pagePtr->size - free_start->offset;
+            free_space[determineGlobalOffset ( *free_start )] = free_start;
+
+
+            if ( pagePtr->status == PAGE_END ) {
+                break;
+            }
+
+            pagePtr = pagePtr->glob_off_next;
+            free_start = pagePtr;
+        } else {
+            pagePtr = pagePtr->glob_off_next;
+        }
+    }
+
+}
 
 
 //Actual interface:
@@ -236,6 +274,10 @@ unsigned int managedFileSwap::swapOut ( managedMemoryChunk **chunklist, unsigned
 }
 
 
+global_offset managedFileSwap::determineGlobalOffset ( const pageFileLocation &ref )
+{
+    return ref.file * pageFileSize + ref.offset;
+}
 
 
 
