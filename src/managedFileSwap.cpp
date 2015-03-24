@@ -132,12 +132,13 @@ pageFileLocation *managedFileSwap::pfmalloc ( unsigned int size )
     do {
         if ( it->second->size >= size ) {
             found = it->second;
+            break;
         }
     } while ( ++it != free_space.end() );
     pageFileLocation *res = NULL;
     pageFileLocation *former = NULL;
     if ( found ) {
-        pageFileLocation *res = allocInFree ( found, size );
+        res = allocInFree ( found, size );
         res->status = PAGE_END;//Don't forget to set the status of the allocated memory.
     } else { //We need to write out the data in parts.
 
@@ -332,6 +333,7 @@ pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, unsig
     pfLoc.offset = g_offset - pfLoc.file * pageFileSize;
     pfLoc.glob_off_next = NULL;
     pfLoc.status = PAGE_UNKNOWN_STATE;
+    return pfLoc;
 }
 
 
@@ -385,7 +387,8 @@ void managedFileSwap::copyMem ( const pageFileLocation &ref, void *ramBuf )
             offset += pagedIn;
             g_off += pagedIn;
         }
-        if ( cur->status != PAGE_END ) {
+
+        if ( cur->status == PAGE_END ) {//I have completely written this pageChunk.
             break;
         }
         cur = cur->glob_off_next;
@@ -424,6 +427,7 @@ pageFileWindow::pageFileWindow ( const pageFileLocation &location, managedFileSw
 {
     //We use fixed size windows as everything else will be very complicated when determining to which windows to write to.
     unsigned int window = location.offset / swap.windowSize;
+    offset = location.offset;
     length = swap.windowSize;
     file = location.file;
 
