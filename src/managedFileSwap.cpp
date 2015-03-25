@@ -410,7 +410,7 @@ pageFileWindow *managedFileSwap::getWindowTo ( const pageFileLocation &loc )
         }
 
     }
-    if ( windows[w] != NULL ) {
+    if ( w == windowNumber ) {
         //We have to throw out a window
         //TODO: More clever selection strategy than:
         w = ( lastCreatedWindow + 1 ) % windowNumber;
@@ -529,10 +529,10 @@ void *pageFileWindow::getMem ( const pageFileLocation &loc, unsigned int &size )
     if ( loc.offset < offset ) {
         return NULL;
     }
-    if ( loc.offset + loc.size > offset + length ) {
+    if ( loc.offset > offset + length ) {
         return NULL;
     }
-    unsigned int windowBdryDistance = length - loc.offset;
+    unsigned int windowBdryDistance = length - loc.offset % length;
     size = min ( windowBdryDistance, size );
 
     return ( char * ) buf + ( loc.offset - offset );
