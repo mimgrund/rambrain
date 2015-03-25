@@ -47,6 +47,13 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
 {
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
 
+    //Memory counting for what we account for:
+    if ( chunk.status == MEM_SWAPPED ) {
+        memory_swapped -= chunk.size;
+    } else if ( counterActive->chunk->atime > chunk.atime ) { //preemptively loaded
+        preemptiveBytes -= chunk.size;
+    }
+
     //Hook out element:
     if ( element->next == element ) {
         active = NULL;
@@ -62,11 +69,6 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
     } else {
         element->next->prev = element->prev;
         element->prev->next = element->next;
-    }
-    if ( chunk.status == MEM_SWAPPED ) {
-        memory_swapped -= chunk.size;
-    } else if ( counterActive->chunk->atime > chunk.atime ) { //preemptively loaded
-        preemptiveBytes -= chunk.size;
     }
     if ( active == element ) {
         active = element->next;
@@ -475,8 +477,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         n_swap_out += 1;
 #endif
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }

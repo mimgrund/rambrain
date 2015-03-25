@@ -80,8 +80,7 @@ managedFileSwap::~managedFileSwap()
         std::map<unsigned int, pageFileLocation *>::iterator it = all_space.begin();
         do {
             delete it->second;
-            it++;
-        } while ( it != all_space.end() );
+        } while ( ++it != all_space.end() );
     }
 }
 
@@ -203,6 +202,7 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, un
         global_offset newfreeloc = determineGlobalOffset ( *freeChunk );
         free_space[newfreeloc] = freeChunk;
         neu->size = size;
+        all_space[newfreeloc] = freeChunk;
         all_space[formerfree_off] = neu;
         return neu;
 
@@ -217,7 +217,6 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
         std::map<unsigned int, pageFileLocation *>::iterator it = free_space.find ( determineGlobalOffset ( *pagePtr ) );
         if ( pagePtr->status == PAGE_END || pagePtr->glob_off_next->offset == 0 || ++it->second != pagePtr->glob_off_next ) { //end of buf || end of pagefile || end of fragment reached
 
-
             pageFileLocation *cur = free_start->glob_off_next;
             pageFileLocation *next = free_start;
             if ( cur && cur != pagePtr ) //Delete all possible others.
@@ -228,10 +227,68 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
                     cur = next;
                 }
 
-
             //The first page will be the chunk taking all space:
             free_start->size = pagePtr->offset + pagePtr->size - free_start->offset;
-            free_space[determineGlobalOffset ( *free_start )] = free_start;
+            unsigned int newfreeloc = determineGlobalOffset ( *free_start );
+
+            //TODO: We can come around the next insert, but for clarity, lets continue like that for the moment.
+            free_space[newfreeloc] = free_start;
+            //Possibly consolidate neighbouring frees:
+            it = all_space.find ( newfreeloc );
+            //before:
+            std::map<unsigned int, pageFileLocation *>::iterator it2;
+            if ( free_start->offset != 0 ) { //We're not at pageFileBoundary and have a free element before us
+                bool fillSpaceBeforePage = false;
+                if ( it != all_space.begin() ) { //if we have a pageChunk before us
+                    it2 = it;
+                    --it2;
+                    pageFileLocation *before = ( it2 )->second;
+
+                    if ( before->file == free_start->file ) { //If we are in the same file
+                        if ( before->status == PAGE_FREE ) { //And if this neighbour is also a free chunk
+                            before->size += free_start->offset + free_start->size - before->offset;
+                            all_space.erase ( newfreeloc );
+                            free_space.erase ( newfreeloc );
+                            delete free_start;
+                            free_start = before;
+                            newfreeloc = determineGlobalOffset ( *before );
+                        }
+                    } else {
+                        fillSpaceBeforePage = true;
+                    }
+                } else {
+                    fillSpaceBeforePage = true;
+                }
+                if ( fillSpaceBeforePage ) {
+                    //Let us fill the space before us 'till page bdry.
+                    all_space.erase ( newfreeloc );
+                    free_space.erase ( newfreeloc );
+                    //New position:
+                    free_start->size += free_start->offset;
+                    free_start->offset = 0;
+                    newfreeloc = determineGlobalOffset ( *free_start );
+                    free_space[newfreeloc] = free_start;
+                    all_space[newfreeloc] = free_start;
+                    it = all_space.find ( newfreeloc );
+                }
+
+            }
+            //after:
+            it2 = it;
+            ++it2;
+            if ( it2 != all_space.end() ) {
+                pageFileLocation *after = ( it2 )->second; //We're not at the very end of swap
+                if ( after->offset != 0 && after->status == PAGE_FREE ) { //We're not crossing a pageFileBoundary
+                    free_start->size *= after->offset + after->size - free_start->offset;
+                    newfreeloc = determineGlobalOffset ( *after );
+                    all_space.erase ( newfreeloc );
+                    free_space.erase ( newfreeloc );
+                    delete after;
+                }
+
+            }
+
+
 
 
             if ( pagePtr->status == PAGE_END ) {
@@ -241,7 +298,9 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
             pagePtr = pagePtr->glob_off_next;
             free_start = pagePtr;
         } else {
+
             pagePtr = pagePtr->glob_off_next;
+
         }
     }
 
@@ -255,6 +314,7 @@ void managedFileSwap::swapDelete ( managedMemoryChunk *chunk )
         pageFileLocation *loc = ( pageFileLocation * ) chunk->swapBuf;
         pffree ( loc );
     }
+    swapUsed -= chunk->size;
 }
 
 bool managedFileSwap::swapIn ( managedMemoryChunk *chunk )
@@ -308,6 +368,7 @@ bool managedFileSwap::swapOut ( managedMemoryChunk *chunk )
             return false;
         }
     }
+    return false;
 
 }
 unsigned int managedFileSwap::swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks )
@@ -425,7 +486,7 @@ void managedFileSwap::copyMem ( void *ramBuf, const pageFileLocation &ref )
 pageFileWindow::pageFileWindow ( const pageFileLocation &location, managedFileSwap &swap )
 {
     //We use fixed size windows as everything else will be very complicated when determining to which windows to write to.
-    unsigned int window = location.offset / swap.windowSize;
+    window = location.offset / swap.windowSize;
     offset = location.offset;
     length = swap.windowSize;
     file = location.file;
