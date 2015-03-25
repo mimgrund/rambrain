@@ -14,9 +14,8 @@ managedFileSwap::managedFileSwap ( unsigned int size, const char *filemask, unsi
     unsigned int padding = oneFile % pageSize;
     if ( padding != 0 ) {
         warnmsgf ( "requested single swap filesize is not a multiple of pageSize.\n\t %u Bytes left over.", padding );
+        oneFile += pageSize - padding;
     }
-
-    oneFile += pageSize - padding;
     pageFileSize = oneFile;
     if ( size % oneFile != 0 ) {
         pageFileNumber = size / oneFile + 1;
