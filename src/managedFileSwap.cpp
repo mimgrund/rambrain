@@ -486,10 +486,10 @@ void managedFileSwap::copyMem ( void *ramBuf, const pageFileLocation &ref )
 pageFileWindow::pageFileWindow ( const pageFileLocation &location, managedFileSwap &swap )
 {
     //We use fixed size windows as everything else will be very complicated when determining to which windows to write to.
-    window = location.offset / swap.windowSize;
-    offset = location.offset;
-    length = swap.windowSize;
-    file = location.file;
+    offset = location.offset - location.offset % swap.windowSize; //local offset in file
+
+    length = swap.windowSize; //window length.
+    file = location.file; //which file.
 
     const unsigned int fd = fileno ( swap.swapFiles[location.file] );
 
