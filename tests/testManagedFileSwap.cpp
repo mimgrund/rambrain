@@ -27,39 +27,39 @@ TEST ( managedFileSwap, Unit_SwapSize )
     managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
     cyclicManagedMemory manager ( &swap, memsize );
 
-    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( 1048576, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     managedPtr<double> *ptr1 = new managedPtr<double> ( dblamount );
 
-    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( 1048576, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     ptr1->setUse();
 
-    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( 1048576, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     ptr1->unsetUse();
 
     managedPtr<double> *ptr2 = new managedPtr<double> ( dblamount );
 
-    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( 1048576, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
     ptr2->setUse();
 
-    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( 1048576, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
     ptr2->unsetUse();
 
-    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( 1048576, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
     delete ptr1;
 
-    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( 1048576, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     delete ptr2;

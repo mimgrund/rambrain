@@ -54,7 +54,7 @@ class managedFileSwap : public managedSwap
 {
 public:
 
-    managedFileSwap ( unsigned int size, const char *filemask, unsigned int oneFile = 1024 );
+    managedFileSwap ( unsigned int size, const char *filemask, unsigned int oneFile = 0 );
     ~managedFileSwap();
 
     virtual void swapDelete ( managedMemoryChunk *chunk );

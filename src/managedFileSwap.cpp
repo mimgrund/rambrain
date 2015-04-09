@@ -8,8 +8,14 @@
 #include "exceptions.h"
 managedFileSwap::managedFileSwap ( unsigned int size, const char *filemask, unsigned int oneFile ) : managedSwap ( size )
 {
+    if ( oneFile == 0 ) { // Layout this on your own:
 
-
+        unsigned int gig = 1024 * 1024 * 1024;
+        unsigned int myg = size / 16;
+        unsigned int mib = 1024 * 1024;
+        oneFile = min ( gig, myg );
+        oneFile = max ( mib, oneFile );
+    }
     //calculate page File number:
     unsigned int padding = oneFile % pageSize;
     if ( padding != 0 ) {
