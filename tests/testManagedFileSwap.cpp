@@ -4,6 +4,67 @@
 #include <gtest/gtest.h>
 #include <sys/stat.h>
 
+TEST ( managedFileSwap, Unit_SimpleSwapping )
+{
+    const unsigned int memsize = 15 * sizeof ( double );
+    const unsigned int swapsize = 10 * memsize;
+
+    ASSERT_NO_THROW (
+        managedFileSwap swap ( swapsize, "/tmp/membrainswap-%d" );
+        cyclicManagedMemory manager ( &swap, memsize );
+
+        managedPtr<double> ptr1 ( 10 );
+        managedPtr<double> ptr2 ( 10 );
+    );
+}
+
+TEST ( managedFileSwap, Unit_SwapSize )
+{
+    const unsigned int dblamount = 100;
+    const unsigned int dblsize = dblamount * sizeof ( double );
+    const unsigned int swapmem = dblsize * 10;
+    const unsigned int memsize = dblsize * 1.5;
+    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
+    cyclicManagedMemory manager ( &swap, memsize );
+
+    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( 0u, swap.getUsedSwap() );
+
+    managedPtr<double> *ptr1 = new managedPtr<double> ( dblamount );
+
+    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( 0u, swap.getUsedSwap() );
+
+    ptr1->setUse();
+
+    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( 0u, swap.getUsedSwap() );
+
+    ptr1->unsetUse();
+
+    managedPtr<double> *ptr2 = new managedPtr<double> ( dblamount );
+
+    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( dblsize, swap.getUsedSwap() );
+
+    ptr2->setUse();
+
+    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( dblsize, swap.getUsedSwap() );
+
+    ptr2->unsetUse();
+
+    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( dblsize, swap.getUsedSwap() );
+
+    delete ptr1;
+
+    ASSERT_EQ ( swapmem, swap.getSwapSize() );
+    ASSERT_EQ ( 0u, swap.getUsedSwap() );
+
+    delete ptr2;
+}
+
 TEST ( managedFileSwap, Unit_SwapAllocation )
 {
     unsigned int oneswap = 1024 * 1024 * 16;
