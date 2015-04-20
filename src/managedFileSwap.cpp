@@ -420,12 +420,12 @@ void managedFileSwap::copyMem ( void *ramBuf, const pageFileLocation &ref )
             pageFileLocation loc = determinePFLoc ( g_off, pageChunkSize );
             unsigned int pagedIn = pageChunkSize;
             void *pageFileBuf = getMem ( loc, pagedIn );
-            memcpy ( pageFileBuf, cramBuf + offset, pagedIn );
+            memcpy ( cramBuf + offset, pageFileBuf, pagedIn );
             pageChunkSize -= pagedIn;
             offset += pagedIn;
             g_off += pagedIn;
         }
-        if ( cur->status != PAGE_END ) {
+        if ( cur->status == PAGE_END ) {
             break;
         }
         cur = cur->glob_off_next;

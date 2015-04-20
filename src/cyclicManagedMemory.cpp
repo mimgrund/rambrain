@@ -357,6 +357,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
 {
     VERBOSEPRINT ( "swapOutEntry" );
     if ( min_size > memory_max ) {
+        errmsgf ( "Cannot swap out %d Bytes as the RAM only holds %d bytes by your definition", min_size, memory_max );
         return false;
     }
     unsigned int mem_alloc_max = memory_max * swapOutFrac; //<- This is target size
@@ -379,7 +380,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         }
 
     }
-    if ( fromPos == countPos && unload_size < mem_swap ) { //We've been round one time and could not make it.
+    if ( fromPos == countPos && memory_max - memory_used + unload_size < min_size ) { //We've been round one time and could not make it.
         return false;
     }
 

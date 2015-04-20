@@ -66,6 +66,60 @@ TEST ( managedFileSwap, Unit_SwapSize )
     delete ptr2;
 }
 
+
+TEST ( managedFileSwap, Integration_RandomAccess )
+{
+    unsigned int oneswap = 1024 * 1024 * 16;
+    unsigned int totalswap = 16 * oneswap;
+    managedFileSwap swap ( totalswap, "/tmp/membrainswap-%d", oneswap );
+    cyclicManagedMemory manager ( &swap, 10024 * 10 );
+    unsigned int obj_max = totalswap / ( 5000 * 8 );
+
+    managedPtr<double> *arr[obj_max];
+    for ( unsigned int n = 0; n < 10; ++n ) {
+        unsigned int sizeAssigned = 0;
+        unsigned int seed = time ( NULL );
+        srand ( seed );
+        //Write objects:
+        for ( int n = 0; n < obj_max; ++n ) {
+            unsigned thissize = ( ( double ) rand() ) / RAND_MAX * 10000 + 8;
+            sizeAssigned += thissize;
+            arr[n] = new managedPtr<double> ( thissize );
+            adhereTo<double> pt ( *arr[n] );
+            double *ptt = pt;
+            ptt[0] = thissize;
+            if ( sizeAssigned * 8 > .9 * totalswap ) {
+                break;
+            }
+        }
+        srand ( seed );
+        //Read objects:
+        sizeAssigned = 0;
+        for ( int n = 0; n < obj_max; ++n ) {
+            unsigned thissize = ( ( double ) rand() ) / RAND_MAX * 10000 + 8;
+            sizeAssigned += thissize;
+            adhereTo<double> pt ( *arr[n] );
+            double *ptt = pt;
+            ASSERT_EQ ( ( double ) thissize, ptt[0] );
+            if ( sizeAssigned * 8 > .9 * totalswap ) {
+                break;
+            }
+        }
+        srand ( seed );
+        //Delete objects:
+        sizeAssigned = 0;
+        for ( int n = 0; n < obj_max; ++n ) {
+            unsigned thissize = ( ( double ) rand() ) / RAND_MAX * 10000 + 8;
+            sizeAssigned += thissize;
+            delete arr[n];
+            if ( sizeAssigned * 8 > .9 * totalswap ) {
+                break;
+            }
+        }
+    };
+}
+
+
 TEST ( managedFileSwap, Unit_SwapAllocation )
 {
     unsigned int oneswap = 1024 * 1024 * 16;
