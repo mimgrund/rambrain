@@ -79,6 +79,9 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
         ASSERT_EQ ( 0, mstat.st_size );
 
     }
+    ASSERT_EQ ( 16, swap.all_space.size() );
+    ASSERT_EQ ( 16, swap.free_space.size() );
+
     cyclicManagedMemory manager ( &swap, 1024 * 10 );
     {
         managedPtr<double> testarr ( 1024 ); //80% RAM full.
@@ -122,7 +125,8 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
     }
     ASSERT_EQ ( 0, manager.getSwappedMemory() ); //Deallocated all pointers
     ASSERT_EQ ( 0, swap.getUsedSwap() );
-
+    ASSERT_EQ ( 16, swap.all_space.size() );
+    ASSERT_EQ ( 16, swap.free_space.size() );
 
     //Start to fill up swap with chunks that are below window size:
     // Wsize = 1MB , 10KiB Objects in RAM, 100 fit exactly in one swapFile.
@@ -153,7 +157,8 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
     };
     ASSERT_EQ ( 0, manager.getUsedMemory() );
     ASSERT_EQ ( 0, manager.getSwappedMemory() );
-
+    ASSERT_EQ ( 16, swap.all_space.size() );
+    ASSERT_EQ ( 16, swap.free_space.size() );
 
 #ifdef SWAPSTATS
     manager.printSwapstats();

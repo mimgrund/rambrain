@@ -198,7 +198,6 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, un
     if ( freeChunk->size - size < sizeof ( pageFileLocation ) ) { //Memory to manage free space exceeds free space (actually more than)
         //Thus, use the free chunk for your data.
         freeChunk->size = size;
-        free_space.erase ( determineGlobalOffset ( *freeChunk ) );
         return freeChunk;
     } else {
         pageFileLocation *neu = new pageFileLocation ( *freeChunk );
@@ -208,8 +207,8 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, un
         global_offset newfreeloc = determineGlobalOffset ( *freeChunk );
         free_space[newfreeloc] = freeChunk;
         neu->size = size;
-        all_space[newfreeloc] = freeChunk;
-        all_space[formerfree_off] = neu;
+        all_space[newfreeloc] = freeChunk; //inserts.
+        all_space[formerfree_off] = neu;//overwrites.
         return neu;
 
     }
@@ -219,96 +218,43 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, un
 void managedFileSwap::pffree ( pageFileLocation *pagePtr )
 {
     pageFileLocation *free_start = pagePtr;
-    while ( true ) { //We possibly need multiple frees.
-        std::map<unsigned int, pageFileLocation *>::iterator it = free_space.find ( determineGlobalOffset ( *pagePtr ) );
-        if ( pagePtr->status == PAGE_END || pagePtr->glob_off_next->offset == 0 || ++it->second != pagePtr->glob_off_next ) { //end of buf || end of pagefile || end of fragment reached
-
-            pageFileLocation *cur = free_start->glob_off_next;
-            pageFileLocation *next = free_start;
-            if ( cur && cur != pagePtr ) //Delete all possible others.
-                while ( cur != pagePtr ) {
-                    next = cur->glob_off_next;
-                    all_space.erase ( determineGlobalOffset ( *cur ) );
-                    delete cur;
-                    cur = next;
-                }
-
-            //The first page will be the chunk taking all space:
-            free_start->size = pagePtr->offset + pagePtr->size - free_start->offset;
-            unsigned int newfreeloc = determineGlobalOffset ( *free_start );
-
-            //TODO: We can come around the next insert, but for clarity, lets continue like that for the moment.
-            free_space[newfreeloc] = free_start;
-            //Possibly consolidate neighbouring frees:
-            it = all_space.find ( newfreeloc );
-            //before:
-            std::map<unsigned int, pageFileLocation *>::iterator it2;
-            if ( free_start->offset != 0 ) { //We're not at pageFileBoundary and have a free element before us
-                bool fillSpaceBeforePage = false;
-                if ( it != all_space.begin() ) { //if we have a pageChunk before us
-                    it2 = it;
-                    --it2;
-                    pageFileLocation *before = ( it2 )->second;
-
-                    if ( before->file == free_start->file ) { //If we are in the same file
-                        if ( before->status == PAGE_FREE ) { //And if this neighbour is also a free chunk
-                            before->size += free_start->offset + free_start->size - before->offset;
-                            all_space.erase ( newfreeloc );
-                            free_space.erase ( newfreeloc );
-                            delete free_start;
-                            free_start = before;
-                            newfreeloc = determineGlobalOffset ( *before );
-                        }
-                    } else {
-                        fillSpaceBeforePage = true;
-                    }
-                } else {
-                    fillSpaceBeforePage = true;
-                }
-                if ( fillSpaceBeforePage ) {
-                    //Let us fill the space before us 'till page bdry.
-                    all_space.erase ( newfreeloc );
-                    free_space.erase ( newfreeloc );
-                    //New position:
-                    free_start->size += free_start->offset;
-                    free_start->offset = 0;
-                    newfreeloc = determineGlobalOffset ( *free_start );
-                    free_space[newfreeloc] = free_start;
-                    all_space[newfreeloc] = free_start;
-                    it = all_space.find ( newfreeloc );
-                }
-
+    bool endIsReached = false;
+    do { //We possibly need multiple frees.
+        pageFileLocation *next = pagePtr->glob_off_next;
+        endIsReached = ( pagePtr->status == PAGE_END );
+        global_offset goff = determineGlobalOffset ( *pagePtr );
+        auto it = all_space.find ( goff );
+        //Check if we have free space before us to merge with:
+        if ( pagePtr->offset != 0 && it != all_space.begin() )
+            if ( ( --it )->second->status == PAGE_FREE ) {
+                //Merge previous free space with this chunk
+                pageFileLocation *prev = it->second;
+                prev->size += pagePtr->size;
+                delete pagePtr;
+                all_space.erase ( goff );
+                pagePtr = prev;
             }
-            //after:
-            it2 = it;
-            ++it2;
-            if ( it2 != all_space.end() ) {
-                pageFileLocation *after = ( it2 )->second; //We're not at the very end of swap
-                if ( after->offset != 0 && after->status == PAGE_FREE ) { //We're not crossing a pageFileBoundary
-                    free_start->size *= after->offset + after->size - free_start->offset;
-                    newfreeloc = determineGlobalOffset ( *after );
-                    all_space.erase ( newfreeloc );
-                    free_space.erase ( newfreeloc );
-                    delete after;
-                }
-
-            }
-
-
-
-
-            if ( pagePtr->status == PAGE_END ) {
-                break;
-            }
-
-            pagePtr = pagePtr->glob_off_next;
-            free_start = pagePtr;
-        } else {
-
-            pagePtr = pagePtr->glob_off_next;
+        //Check if we have free space after us to merge with;
+        goff = determineGlobalOffset ( *pagePtr );
+        it = all_space.find ( goff );
+        ++it;
+        if ( it != all_space.end() && it->second->offset != 0 && it->second->status == PAGE_FREE ) {
+            //We may merge the pageFileLocation after ourselve:
+            global_offset gofffree = determineGlobalOffset ( * ( it->second ) );
+            pagePtr->size += it->second->size;
+            //The second one may go completely:
+            delete it->second;
+            free_space.erase ( gofffree );
+            all_space.erase ( gofffree );
 
         }
-    }
+
+        //We are left with our free chunk, lets mark it free (possibly redundant.)
+        pagePtr->status = PAGE_FREE;
+        free_space[goff] = pagePtr;
+        pagePtr = next;
+
+    } while ( !endIsReached );
 
 }
 
