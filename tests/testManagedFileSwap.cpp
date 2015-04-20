@@ -24,42 +24,43 @@ TEST ( managedFileSwap, Unit_SwapSize )
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
     const unsigned int memsize = dblsize * 1.5;
+    const unsigned int onemb = 1048576;
     managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
     cyclicManagedMemory manager ( &swap, memsize );
 
-    ASSERT_EQ ( 1048576, swap.getSwapSize() );
+    ASSERT_EQ ( onemb, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     managedPtr<double> *ptr1 = new managedPtr<double> ( dblamount );
 
-    ASSERT_EQ ( 1048576, swap.getSwapSize() );
+    ASSERT_EQ ( onemb, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     ptr1->setUse();
 
-    ASSERT_EQ ( 1048576, swap.getSwapSize() );
+    ASSERT_EQ ( onemb, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     ptr1->unsetUse();
 
     managedPtr<double> *ptr2 = new managedPtr<double> ( dblamount );
 
-    ASSERT_EQ ( 1048576, swap.getSwapSize() );
+    ASSERT_EQ ( onemb, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
     ptr2->setUse();
 
-    ASSERT_EQ ( 1048576, swap.getSwapSize() );
+    ASSERT_EQ ( onemb, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
     ptr2->unsetUse();
 
-    ASSERT_EQ ( 1048576, swap.getSwapSize() );
+    ASSERT_EQ ( onemb, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
     delete ptr1;
 
-    ASSERT_EQ ( 1048576, swap.getSwapSize() );
+    ASSERT_EQ ( onemb, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     delete ptr2;
