@@ -80,15 +80,24 @@ protected:
 
 #ifdef SWAPSTATS
 protected:
-    unsigned int n_swap_out = 0;
-    unsigned int n_swap_in = 0;
-    unsigned int swap_out_bytes = 0;
-    unsigned int swap_in_bytes = 0;
-    unsigned int swap_hits = 0;
-    unsigned int swap_misses = 0;
+    global_bytesize n_swap_out = 0;
+    global_bytesize n_swap_in = 0;
+
+
+    global_bytesize swap_out_bytes = 0;
+    global_bytesize swap_in_bytes = 0;
+
+    global_bytesize swap_out_bytes_last = 0;
+    global_bytesize swap_in_bytes_last = 0;
+
+    global_bytesize swap_hits = 0;
+    global_bytesize swap_misses = 0;
 public:
     void printSwapstats();
     void resetSwapstats();
+
+    static void sigswapstats ( int signum );
+    static managedMemory *instance;
 
 #endif
 };

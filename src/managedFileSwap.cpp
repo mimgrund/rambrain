@@ -6,18 +6,18 @@
 #include <sys/signal.h>
 #include <sys/stat.h>
 #include "exceptions.h"
-managedFileSwap::managedFileSwap ( unsigned int size, const char *filemask, unsigned int oneFile ) : managedSwap ( size )
+managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile ) : managedSwap ( size )
 {
     if ( oneFile == 0 ) { // Layout this on your own:
 
-        unsigned int gig = 1024 * 1024 * 1024;
-        unsigned int myg = size / 16;
-        unsigned int mib = 1024 * 1024;
+        global_bytesize gig = 1024 * 1024 * 1024;
+        global_bytesize myg = size / 16;
+        global_bytesize mib = 1024 * 1024;
         oneFile = min ( gig, myg );
         oneFile = max ( mib, oneFile );
     }
     //calculate page File number:
-    unsigned int padding = oneFile % pageSize;
+    global_bytesize padding = oneFile % pageSize;
     if ( padding != 0 ) {
         warnmsgf ( "requested single swap filesize is not a multiple of pageSize.\n\t %u Bytes left over.", padding );
         oneFile += pageSize - padding;
@@ -55,8 +55,8 @@ managedFileSwap::managedFileSwap ( unsigned int size, const char *filemask, unsi
     }
 
     //Initialize Windows:
-    unsigned int ws_ratio = pageFileSize / 16; //TODO: unhardcode that buddy
-    unsigned int ws_max = 128 * 1024 * 1024; //TODO: unhardcode that buddy
+    global_bytesize ws_ratio = pageFileSize / 16; //TODO: unhardcode that buddy
+    global_bytesize ws_max = 128 * 1024 * 1024; //TODO: unhardcode that buddy
     windowNumber = 10;
     windowSize = min ( ws_max, ws_ratio );
     windowSize += ( windowSize % pageSize ) > 0 ? ( pageSize - ( windowSize % pageSize ) ) : 0;
@@ -83,7 +83,7 @@ managedFileSwap::~managedFileSwap()
     closeSwapFiles();
     free ( ( void * ) filemask );
     if ( all_space.size() > 0 ) {
-        std::map<unsigned int, pageFileLocation *>::iterator it = all_space.begin();
+        std::map<global_offset, pageFileLocation *>::iterator it = all_space.begin();
         do {
             delete it->second;
         } while ( ++it != all_space.end() );
@@ -124,14 +124,14 @@ bool managedFileSwap::openSwapFiles()
 
 const unsigned int managedFileSwap::pageSize = sysconf ( _SC_PAGE_SIZE );
 
-pageFileLocation *managedFileSwap::pfmalloc ( unsigned int size )
+pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size )
 {
     //TODO: This may be rather stupid at the moment
 
     /*Priority: -Use first free chunk that fits completely
      *          -Distribute over free locations
                 Later on/TODO: look for read-in memory that can be overwritten*/
-    std::map<unsigned int, pageFileLocation *>::iterator it = free_space.begin();
+    std::map<global_offset, pageFileLocation *>::iterator it = free_space.begin();
     pageFileLocation *found = NULL;
     do {
         if ( it->second->size >= size ) {
@@ -148,7 +148,7 @@ pageFileLocation *managedFileSwap::pfmalloc ( unsigned int size )
 
 
         //check for enough space:
-        unsigned int total_space = 0;
+        global_bytesize total_space = 0;
         it = free_space.begin();
         while ( true ) {
             total_space += it->second->size;
@@ -157,13 +157,13 @@ pageFileLocation *managedFileSwap::pfmalloc ( unsigned int size )
             }
         }
         while ( ++it != free_space.end() );
-        std::map<unsigned int, pageFileLocation *>::iterator it2 = free_space.begin();
+        std::map<global_offset, pageFileLocation *>::iterator it2 = free_space.begin();
 
 
         if ( total_space >= size ) { //We can concat enough free chunks to satisfy memory requirements
             while ( true ) {
-                unsigned int avail_space = it2->second->size;
-                unsigned int alloc_here = min ( avail_space, total_space );
+                global_bytesize avail_space = it2->second->size;
+                global_bytesize alloc_here = min ( avail_space, total_space );
                 pageFileLocation *neu = allocInFree ( it2->second, alloc_here );
                 total_space -= alloc_here;
                 neu->status = total_space == 0 ? PAGE_END : PAGE_PART;
@@ -189,7 +189,7 @@ pageFileLocation *managedFileSwap::pfmalloc ( unsigned int size )
     return res;
 }
 
-pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, unsigned int size )
+pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, global_bytesize size )
 {
     //Hook out the block of free space:
     global_offset formerfree_off = determineGlobalOffset ( *freeChunk );
@@ -337,7 +337,7 @@ global_offset managedFileSwap::determineGlobalOffset ( const pageFileLocation &r
 {
     return ref.file * pageFileSize + ref.offset;
 }
-pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, unsigned int length )
+pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, global_bytesize length )
 {
     pageFileLocation pfLoc;
     pfLoc.size = length;
@@ -373,7 +373,7 @@ pageFileWindow *managedFileSwap::getWindowTo ( const pageFileLocation &loc )
     return windows[w];
 }
 
-void *managedFileSwap::getMem ( const pageFileLocation &loc, unsigned int &size )
+void *managedFileSwap::getMem ( const pageFileLocation &loc, global_bytesize &size )
 {
     pageFileWindow *window = getWindowTo ( loc );
     return window->getMem ( loc, size );
@@ -385,14 +385,14 @@ void managedFileSwap::copyMem ( const pageFileLocation &ref, void *ramBuf )
 {
     const pageFileLocation *cur = &ref;
     char *cramBuf = ( char * ) ramBuf;
-    unsigned int offset = 0;
+    global_bytesize offset = 0;
     while ( true ) { //Sift through all pageChunks that have to be read
         global_offset g_off = determineGlobalOffset ( *cur );
 
-        unsigned int pageChunkSize = cur->size;
+        global_bytesize pageChunkSize = cur->size;
         while ( pageChunkSize > 0 ) { //Sift through potential window change
             pageFileLocation loc = determinePFLoc ( g_off, pageChunkSize );
-            unsigned int pagedIn = pageChunkSize;
+            global_bytesize pagedIn = pageChunkSize;
             void *pageFileBuf = getMem ( loc, pagedIn );
             memcpy ( pageFileBuf, cramBuf + offset, pagedIn );
             pageChunkSize -= pagedIn;
@@ -411,14 +411,14 @@ void managedFileSwap::copyMem ( void *ramBuf, const pageFileLocation &ref )
 {
     const pageFileLocation *cur = &ref;
     char *cramBuf = ( char * ) ramBuf;
-    unsigned int offset = 0;
+    global_bytesize offset = 0;
     while ( true ) { //Sift through all pageChunks that have to be read
         global_offset g_off = determineGlobalOffset ( *cur );
 
-        unsigned int pageChunkSize = cur->size;
+        global_bytesize pageChunkSize = cur->size;
         while ( pageChunkSize > 0 ) { //Sift through potential window change
             pageFileLocation loc = determinePFLoc ( g_off, pageChunkSize );
-            unsigned int pagedIn = pageChunkSize;
+            global_bytesize pagedIn = pageChunkSize;
             void *pageFileBuf = getMem ( loc, pagedIn );
             memcpy ( cramBuf + offset, pageFileBuf, pagedIn );
             pageChunkSize -= pagedIn;
@@ -448,7 +448,7 @@ pageFileWindow::pageFileWindow ( const pageFileLocation &location, managedFileSw
     //check whether swapfile is big enough, if not, rescale:
     struct stat stats;
     fstat ( fd, &stats );
-    unsigned int destsize = offset + length;
+    global_bytesize destsize = offset + length;
     if ( stats.st_size < destsize ) {
 
         if ( ftruncate ( fd, destsize ) == -1 ) {
@@ -473,7 +473,7 @@ void pageFileWindow::triggerSync ( bool async )
 }
 
 
-void *pageFileWindow::getMem ( const pageFileLocation &loc, unsigned int &size )
+void *pageFileWindow::getMem ( const pageFileLocation &loc, global_bytesize &size )
 {
     if ( loc.file != file ) {
         return NULL;
@@ -484,7 +484,7 @@ void *pageFileWindow::getMem ( const pageFileLocation &loc, unsigned int &size )
     if ( loc.offset > offset + length ) {
         return NULL;
     }
-    unsigned int windowBdryDistance = length - loc.offset % length;
+    global_bytesize windowBdryDistance = length - loc.offset % length;
     size = min ( windowBdryDistance, size );
 
     return ( char * ) buf + ( loc.offset - offset );
@@ -492,7 +492,7 @@ void *pageFileWindow::getMem ( const pageFileLocation &loc, unsigned int &size )
 
 }
 
-bool pageFileWindow::isInWindow ( const pageFileLocation &location, unsigned int &offset_start, unsigned int &offset_end )
+bool pageFileWindow::isInWindow ( const pageFileLocation &location, global_bytesize &offset_start, global_bytesize &offset_end )
 {
     if ( location.file != file ) {
         return false;
@@ -519,13 +519,13 @@ bool pageFileWindow::isInWindow ( const pageFileLocation &location, unsigned int
     return startIn || endIn;
 
 }
-bool pageFileWindow::isInWindow ( const pageFileLocation &location, unsigned int &length )
+bool pageFileWindow::isInWindow ( const pageFileLocation &location, global_bytesize &length )
 {
     if ( location.file != file ) {
         return false;
     }
     bool startIn = false;
-    unsigned int offset_start, offset_end;
+    global_bytesize offset_start, offset_end;
     if ( location.offset >= offset && location.offset < offset + length ) {
         startIn = true;
         offset_start = location.offset;

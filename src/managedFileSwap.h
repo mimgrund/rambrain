@@ -10,7 +10,8 @@ enum pageChunkStatus {PAGE_FREE = 1,
                       PAGE_UNKNOWN_STATE = 16
                      };
 
-typedef unsigned int global_offset;
+typedef uint64_t global_offset;
+
 
 //This will be stored in managedMemoryChunk::swapBuf :
 struct pageFileLocationStruct {
@@ -32,17 +33,17 @@ public:
     pageFileWindow ( const pageFileLocation &location, managedFileSwap &swap );
     ~pageFileWindow();
 
-    bool isInWindow ( const pageFileLocation &location, unsigned int &offset_start, unsigned int &offset_end );
-    bool isInWindow ( const pageFileLocation &location, unsigned int &length );
+    bool isInWindow ( const pageFileLocation &location, global_bytesize &offset_start, global_bytesize &offset_end );
+    bool isInWindow ( const pageFileLocation &location, global_bytesize &length );
     bool isInWindow ( const pageFileLocation );
 
     void triggerSync ( bool async = true );
     float percentageClean();
-    void *getMem ( const pageFileLocation &loc, unsigned int &size );
+    void *getMem ( const pageFileLocation &loc, global_bytesize &size );
 private:
     void *buf;
-    unsigned int offset;
-    unsigned int length;
+    global_bytesize offset;
+    global_bytesize length;
     unsigned int file;
     unsigned int window;
 };
@@ -54,7 +55,7 @@ class managedFileSwap : public managedSwap
 {
 public:
 
-    managedFileSwap ( unsigned int size, const char *filemask, unsigned int oneFile = 0 );
+    managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile = 0 );
     ~managedFileSwap();
 
     virtual void swapDelete ( managedMemoryChunk *chunk );
@@ -66,7 +67,7 @@ public:
     static const unsigned int pageSize;
 
 private:
-    pageFileLocation determinePFLoc ( global_offset g_offset, unsigned int length );
+    pageFileLocation determinePFLoc ( global_offset g_offset, global_bytesize length );
     inline global_offset determineGlobalOffset ( const pageFileLocation &ref );
     bool openSwapFiles();
     void closeSwapFiles();
@@ -74,7 +75,7 @@ private:
     const char *filemask;
 
     unsigned int pageFileNumber;
-    unsigned int pageFileSize;
+    global_bytesize pageFileSize;
 
     unsigned int windowSize;
     unsigned int windowNumber;
@@ -84,7 +85,7 @@ private:
 
     //Window handling:
     pageFileWindow **windows = NULL;
-    void *getMem ( const pageFileLocation &, unsigned int &size );
+    void *getMem ( const pageFileLocation &loc, global_bytesize &size );
     pageFileWindow *getWindowTo ( const pageFileLocation & );
 
     //Memory copy:
@@ -96,9 +97,9 @@ private:
 
 
     //page file malloc:
-    pageFileLocation *pfmalloc ( unsigned int size );
+    pageFileLocation *pfmalloc ( global_bytesize size );
     void pffree ( pageFileLocation *pagePtr );
-    pageFileLocation *allocInFree ( pageFileLocation *freeChunk, unsigned int size );
+    pageFileLocation *allocInFree ( pageFileLocation *freeChunk, global_bytesize size );
 
     std::map<global_offset, pageFileLocation *> free_space;
     std::map<global_offset, pageFileLocation *> all_space;

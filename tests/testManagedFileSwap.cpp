@@ -69,31 +69,30 @@ TEST ( managedFileSwap, Unit_SwapSize )
 
 TEST ( managedFileSwap, Integration_RandomAccess )
 {
-    unsigned int oneswap = 1024 * 1024 * 1600;
-    unsigned int totalswap = 16 * oneswap;
-    managedFileSwap swap ( totalswap, "/tmp/membrainswap-%d", oneswap );
+    global_bytesize oneswap = 1024 * 1024 * ( global_bytesize ) 160;
+    global_bytesize totalswap = 16 * oneswap;
+    managedFileSwap swap ( totalswap, "./membrainswap-%d", oneswap );
     cyclicManagedMemory manager ( &swap, oneswap );
-    unsigned int obj_max = totalswap / ( 10000 * 8 );
 
     /*ASSERT_EQ ( 0, manager.getSwappedMemory() ); //Deallocated all pointers
     ASSERT_EQ ( 0, swap.getUsedSwap() );
     ASSERT_EQ ( 16, swap.all_space.size() );
     ASSERT_EQ ( 16, swap.free_space.size() );*/
-    infomsgf ( "%ld total swap in %d swapfiles", swap.getSwapSize(), swap.all_space.size() );
+    infomsgf ( "%ld total swap in %ld swapfiles", swap.getSwapSize(), swap.all_space.size() );
 
-    unsigned int obj_size = 10240 * sizeof ( double );
-    unsigned int obj_no = totalswap / obj_size;
+    global_bytesize obj_size = 102400 * sizeof ( double );
+    global_bytesize obj_no = totalswap / obj_size * 2;
 
 
     managedPtr<double> **objmask = ( managedPtr<double> ** ) malloc ( sizeof ( managedPtr<double> * ) *obj_no );
-    for ( int n = 0; n < obj_no; ++n ) {
+    for ( unsigned int n = 0; n < obj_no; ++n ) {
         objmask[n] = NULL;
     }
-    for ( int n = 0; n < 10 * obj_no; ++n ) {
-        unsigned int no = ( ( double ) rand() / RAND_MAX ) * obj_no;
+    for ( unsigned int n = 0; n < 10 * obj_no; ++n ) {
+        global_bytesize no = ( ( double ) rand() / RAND_MAX ) * obj_no;
 
         if ( objmask[no] == NULL ) {
-            objmask[no] = new managedPtr<double> ( 10240 );
+            objmask[no] = new managedPtr<double> ( 102400 );
             {
                 adhereTo<double> objoloc ( *objmask[no] );
                 double *darr =  objoloc;
@@ -111,7 +110,7 @@ TEST ( managedFileSwap, Integration_RandomAccess )
         }
 
     }
-    for ( int n = 0; n < obj_no; ++n ) {
+    for ( unsigned int n = 0; n < obj_no; ++n ) {
         if ( objmask[n] != NULL ) {
             delete objmask[n];
         }

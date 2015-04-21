@@ -2,12 +2,14 @@
 #define MANAGEDSWAP_H
 
 #include "managedMemoryChunk.h"
+#include <inttypes.h>
 
+typedef uint64_t global_bytesize;
 
 class managedSwap
 {
 public:
-    managedSwap ( unsigned int size ) : swapSize ( size ), swapUsed ( 0 ) {}
+    managedSwap ( global_bytesize size ) : swapSize ( size ), swapUsed ( 0 ) {}
     //Returns number of sucessfully swapped chunks
     virtual unsigned int swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks ) = 0;
     virtual bool swapOut ( managedMemoryChunk *chunk )  = 0;
@@ -15,16 +17,16 @@ public:
     virtual bool swapIn ( managedMemoryChunk *chunk ) = 0;
     virtual void swapDelete ( managedMemoryChunk *chunk ) = 0;
 
-    virtual unsigned int getSwapSize() {
+    virtual global_bytesize getSwapSize() {
         return swapSize;
     }
-    virtual unsigned int getUsedSwap() {
+    virtual global_bytesize getUsedSwap() {
         return swapUsed;
     }
 
 protected:
-    unsigned int swapSize;
-    unsigned int swapUsed;
+    global_bytesize swapSize;
+    global_bytesize swapUsed;
 
 };
 

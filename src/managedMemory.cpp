@@ -2,7 +2,7 @@
 #include "common.h"
 #include "exceptions.h"
 #include "dummyManagedMemory.h"
-
+#include <sys/signal.h>
 dummyManagedMemory dummy;
 
 managedMemory *managedMemory::dummyManager = &dummy;
@@ -24,6 +24,10 @@ managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
         errmsg ( "You need to define a swap manager!" );
         throw incompleteSetupException ( "no swap manager defined" );
     }
+#ifdef SWAPSTATS
+    instance = this;
+    signal ( SIGUSR1, sigswapstats );
+#endif
 }
 
 managedMemory::~managedMemory()
@@ -399,10 +403,18 @@ void managedMemory::resetSwapstats()
     swap_hits = swap_misses = swap_in_bytes = swap_out_bytes = n_swap_in = n_swap_out = 0;
 }
 
+managedMemory *managedMemory::instance = NULL;
+void managedMemory::sigswapstats ( int signum )
+{
+    printf ( "%ld\t%ld\t%ld\t%ld\t%e\n", instance->swap_out_bytes,
+             instance->swap_out_bytes - instance->swap_out_bytes_last,
+             instance->swap_in_bytes,
+             instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );
+    instance->swap_out_bytes_last = instance->swap_out_bytes;
+    instance->swap_in_bytes_last = instance->swap_in_bytes;
+}
+
+
 #endif
-
-
-
-
 
 
