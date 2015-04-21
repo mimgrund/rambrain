@@ -69,54 +69,59 @@ TEST ( managedFileSwap, Unit_SwapSize )
 
 TEST ( managedFileSwap, Integration_RandomAccess )
 {
-    unsigned int oneswap = 1024 * 1024 * 16;
+    unsigned int oneswap = 1024 * 1024 * 1600;
     unsigned int totalswap = 16 * oneswap;
     managedFileSwap swap ( totalswap, "/tmp/membrainswap-%d", oneswap );
-    cyclicManagedMemory manager ( &swap, 10024 * 10 );
-    unsigned int obj_max = totalswap / ( 5000 * 8 );
+    cyclicManagedMemory manager ( &swap, oneswap );
+    unsigned int obj_max = totalswap / ( 10000 * 8 );
 
-    managedPtr<double> *arr[obj_max];
-    for ( unsigned int n = 0; n < 10; ++n ) {
-        unsigned int sizeAssigned = 0;
-        unsigned int seed = time ( NULL );
-        srand ( seed );
-        //Write objects:
-        for ( int n = 0; n < obj_max; ++n ) {
-            unsigned thissize = ( ( double ) rand() ) / RAND_MAX * 10000 + 8;
-            sizeAssigned += thissize;
-            arr[n] = new managedPtr<double> ( thissize );
-            adhereTo<double> pt ( *arr[n] );
-            double *ptt = pt;
-            ptt[0] = thissize;
-            if ( sizeAssigned * 8 > .9 * totalswap ) {
-                break;
+    /*ASSERT_EQ ( 0, manager.getSwappedMemory() ); //Deallocated all pointers
+    ASSERT_EQ ( 0, swap.getUsedSwap() );
+    ASSERT_EQ ( 16, swap.all_space.size() );
+    ASSERT_EQ ( 16, swap.free_space.size() );*/
+    infomsgf ( "%ld total swap in %d swapfiles", swap.getSwapSize(), swap.all_space.size() );
+
+    unsigned int obj_size = 10240 * sizeof ( double );
+    unsigned int obj_no = totalswap / obj_size;
+
+
+    managedPtr<double> **objmask = ( managedPtr<double> ** ) malloc ( sizeof ( managedPtr<double> * ) *obj_no );
+    for ( int n = 0; n < obj_no; ++n ) {
+        objmask[n] = NULL;
+    }
+    for ( int n = 0; n < 10 * obj_no; ++n ) {
+        unsigned int no = ( ( double ) rand() / RAND_MAX ) * obj_no;
+
+        if ( objmask[no] == NULL ) {
+            objmask[no] = new managedPtr<double> ( 10240 );
+            {
+                adhereTo<double> objoloc ( *objmask[no] );
+                double *darr =  objoloc;
+                darr[0] = no;
             }
-        }
-        srand ( seed );
-        //Read objects:
-        sizeAssigned = 0;
-        for ( int n = 0; n < obj_max; ++n ) {
-            unsigned thissize = ( ( double ) rand() ) / RAND_MAX * 10000 + 8;
-            sizeAssigned += thissize;
-            adhereTo<double> pt ( *arr[n] );
-            double *ptt = pt;
-            ASSERT_EQ ( ( double ) thissize, ptt[0] );
-            if ( sizeAssigned * 8 > .9 * totalswap ) {
-                break;
+
+        } else {
+            {
+                adhereTo<double> objoloc ( *objmask[no] );
+                double *darr =  objoloc;
+                ASSERT_EQ ( no, darr[0] );
             }
+            delete objmask[no];
+            objmask[no] = NULL;
         }
-        srand ( seed );
-        //Delete objects:
-        sizeAssigned = 0;
-        for ( int n = 0; n < obj_max; ++n ) {
-            unsigned thissize = ( ( double ) rand() ) / RAND_MAX * 10000 + 8;
-            sizeAssigned += thissize;
-            delete arr[n];
-            if ( sizeAssigned * 8 > .9 * totalswap ) {
-                break;
-            }
+
+    }
+    for ( int n = 0; n < obj_no; ++n ) {
+        if ( objmask[n] != NULL ) {
+            delete objmask[n];
         }
-    };
+    }
+    free ( objmask );
+
+#ifdef SWAPSTATS
+    manager.printSwapstats();
+#endif
+
 }
 
 

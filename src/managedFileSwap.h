@@ -106,6 +106,7 @@ private:
     friend pageFileWindow;
 
     friend class managedFileSwap_Unit_SwapAllocation_Test;
+    friend class managedFileSwap_Integration_RandomAccess_Test;
 
 };
 
