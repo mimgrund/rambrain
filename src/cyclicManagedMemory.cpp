@@ -385,7 +385,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
     unsigned int passed = 0;
     while ( unload_size < mem_swap ) {
         ++passed;
-        if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size < swap_free ) ) {
+        if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size <= swap_free ) ) {
             unload_size += countPos->chunk->size;
             ++unload;
         }
@@ -403,7 +403,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
     managedMemoryChunk **unloadElem = unloadlist;
 
     do {
-        if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size < swap_free ) ) {
+        if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) ) {
             *unloadElem = fromPos->chunk;
             ++unloadElem;
             unload_size2 += fromPos->chunk->size;
