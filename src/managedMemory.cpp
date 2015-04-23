@@ -3,6 +3,7 @@
 #include "exceptions.h"
 #include "dummyManagedMemory.h"
 #include <sys/signal.h>
+
 dummyManagedMemory dummy;
 
 managedMemory *managedMemory::dummyManager = &dummy;
@@ -20,8 +21,6 @@ managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
     chunk->status = MEM_ROOT;
     this->swap = swap;
     if ( !swap ) {
-        //! \todo merge these together? or at least give possibility to suppress the errmsg, this  is annoying at least in tests; Not only here but in general
-        errmsg ( "You need to define a swap manager!" );
         throw incompleteSetupException ( "no swap manager defined" );
     }
 #ifdef SWAPSTATS
