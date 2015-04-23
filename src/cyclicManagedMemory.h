@@ -42,6 +42,7 @@ private:
 
     bool preemtiveSwapIn = true; //TODO: Change strategy dynamically.
     unsigned int preemptiveBytes = 0;
+    global_bytesize preemptiveTurnoffFraction = .01;
 
 };
 

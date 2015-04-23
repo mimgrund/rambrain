@@ -32,6 +32,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     //initialize inherited members:
     swapSize = pageFileNumber * oneFile;
     swapUsed = 0;
+    swapFree = swapSize;
 
     //copy filemask:
     this->filemask = ( char * ) malloc ( sizeof ( char ) * ( strlen ( filemask ) + 1 ) );
@@ -69,6 +70,10 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     for ( unsigned int n = 0; n < windowNumber; ++n ) {
         windows[n] = 0;
     }
+
+    instance = this;
+    signal ( SIGUSR2, managedFileSwap::sigStat );
+
 }
 
 managedFileSwap::~managedFileSwap()
@@ -150,35 +155,33 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size )
         //check for enough space:
         global_bytesize total_space = 0;
         it = free_space.begin();
-        while ( true ) {
+        do {
             total_space += it->second->size;
-            if ( total_space >= size ) {
-                break;
-            }
-        }
-        while ( ++it != free_space.end() );
-        std::map<global_offset, pageFileLocation *>::iterator it2 = free_space.begin();
-
+        } while ( total_space < size && ++it != free_space.end() );
 
         if ( total_space >= size ) { //We can concat enough free chunks to satisfy memory requirements
+            it = free_space.begin();
             while ( true ) {
-                global_bytesize avail_space = it2->second->size;
-                global_bytesize alloc_here = min ( avail_space, total_space );
-                pageFileLocation *neu = allocInFree ( it2->second, alloc_here );
-                total_space -= alloc_here;
-                neu->status = total_space == 0 ? PAGE_END : PAGE_PART;
+                global_bytesize avail_space = it->second->size;
+                global_bytesize alloc_here = min ( avail_space, size );
+                auto it2 = it;
+                ++it2;
+                global_offset nextFreeOffset = it2->first;
+                pageFileLocation *neu = allocInFree ( it->second, alloc_here );
+                size -= alloc_here;
+                neu->status = ( size == 0 ? PAGE_END : PAGE_PART );
+
                 if ( !res ) {
                     res = neu;
                 }
                 if ( former ) {
                     former->glob_off_next = neu;
                 }
-                former = res;
-                if ( it2 == it ) {
+                if ( size == 0 ) {
                     break;
-                } else {
-                    it++;
                 }
+                former = neu;
+                it = free_space.find ( nextFreeOffset );
             };
 
         } else {
@@ -197,9 +200,11 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
     //We want to allocate a new chunk or use the chunk at hand.
     if ( freeChunk->size - size < sizeof ( pageFileLocation ) ) { //Memory to manage free space exceeds free space (actually more than)
         //Thus, use the free chunk for your data.
+        swapFree -= freeChunk->size; //Account for not mallocable overhead
         freeChunk->size = size;
         return freeChunk;
     } else {
+        swapFree -= size; //Account for not mallocable overhead
         pageFileLocation *neu = new pageFileLocation ( *freeChunk );
         freeChunk->offset += size;
         freeChunk->size -= size;
@@ -224,6 +229,7 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
         endIsReached = ( pagePtr->status == PAGE_END );
         global_offset goff = determineGlobalOffset ( *pagePtr );
         auto it = all_space.find ( goff );
+        swapFree += pagePtr->size;
         //Check if we have free space before us to merge with:
         if ( pagePtr->offset != 0 && it != all_space.begin() )
             if ( ( --it )->second->status == PAGE_FREE ) {
@@ -234,10 +240,19 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
                 all_space.erase ( goff );
                 pagePtr = prev;
             }
-        //Check if we have free space after us to merge with;
         goff = determineGlobalOffset ( *pagePtr );
         it = all_space.find ( goff );
         ++it;
+        //Check if we have unusable space after us to reuse:
+        global_offset nextoff = ( it == all_space.end() ? swapSize : determineGlobalOffset ( * ( it->second ) ) );
+        global_bytesize size = nextoff - goff;
+        if ( pagePtr->size != size ) {
+            swapFree += size - pagePtr->size;
+            pagePtr->size = size;
+        };
+
+        //Check if we have free space after us to merge with;
+
         if ( it != all_space.end() && it->second->offset != 0 && it->second->status == PAGE_FREE ) {
             //We may merge the pageFileLocation after ourselve:
             global_offset gofffree = determineGlobalOffset ( * ( it->second ) );
@@ -407,6 +422,9 @@ void managedFileSwap::copyMem ( const pageFileLocation &ref, void *ramBuf )
     };
 }
 
+
+
+
 void managedFileSwap::copyMem ( void *ramBuf, const pageFileLocation &ref )
 {
     const pageFileLocation *cur = &ref;
@@ -553,3 +571,37 @@ bool pageFileWindow::isInWindow ( const pageFileLocation location )
 
 
 }
+
+void managedFileSwap::sigStat ( int signum )
+{
+    global_bytesize total_space = instance->swapSize;
+    global_bytesize free_space = 0;
+    global_bytesize free_space2 = 0;
+    global_bytesize fractured = 0;
+    global_bytesize partend = 0;
+    auto it = instance->free_space.begin();
+    do {
+        free_space += it->second->size;
+    } while ( ++it != instance->free_space.end() );
+
+    it = instance->all_space.begin();
+    do {
+        switch ( it->second->status ) {
+        case PAGE_END:
+            partend += it->second->size;
+            break;
+        case PAGE_FREE:
+            free_space2 += it->second->size;
+            break;
+        case PAGE_PART:
+            fractured += it->second->size;
+            break;
+        }
+    } while ( ++it != instance->all_space.end() );
+
+    printf ( "%ld\t%ld\t%ld\t%e\t%e\t%s\n", free_space, partend, fractured, ( ( double ) free_space ) / ( partend + fractured + free_space ), ( ( ( double ) ( total_space ) - ( partend + fractured + free_space ) ) / ( total_space ) ), ( free_space == instance->swapFree ? "sane" : "insane" ) );
+
+
+}
+
+managedFileSwap *managedFileSwap::instance = NULL;

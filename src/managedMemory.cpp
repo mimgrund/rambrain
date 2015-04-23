@@ -84,7 +84,7 @@ bool managedMemory::setMemoryLimit ( unsigned int size )
 void managedMemory::ensureEnoughSpaceFor ( unsigned int sizereq )
 {
     if ( sizereq + memory_used > memory_max ) {
-        if ( !swapOut ( sizereq ) ) {
+        if ( !swapOut ( sizereq + memory_used - memory_max ) ) {
             Throw ( memoryException ( "Could not swap memory" ) );
         }
     }

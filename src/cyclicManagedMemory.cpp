@@ -153,9 +153,10 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     unsigned int actual_obj_size = chunk.size;
     //We want to read in what the user requested plus fill up the preemptive area with opportune guesses
 
+    global_bytesize swap_free = swap->getFreeSwap();
+    bool preemptiveAutooff = swap->getFreeSwap() / swap->getSwapSize() > preemptiveTurnoffFraction;
 
-
-    if ( preemtiveSwapIn ) {
+    if ( preemtiveSwapIn && preemptiveAutooff ) {
         unsigned int targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
         //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
         //Swap out if we want to read in more than what we thought:
@@ -357,20 +358,29 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
 {
     VERBOSEPRINT ( "swapOutEntry" );
     if ( min_size > memory_max ) {
-        errmsgf ( "Cannot swap out %d Bytes as the RAM only holds %d bytes by your definition", min_size, memory_max );
+        errmsgf ( "Cannot swap out %d Bytes for this object as the RAM only holds %d bytes by your definition", min_size, memory_max );
         return false;
     }
+    global_bytesize swap_free = swap->getFreeSwap();
+    if ( min_size > swap_free ) {
+        errmsgf ( "Cannot swap out %d Bytes for this object as Swap space has only %ld free Bytes.", min_size, swap_free );
+        return false;
+    }
+
     unsigned int mem_alloc_max = memory_max * swapOutFrac; //<- This is target size
     unsigned int mem_swap_min = memory_used > mem_alloc_max ? memory_used - mem_alloc_max : 0;
     unsigned int mem_swap = mem_swap_min < min_size ? min_size : mem_swap_min;
 
+    mem_swap = mem_swap > swap_free ? min_size : mem_swap;
+
     cyclicAtime *fromPos = counterActive;
     cyclicAtime *countPos = counterActive;
     unsigned int unload_size = 0, unload = 0;
+    unsigned int unload_size2 = 0;
     unsigned int passed = 0;
     while ( unload_size < mem_swap ) {
         ++passed;
-        if ( countPos->chunk->status == MEM_ALLOCATED ) {
+        if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size < swap_free ) ) {
             unload_size += countPos->chunk->size;
             ++unload;
         }
@@ -388,9 +398,10 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
     managedMemoryChunk **unloadElem = unloadlist;
 
     do {
-        if ( fromPos->chunk->status == MEM_ALLOCATED ) {
+        if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size < swap_free ) ) {
             *unloadElem = fromPos->chunk;
             ++unloadElem;
+            unload_size2 += fromPos->chunk->size;
             if ( fromPos == active ) {
                 active = fromPos->prev;
             }

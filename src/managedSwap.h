@@ -23,10 +23,14 @@ public:
     virtual global_bytesize getUsedSwap() {
         return swapUsed;
     }
+    virtual global_bytesize getFreeSwap() {
+        return swapFree;
+    }
 
 protected:
     global_bytesize swapSize;
     global_bytesize swapUsed;
+    global_bytesize swapFree;
 
 };
 

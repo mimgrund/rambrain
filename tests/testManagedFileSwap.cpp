@@ -69,7 +69,7 @@ TEST ( managedFileSwap, Unit_SwapSize )
 
 TEST ( managedFileSwap, Integration_RandomAccess )
 {
-    global_bytesize oneswap = 1024 * 1024 * ( global_bytesize ) 160;
+    global_bytesize oneswap = 1024 * 1024 * ( global_bytesize ) 16;
     global_bytesize totalswap = 16 * oneswap;
     managedFileSwap swap ( totalswap, "./membrainswap-%d", oneswap );
     cyclicManagedMemory manager ( &swap, oneswap );
@@ -122,6 +122,72 @@ TEST ( managedFileSwap, Integration_RandomAccess )
 #endif
 
 }
+TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
+{
+    global_bytesize oneswap = 1024 * 1024 * ( global_bytesize ) 16;
+    global_bytesize totalswap = 16 * oneswap;
+    managedFileSwap swap ( totalswap, "./membrainswap-%d", oneswap );
+    cyclicManagedMemory manager ( &swap, oneswap );
+
+    /*ASSERT_EQ ( 0, manager.getSwappedMemory() ); //Deallocated all pointers
+     *   ASSERT_EQ ( 0, swap.getUsedSwap() );
+     *   ASSERT_EQ ( 16, swap.all_space.size() );
+     *   ASSERT_EQ ( 16, swap.free_space.size() );*/
+    infomsgf ( "%ld total swap in %ld swapfiles", swap.getSwapSize(), swap.all_space.size() );
+
+    global_bytesize obj_size = 102400 * sizeof ( double );
+    global_bytesize obj_no = totalswap / obj_size * 2;
+
+
+    managedPtr<double> **objmask = ( managedPtr<double> ** ) malloc ( sizeof ( managedPtr<double> * ) *obj_no );
+    for ( unsigned int n = 0; n < obj_no; ++n ) {
+        objmask[n] = NULL;
+    }
+    for ( unsigned int n = 0; n < 10 * obj_no; ++n ) {
+        global_bytesize no = ( ( double ) rand() / RAND_MAX ) * obj_no;
+
+        if ( objmask[no] == NULL ) {
+
+            unsigned int varsize = ( ( double ) rand() / RAND_MAX + .5 ) * 102400;
+            if ( ( varsize + 102400 * 1.5 ) *sizeof ( double ) > swap.getFreeSwap() + manager.getMemoryLimit() - manager.getUsedMemory() ) {
+                continue;
+            }
+            objmask[no] = new managedPtr<double> ( varsize );
+            {
+                adhereTo<double> objoloc ( *objmask[no] );
+                double *darr =  objoloc;
+                for ( int k = 0; k < varsize; k++ ) {
+                    darr[k] = k + varsize;
+                }
+            }
+
+        } else {
+            {
+                adhereTo<double> objoloc ( *objmask[no] );
+                double *darr =  objoloc;
+                for ( int k = 0; k < darr[0]; k++ ) {
+                    ASSERT_EQ ( k + darr[0], darr[k] );
+                }
+
+            }
+            delete objmask[no];
+            objmask[no] = NULL;
+        }
+        swap.sigStat ( 0 );
+    }
+    for ( unsigned int n = 0; n < obj_no; ++n ) {
+        if ( objmask[n] != NULL ) {
+            delete objmask[n];
+        }
+    }
+    free ( objmask );
+
+#ifdef SWAPSTATS
+    manager.printSwapstats();
+#endif
+
+}
+
 
 
 TEST ( managedFileSwap, Unit_SwapAllocation )
