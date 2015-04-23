@@ -255,9 +255,11 @@ TEST ( cyclicManagedMemory, Unit_VariousSize )
         ASSERT_EQ ( manager.getSwappedMemory(), swap.getUsedSwap() );
 
         for ( unsigned int p = 0; p < 8; ++p ) {
+            manager.printCycle();
             managedPtr<double> &a = *arr[p];
             ADHERETOLOC ( double, a, locA );
             locA[0] = o + p;
+            manager.printCycle();
             ASSERT_TRUE ( manager.checkCycle() );
         }
 

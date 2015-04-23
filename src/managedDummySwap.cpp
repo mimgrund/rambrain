@@ -4,7 +4,7 @@
 
 managedDummySwap::managedDummySwap ( unsigned int size ) : managedSwap ( size )
 {
-    swapSize = size;
+    swapFree = swapSize = size;
     swapUsed = 0;
 }
 
@@ -21,6 +21,7 @@ bool managedDummySwap::swapOut ( managedMemoryChunk *chunk )
         chunk->locPtr = NULL; // not strictly required.
         chunk->status = MEM_SWAPPED;
         swapUsed += chunk->size;
+        swapFree -= chunk->size;
         return true;
     } else {
         return false;
@@ -48,6 +49,7 @@ bool managedDummySwap::swapIn ( managedMemoryChunk *chunk )
         chunk->swapBuf = NULL; // Not strictly required
         chunk->status = MEM_ALLOCATED;
         swapUsed -= chunk->size;
+        swapFree += chunk->size;
         return true;
     } else {
         return false;
@@ -69,6 +71,7 @@ void managedDummySwap::swapDelete ( managedMemoryChunk *chunk )
 {
     if ( chunk->status == MEM_SWAPPED ) {
         swapUsed -= chunk->size;
+        swapFree += chunk->size;
         free ( chunk->swapBuf );
     }
 }

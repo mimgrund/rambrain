@@ -239,15 +239,17 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     } else {
         ensureEnoughSpaceFor ( actual_obj_size );
         if ( swap->swapIn ( &chunk ) ) {
+            touch ( chunk );
+            if ( counterActive->chunk->status == MEM_SWAPPED ) {
+                counterActive = active;
+            }
             memory_used += chunk.size;
             memory_swapped -= chunk.size;
 #ifdef SWAPSTATS
             swap_in_bytes += chunk.size;
             n_swap_in += 1;
 #endif
-            if ( chunk.schedBuf == counterActive ) {
-                counterActive = counterActive->prev;
-            }
+
             return true;
         } else {
             return Throw ( memoryException ( "Could not swap in an element." ) );
@@ -356,6 +358,9 @@ void cyclicManagedMemory::printCycle()
 
 bool cyclicManagedMemory::swapOut ( unsigned int min_size )
 {
+    if ( counterActive == 0 ) {
+        Throw ( memoryException ( "I can't swap out anything if there's nothing to swap out." ) );
+    }
     VERBOSEPRINT ( "swapOutEntry" );
     if ( min_size > memory_max ) {
         errmsgf ( "Cannot swap out %d Bytes for this object as the RAM only holds %d bytes by your definition", min_size, memory_max );
