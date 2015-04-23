@@ -427,7 +427,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
     bool inSwappedSection = true;
 
     //TODO: Implement this for less than 3 elements!
-
+    //TODO: Implement this for swapping out all exept locked elements
     while ( fromPos != countPos ) {
         if ( inSwappedSection ) {
             if ( fromPos->chunk->status != MEM_SWAPPED ) {

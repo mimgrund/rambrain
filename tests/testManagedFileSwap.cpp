@@ -81,7 +81,7 @@ TEST ( managedFileSwap, Integration_RandomAccess )
     infomsgf ( "%ld total swap in %ld swapfiles", swap.getSwapSize(), swap.all_space.size() );
 
     global_bytesize obj_size = 102400 * sizeof ( double );
-    global_bytesize obj_no = totalswap / obj_size * 2;
+    global_bytesize obj_no = totalswap / obj_size * .9;
 
 
     managedPtr<double> **objmask = ( managedPtr<double> ** ) malloc ( sizeof ( managedPtr<double> * ) *obj_no );
@@ -138,6 +138,7 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
     global_bytesize obj_size = 102400 * sizeof ( double );
     global_bytesize obj_no = totalswap / obj_size * 2;
 
+    srand(1);
 
     managedPtr<double> **objmask = ( managedPtr<double> ** ) malloc ( sizeof ( managedPtr<double> * ) *obj_no );
     for ( unsigned int n = 0; n < obj_no; ++n ) {
@@ -145,7 +146,9 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
     }
     for ( unsigned int n = 0; n < 10 * obj_no; ++n ) {
         global_bytesize no = ( ( double ) rand() / RAND_MAX ) * obj_no;
-
+	if(n==1428)
+	  printf("%d\n",n);
+	ASSERT_TRUE(manager.checkCycle());
         if ( objmask[no] == NULL ) {
 
             unsigned int varsize = ( ( double ) rand() / RAND_MAX + .5 ) * 102400;
@@ -173,7 +176,6 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
             delete objmask[no];
             objmask[no] = NULL;
         }
-        swap.sigStat ( 0 );
     }
     for ( unsigned int n = 0; n < obj_no; ++n ) {
         if ( objmask[n] != NULL ) {
