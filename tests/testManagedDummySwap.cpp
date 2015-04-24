@@ -44,10 +44,10 @@ TEST (managedDummySwap, Unit_ManualMultiSwapping )
 
     managedMemoryChunk* chunks[2];
     for (int i = 0; i < 2; ++i) {
-        chunks[0] = new managedMemoryChunk(0, 1);
-        chunks[0]->status = MEM_ALLOCATED;
-        chunks[0]->locPtr = new double[dblamount];
-        chunks[0]->size = dblsize;
+        chunks[i] = new managedMemoryChunk(0, 1);
+        chunks[i]->status = MEM_ALLOCATED;
+        chunks[i]->locPtr = new double[dblamount];
+        chunks[i]->size = dblsize;
     }
 
     swap.swapOut(chunks, 2);
