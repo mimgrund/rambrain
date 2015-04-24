@@ -395,7 +395,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         }
 
     }
-    if ( fromPos == countPos && memory_max - memory_used + unload_size < min_size ) { //We've been round one time and could not make it.
+    if ( fromPos == countPos && unload_size < min_size ) { //We've been round one time and could not make it.
         return false;
     }
 
@@ -423,8 +423,8 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
     fromPos = counterActive;
     cyclicAtime *moveEnd, *cleanFrom;
     moveEnd = NULL;
-    cleanFrom = counterActive;
-    bool inSwappedSection = true;
+    cleanFrom = counterActive->next;
+    bool inSwappedSection = ( fromPos->chunk->status == MEM_SWAPPED );
     bool doRoundtrip = fromPos == countPos;
 
     //TODO: Implement this for less than 3 elements!
@@ -470,7 +470,6 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         //  xxxxxxxxxxoooooooxxxxxxooooooo
         //  ------A--><--B--><-C--><--D
         // Change order from A-B-C-D to A-C-B-D
-
         cyclicAtime *endNonswap = fromPos; //A
         cyclicAtime *startIsoswap = fromPos->next; //B
         cyclicAtime *endIsoswap = moveEnd; //B
