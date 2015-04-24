@@ -66,6 +66,34 @@ TEST (managedFileSwap, Unit_ManualMultiSwapping )
     }
 }
 
+TEST (managedFileSwap, Unit_ManualSwappingDelete )
+{
+    const unsigned int dblamount = 100;
+    const unsigned int dblsize = dblamount * sizeof ( double );
+    const unsigned int swapmem = dblsize * 10;
+    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
+
+    ASSERT_EQ ( mib, swap.getSwapSize() );
+    ASSERT_EQ ( 0u, swap.getUsedSwap() );
+
+    managedMemoryChunk* chunk = new managedMemoryChunk(0, 1);
+    chunk->status = MEM_ALLOCATED;
+    chunk->locPtr = new double[dblamount];
+    chunk->size = dblsize;
+
+    swap.swapOut(chunk);
+
+    ASSERT_EQ ( mib, swap.getSwapSize() );
+    ASSERT_EQ ( dblsize, swap.getUsedSwap() );
+
+    swap.swapDelete(chunk);
+
+    ASSERT_EQ ( mib, swap.getSwapSize() );
+    ASSERT_EQ ( 0u, swap.getUsedSwap() );
+
+    delete chunk;
+}
+
 TEST ( managedFileSwap, Unit_SimpleSwapping )
 {
     const unsigned int memsize = 15 * sizeof ( double );
