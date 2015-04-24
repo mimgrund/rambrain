@@ -138,7 +138,7 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
     global_bytesize obj_size = 102400 * sizeof ( double );
     global_bytesize obj_no = totalswap / obj_size * 2;
 
-    srand(1);
+    srand ( time ( NULL ) );
 
     managedPtr<double> **objmask = ( managedPtr<double> ** ) malloc ( sizeof ( managedPtr<double> * ) *obj_no );
     for ( unsigned int n = 0; n < obj_no; ++n ) {
@@ -146,9 +146,7 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
     }
     for ( unsigned int n = 0; n < 10 * obj_no; ++n ) {
         global_bytesize no = ( ( double ) rand() / RAND_MAX ) * obj_no;
-	if(n==1428)
-	  printf("%d\n",n);
-	ASSERT_TRUE(manager.checkCycle());
+        ASSERT_TRUE ( manager.checkCycle() );
         if ( objmask[no] == NULL ) {
 
             unsigned int varsize = ( ( double ) rand() / RAND_MAX + .5 ) * 102400;
