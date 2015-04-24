@@ -3,6 +3,68 @@
 #include "managedPtr.h"
 #include <gtest/gtest.h>
 #include <sys/stat.h>
+#include "common.h"
+
+TEST (managedFileSwap, Unit_ManualSwapping )
+{
+    const unsigned int dblamount = 100;
+    const unsigned int dblsize = dblamount * sizeof ( double );
+    const unsigned int swapmem = dblsize * 10;
+    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
+
+    ASSERT_EQ ( mib, swap.getSwapSize() );
+    ASSERT_EQ ( 0u, swap.getUsedSwap() );
+
+    managedMemoryChunk* chunk = new managedMemoryChunk(0, 1);
+    chunk->status = MEM_ALLOCATED;
+    chunk->locPtr = new double[dblamount];
+    chunk->size = dblsize;
+
+    swap.swapOut(chunk);
+
+    ASSERT_EQ ( mib, swap.getSwapSize() );
+    ASSERT_EQ ( dblsize, swap.getUsedSwap() );
+
+    swap.swapIn(chunk);
+
+    ASSERT_EQ ( mib, swap.getSwapSize() );
+    ASSERT_EQ ( 0u, swap.getUsedSwap() );
+
+    delete chunk;
+}
+
+TEST (managedFileSwap, Unit_ManualMultiSwapping )
+{
+    const unsigned int dblamount = 100;
+    const unsigned int dblsize = dblamount * sizeof ( double );
+    const unsigned int swapmem = dblsize * 10;
+    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
+
+    ASSERT_EQ ( mib, swap.getSwapSize() );
+    ASSERT_EQ ( 0u, swap.getUsedSwap() );
+
+    managedMemoryChunk* chunks[2];
+    for (int i = 0; i < 2; ++i) {
+        chunks[0] = new managedMemoryChunk(0, 1);
+        chunks[0]->status = MEM_ALLOCATED;
+        chunks[0]->locPtr = new double[dblamount];
+        chunks[0]->size = dblsize;
+    }
+
+    swap.swapOut(chunks, 2);
+
+    ASSERT_EQ ( mib, swap.getSwapSize() );
+    ASSERT_EQ ( 2 * dblsize, swap.getUsedSwap() );
+
+    swap.swapIn(chunks, 2);
+
+    ASSERT_EQ ( mib, swap.getSwapSize() );
+    ASSERT_EQ ( 0u, swap.getUsedSwap() );
+
+    for (int i = 0; i < 2; ++i) {
+        delete chunks[i];
+    }
+}
 
 TEST ( managedFileSwap, Unit_SimpleSwapping )
 {
@@ -24,43 +86,42 @@ TEST ( managedFileSwap, Unit_SwapSize )
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
     const unsigned int memsize = dblsize * 1.5;
-    const unsigned int onemb = 1048576;
     managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
     cyclicManagedMemory manager ( &swap, memsize );
 
-    ASSERT_EQ ( onemb, swap.getSwapSize() );
+    ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     managedPtr<double> *ptr1 = new managedPtr<double> ( dblamount );
 
-    ASSERT_EQ ( onemb, swap.getSwapSize() );
+    ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     ptr1->setUse();
 
-    ASSERT_EQ ( onemb, swap.getSwapSize() );
+    ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     ptr1->unsetUse();
 
     managedPtr<double> *ptr2 = new managedPtr<double> ( dblamount );
 
-    ASSERT_EQ ( onemb, swap.getSwapSize() );
+    ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
     ptr2->setUse();
 
-    ASSERT_EQ ( onemb, swap.getSwapSize() );
+    ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
     ptr2->unsetUse();
 
-    ASSERT_EQ ( onemb, swap.getSwapSize() );
+    ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
     delete ptr1;
 
-    ASSERT_EQ ( onemb, swap.getSwapSize() );
+    ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     delete ptr2;
