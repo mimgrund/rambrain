@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include "common.h"
 
-TEST (managedFileSwap, Unit_ManualSwapping )
+TEST ( managedFileSwap, Unit_ManualSwapping )
 {
     const unsigned int dblamount = 100;
     const unsigned int dblsize = dblamount * sizeof ( double );
@@ -15,17 +15,17 @@ TEST (managedFileSwap, Unit_ManualSwapping )
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
-    managedMemoryChunk* chunk = new managedMemoryChunk(0, 1);
+    managedMemoryChunk *chunk = new managedMemoryChunk ( 0, 1 );
     chunk->status = MEM_ALLOCATED;
-    chunk->locPtr = new double[dblamount];
+    chunk->locPtr = malloc ( dblsize );
     chunk->size = dblsize;
 
-    swap.swapOut(chunk);
+    EXPECT_TRUE ( swap.swapOut ( chunk ) );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
-    swap.swapIn(chunk);
+    swap.swapIn ( chunk );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
@@ -33,7 +33,7 @@ TEST (managedFileSwap, Unit_ManualSwapping )
     delete chunk;
 }
 
-TEST (managedFileSwap, Unit_ManualMultiSwapping )
+TEST ( managedFileSwap, Unit_ManualMultiSwapping )
 {
     const unsigned int dblamount = 100;
     const unsigned int dblsize = dblamount * sizeof ( double );
@@ -43,30 +43,30 @@ TEST (managedFileSwap, Unit_ManualMultiSwapping )
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
-    managedMemoryChunk* chunks[2];
-    for (int i = 0; i < 2; ++i) {
-        chunks[i] = new managedMemoryChunk(0, 1);
+    managedMemoryChunk *chunks[2];
+    for ( int i = 0; i < 2; ++i ) {
+        chunks[i] = new managedMemoryChunk ( 0, i + 1 );
         chunks[i]->status = MEM_ALLOCATED;
-        chunks[i]->locPtr = new double[dblamount];
+        chunks[i]->locPtr = malloc ( dblsize );
         chunks[i]->size = dblsize;
     }
 
-    swap.swapOut(chunks, 2);
+    swap.swapOut ( chunks, 2 );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 2 * dblsize, swap.getUsedSwap() );
 
-    swap.swapIn(chunks, 2);
+    swap.swapIn ( chunks, 2 );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
-    for (int i = 0; i < 2; ++i) {
+    for ( int i = 0; i < 2; ++i ) {
         delete chunks[i];
     }
 }
 
-TEST (managedFileSwap, Unit_ManualSwappingDelete )
+TEST ( managedFileSwap, Unit_ManualSwappingDelete )
 {
     const unsigned int dblamount = 100;
     const unsigned int dblsize = dblamount * sizeof ( double );
@@ -76,17 +76,17 @@ TEST (managedFileSwap, Unit_ManualSwappingDelete )
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
-    managedMemoryChunk* chunk = new managedMemoryChunk(0, 1);
+    managedMemoryChunk *chunk = new managedMemoryChunk ( 0, 1 );
     chunk->status = MEM_ALLOCATED;
-    chunk->locPtr = new double[dblamount];
+    chunk->locPtr =  malloc ( dblsize );
     chunk->size = dblsize;
 
-    swap.swapOut(chunk);
+    swap.swapOut ( chunk );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
-    swap.swapDelete(chunk);
+    swap.swapDelete ( chunk );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );

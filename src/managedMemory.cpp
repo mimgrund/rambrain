@@ -376,7 +376,7 @@ void managedMemory::printTree ( managedMemoryChunk *current, unsigned int nspace
 //memoryChunk class:
 
 managedMemoryChunk::managedMemoryChunk ( const memoryID &parent, const memoryID &me )
-    : useCnt ( 0 ), parent ( parent ), id ( me )
+    : useCnt ( 0 ), parent ( parent ), id ( me ), swapBuf ( NULL )
 {
 }
 
