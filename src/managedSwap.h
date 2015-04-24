@@ -2,9 +2,7 @@
 #define MANAGEDSWAP_H
 
 #include "managedMemoryChunk.h"
-#include <inttypes.h>
-
-typedef uint64_t global_bytesize;
+#include "common.h"
 
 class managedSwap
 {

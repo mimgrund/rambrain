@@ -6,13 +6,14 @@
 #include <sys/signal.h>
 #include <sys/stat.h>
 #include "exceptions.h"
+
+const unsigned int managedFileSwap::pageSize = sysconf ( _SC_PAGE_SIZE );
+
 managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile ) : managedSwap ( size )
 {
     if ( oneFile == 0 ) { // Layout this on your own:
 
-        global_bytesize gig = 1024 * 1024 * 1024;
         global_bytesize myg = size / 16;
-        global_bytesize mib = 1024 * 1024;
         oneFile = min ( gig, myg );
         oneFile = max ( mib, oneFile );
     }
@@ -57,7 +58,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
 
     //Initialize Windows:
     global_bytesize ws_ratio = pageFileSize / 16; //TODO: unhardcode that buddy
-    global_bytesize ws_max = 128 * 1024 * 1024; //TODO: unhardcode that buddy
+    global_bytesize ws_max = 128 * mib; //TODO: unhardcode that buddy
     windowNumber = 10;
     windowSize = min ( ws_max, ws_ratio );
     windowSize += ( windowSize % pageSize ) > 0 ? ( pageSize - ( windowSize % pageSize ) ) : 0;
@@ -126,8 +127,6 @@ bool managedFileSwap::openSwapFiles()
     }
     return true;
 }
-
-const unsigned int managedFileSwap::pageSize = sysconf ( _SC_PAGE_SIZE );
 
 pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size )
 {
