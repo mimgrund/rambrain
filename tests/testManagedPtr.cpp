@@ -41,7 +41,7 @@ TEST ( managedPtr, Unit_ChunkInUse )
 
     ASSERT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
 
-    ptr.setUse(true);
+    ptr.setUse ( true );
 
     ASSERT_EQ ( MEM_ALLOCATED_INUSE_WRITE, ptr.chunk->status );
 
@@ -49,7 +49,7 @@ TEST ( managedPtr, Unit_ChunkInUse )
 
     ASSERT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
 
-    ptr.setUse(false);
+    ptr.setUse ( false );
 
     ASSERT_EQ ( MEM_ALLOCATED_INUSE_READ, ptr.chunk->status );
 }
