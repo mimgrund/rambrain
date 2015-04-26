@@ -129,6 +129,7 @@ private:
     friend class managedPtr_Unit_ChunkInUse_Test;
     friend class managedPtr_Unit_GetLocPointer_Test;
     friend class managedPtr_Unit_SmartPointery_Test;
+    friend class managedFileSwap_Unit_SwapSingleIsland_Test;
 };
 
 
