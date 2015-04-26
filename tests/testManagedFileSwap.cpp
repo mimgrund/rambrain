@@ -412,7 +412,6 @@ TEST ( managedFileSwap, Unit_SwapReadAllocatedChunk )
     ASSERT_EQ ( arrsize, manager.getSwappedMemory() );
 
     ASSERT_NO_THROW ( managedPtr<double> ptr3 ( dblamount );
-
                       ASSERT_EQ ( arrsize, manager.getUsedMemory() );
                       ASSERT_EQ ( 2 * arrsize, manager.getSwappedMemory() ); );
 }

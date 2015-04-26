@@ -164,3 +164,33 @@ TEST ( adhereTo, Unit_MacroUsage )
     EXPECT_EQ ( i, loc[i] );
     } );
 }
+
+TEST ( adhereTo, Unit_CopyCorrectness )
+{
+    const unsigned int count = 5;
+    managedDummySwap swap ( kib );
+
+    cyclicManagedMemory managedMemory ( &swap, kib );
+    managedPtr<double> ptr ( count );
+
+    adhereTo<double> global1 ( ptr );
+    {
+        double *loc1 = global1;
+
+        for ( unsigned int i = 0; i < count; ++i ) {
+            loc1[i] = i;
+        }
+    }
+
+    ASSERT_NO_THROW (
+        adhereTo<double> global2 = global1;
+        adhereTo<double> global3 ( global1 );
+
+    for ( unsigned int i = 0; i < count; ++i ) {
+    double *loc2 = global2;
+    double *loc3 = global3;
+
+    EXPECT_EQ ( i, loc2[i] );
+        EXPECT_EQ ( i, loc3[i] );
+    } );
+}
