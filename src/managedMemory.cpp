@@ -372,14 +372,6 @@ void managedMemory::printTree ( managedMemoryChunk *current, unsigned int nspace
     } while ( 1 == 1 );
 }
 
-
-//memoryChunk class:
-
-managedMemoryChunk::managedMemoryChunk ( const memoryID &parent, const memoryID &me )
-    : useCnt ( 0 ), parent ( parent ), id ( me ), swapBuf ( NULL )
-{
-}
-
 managedMemoryChunk &managedMemory::resolveMemChunk ( const memoryID &id )
 {
     return *memChunks[id];
