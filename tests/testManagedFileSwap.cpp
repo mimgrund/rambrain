@@ -454,3 +454,47 @@ TEST ( managedFileSwap, Unit_SwapSingleIsland )
         ASSERT_EQ ( MEM_ALLOCATED, ptr4.chunk->status );
     );
 }
+
+
+TEST ( managedFileSwap, Unit_SwapNextAndSingleIsland )
+{
+    const unsigned int oneswap = mib;
+    const unsigned int dblamount = oneswap / sizeof ( double );
+    managedFileSwap swap ( oneswap, "/tmp/membrainswap-%d", oneswap );
+    cyclicManagedMemory manager ( &swap, oneswap );
+
+    ASSERT_EQ ( mib, swap.getSwapSize() );
+
+    ASSERT_NO_THROW (
+        managedPtr<double> ptr1 ( dblamount - 5 ); // To fill up swap
+
+        ASSERT_EQ ( ( dblamount - 5 ) * sizeof ( double ), manager.getUsedMemory() );
+        ASSERT_EQ ( 0, manager.getSwappedMemory() );
+
+        managedPtr<double> ptr2 ( 2 ); // Can fit in swap
+
+        ASSERT_EQ ( ( dblamount - 3 ) * sizeof ( double ), manager.getUsedMemory() );
+        ASSERT_EQ ( ( 0 ) * sizeof ( double ), manager.getSwappedMemory() );
+
+        managedPtr<double> ptr3 ( dblamount - 5 ); // To fill up memory
+
+        ASSERT_EQ ( ( dblamount - 3 ) * sizeof ( double ), manager.getUsedMemory() );
+        ASSERT_EQ ( ( dblamount - 5 ) * sizeof ( double ), manager.getSwappedMemory() );
+
+        managedPtr<double> ptr4 ( 2 ); // Can fit in swap
+
+        ASSERT_EQ ( ( dblamount - 1 ) * sizeof ( double ), manager.getUsedMemory() );
+        ASSERT_EQ ( ( dblamount - 5 ) * sizeof ( double ), manager.getSwappedMemory() );
+
+        managedPtr<double> ptr5 ( 4 ); // Can fit in remaining memory
+
+        ASSERT_EQ ( ( dblamount - 1 ) * sizeof ( double ), manager.getUsedMemory() );
+        ASSERT_EQ ( ( dblamount - 1 ) * sizeof ( double ), manager.getSwappedMemory() );
+
+        ASSERT_EQ ( MEM_SWAPPED, ptr1.chunk->status );
+        ASSERT_EQ ( MEM_SWAPPED, ptr2.chunk->status );
+        ASSERT_EQ ( MEM_ALLOCATED, ptr3.chunk->status );
+        ASSERT_EQ ( MEM_SWAPPED, ptr4.chunk->status );
+        ASSERT_EQ ( MEM_ALLOCATED, ptr5.chunk->status );
+    );
+}
