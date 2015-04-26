@@ -158,4 +158,9 @@ TEST ( adhereTo, UNIT_MacroUsage )
     for ( unsigned int i = 0; i < count; ++i ) {
     loc[i] = i;
     } );
+
+    ASSERT_NO_FATAL_FAILURE ( ADHERETOLOCCONST ( double, ptr, loc );
+    for ( unsigned int i = 0; i < count; ++i ) {
+    EXPECT_EQ ( i, loc[i] );
+    } );
 }
