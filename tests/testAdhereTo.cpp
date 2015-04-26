@@ -147,7 +147,7 @@ TEST ( adhereTo, Unit_TwiceAdhered )
     ASSERT_NO_THROW ( delete global2 );
 }
 
-TEST ( adhereTo, UNIT_MacroUsage )
+TEST ( adhereTo, Unit_MacroUsage )
 {
     const unsigned int count = 5;
     managedDummySwap swap ( 100 );
