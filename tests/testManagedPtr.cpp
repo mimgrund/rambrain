@@ -40,6 +40,18 @@ TEST ( managedPtr, Unit_ChunkInUse )
     ptr.unsetUse();
 
     ASSERT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
+
+    ptr.setUse(true);
+
+    ASSERT_EQ ( MEM_ALLOCATED_INUSE_WRITE, ptr.chunk->status );
+
+    ptr.unsetUse();
+
+    ASSERT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
+
+    ptr.setUse(false);
+
+    ASSERT_EQ ( MEM_ALLOCATED_INUSE_READ, ptr.chunk->status );
 }
 
 TEST ( managedPtr, Unit_GetLocPointer )
@@ -48,13 +60,18 @@ TEST ( managedPtr, Unit_GetLocPointer )
     cyclicManagedMemory managedMemory ( &swap, 100 );
     managedPtr<double> ptr ( 10 );
 
+    EXPECT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
     EXPECT_THROW ( ptr.getLocPtr(), unexpectedStateException );
 
     ptr.setUse();
 
+    EXPECT_EQ ( MEM_ALLOCATED_INUSE_WRITE, ptr.chunk->status );
     EXPECT_NO_THROW ( ptr.getLocPtr() );
 
     ptr.unsetUse();
+
+    EXPECT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
+    EXPECT_THROW ( ptr.getLocPtr(), unexpectedStateException );
 }
 
 
@@ -65,23 +82,44 @@ TEST ( managedPtr, Unit_SmartPointery )
 
     managedPtr<double> ptr ( 5 );
     for ( int n = 0; n < 5; n++ ) {
+        EXPECT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
+
         ADHERETOLOC ( double, ptr, lptr );
         lptr[n] = n;
+
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_WRITE, ptr.chunk->status );
     }
     managedPtr<double> ptr2 ( 5 );
     for ( int n = 0; n < 5; n++ ) {
+        EXPECT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
+        EXPECT_EQ ( MEM_ALLOCATED, ptr2.chunk->status );
+
         ADHERETOLOC ( double, ptr, lptr );
         ADHERETOLOC ( double, ptr2, lptr2 );
         lptr2[n] = 1 - n;
+
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_WRITE, ptr.chunk->status );
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_WRITE, ptr2.chunk->status );
     }
+
     EXPECT_EQ ( 5 * sizeof ( double ) * 2, managedMemory.getUsedMemory() );
+    EXPECT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
+    EXPECT_EQ ( MEM_ALLOCATED, ptr2.chunk->status );
+
     ptr = ptr2;
+
     EXPECT_EQ ( 5 * sizeof ( double ), managedMemory.getUsedMemory() );
+    EXPECT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
+    EXPECT_EQ ( MEM_ALLOCATED, ptr2.chunk->status );
+
     for ( int n = 0; n < 5; n++ ) {
-        ADHERETOLOC ( double, ptr, lptr );
-        ADHERETOLOC ( double, ptr2, lptr2 );
+        ADHERETOLOCCONST ( double, ptr, lptr );
+        ADHERETOLOCCONST ( double, ptr2, lptr2 );
+
         EXPECT_EQ ( 1 - n, lptr[n] );
         EXPECT_EQ ( 1 - n, lptr2[n] );
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_READ, ptr.chunk->status );
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_READ, ptr2.chunk->status );
     }
 
     ptr = ptr2;
@@ -89,24 +127,34 @@ TEST ( managedPtr, Unit_SmartPointery )
     for ( int n = 0; n < 5; n++ ) {
         ADHERETOLOC ( double, ptr, lptr );
         ADHERETOLOC ( double, ptr2, lptr2 );
+
         EXPECT_EQ ( 1 - n, lptr[n] );
         EXPECT_EQ ( 1 - n, lptr2[n] );
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_WRITE, ptr.chunk->status );
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_WRITE, ptr2.chunk->status );
     }
     ptr = ptr;
     for ( int n = 0; n < 5; n++ ) {
-        ADHERETOLOC ( double, ptr, lptr );
-        ADHERETOLOC ( double, ptr2, lptr2 );
+        ADHERETOLOCCONST ( double, ptr, lptr );
+        ADHERETOLOCCONST ( double, ptr2, lptr2 );
+
         EXPECT_EQ ( 1 - n, lptr[n] );
         EXPECT_EQ ( 1 - n, lptr2[n] );
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_READ, ptr.chunk->status );
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_READ, ptr2.chunk->status );
     }
     managedPtr<double> ptr3 ( ptr );
     for ( int n = 0; n < 5; n++ ) {
         ADHERETOLOC ( double, ptr, lptr );
         ADHERETOLOC ( double, ptr2, lptr2 );
         ADHERETOLOC ( double, ptr3, lptr3 );
+
         EXPECT_EQ ( 1 - n, lptr[n] );
         EXPECT_EQ ( 1 - n, lptr2[n] );
         EXPECT_EQ ( 1 - n, lptr3[n] );
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_WRITE, ptr.chunk->status );
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_WRITE, ptr2.chunk->status );
+        EXPECT_EQ ( MEM_ALLOCATED_INUSE_WRITE, ptr3.chunk->status );
     }
 }
 

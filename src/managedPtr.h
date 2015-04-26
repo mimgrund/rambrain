@@ -12,8 +12,12 @@ class adhereTo;
 //Convenience macros
 #define ADHERETO(class,instance) adhereTo<class> instance##_glue(instance);\
                  class* instance = instance##_glue;
+#define ADHERETOCONST(class,instance) adhereTo<class> instance##_glue(instance);\
+                 const class* instance = instance##_glue;
 #define ADHERETOLOC(class,instance,locinstance) adhereTo<class> instance##_glue(instance);\
                  class* locinstance = instance##_glue;
+#define ADHERETOLOCCONST(class,instance,locinstance) adhereTo<class> instance##_glue(instance);\
+                 const class* locinstance = instance##_glue;
 
 
 template <class T>
@@ -124,6 +128,7 @@ private:
     // Test classes
     friend class managedPtr_Unit_ChunkInUse_Test;
     friend class managedPtr_Unit_GetLocPointer_Test;
+    friend class managedPtr_Unit_SmartPointery_Test;
 };
 
 

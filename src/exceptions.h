@@ -64,4 +64,21 @@ private:
 
 };
 
+
+class unfinishedCodeException : membrainException
+{
+
+public:
+    unfinishedCodeException ( const string& details ) : details ( details) {}
+    virtual ~unfinishedCodeException() {}
+
+    inline virtual const char *what() const throw() {
+        return ( string ( "Unfinished code section encountered: " ) + details ).c_str();
+    }
+
+private:
+    string details;
+
+};
+
 #endif // EXCEPTIONS_H

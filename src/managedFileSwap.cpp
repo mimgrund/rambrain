@@ -319,7 +319,7 @@ bool managedFileSwap::swapOut ( managedMemoryChunk *chunk )
 
     if ( chunk->swapBuf ) { //We already have a position to store to! (happens when read-only was triggered)
         //TODO: implement swapOUt if we already hold a memory copy.
-
+        throw unfinishedCodeException("Swap out for read only memory chunk");
     } else {
         pageFileLocation *newAlloced = pfmalloc ( chunk->size );
         if ( newAlloced ) {

@@ -283,7 +283,6 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
 }
 
 
-
 TEST ( managedFileSwap, Unit_SwapAllocation )
 {
     unsigned int oneswap = 1024 * 1024 * 16;
@@ -382,6 +381,38 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
 #ifdef SWAPSTATS
     manager.printSwapstats();
 #endif
+}
 
 
-};
+//! TODO This test was written in order to provoke the unfishedCodeException in managedFileSwap.cpp:322 ; What did I do wrong
+//! Please correct the test such that it fails due to that exception in order to track completeness of the code there...
+TEST(managedFileSwap, Unit_SwapReadAllocatedChunk)
+{
+    const unsigned int oneswap = mib;
+    const unsigned int dblamount = 10;
+    const unsigned int arrsize = dblamount * sizeof(double);
+    managedFileSwap swap ( oneswap, "/tmp/membrainswap-%d", oneswap );
+    cyclicManagedMemory manager ( &swap, arrsize * 1.5 );
+
+    managedPtr<double> ptr1 ( dblamount );
+
+    ASSERT_EQ ( arrsize, manager.getUsedMemory() );
+    ASSERT_EQ ( 0, manager.getSwappedMemory() );
+
+    managedPtr<double> ptr2 ( dblamount );
+
+    ASSERT_EQ ( arrsize, manager.getUsedMemory() );
+    ASSERT_EQ ( arrsize, manager.getSwappedMemory() );
+
+    {
+        ADHERETOLOCCONST(double, ptr1, locptr1);
+    }
+
+    ASSERT_EQ ( arrsize, manager.getUsedMemory() );
+    ASSERT_EQ ( arrsize, manager.getSwappedMemory() );
+
+    ASSERT_NO_THROW(managedPtr<double> ptr3 ( dblamount );
+
+    ASSERT_EQ ( arrsize, manager.getUsedMemory() );
+    ASSERT_EQ ( 2 * arrsize, manager.getSwappedMemory() ););
+}
