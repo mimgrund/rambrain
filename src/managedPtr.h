@@ -138,6 +138,22 @@ template <class T>
 class adhereTo
 {
 public:
+    adhereTo ( const adhereTo<T> &ref ) {
+        this->data = ref.data;
+        if ( ref.loaded != 0 ) {
+            loadedWritable = ref.loadedWritable;
+            loaded = ref.loaded;
+            for ( unsigned int nloaded = 0; nloaded < ref.loaded; ++nloaded ) {
+                data->setUse ( loadedWritable );
+            }
+
+        } else {
+            loadedWritable = false;
+            loaded = 0;
+        }
+
+    };
+
     adhereTo ( managedPtr<T> &data, bool loadImidiately = false ) {
         this->data = &data;
 
@@ -147,6 +163,26 @@ public:
         }
 
     }
+
+    adhereTo<T> &operator= ( const adhereTo<T> &ref ) {
+        if ( loaded > 0 ) {
+            loaded = ( data->unsetUse ( loaded ) ? 0 : loaded );
+        }
+        this->data = ref.data;
+        if ( ref.loaded != 0 ) {
+            loadedWritable = ref.loadedWritable;
+            loaded = ref.loaded;
+            for ( unsigned int nloaded = 0; nloaded < ref.loaded; ++nloaded ) {
+                data->setUse ( loadedWritable );
+            }
+
+        } else {
+            loadedWritable = false;
+            loaded = 0;
+        }
+        return *this;
+    }
+
     operator  T *() {
         if ( loaded == 0 || !loadedWritable ) {
             loaded += ( data->setUse ( true ) ? 1 : 0 );
