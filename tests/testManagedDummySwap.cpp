@@ -29,6 +29,7 @@ TEST ( managedDummySwap, Unit_ManualSwapping )
     ASSERT_EQ ( swapmem, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
+    free ( chunk->locPtr );
     delete chunk;
 }
 
@@ -61,6 +62,12 @@ TEST ( managedDummySwap, Unit_ManualMultiSwapping )
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     for ( int i = 0; i < 2; ++i ) {
+        if ( chunks[i]->status == MEM_SWAPPED ) {
+            free ( chunks[i]->swapBuf );
+        } else {
+            free ( chunks[i]->locPtr );
+        }
+
         delete chunks[i];
     }
 }
