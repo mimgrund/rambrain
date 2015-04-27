@@ -52,6 +52,9 @@ TEST ( managedPtr, Unit_ChunkInUse )
     ptr.setUse ( false );
 
     ASSERT_EQ ( MEM_ALLOCATED_INUSE_READ, ptr.chunk->status );
+
+    ptr.unsetUse();
+
 }
 
 TEST ( managedPtr, Unit_GetLocPointer )
