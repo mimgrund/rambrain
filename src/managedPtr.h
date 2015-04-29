@@ -4,15 +4,17 @@
 #include "managedMemory.h"
 #include "common.h"
 #include "exceptions.h"
-
+#include <type_traits>
 template <class T>
 class adhereTo;
+template <class T>
+class adhereToConst;
 
 
 //Convenience macros
 #define ADHERETO(class,instance) adhereTo<class> instance##_glue(instance);\
                  class* instance = instance##_glue;
-#define ADHERETOCONST(class,instance) adhereTo<class> instance##_glue(instance);\
+#define ADHERETOCONST(class,instance) adhereToConst<class> instance##_glue(instance);\
                  const class* instance = instance##_glue;
 #define ADHERETOLOC(class,instance,locinstance) adhereTo<class> instance##_glue(instance);\
                  class* locinstance = instance##_glue;
@@ -52,15 +54,15 @@ public:
     ~managedPtr() {
         -- ( *tracker );
         if ( *tracker  == 0 ) {
-            mDelete();
+            mDelete<T>();
         }
     }
 
-    bool setUse ( bool writable = true ) {
+    bool setUse ( bool writable = true ) const {
         return managedMemory::defaultManager->setUse ( *chunk , writable );
     }
 
-    bool unsetUse ( unsigned int loaded = 1 ) {
+    bool unsetUse ( unsigned int loaded = 1 ) const {
         return managedMemory::defaultManager->unsetUse ( *chunk , loaded );
     }
 
@@ -69,7 +71,7 @@ public:
             return *this;
         }
         if ( -- ( *tracker ) == 0 ) {
-            mDelete();
+            mDelete<T>();
         }
         n_elem = ref.n_elem;
         chunk = ref.chunk;
@@ -94,16 +96,27 @@ private:
     unsigned int *tracker;
     unsigned int n_elem;
 
-    void mDelete() {
+
+    template <class G>
+    void mDelete ( decltype ( std::declval<G>().~G() ) * ) {
         bool oldthrow = managedMemory::defaultManager->noThrow;
         managedMemory::defaultManager->noThrow = true;
         for ( unsigned int n = 0; n < n_elem; n++ ) {
-            ( ( ( T * ) chunk->locPtr ) + n )->~T();
+            ( * ( ( ( G * ) chunk->locPtr ) + n ) ).~G();
         }
         managedMemory::defaultManager->mfree ( chunk->id );
         managedMemory::defaultManager->noThrow = oldthrow;
         delete tracker;
     }
+    template <class G>
+    void mDelete ( ... ) {
+        bool oldthrow = managedMemory::defaultManager->noThrow;
+        managedMemory::defaultManager->noThrow = true;
+        managedMemory::defaultManager->mfree ( chunk->id );
+        managedMemory::defaultManager->noThrow = oldthrow;
+        delete tracker;
+    }
+
 
     T *getLocPtr() {
         if ( chunk->status == MEM_ALLOCATED_INUSE_WRITE ) {
@@ -114,7 +127,7 @@ private:
         }
     }
 
-    const T *getConstLocPtr() {
+    const T *getConstLocPtr() const {
         if ( chunk->status & MEM_ALLOCATED_INUSE_READ ) {
             return ( T * ) chunk->locPtr;
         } else {
@@ -124,6 +137,8 @@ private:
 
     template<class G>
     friend class adhereTo;
+    template<class G>
+    friend class adhereToConst;
 
     // Test classes
     friend class managedPtr_Unit_ChunkInUse_Test;
@@ -206,6 +221,73 @@ private:
     managedPtr<T> *data;
     unsigned int loaded = 0;
     bool loadedWritable = false;
+
+
+    // Test classes
+    friend class adhereTo_Unit_LoadUnload_Test;
+    friend class adhereTo_Unit_LoadUnloadConst_Test;
+    friend class adhereTo_Unit_TwiceAdhered_Test;
+};
+
+template <class T>
+class adhereToConst
+{
+public:
+    adhereToConst ( const adhereTo<T> &ref ) {
+        this->data = ref.data;
+        if ( ref.loaded != 0 ) {
+            loaded = ref.loaded;
+            for ( unsigned int nloaded = 0; nloaded < ref.loaded; ++nloaded ) {
+                data->setUse ( false );
+            }
+
+        } else {
+            loaded = 0;
+        }
+
+    };
+
+    adhereToConst ( const managedPtr<T> &data, bool loadImidiately = false ) {
+        this->data = &data;
+
+        if ( loadImidiately ) {
+            loaded = ( data.setUse ( false ) ? 1 : 0 );
+        }
+
+    }
+
+    adhereToConst<T> &operator= ( const adhereTo<T> &ref ) {
+        if ( loaded > 0 ) {
+            loaded = ( data->unsetUse ( loaded ) ? 0 : loaded );
+        }
+        this->data = ref.data;
+        if ( ref.loaded != 0 ) {
+            loaded = ref.loaded;
+            for ( unsigned int nloaded = 0; nloaded < ref.loaded; ++nloaded ) {
+                data->setUse ( false );
+            }
+
+        } else {
+            loaded = 0;
+        }
+        return *this;
+    }
+
+    operator  const T *() {
+        if ( loaded == 0 ) {
+            loaded += ( data->setUse ( false ) ? 1 : 0 );
+        }
+
+        return data->getConstLocPtr();
+    }
+    ~adhereToConst() {
+        if ( loaded > 0 ) {
+            loaded = ( data->unsetUse ( loaded ) ? 0 : loaded );
+        }
+    }
+private:
+    const managedPtr<T> *data;
+    unsigned int loaded = 0;
 
 
     // Test classes
