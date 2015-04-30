@@ -98,7 +98,8 @@ private:
 
 
     template <class G>
-    void mDelete ( typename std::enable_if<std::is_class<G>::value, G>::type *prm = NULL ) {
+    typename std::enable_if<std::is_class<G>::value>::type
+    mDelete (  ) {
         bool oldthrow = managedMemory::defaultManager->noThrow;
         managedMemory::defaultManager->noThrow = true;
         for ( unsigned int n = 0; n < n_elem; n++ ) {
@@ -109,7 +110,8 @@ private:
         delete tracker;
     }
     template <class G>
-    void mDelete ( typename std::enable_if < !std::is_class<G>::value, G >::type *prm = NULL ) {
+    typename std::enable_if < !std::is_class<G>::value >::type
+    mDelete (  ) {
         bool oldthrow = managedMemory::defaultManager->noThrow;
         managedMemory::defaultManager->noThrow = true;
         managedMemory::defaultManager->mfree ( chunk->id );
