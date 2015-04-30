@@ -459,7 +459,7 @@ TEST ( managedFileSwap, Unit_SwapSingleIsland )
         ASSERT_EQ ( MEM_SWAPPED, ptr1.chunk->status );
         ASSERT_EQ ( MEM_ALLOCATED, ptr2.chunk->status );
         ASSERT_EQ ( MEM_SWAPPED, ptr3.chunk->status );
-//         ASSERT_EQ ( MEM_ALLOCATED, ptr4.chunk->status );
+        ASSERT_EQ ( MEM_ALLOCATED, ptr4.chunk->status );
     );
 }
 
