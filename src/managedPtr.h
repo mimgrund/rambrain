@@ -98,24 +98,26 @@ private:
 
 
     template <class G>
-    void mDelete ( decltype ( std::declval<G>().~G() ) * ) {
+    void mDelete ( typename std::enable_if<std::is_class<G>::value, G>::type *prm = NULL ) {
         bool oldthrow = managedMemory::defaultManager->noThrow;
         managedMemory::defaultManager->noThrow = true;
         for ( unsigned int n = 0; n < n_elem; n++ ) {
-            ( * ( ( ( G * ) chunk->locPtr ) + n ) ).~G();
+            ( ( ( G * ) chunk->locPtr ) + n )->~G();
         }
         managedMemory::defaultManager->mfree ( chunk->id );
         managedMemory::defaultManager->noThrow = oldthrow;
         delete tracker;
     }
     template <class G>
-    void mDelete ( ... ) {
+    void mDelete ( typename std::enable_if < !std::is_class<G>::value, G >::type *prm = NULL ) {
         bool oldthrow = managedMemory::defaultManager->noThrow;
         managedMemory::defaultManager->noThrow = true;
         managedMemory::defaultManager->mfree ( chunk->id );
         managedMemory::defaultManager->noThrow = oldthrow;
         delete tracker;
     }
+
+
 
 
     T *getLocPtr() {
