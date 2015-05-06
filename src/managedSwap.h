@@ -4,6 +4,9 @@
 #include "managedMemoryChunk.h"
 #include "common.h"
 
+namespace membrain
+{
+
 class managedSwap
 {
 public:
@@ -31,6 +34,8 @@ protected:
     global_bytesize swapFree;
 
 };
+
+}
 
 
 #endif

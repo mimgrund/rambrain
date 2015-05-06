@@ -5,6 +5,8 @@
 #include <sys/stat.h>
 #include "common.h"
 
+using namespace membrain;
+
 TEST ( managedFileSwap, Unit_ManualSwapping )
 {
     const unsigned int dblamount = 100;

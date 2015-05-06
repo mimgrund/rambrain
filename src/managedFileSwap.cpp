@@ -7,6 +7,9 @@
 #include <sys/stat.h>
 #include "exceptions.h"
 
+namespace membrain
+{
+
 const unsigned int managedFileSwap::pageSize = sysconf ( _SC_PAGE_SIZE );
 
 managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile ) : managedSwap ( size )
@@ -604,3 +607,5 @@ void managedFileSwap::sigStat ( int signum )
 }
 
 managedFileSwap *managedFileSwap::instance = NULL;
+
+}

@@ -4,6 +4,9 @@
 #include "dummyManagedMemory.h"
 #include <sys/signal.h>
 
+namespace membrain
+{
+
 dummyManagedMemory dummy;
 
 managedMemory *managedMemory::dummyManager = &dummy;
@@ -405,7 +408,6 @@ void managedMemory::sigswapstats ( int signum )
     instance->swap_in_bytes_last = instance->swap_in_bytes;
 }
 
+}
 
 #endif
-
-

@@ -2,6 +2,8 @@
 #include "managedMemory.h"
 #include "dummyManagedMemory.h"
 
+using namespace membrain;
+
 TEST ( managedMemory, Unit_DefaultManagerPresent )
 {
     EXPECT_TRUE ( managedMemory::defaultManager != NULL );

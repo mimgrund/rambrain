@@ -5,6 +5,9 @@
 #include "managedDummySwap.h"
 #include "exceptions.h"
 
+namespace membrain
+{
+
 class dummyManagedMemory : public managedMemory
 {
 public:
@@ -32,6 +35,8 @@ private:
     managedDummySwap mswap = managedDummySwap ( 0 );
 
 };
+
+}
 
 #endif // DUMMYMANAGEDMEMORY_H
 

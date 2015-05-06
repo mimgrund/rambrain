@@ -1,8 +1,18 @@
 #ifndef MANAGEDFILESWAP_H
 #define MANAGEDFILESWAP_H
+
 #include "managedSwap.h"
 #include <stdio.h>
 #include <map>
+
+//Test classes
+class managedFileSwap_Unit_SwapAllocation_Test;
+class managedFileSwap_Integration_RandomAccess_Test;
+class managedFileSwap_Integration_RandomAccessVariousSize_Test;
+
+namespace membrain
+{
+
 enum pageChunkStatus {PAGE_FREE = 1,
                       PAGE_PART = 2,
                       PAGE_END = 4,
@@ -106,13 +116,16 @@ private:
 
     friend pageFileWindow;
 
-    friend class managedFileSwap_Unit_SwapAllocation_Test;
-    friend class managedFileSwap_Integration_RandomAccess_Test;
-    friend class managedFileSwap_Integration_RandomAccessVariousSize_Test;
+    //Test classes
+    friend class ::managedFileSwap_Unit_SwapAllocation_Test;
+    friend class ::managedFileSwap_Integration_RandomAccess_Test;
+    friend class ::managedFileSwap_Integration_RandomAccessVariousSize_Test;
 
     static managedFileSwap *instance;
     static void sigStat ( int signum );
 };
+
+}
 
 
 #endif
