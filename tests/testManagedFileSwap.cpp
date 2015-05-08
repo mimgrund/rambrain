@@ -4,7 +4,7 @@
 #include <gtest/gtest.h>
 #include <sys/stat.h>
 #include "common.h"
-
+#include <chrono>
 TEST ( managedFileSwap, Unit_ManualSwapping )
 {
     const unsigned int dblamount = 100;
@@ -520,6 +520,10 @@ TEST ( managedFileSwap, Integration_MatrixTranspose )
     managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
     cyclicManagedMemory manager ( &swap, mem );
 
+    chrono::high_resolution_clock::time_point t1 = chrono::high_resolution_clock::now();
+
+
+
     // Allocate and set
     managedPtr<double> *rows[size];
     for ( unsigned int i = 0; i < size; ++i ) {
@@ -530,7 +534,7 @@ TEST ( managedFileSwap, Integration_MatrixTranspose )
             rowdbl[j] = i * size + j;
         }
     }
-
+    chrono::high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now();
     // Transpose
     for ( unsigned int i = 0; i < size; ++i ) {
         adhereTo<double> rowloc1 ( *rows[i] );
@@ -544,7 +548,7 @@ TEST ( managedFileSwap, Integration_MatrixTranspose )
             rowdbl2[i] = buffer;
         }
     }
-
+    chrono::high_resolution_clock::time_point t3 = chrono::high_resolution_clock::now();
     // Check result
     for ( unsigned int i = 0; i < size; ++i ) {
         adhereTo<double> rowloc ( *rows[i] );
@@ -553,9 +557,18 @@ TEST ( managedFileSwap, Integration_MatrixTranspose )
             ASSERT_EQ ( j * size + i, rowdbl[j] );
         }
     }
+    chrono::high_resolution_clock::time_point t4 = chrono::high_resolution_clock::now();
+
 
     // Delete
     for ( unsigned int i = 0; i < size; ++i ) {
         delete rows[i];
     }
+    chrono::high_resolution_clock::time_point t5 = chrono::high_resolution_clock::now();
+    unsigned int msnew = std::chrono::duration_cast<chrono::milliseconds> ( t2 - t1 ).count();
+    unsigned int msset = std::chrono::duration_cast<chrono::milliseconds> ( t3 - t2 ).count();
+    unsigned int mstransp = std::chrono::duration_cast<chrono::milliseconds> ( t4 - t3 ).count();
+    unsigned int msdelete = std::chrono::duration_cast<chrono::milliseconds> ( t5 - t4 ).count();
+
+    printf ( "new = %d\nset = %d\ntransp = %d\ndelete = %d\n", msnew, msset, mstransp, msdelete );
 }
