@@ -91,6 +91,23 @@ public:
         return loc[i];
     }
 
+    T *getLocPtr() {
+        if ( chunk->status == MEM_ALLOCATED_INUSE_WRITE ) {
+            return ( T * ) chunk->locPtr;
+        } else {
+            throw unexpectedStateException ( "Can not get local pointer without setting usage first" );
+            return NULL;
+        }
+    }
+
+    const T *getConstLocPtr() const {
+        if ( chunk->status & MEM_ALLOCATED_INUSE_READ ) {
+            return ( T * ) chunk->locPtr;
+        } else {
+            throw unexpectedStateException ( "Can not get local pointer without setting usage first" );
+        }
+    }
+
 private:
     managedMemoryChunk *chunk;
     unsigned int *tracker;
@@ -122,22 +139,7 @@ private:
 
 
 
-    T *getLocPtr() {
-        if ( chunk->status == MEM_ALLOCATED_INUSE_WRITE ) {
-            return ( T * ) chunk->locPtr;
-        } else {
-            throw unexpectedStateException ( "Can not get local pointer without setting usage first" );
-            return NULL;
-        }
-    }
 
-    const T *getConstLocPtr() const {
-        if ( chunk->status & MEM_ALLOCATED_INUSE_READ ) {
-            return ( T * ) chunk->locPtr;
-        } else {
-            throw unexpectedStateException ( "Can not get local pointer without setting usage first" );
-        }
-    }
 
     template<class G>
     friend class adhereTo;
@@ -237,7 +239,7 @@ template <class T>
 class adhereToConst
 {
 public:
-    adhereToConst ( const adhereTo<T> &ref ) {
+    adhereToConst ( const adhereToConst<T> &ref ) {
         this->data = ref.data;
         if ( ref.loaded != 0 ) {
             loaded = ref.loaded;
