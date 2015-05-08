@@ -32,7 +32,7 @@ void tester::startNewCycle()
 void tester::writeToFile()
 {
     std::stringstream fileName;
-    fileName << ".perftest_" << name;
+    fileName << "perftest_" << name;
     for ( auto it = parameters.begin(); it != parameters.end(); ++it ) {
         fileName << "#" << *it;
     }
