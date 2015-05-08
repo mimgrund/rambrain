@@ -16,7 +16,12 @@ void tester::addParameter ( char *param )
 void tester::addTimeMeasurement()
 {
     std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now();
-    timeMeasures.push_back ( t );
+    timeMeasures.back().push_back ( t );
+}
+
+void tester::startNewCycle()
+{
+    timeMeasures.push_back ( std::vector<std::chrono::high_resolution_clock::time_point>() );
 }
 
 void tester::writeToFile()
@@ -28,16 +33,48 @@ void tester::writeToFile()
     }
     std::ofstream out ( fileName.str(), std::ofstream::out );
 
-    out << "#" << name;
+    out << "# " << name;
     for ( auto it = parameters.begin(); it != parameters.end(); ++it ) {
         out << " " << *it;
     }
     out << std::endl;
 
-    int64_t totms = std::chrono::duration_cast<std::chrono::milliseconds> ( ( *timeMeasures.rbegin() ) - ( *timeMeasures.begin() ) ).count();
-    for ( auto it = timeMeasures.begin(), jt = timeMeasures.begin() + 1; it != timeMeasures.end() && jt != timeMeasures.end(); ++it, ++jt ) {
-        int64_t ms = std::chrono::duration_cast<std::chrono::milliseconds> ( ( *jt ) - ( *it ) ).count();
-        out << ms << " " << 100.0 * ms / totms << std::endl;
+    const int cyclesCount = timeMeasures.size();
+    out << "# " << cyclesCount << " cycles run for average" << std::endl;
+
+    const int timesCount = timeMeasures.front().size() - 1;
+    int64_t times[timesCount][cyclesCount];
+    double percentages[timesCount][cyclesCount];
+
+    int cycle = 0, time;
+    for ( auto repIt = timeMeasures.begin(); repIt != timeMeasures.end(); ++repIt, ++cycle ) {
+        int64_t totms = std::chrono::duration_cast<std::chrono::milliseconds> ( repIt->back() - repIt->front() ).count();
+
+        time = 0;
+        for ( auto it = repIt->begin(), jt = repIt->begin() + 1; it != repIt->end() && jt != repIt->end(); ++it, ++jt, ++time ) {
+            int64_t ms = std::chrono::duration_cast<std::chrono::milliseconds> ( ( *jt ) - ( *it ) ).count();
+            times[time][cycle] = ms;
+            percentages[time][cycle] = 100.0 * ms / totms;
+        }
+    }
+
+    int64_t avgTime;
+    double avgPercentage;
+    for ( time = 0; time < timesCount; ++time ) {
+
+        avgTime = 0;
+        avgPercentage = 0.0;
+
+        for ( cycle = 0; cycle < cyclesCount; ++cycle ) {
+            avgTime += times[time][cycle];
+            avgPercentage += percentages[time][cycle];
+
+            out << times[time][cycle] << "\t" << percentages[time][cycle] << "\t";
+        }
+        avgTime /= cyclesCount;
+        avgPercentage /= cyclesCount;
+
+        out << avgTime << "\t" << avgPercentage << std::endl;
     }
 
     out << std::flush;

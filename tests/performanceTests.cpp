@@ -31,6 +31,13 @@ int main ( int argc, char **argv )
     tests.push_back ( testMethod ( "MatrixTranspose", 2, runMatrixTranspose ) );
 
     int i = 1;
+    if ( i >= argc ) {
+        std::cerr << "Not enough arguments supplied, expected number of repetitions followed by test directives, exiting" << std::endl;
+        return 2;
+    }
+
+    int repetitions = atoi ( argv[i++] );
+
     while ( i < argc ) {
         std::cout << "Attempting to run " << argv[i] << std::endl;
 
@@ -39,7 +46,7 @@ int main ( int argc, char **argv )
                 ++i;
 
                 if ( i + it->argumentCount > argc ) {
-                    std::cerr << "Not enough arguments supplied, exiting" << std::endl;
+                    std::cerr << "Not enough arguments supplied for test parameters, exiting" << std::endl;
                     return 1;
                 }
 
@@ -54,7 +61,11 @@ int main ( int argc, char **argv )
                         std::cout << "Parameter " << j << ": " << args[j] << std::endl;
                     }
                 }
-                it->test ( &myTester, args );
+
+                for ( int r = 0; r < repetitions; ++r ) {
+                    myTester.startNewCycle();
+                    it->test ( &myTester, args );
+                }
 
                 myTester.writeToFile();
 
