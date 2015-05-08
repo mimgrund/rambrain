@@ -508,3 +508,54 @@ TEST ( managedFileSwap, Unit_SwapNextAndSingleIsland )
         ASSERT_EQ ( MEM_ALLOCATED, ptr5.chunk->status );
     );
 }
+
+
+TEST ( managedFileSwap, Integration_MatrixTranspose )
+{
+    const unsigned int size = 1000;
+    const unsigned int memlines = 10;
+    const unsigned int mem = size * sizeof ( double ) *  memlines;
+    const unsigned int swapmem = size * size * sizeof ( double ) * 2;
+
+    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
+    cyclicManagedMemory manager ( &swap, mem );
+
+    // Allocate and set
+    managedPtr<double> *rows[size];
+    for ( unsigned int i = 0; i < size; ++i ) {
+        rows[i] = new managedPtr<double> ( size );
+        adhereTo<double> rowloc ( *rows[i] );
+        double *rowdbl =  rowloc;
+        for ( unsigned int j = 0; j < size; ++j ) {
+            rowdbl[j] = i * size + j;
+        }
+    }
+
+    // Transpose
+    for ( unsigned int i = 0; i < size; ++i ) {
+        adhereTo<double> rowloc1 ( *rows[i] );
+        double *rowdbl1 =  rowloc1;
+        for ( unsigned int j = i + 1; j < size; ++j ) {
+            adhereTo<double> rowloc2 ( *rows[j] );
+            double *rowdbl2 =  rowloc2;
+
+            double buffer = rowdbl1[j];
+            rowdbl1[j] = rowdbl2[i];
+            rowdbl2[i] = buffer;
+        }
+    }
+
+    // Check result
+    for ( unsigned int i = 0; i < size; ++i ) {
+        adhereTo<double> rowloc ( *rows[i] );
+        const double *rowdbl =  rowloc;
+        for ( unsigned int j = 0; j < size; ++j ) {
+            ASSERT_EQ ( j * size + i, rowdbl[j] );
+        }
+    }
+
+    // Delete
+    for ( unsigned int i = 0; i < size; ++i ) {
+        delete rows[i];
+    }
+}
