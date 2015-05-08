@@ -14,10 +14,10 @@ void runMatrixTranspose ( tester *test, char **args );
 
 
 struct testMethod {
-    testMethod ( const char *name, int argumentCount, void ( *test ) ( tester *, char ** ) )
-        : name ( name ), argumentCount ( argumentCount ), test ( test ) {}
+    testMethod ( const char *name, int argumentCount, void ( *test ) ( tester *, char ** ), const char *comment )
+        : name ( name ), comment ( comment ), argumentCount ( argumentCount ), test ( test ) {}
 
-    const char *name;
+    const char *name, *comment;
     int argumentCount;
     void ( *test ) ( tester *, char ** );
 };
@@ -28,7 +28,7 @@ int main ( int argc, char **argv )
     std::cout << "Starting performance tests" << std::endl;
 
     vector<testMethod> tests;
-    tests.push_back ( testMethod ( "MatrixTranspose", 2, runMatrixTranspose ) );
+    tests.push_back ( testMethod ( "MatrixTranspose", 2, runMatrixTranspose, "Measurements of allocation and definition, transposition, deletion times" ) );
 
     int i = 1;
     if ( i >= argc ) {
@@ -51,6 +51,7 @@ int main ( int argc, char **argv )
                 }
 
                 tester myTester ( it->name );
+                myTester.addComment ( it->comment );
 
                 char **args = 0;
                 if ( it->argumentCount > 0 ) {

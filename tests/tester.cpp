@@ -19,6 +19,11 @@ void tester::addTimeMeasurement()
     timeMeasures.back().push_back ( t );
 }
 
+void tester::addComment ( const char *comment )
+{
+    this->comment = std::string ( comment );
+}
+
 void tester::startNewCycle()
 {
     timeMeasures.push_back ( std::vector<std::chrono::high_resolution_clock::time_point>() );
@@ -41,6 +46,10 @@ void tester::writeToFile()
 
     const int cyclesCount = timeMeasures.size();
     out << "# " << cyclesCount << " cycles run for average" << std::endl;
+
+    if ( ! comment.empty() ) {
+        out << "# " << comment << std::endl;
+    }
 
     const int timesCount = timeMeasures.front().size() - 1;
     int64_t times[timesCount][cyclesCount];

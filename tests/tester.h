@@ -16,6 +16,7 @@ public:
 
     void addParameter ( char *param );
     void addTimeMeasurement();
+    void addComment ( const char *comment );
 
     void startNewCycle();
 
@@ -25,6 +26,7 @@ private:
     const char *name;
     std::vector<char *> parameters;
     std::vector<std::vector<std::chrono::high_resolution_clock::time_point> > timeMeasures;
+    std::string comment;
 
 };
 
