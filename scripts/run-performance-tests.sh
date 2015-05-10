@@ -36,8 +36,8 @@ then
   done
   
   rm temp.gnuplot
-  echo "set terminal png" >> temp.gnuplot
-  echo "set output \"MatrixTranspose.png\"" >> temp.gnuplot
+  echo "set terminal postscript eps enhanced color 'Helvetica,10'" >> temp.gnuplot
+  echo "set output \"MatrixTranspose1.eps\"" >> temp.gnuplot
   echo "set xlabel \"Matrix size per dimension\"" >> temp.gnuplot
   echo "set ylabel \"Execution time [ms]\"" >> temp.gnuplot
   echo "set title \"Matrix transpose\"" >> temp.gnuplot
@@ -47,5 +47,9 @@ then
   echo "'temp.dat' using 1:5 with lines title \"Deletion\", \\" >> temp.gnuplot
   echo "'temp.dat' using 1:(\$3+\$4+\$5) with lines title \"Total\"" >> temp.gnuplot
   gnuplot temp.gnuplot
-  display MatrixTranspose.png
+  convert -density 300 -resize 1920x MatrixTranspose1.eps -flatten MatrixTranspose1.png
+  display MatrixTranspose1.png &
 fi
+
+rm temp.gnuplot
+rm temp.dat
