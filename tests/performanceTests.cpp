@@ -85,11 +85,11 @@ int main ( int argc, char **argv )
 void runMatrixTranspose ( tester *test, char **args )
 {
     const unsigned int size = atoi ( args[0] );
-    const unsigned int memlines = atoi ( args[0] );
+    const unsigned int memlines = atoi ( args[1] );
     const unsigned int mem = size * sizeof ( double ) *  memlines;
     const unsigned int swapmem = size * size * sizeof ( double ) * 2;
 
-    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
+    managedFileSwap swap ( swapmem, "membrainswap-%d" );
     cyclicManagedMemory manager ( &swap, mem );
 
     test->addTimeMeasurement();
