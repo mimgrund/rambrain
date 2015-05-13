@@ -18,7 +18,7 @@ bool managedMemory::noThrow = false;
 pthread_mutex_t managedMemory::topologicalMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t managedMemory::swappingMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER;
-
+pthread_cond_t managedMemory::swappingCond = PTHREAD_COND_INITIALIZER;
 
 
 managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
@@ -154,6 +154,15 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
 {
     pthread_mutex_lock ( &stateChangeMutex );
     switch ( chunk.status ) {
+    case MEM_SWAPIN: // Wait for object to appear
+        while ( true ) {
+            pthread_cond_wait ( &swappingCond, &stateChangeMutex );
+            if ( chunk.status == MEM_ALLOCATED || ( ( chunk.status ) &MEM_ALLOCATED_INUSE_READ ) ) {
+                break;//This continues with status change when object is at least allocated.
+            }
+        }
+    case MEM_ALLOCATED:
+        chunk.status = MEM_ALLOCATED_INUSE_READ;
     case MEM_ALLOCATED_INUSE_READ:
         if ( writeAccess ) {
             chunk.status = MEM_ALLOCATED_INUSE_WRITE;
@@ -164,23 +173,12 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
         ++swap_hits;
 #endif
         ++chunk.useCnt;
-
-
-        touch ( chunk );
         pthread_mutex_unlock ( &stateChangeMutex );
-        return true;
-
-    case MEM_ALLOCATED:
-#ifdef SWAPSTATS
-        ++swap_hits;
-#endif
-        chunk.status = writeAccess ? MEM_ALLOCATED_INUSE_WRITE : MEM_ALLOCATED_INUSE_READ;
-        chunk.useCnt = 1;
         touch ( chunk );
-        pthread_mutex_unlock ( &stateChangeMutex );
         return true;
-
+//Id this thing is swapped or about to be swapped, "call it back"
     case MEM_SWAPPED:
+    case MEM_SWAPOUT:
 #ifdef SWAPSTATS
         ++swap_misses;
         --swap_hits;
@@ -193,7 +191,11 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
             return Throw ( memoryException ( "Could not swap memory" ) );
         }
 
+
+
     case MEM_ROOT:
+    case MEM_DELETE:
+    case MEM_REGISTER:
         pthread_mutex_unlock ( &stateChangeMutex );
         return false;
 

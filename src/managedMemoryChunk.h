@@ -15,8 +15,8 @@ enum memoryStatus {MEM_ROOT = 0,
                    MEM_SWAPOUT = 32,
                    MEM_DELETE = 64,
                    MEM_REGISTER = 128,
-                   MEM_REGISTER_INUSE_READ = 129,
-                   MEM_REGISTER_INUSE_WRITE = 131,
+                   /*MEM_REGISTER_INUSE_READ = 129,
+                   MEM_REGISTER_INUSE_WRITE = 131,*/
                   };
 
 typedef unsigned int memoryID;

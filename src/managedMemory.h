@@ -81,8 +81,10 @@ protected:
     static pthread_mutex_t topologicalMutex;
     static pthread_mutex_t swappingMutex;
     static pthread_mutex_t stateChangeMutex;
-    /*static pthread_cond_t topologicalCond;
+    //Signalled after every swapin. Synchronization is happening via stateChangeMutex
     static pthread_cond_t swappingCond;
+    /*static pthread_cond_t topologicalCond;
+
     static pthread_cond_t stateChangeCond;*/
 
 
