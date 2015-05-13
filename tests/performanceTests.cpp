@@ -9,6 +9,7 @@
 #include "managedPtr.h"
 
 using namespace std;
+using namespace membrain;
 
 void runMatrixTranspose ( tester *test, char **args );
 void runMatrixCleverTranspose ( tester *test, char **args );
