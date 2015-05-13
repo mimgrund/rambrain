@@ -7,23 +7,29 @@
 
 namespace membrain
 {
+namespace membrainglobals
+{
+configReader config;
+managedSwap *swap;
+managedMemory *manager;
+}
 bool initialise ( unsigned int memorySize, unsigned int swapSize )
 {
-    bool ok = globals::config.readConfig();
+    bool ok = membrainglobals::config.readConfig();
 
     if ( !ok ) {
         errmsg ( "Could not read config file!" );
     } else {
-        configuration c = globals::config.getConfig();
+        configuration c = membrainglobals::config.getConfig();
 
         if ( c.swap == "managedDummySwap" ) {
-            globals::swap = new managedDummySwap ( swapSize );
+            membrainglobals::swap = new managedDummySwap ( swapSize );
         } else if ( c.swap == "managedFileSwap" ) {
-            globals::swap = new managedFileSwap ( swapSize, c.swapfiles.c_str() );
+            membrainglobals::swap = new managedFileSwap ( swapSize, c.swapfiles.c_str() );
         }
 
         if ( c.memoryManager == "cyclicManagedMemory" ) {
-            globals::manager = new cyclicManagedMemory ( globals::swap, memorySize );
+            membrainglobals::manager = new cyclicManagedMemory ( membrainglobals::swap, memorySize );
         }
 
     }
@@ -31,7 +37,7 @@ bool initialise ( unsigned int memorySize, unsigned int swapSize )
 
 void cleanup()
 {
-    delete globals::swap;
-    delete globals::manager;
+    delete membrainglobals::swap;
+    delete membrainglobals::manager;
 }
 }

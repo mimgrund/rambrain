@@ -11,11 +11,11 @@ namespace membrain
 bool initialise ( unsigned int memorySize, unsigned int swapSize );
 void cleanup();
 
-namespace globals
+namespace membrainglobals
 {
-configReader config;
-managedSwap *swap;
-managedMemory *manager;
+extern configReader config;
+extern managedSwap *swap;
+extern managedMemory *manager;
 }
 
 }
