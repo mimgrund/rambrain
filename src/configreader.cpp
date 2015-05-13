@@ -87,7 +87,7 @@ string configReader::parseConfigLine ( const string &line, const string &key )
         unsigned int pos = key.length();
         pos = line.find_first_not_of ( "= \t", pos );
         if ( pos < line.length() ) {
-            return line.substr ( pos + 1 );
+            return line.substr ( pos );
         }
     }
 
