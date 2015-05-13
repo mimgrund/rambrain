@@ -81,7 +81,7 @@ TEST ( configReader, Unit_ParseProgramName )
 {
     configReader reader;
 
-    ASSERT_EQ ( "membrain-unittests", reader.getApplicationName() );
+    ASSERT_TRUE ( reader.getApplicationName() == "membrain-unittests" || reader.getApplicationName() == "membrain-tests" );
 }
 
 TEST ( configReader, Unit_OverwriteDefault )
@@ -91,6 +91,8 @@ TEST ( configReader, Unit_OverwriteDefault )
     out << "[default]" << std::endl;
     out << "memoryManager = cyclicManagedMemory" << std::endl;
     out << "[membrain-unittests]" << std::endl;
+    out << "memoryManager = dummyManagedMemory" << std::endl;
+    out << "[membrain-tests]" << std::endl;
     out << "memoryManager = dummyManagedMemory" << std::endl;
     out.close();
 
@@ -110,6 +112,8 @@ TEST ( configReader, Unit_OverwriteDefaultInverseOrder )
     //Create custom config file
     ofstream out ( "testconfig.conf" );
     out << "[membrain-unittests]" << std::endl;
+    out << "memoryManager = dummyManagedMemory" << std::endl;
+    out << "[membrain-tests]" << std::endl;
     out << "memoryManager = dummyManagedMemory" << std::endl;
     out << "[default]" << std::endl;
     out << "memoryManager = cyclicManagedMemory" << std::endl;
@@ -135,6 +139,8 @@ TEST ( configReader, Unit_IgnoreNewLines )
     out << "memoryManager = cyclicManagedMemory" << std::endl << std::endl << std::endl;
     out << "[membrain-unittests]" << std::endl;
     out << "memoryManager = dummyManagedMemory" << std::endl << std::endl;
+    out << "[membrain-tests]" << std::endl << std::endl << std::endl;;
+    out << "memoryManager = dummyManagedMemory" << std::endl;
     out.close();
 
     // Read in the file
