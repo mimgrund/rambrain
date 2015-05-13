@@ -15,6 +15,11 @@ memoryID const managedMemory::root = 1;
 memoryID const managedMemory::invalid = 0;
 memoryID managedMemory::parent = 1;
 bool managedMemory::noThrow = false;
+pthread_mutex_t managedMemory::topologicalMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t managedMemory::swappingMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER;
+
+
 
 managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
 {
@@ -147,6 +152,7 @@ bool managedMemory::swapIn ( memoryID id )
 
 bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false )
 {
+    pthread_mutex_lock ( &stateChangeMutex );
     switch ( chunk.status ) {
     case MEM_ALLOCATED_INUSE_READ:
         if ( writeAccess ) {
@@ -161,6 +167,7 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
 
 
         touch ( chunk );
+        pthread_mutex_unlock ( &stateChangeMutex );
         return true;
 
     case MEM_ALLOCATED:
@@ -170,6 +177,7 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
         chunk.status = writeAccess ? MEM_ALLOCATED_INUSE_WRITE : MEM_ALLOCATED_INUSE_READ;
         chunk.useCnt = 1;
         touch ( chunk );
+        pthread_mutex_unlock ( &stateChangeMutex );
         return true;
 
     case MEM_SWAPPED:
@@ -177,6 +185,7 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
         ++swap_misses;
         --swap_hits;
 #endif
+        pthread_mutex_unlock ( &stateChangeMutex );
         if ( swapIn ( chunk ) ) {
 
             return setUse ( chunk , writeAccess );
@@ -185,9 +194,11 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
         }
 
     case MEM_ROOT:
+        pthread_mutex_unlock ( &stateChangeMutex );
         return false;
 
     }
+    pthread_mutex_unlock ( &stateChangeMutex );
     return false;
 }
 
@@ -226,11 +237,14 @@ bool managedMemory::setUse ( memoryID id )
 
 bool managedMemory::unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets )
 {
+    pthread_mutex_lock ( &stateChangeMutex );
     if ( chunk.status & MEM_ALLOCATED_INUSE_READ ) {
         chunk.useCnt -= no_unsets;
         chunk.status = ( chunk.useCnt == 0 ? MEM_ALLOCATED : chunk.status );
+        pthread_mutex_unlock ( &stateChangeMutex );
         return true;
     } else {
+        pthread_mutex_unlock ( &stateChangeMutex );
         return Throw ( memoryException ( "Can not unset use of not used memory" ) );
     }
 }

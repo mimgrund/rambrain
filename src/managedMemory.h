@@ -7,6 +7,7 @@
 #include "managedMemoryChunk.h"
 #include "managedSwap.h"
 #include "exceptions.h"
+#include <pthread.h>
 
 namespace membrain
 {
@@ -76,6 +77,13 @@ protected:
     static managedMemory *dummyManager;
     static bool noThrow;
     static bool Throw ( memoryException e );
+
+    static pthread_mutex_t topologicalMutex;
+    static pthread_mutex_t swappingMutex;
+    static pthread_mutex_t stateChangeMutex;
+    /*static pthread_cond_t topologicalCond;
+    static pthread_cond_t swappingCond;
+    static pthread_cond_t stateChangeCond;*/
 
 
     template<class T>

@@ -2,7 +2,7 @@
 #include "managedPtr.h"
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
-
+#include <omp.h>
 using namespace membrain;
 
 TEST ( adhereTo, Unit_LoadUnload )
@@ -109,6 +109,35 @@ TEST ( adhereTo, Unit_AccessData )
     }
 
     delete global;
+}
+
+TEST ( adhereTo, Unit_BasicOpenMP )
+{
+    const int count = 100;
+    managedDummySwap swap ( 10000 );
+    cyclicManagedMemory managedMemory ( &swap, 10000 );
+    managedPtr<double> ptr ( count );
+    #pragma omp parallel for
+    for ( int n = 0; n < count; ++n ) {
+        ADHERETO ( double, ptr );
+        ptr[n] = n;
+    }
+    ADHERETOLOC ( double, ptr, ptrloc );
+    for ( int n = 0; n < count; ++n ) {
+        EXPECT_EQ ( n, ptrloc[n] );
+    }
+
+    adhereTo<double> adh ( ptr );
+    #pragma omp parallel for
+    for ( int n = 0; n < count; ++n ) {
+        double *ptr = adh;
+        ptr[n] *= n;
+    }
+    for ( int n = 0; n < count; ++n ) {
+        EXPECT_EQ ( n * n, ptrloc[n] );
+    }
+
+
 }
 
 TEST ( adhereTo, Unit_TwiceAdhered )

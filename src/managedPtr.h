@@ -2,10 +2,11 @@
 #define MANAGEDPTR_H
 
 #include "managedMemory.h"
+#include "membrain_atomics.h"
 #include "common.h"
 #include "exceptions.h"
 #include <type_traits>
-
+#include <pthread.h>
 
 // Test classes
 class managedPtr_Unit_ChunkInUse_Test;
@@ -38,12 +39,25 @@ class adhereToConst;
                  const class* locinstance = instance##_glue;
 
 
+
+/**
+ * \brief Main class to allocate memory that is managed by the membrain memory defaultManager
+ *
+ * @warning _thread-safety_
+ * * The object itself is not thread-safe
+ * * Do not pass pointers/references to this object over thread boundaries
+ * @note _thread-safety_
+ * * The object itself may be passed over thread boundary
+ *
+ * **/
 template <class T>
 class managedPtr
 {
 public:
     managedPtr ( const managedPtr<T> &ref ) : tracker ( ref.tracker ), n_elem ( ref.n_elem ), chunk ( ref.chunk ) {
-        ( *tracker )++;
+
+        membrain_atomic_add_fetch ( tracker, 1 );
+
     }
 
     managedPtr ( unsigned int n_elem ) {
@@ -63,13 +77,14 @@ public:
         }
         unsetUse();
         managedMemory::parent = savedParent;
-        ( *tracker ) = 1;
+        ( *tracker ) = 1; //We do not need to protect this as the object to be passed around the threads has to be fully created
+        // before user can pass it around
     }
 
 
     ~managedPtr() {
-        -- ( *tracker );
-        if ( *tracker  == 0 ) {
+        int trackerold = membrain_atomic_sub_fetch ( tracker, 1 );
+        if ( trackerold  == 0 ) {//Ensure destructor to be called only once.
             mDelete<T>();
         }
     }
@@ -86,13 +101,13 @@ public:
         if ( ref.chunk == chunk ) {
             return *this;
         }
-        if ( -- ( *tracker ) == 0 ) {
+        if ( membrain_atomic_sub_fetch ( tracker, 1 ) == 0 ) {
             mDelete<T>();
         }
         n_elem = ref.n_elem;
         chunk = ref.chunk;
         tracker = ref.tracker;
-        ++ ( *tracker );
+        membrain_atomic_add_fetch ( tracker, 1 );
         return *this;
     }
 
@@ -170,7 +185,16 @@ private:
     friend class ::managedFileSwap_Unit_SwapNextAndSingleIsland_Test;
 };
 
-
+/**
+ * @brief Main class to fetch memory that is managed by membrain for actual usage.
+ *
+ * \warning _thread-safety_
+ * * The object itself is not thread-safe
+ * * Do not pass pointers/references to this object over thread boundaries
+ *
+ * \note _thread-safety_
+ * * The object itself may be passed over thread boundaries
+ * **/
 template <class T>
 class adhereTo
 {
