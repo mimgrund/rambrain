@@ -4,7 +4,8 @@
 namespace membrain
 {
 
-//memoryStatus&&MEM_ALLOCATED_INUSE_READ should return one for MEM_ALLOCATED_INUSE_WRITE, too.
+
+
 enum memoryStatus {MEM_ROOT = 0,
                    MEM_ALLOCATED_INUSE_READ = 1,
                    MEM_ALLOCATED_INUSE_WRITE = 3,
@@ -15,6 +16,16 @@ enum memoryStatus {MEM_ROOT = 0,
 typedef unsigned int memoryID;
 typedef unsigned int memoryAtime;
 
+/** \brief manages all managed Chunks of raw memory
+ *
+ * This object tracks the dimesions and status of a chunk of memory we manage.
+ * The status is inherently connected to the logic we can operate on the object and
+ * it is basically prescribed what classes may change the status from wich state to which.
+ * Even though it would be more clear to have convenience and thread-safe functions here,
+ * we decided for this due to performance issues. More documentation to come. The basically
+ * possible transitions are depicted in the following graph:
+ * \dotfile chunkStatusScheme.dot
+ * **/d
 class managedMemoryChunk
 {
 public:
