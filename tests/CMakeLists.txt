@@ -37,3 +37,9 @@ file(GLOB TEST_SOURCES
 add_executable(membrain-performancetests ${TEST_SOURCES})
 add_custom_command(TARGET membrain-performancetests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 target_link_libraries (membrain-performancetests pthread membrain)
+
+file(GLOB TEST_SOURCES
+        "memeater.cpp"
+)
+add_executable(membrain-memeater ${TEST_SOURCES})
+add_custom_command(TARGET membrain-memeater PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
