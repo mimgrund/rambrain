@@ -65,20 +65,33 @@ bool configReader::parseConfigFile()
 
 bool configReader::parseConfigBlock()
 {
-    string line;
+    string line, value;
     int count = 0;
 
     while ( stream.good() ) {
         getline ( stream, line );
-        if ( line == "memoryManager" ) {
-            config.memoryManager = line;
-            ++ count;
-        } else if ( line.substr ( 0, 1 ) == "[" ) {
+        if ( line.substr ( 0, 1 ) == "[" ) {
             break;
+        } else if ( ! ( value = parseConfigLine ( line, "memoryManager" ) ).empty() ) {
+            config.memoryManager = value;
+            ++ count;
         }
     }
 
     return count == 1;
+}
+
+string configReader::parseConfigLine ( const string &line, const string &key )
+{
+    if ( line.substr ( 0, key.length() ) == key ) {
+        unsigned int pos = key.length();
+        pos = line.find_first_not_of ( "= \t", pos );
+        if ( pos < line.length() ) {
+            return line.substr ( pos + 1 );
+        }
+    }
+
+    return "";
 }
 
 string configReader::getApplicationName()

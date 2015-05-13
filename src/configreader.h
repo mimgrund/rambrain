@@ -35,6 +35,7 @@ private:
 
     bool parseConfigFile();
     bool parseConfigBlock();
+    string parseConfigLine ( const string &line, const string &key );
 
     string getApplicationName();
 
