@@ -5,6 +5,8 @@
 #include "managedDummySwap.h"
 #include "exceptions.h"
 
+using namespace membrain;
+
 TEST ( managedPtr, Unit_NoMemoryManager )
 {
     EXPECT_THROW ( managedPtr<double> ptr1 ( 10 ), memoryException );

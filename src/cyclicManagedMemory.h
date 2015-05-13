@@ -3,6 +3,9 @@
 
 #include "managedMemory.h"
 
+namespace membrain
+{
+
 struct cyclicAtime {
     managedMemoryChunk *chunk;
     cyclicAtime *next;
@@ -58,5 +61,7 @@ private:
  *
  *
  * */
+
+}
 
 #endif

@@ -3,6 +3,8 @@
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
 
+using namespace membrain;
+
 TEST ( adhereTo, Unit_LoadUnload )
 {
     managedDummySwap swap ( 100 );

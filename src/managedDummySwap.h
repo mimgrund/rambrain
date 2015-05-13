@@ -4,6 +4,9 @@
 #include "managedMemoryChunk.h"
 #include "managedSwap.h"
 
+namespace membrain
+{
+
 class managedDummySwap : public managedSwap
 {
 public:
@@ -15,5 +18,7 @@ public:
     virtual bool swapOut ( managedMemoryChunk *chunk );
     virtual void swapDelete ( managedMemoryChunk *chunk );
 };
+
+}
 
 #endif

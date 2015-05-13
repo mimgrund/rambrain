@@ -5,6 +5,22 @@
 #include "common.h"
 #include "exceptions.h"
 #include <type_traits>
+
+
+// Test classes
+class managedPtr_Unit_ChunkInUse_Test;
+class managedPtr_Unit_GetLocPointer_Test;
+class managedPtr_Unit_SmartPointery_Test;
+class managedFileSwap_Unit_SwapSingleIsland_Test;
+class managedFileSwap_Unit_SwapNextAndSingleIsland_Test;
+
+class adhereTo_Unit_LoadUnload_Test;
+class adhereTo_Unit_LoadUnloadConst_Test;
+class adhereTo_Unit_TwiceAdhered_Test;
+
+namespace membrain
+{
+
 template <class T>
 class adhereTo;
 template <class T>
@@ -147,11 +163,11 @@ private:
     friend class adhereToConst;
 
     // Test classes
-    friend class managedPtr_Unit_ChunkInUse_Test;
-    friend class managedPtr_Unit_GetLocPointer_Test;
-    friend class managedPtr_Unit_SmartPointery_Test;
-    friend class managedFileSwap_Unit_SwapSingleIsland_Test;
-    friend class managedFileSwap_Unit_SwapNextAndSingleIsland_Test;
+    friend class ::managedPtr_Unit_ChunkInUse_Test;
+    friend class ::managedPtr_Unit_GetLocPointer_Test;
+    friend class ::managedPtr_Unit_SmartPointery_Test;
+    friend class ::managedFileSwap_Unit_SwapSingleIsland_Test;
+    friend class ::managedFileSwap_Unit_SwapNextAndSingleIsland_Test;
 };
 
 
@@ -230,9 +246,9 @@ private:
 
 
     // Test classes
-    friend class adhereTo_Unit_LoadUnload_Test;
-    friend class adhereTo_Unit_LoadUnloadConst_Test;
-    friend class adhereTo_Unit_TwiceAdhered_Test;
+    friend class ::adhereTo_Unit_LoadUnload_Test;
+    friend class ::adhereTo_Unit_LoadUnloadConst_Test;
+    friend class ::adhereTo_Unit_TwiceAdhered_Test;
 };
 
 template <class T>
@@ -301,5 +317,7 @@ private:
     friend class adhereTo_Unit_LoadUnloadConst_Test;
     friend class adhereTo_Unit_TwiceAdhered_Test;
 };
+
+}
 
 #endif

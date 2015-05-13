@@ -4,6 +4,8 @@
 #include "managedDummySwap.h"
 #include "exceptions.h"
 
+using namespace membrain;
+
 TEST ( managedDummySwap, Unit_ManualSwapping )
 {
     const unsigned int dblamount = 100;

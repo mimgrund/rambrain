@@ -34,3 +34,5 @@ add_subdirectory (external)
 if (BUILD_TESTS)
 	add_subdirectory (tests)
 endif ()
+
+add_custom_target(doc doxygen ${CMAKE_SOURCE_DIR}/doc/doxyfile ${CMAKE_SOURCE_DIR} COMMENT "Generating API documentation with Doxygen" VERBATIM)

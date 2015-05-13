@@ -10,7 +10,8 @@
 #define VERBOSEPRINT(x) ;
 #endif
 
-
+namespace membrain
+{
 
 cyclicManagedMemory::cyclicManagedMemory ( managedSwap *swap, unsigned int size ) : managedMemory ( swap, size )
 {
@@ -497,4 +498,6 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
     } else {
         return false;
     }
+}
+
 }

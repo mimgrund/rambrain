@@ -6,6 +6,9 @@
 
 using namespace std;
 
+namespace membrain
+{
+
 class membrainException : exception
 {
 
@@ -80,5 +83,7 @@ private:
     string details;
 
 };
+
+}
 
 #endif // EXCEPTIONS_H

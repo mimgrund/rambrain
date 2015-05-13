@@ -8,6 +8,9 @@
 #include "managedSwap.h"
 #include "exceptions.h"
 
+namespace membrain
+{
+
 template<class T>
 class managedPtr;
 
@@ -101,5 +104,7 @@ public:
 
 #endif
 };
+
+}
 
 #endif

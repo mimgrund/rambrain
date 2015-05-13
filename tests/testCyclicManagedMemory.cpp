@@ -6,6 +6,8 @@
 #include "managedDummySwap.h"
 #include "exceptions.h"
 
+using namespace membrain;
+
 //#define SWAPSTATSLONG
 
 class A

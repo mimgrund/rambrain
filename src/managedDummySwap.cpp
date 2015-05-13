@@ -2,6 +2,9 @@
 #include <memory.h>
 #include "managedDummySwap.h"
 
+namespace membrain
+{
+
 managedDummySwap::managedDummySwap ( unsigned int size ) : managedSwap ( size )
 {
     swapFree = swapSize = size;
@@ -74,4 +77,6 @@ void managedDummySwap::swapDelete ( managedMemoryChunk *chunk )
         swapFree += chunk->size;
         free ( chunk->swapBuf );
     }
+}
+
 }

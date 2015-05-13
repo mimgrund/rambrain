@@ -1,6 +1,8 @@
 #ifndef MANAGEDMEMORYCHUNK_H
 #define MANAGEDMEMORYCHUNK_H
 
+namespace membrain
+{
 
 //memoryStatus&&MEM_ALLOCATED_INUSE_READ should return one for MEM_ALLOCATED_INUSE_WRITE, too.
 enum memoryStatus {MEM_ROOT = 0,
@@ -37,5 +39,7 @@ public:
     //Swap raw management:
     void *swapBuf; //Give the swapper a place for a buffer.
 };
+
+}
 
 #endif
