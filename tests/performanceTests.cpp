@@ -8,6 +8,8 @@
 #include "cyclicManagedMemory.h"
 #include "managedPtr.h"
 
+#include "initialisation.h"
+
 using namespace std;
 using namespace membrain;
 
@@ -92,8 +94,9 @@ void runMatrixTranspose ( tester *test, char **args )
     const unsigned int mem = size * sizeof ( double ) *  memlines;
     const unsigned int swapmem = size * size * sizeof ( double ) * 2;
 
-    managedFileSwap swap ( swapmem, "membrainswap-%d" );
-    cyclicManagedMemory manager ( &swap, mem );
+    initialise ( mem, swapmem );
+    //managedFileSwap swap ( swapmem, "membrainswap-%d" );
+    //cyclicManagedMemory manager ( &swap, mem );
 
     test->addTimeMeasurement();
 
@@ -133,6 +136,8 @@ void runMatrixTranspose ( tester *test, char **args )
     }
 
     test->addTimeMeasurement();
+
+    cleanup();
 }
 
 void runMatrixCleverTranspose ( tester *test, char **args )
@@ -142,8 +147,9 @@ void runMatrixCleverTranspose ( tester *test, char **args )
     const unsigned int mem = size * sizeof ( double ) *  memlines;
     const unsigned int swapmem = size * size * sizeof ( double ) * 2;
 
-    managedFileSwap swap ( swapmem, "membrainswap-%d" );
-    cyclicManagedMemory manager ( &swap, mem );
+    initialise ( mem, swapmem );
+    //managedFileSwap swap ( swapmem, "membrainswap-%d" );
+    //cyclicManagedMemory manager ( &swap, mem );
 
     test->addTimeMeasurement();
 
@@ -223,4 +229,6 @@ void runMatrixCleverTranspose ( tester *test, char **args )
     }
 
     test->addTimeMeasurement();
+
+    cleanup();
 }
