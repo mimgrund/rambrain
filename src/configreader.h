@@ -7,11 +7,14 @@
 
 using namespace std;
 
+//Test classes
+class configReader_Unit_ParseProgramName_Test;
+
 namespace membrain
 {
 
 struct configuration {
-    string memoryManager;
+    string memoryManager = "cyclicManagedMemory";
 };
 
 class configReader
@@ -47,6 +50,9 @@ private:
     ifstream stream;
 
     configuration config;
+
+    //Test classes
+    friend class ::configReader_Unit_ParseProgramName_Test;
 
 };
 

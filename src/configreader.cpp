@@ -53,7 +53,9 @@ bool configReader::parseConfigFile()
     while ( stream.good() ) {
         getline ( stream, line );
         if ( line == defaultBlock ) {
+            unsigned int current = stream.tellg();
             ret = parseConfigBlock();
+            stream.seekg ( current );
         } else if ( applicationBlock.size() > 2 && line == applicationBlock ) {
             ret = parseConfigBlock();
             break;
@@ -65,20 +67,23 @@ bool configReader::parseConfigFile()
 
 bool configReader::parseConfigBlock()
 {
-    string line, value;
+    string line, first, value;
     int count = 0;
 
     while ( stream.good() ) {
         getline ( stream, line );
-        if ( line.substr ( 0, 1 ) == "[" ) {
+        first = line.substr ( 0, 1 );
+        if ( first == "[" ) {
             break;
+        } else if ( first == "#" ) {
+            continue;
         } else if ( ! ( value = parseConfigLine ( line, "memoryManager" ) ).empty() ) {
             config.memoryManager = value;
             ++ count;
         }
     }
 
-    return count == 1;
+    return true;
 }
 
 string configReader::parseConfigLine ( const string &line, const string &key )
