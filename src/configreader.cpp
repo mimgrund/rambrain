@@ -4,14 +4,53 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <cstdlib>
+#include <sys/statvfs.h>
 
 namespace membrain
 {
 
 configuration::configuration()
 {
-    //! @todo set memory to half the available memory
-    //! @todo set swapMemory to half the available space on the current partition
+    // Get free main memory
+    ifstream meminfo ( "/proc/meminfo", ifstream::in );
+    char line[1024];
+    for ( int c = 0; c < 3; ++c ) {
+        meminfo.getline ( line, 1024 );
+    }
+
+    global_bytesize bytes_avail;
+
+    char *begin = NULL, *end = NULL;
+    char *pos = line;
+    while ( !end ) {
+        if ( *pos <= '9' && *pos >= '0' ) {
+            if ( begin == NULL ) {
+                begin = pos;
+            }
+        } else {
+            if ( begin != NULL ) {
+                end = pos;
+            }
+        }
+        ++pos;
+    }
+    * ( end + 1 ) = 0x00;
+    bytes_avail = atol ( begin ) * 1024;
+
+    memory = bytes_avail * 0.5;
+
+    // Get free partition space
+    char exe[1024];
+    int ret;
+
+    ret = readlink ( "/proc/self/exe", exe, sizeof ( exe ) - 1 );
+    if ( ret != -1 ) {
+        exe[ret] = '\0';
+        struct statvfs stats;
+        statvfs ( exe, &stats );
+
+        swapMemory = stats.f_bfree * stats.f_bsize;
+    }
 }
 
 configReader::configReader()
