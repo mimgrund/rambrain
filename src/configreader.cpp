@@ -17,7 +17,12 @@ bool configReader::readConfig()
         return false;
     }
 
-    return parseConfigFile();
+    if ( parseConfigFile() ) {
+        readSuccessfullyOnce = true;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool configReader::openStream()
@@ -68,7 +73,6 @@ bool configReader::parseConfigFile()
 bool configReader::parseConfigBlock()
 {
     string line, first, value;
-    int count = 0;
 
     while ( stream.good() ) {
         getline ( stream, line );
@@ -79,7 +83,10 @@ bool configReader::parseConfigBlock()
             continue;
         } else if ( ! ( value = parseConfigLine ( line, "memoryManager" ) ).empty() ) {
             config.memoryManager = value;
-            ++ count;
+        } else if ( ! ( value = parseConfigLine ( line, "swap" ) ).empty() ) {
+            config.swap = value;
+        } else if ( ! ( value = parseConfigLine ( line, "swapfiles" ) ).empty() ) {
+            config.swapfiles = value;
         }
     }
 

@@ -18,7 +18,9 @@ TEST ( configReader, Unit_ParseCustomFile )
     configReader reader;
     reader.setCustomConfigPath ( "testconfig.conf" );
 
+    ASSERT_FALSE ( reader.readSuccessfully() );
     ASSERT_TRUE ( reader.readConfig() );
+    ASSERT_TRUE ( reader.readSuccessfully() );
 
     configuration config = reader.getConfig();
 

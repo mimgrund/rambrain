@@ -15,6 +15,8 @@ namespace membrain
 
 struct configuration {
     string memoryManager = "cyclicManagedMemory";
+    string swap = "managedFileSwap";
+    string swapfiles = "membrainswap-%d";
 };
 
 class configReader
@@ -31,6 +33,10 @@ public:
 
     inline configuration getConfig() {
         return config;
+    }
+
+    inline bool readSuccessfully() {
+        return readSuccessfullyOnce;
     }
 
 private:
@@ -50,6 +56,8 @@ private:
     ifstream stream;
 
     configuration config;
+
+    bool readSuccessfullyOnce = false;
 
     //Test classes
     friend class ::configReader_Unit_ParseProgramName_Test;
