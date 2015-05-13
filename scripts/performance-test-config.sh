@@ -39,7 +39,7 @@ for i in `seq 0 20`;
 do
   MatrixCleverTransposeSize1[$i]=$(echo "" | awk "END {print 10.0 ^ ($i * 3.0 / 20.0 + 1.0)}")
   MatrixCleverTransposeSize1[$i]=${MatrixTransposeSize1[$i]%.*}
-  MatrixCleverTransposeMemory1[$i]=10
+  MatrixCleverTransposeMemory1[$i]=100
 done
 
 

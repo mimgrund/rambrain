@@ -109,11 +109,11 @@ then
   for i in `seq 0 $((countRuns-1))`;
   do
     echo "Run $((i+1)) ..."
-    echo "./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTranspose ${MatrixTransposeSize1[$i]} ${MatrixTransposeMemory1[$i]}"
+    echo "./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTranspose ${MatrixCleverTransposeSize1[$i]} ${MatrixCleverTransposeMemory1[$i]}"
     
-    ./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTranspose ${MatrixTransposeSize1[$i]} ${MatrixTransposeMemory1[$i]}
+    ./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTranspose ${MatrixCleverTransposeSize1[$i]} ${MatrixCleverTransposeMemory1[$i]}
     
-    echo -n "${MatrixCleverTransposeSize1[$i]} ${MatrixTransposeMemory1[$i]} " >> temp.dat
+    echo -n "${MatrixCleverTransposeSize1[$i]} ${MatrixCleverTransposeMemory1[$i]} " >> temp.dat
     while read line
     do
       if [[ ! "${line}" == \#* ]] ;
@@ -124,7 +124,7 @@ then
 	i=$((arrLength-2))
 	echo -n "${array[$i]} " >> temp.dat
       fi
-    done < "perftest_MatrixCleverTranspose#${MatrixTransposeSize1[$i]}#${MatrixTransposeMemory1[$i]}"
+    done < "perftest_MatrixCleverTranspose#${MatrixCleverTransposeSize1[$i]}#${MatrixCleverTransposeMemory1[$i]}"
     echo >> temp.dat
 
   done
@@ -134,14 +134,14 @@ then
   echo "set output \"MatrixCleverTranspose1.eps\"" >> temp.gnuplot
   echo "set xlabel \"Matrix size per dimension\"" >> temp.gnuplot
   echo "set ylabel \"Execution time [ms]\"" >> temp.gnuplot
-  echo "set title \"Matrix transpose\"" >> temp.gnuplot
+  echo "set title \"Matrix clever transpose\"" >> temp.gnuplot
   echo "set log xy" >> temp.gnuplot
   echo "plot 'temp.dat' using 1:3 with lines title \"Allocation & Definition\", \\" >> temp.gnuplot
   echo "'temp.dat' using 1:4 with lines title \"Transposition\", \\" >> temp.gnuplot
   echo "'temp.dat' using 1:5 with lines title \"Deletion\", \\" >> temp.gnuplot
   echo "'temp.dat' using 1:(\$3+\$4+\$5) with lines title \"Total\"" >> temp.gnuplot
   gnuplot temp.gnuplot
-  convert -density 300 -resize 1920x MatrixCleverTranspose1.eps -flatten MatrixTranspose1.png
+  convert -density 300 -resize 1920x MatrixCleverTranspose1.eps -flatten MatrixCleverTranspose1.png
   display MatrixCleverTranspose1.png &
 fi
 
@@ -156,11 +156,11 @@ then
   for i in `seq 0 $((countRuns-1))`;
   do
     echo "Run $((i+1)) ..."
-    echo "./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTranspose ${MatrixTransposeSize2[$i]} ${MatrixTransposeMemory2[$i]}"
+    echo "./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTranspose ${MatrixCleverTransposeSize2[$i]} ${MatrixCleverTransposeMemory2[$i]}"
     
-    ./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTranspose ${MatrixTransposeSize2[$i]} ${MatrixTransposeMemory2[$i]}
+    ./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTranspose ${MatrixCleverTransposeSize2[$i]} ${MatrixCleverTransposeMemory2[$i]}
     
-    echo -n "${MatrixCleverTransposeSize2[$i]} ${MatrixTransposeMemory2[$i]} " >> temp.dat
+    echo -n "${MatrixCleverTransposeSize2[$i]} ${MatrixCleverTransposeMemory2[$i]} " >> temp.dat
     while read line
     do
       if [[ ! "${line}" == \#* ]] ;
@@ -171,7 +171,7 @@ then
 	i=$((arrLength-2))
 	echo -n "${array[$i]} " >> temp.dat
       fi
-    done < "perftest_MatrixCleverTranspose#${MatrixTransposeSize2[$i]}#${MatrixTransposeMemory2[$i]}"
+    done < "perftest_MatrixCleverTranspose#${MatrixCleverTransposeSize2[$i]}#${MatrixCleverTransposeMemory2[$i]}"
     echo >> temp.dat
 
   done
@@ -181,14 +181,14 @@ then
   echo "set output \"MatrixCleverTranspose2.eps\"" >> temp.gnuplot
   echo "set xlabel \"Matrix rows in main memory\"" >> temp.gnuplot
   echo "set ylabel \"Execution time [ms]\"" >> temp.gnuplot
-  echo "set title \"Matrix transpose\"" >> temp.gnuplot
+  echo "set title \"Matrix clever transpose\"" >> temp.gnuplot
   echo "set log xy" >> temp.gnuplot
   echo "plot 'temp.dat' using 2:3 with lines title \"Allocation & Definition\", \\" >> temp.gnuplot
   echo "'temp.dat' using 2:4 with lines title \"Transposition\", \\" >> temp.gnuplot
   echo "'temp.dat' using 2:5 with lines title \"Deletion\", \\" >> temp.gnuplot
   echo "'temp.dat' using 2:(\$3+\$4+\$5) with lines title \"Total\"" >> temp.gnuplot
   gnuplot temp.gnuplot
-  convert -density 300 -resize 1920x MatrixCleverTranspose2.eps -flatten MatrixTranspose2.png
+  convert -density 300 -resize 1920x MatrixCleverTranspose2.eps -flatten MatrixCleverTranspose2.png
   display MatrixCleverTranspose2.png &
 fi
 
