@@ -94,9 +94,10 @@ void runMatrixTranspose ( tester *test, char **args )
     const unsigned int mem = size * sizeof ( double ) *  memlines;
     const unsigned int swapmem = size * size * sizeof ( double ) * 2;
 
-    initialise ( mem, swapmem );
     //managedFileSwap swap ( swapmem, "membrainswap-%d" );
     //cyclicManagedMemory manager ( &swap, mem );
+    membrainglobals::config.resizeMemory ( mem );
+    membrainglobals::config.resizeSwap ( swapmem );
 
     test->addTimeMeasurement();
 
@@ -136,8 +137,6 @@ void runMatrixTranspose ( tester *test, char **args )
     }
 
     test->addTimeMeasurement();
-
-    cleanup();
 }
 
 void runMatrixCleverTranspose ( tester *test, char **args )
@@ -147,9 +146,10 @@ void runMatrixCleverTranspose ( tester *test, char **args )
     const unsigned int mem = size * sizeof ( double ) *  memlines;
     const unsigned int swapmem = size * size * sizeof ( double ) * 2;
 
-    initialise ( mem, swapmem );
     //managedFileSwap swap ( swapmem, "membrainswap-%d" );
     //cyclicManagedMemory manager ( &swap, mem );
+    membrainglobals::config.resizeMemory ( mem );
+    membrainglobals::config.resizeSwap ( swapmem );
 
     test->addTimeMeasurement();
 
@@ -229,6 +229,4 @@ void runMatrixCleverTranspose ( tester *test, char **args )
     }
 
     test->addTimeMeasurement();
-
-    cleanup();
 }

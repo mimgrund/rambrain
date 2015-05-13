@@ -1,12 +1,19 @@
 #include "configreader.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <cstdlib>
 
 namespace membrain
 {
+
+configuration::configuration()
+{
+    //! @todo set memory to half the available memory
+    //! @todo set swapMemory to half the available space on the current partition
+}
+
 configReader::configReader()
 {
 }
@@ -87,6 +94,10 @@ bool configReader::parseConfigBlock()
             config.swap = value;
         } else if ( ! ( value = parseConfigLine ( line, "swapfiles" ) ).empty() ) {
             config.swapfiles = value;
+        } else if ( ! ( value = parseConfigLine ( line, "memory" ) ).empty() ) {
+            config.memory = atoll ( line.c_str() );
+        } else if ( ! ( value = parseConfigLine ( line, "swapMemory" ) ).empty() ) {
+            config.swapMemory = atoll ( line.c_str() );
         }
     }
 

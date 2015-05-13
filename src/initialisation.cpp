@@ -4,41 +4,72 @@
 #include "managedDummySwap.h"
 #include "managedFileSwap.h"
 #include "cyclicManagedMemory.h"
+#include "exceptions.h"
 
 namespace membrain
 {
 namespace membrainglobals
 {
-configReader config;
-managedSwap *swap;
-managedMemory *manager;
-}
-bool initialise ( unsigned int memorySize, unsigned int swapSize )
+
+membrainConfig::membrainConfig ()
 {
-    bool ok = membrainglobals::config.readConfig();
+    init();
+}
+
+membrainConfig::~membrainConfig()
+{
+    clean();
+}
+
+void membrainConfig::reinit()
+{
+    clean();
+    init();
+}
+
+void membrainConfig::resizeMemory ( global_bytesize memory )
+{
+    configuration &c = config.getConfig();
+    c.memory = memory;
+    manager->setMemoryLimit ( memory );
+}
+
+void membrainConfig::resizeSwap ( global_bytesize memory )
+{
+    configuration &c = config.getConfig();
+    c.swapMemory = memory;
+    //! \todo implement a resize for the swap
+    throw unfinishedCodeException ( "Resize of swap memory is not implemented yet" );
+}
+
+void membrainConfig::init ()
+{
+    bool ok = config.readConfig();
 
     if ( !ok ) {
         warnmsg ( "Could not read config file!" );
     }
 
-    configuration c = membrainglobals::config.getConfig();
+    configuration c = config.getConfig();
 
     if ( c.swap == "managedDummySwap" ) {
-        membrainglobals::swap = new managedDummySwap ( swapSize );
+        swap = new managedDummySwap ( c.swapMemory );
     } else if ( c.swap == "managedFileSwap" ) {
-        membrainglobals::swap = new managedFileSwap ( swapSize, c.swapfiles.c_str() );
+        swap = new managedFileSwap ( c.swapMemory, c.swapfiles.c_str() );
     }
 
     if ( c.memoryManager == "cyclicManagedMemory" ) {
-        membrainglobals::manager = new cyclicManagedMemory ( membrainglobals::swap, memorySize );
+        manager = new cyclicManagedMemory ( swap, c.memory );
     }
-
-
 }
 
-void cleanup()
+void membrainConfig::clean()
 {
-    delete membrainglobals::manager;
-    delete membrainglobals::swap;
+    delete manager;
+    delete swap;
+}
+
+membrainConfig config;
+
 }
 }

@@ -5,6 +5,8 @@
 #include <fstream>
 #include <istream>
 
+#include "common.h"
+
 using namespace std;
 
 //Test classes
@@ -14,9 +16,14 @@ namespace membrain
 {
 
 struct configuration {
+
+    configuration();
+
     string memoryManager = "cyclicManagedMemory";
+    global_bytesize memory;
     string swap = "managedFileSwap";
     string swapfiles = "membrainswap-%d";
+    global_bytesize swapMemory;
 };
 
 class configReader
@@ -31,7 +38,7 @@ public:
         customConfigPath = path;
     }
 
-    inline configuration getConfig() {
+    inline configuration &getConfig() {
         return config;
     }
 

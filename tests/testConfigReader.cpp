@@ -6,6 +6,17 @@
 using namespace std;
 using namespace membrain;
 
+TEST ( configuration, Unit_DefaultValues )
+{
+    configuration config;
+
+    ASSERT_FALSE ( config.memoryManager.empty() );
+    ASSERT_GT ( config.memory, 0.0 );
+    ASSERT_FALSE ( config.swap.empty() );
+    ASSERT_FALSE ( config.swapfiles.empty() );
+    ASSERT_GT ( config.swapMemory, 0.0 );
+}
+
 TEST ( configReader, Unit_ParseCustomFile )
 {
     //Create custom config file

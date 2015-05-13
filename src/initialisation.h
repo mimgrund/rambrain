@@ -4,18 +4,41 @@
 #include "configreader.h"
 #include "managedSwap.h"
 #include "managedMemory.h"
+#include "common.h"
 
 namespace membrain
 {
 
-bool initialise ( unsigned int memorySize, unsigned int swapSize );
-void cleanup();
-
 namespace membrainglobals
 {
-extern configReader config;
-extern managedSwap *swap;
-extern managedMemory *manager;
+
+class membrainConfig
+{
+public:
+    membrainConfig();
+    ~membrainConfig();
+
+    void reinit();
+
+    inline configuration getConfig() {
+        return config.getConfig();
+    }
+
+    void resizeMemory ( global_bytesize memory );
+    void resizeSwap ( global_bytesize memory );
+
+private:
+    void init();
+    void clean();
+
+    configReader config;
+    managedSwap *swap;
+    managedMemory *manager;
+
+};
+
+extern membrainConfig config;
+
 }
 
 }
