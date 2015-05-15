@@ -60,8 +60,8 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     }
 
     //Initialize Windows:
-    global_bytesize ws_ratio = pageFileSize / 16; //TODO: unhardcode that buddy
-    global_bytesize ws_max = 128 * mib; //TODO: unhardcode that buddy
+    global_bytesize ws_ratio = pageFileSize / 16; ///\todo unhardcode that buddy
+    global_bytesize ws_max = 128 * mib; ///\todo  unhardcode that buddy
     windowNumber = 10;
     windowSize = min ( ws_max, ws_ratio );
     windowSize += ( windowSize % pageSize ) > 0 ? ( pageSize - ( windowSize % pageSize ) ) : 0;
@@ -133,11 +133,11 @@ bool managedFileSwap::openSwapFiles()
 
 pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size )
 {
-    //TODO: This may be rather stupid at the moment
+    ///\todo This may be rather stupid at the moment
 
     /*Priority: -Use first free chunk that fits completely
      *          -Distribute over free locations
-                Later on/TODO: look for read-in memory that can be overwritten*/
+                look for read-in memory that can be overwritten*/
     std::map<global_offset, pageFileLocation *>::iterator it = free_space.begin();
     pageFileLocation *found = NULL;
     do {
@@ -321,14 +321,14 @@ bool managedFileSwap::swapOut ( managedMemoryChunk *chunk )
     }
 
     if ( chunk->swapBuf ) { //We already have a position to store to! (happens when read-only was triggered)
-        //TODO: implement swapOUt if we already hold a memory copy.
+        ///\todo implement swapOUt if we already hold a memory copy.
         throw unfinishedCodeException ( "Swap out for read only memory chunk" );
     } else {
         pageFileLocation *newAlloced = pfmalloc ( chunk->size );
         if ( newAlloced ) {
             chunk->swapBuf = newAlloced;
             copyMem ( *newAlloced, chunk->locPtr );
-            free ( chunk->locPtr );//TODO: move allocation and free to managedMemory...
+            free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
             chunk->locPtr = NULL; // not strictly required.
             chunk->status = MEM_SWAPPED;
             swapUsed += chunk->size;
@@ -381,7 +381,7 @@ pageFileWindow *managedFileSwap::getWindowTo ( const pageFileLocation &loc )
     }
     if ( w == windowNumber ) {
         //We have to throw out a window
-        //TODO: More clever selection strategy than:
+        ///\todo More clever selection strategy than:
         w = ( lastCreatedWindow + 1 ) % windowNumber;
         delete windows[w];
     }

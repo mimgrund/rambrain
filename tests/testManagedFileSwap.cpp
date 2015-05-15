@@ -393,8 +393,8 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
 }
 
 
-//! TODO This test was written in order to provoke the unfishedCodeException in managedFileSwap.cpp:322 ; What did I do wrong
-//! Please correct the test such that it fails due to that exception in order to track completeness of the code there...
+///\todo This test does not work, exception is handled by libc++ instead of gtest This test was written in order to provoke the unfishedCodeException in managedFileSwap.cpp:322 ; What did I do wrong
+///\todo Please correct the test such that it fails due to that exception in order to track completeness of the code there...
 TEST ( managedFileSwap, Unit_SwapReadAllocatedChunk )
 {
     const unsigned int oneswap = mib;
