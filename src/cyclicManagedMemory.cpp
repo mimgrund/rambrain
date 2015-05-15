@@ -210,7 +210,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             cyclicAtime *oldafter = endSwapin->next;
             if ( endSwapin != active ) { //swapped in element is already 'active' when all others have been swapped.
                 if ( oldafter != active && beginSwapin != active ) {
-                    //TODO: Implement this for <3 elements
+                    ///\todo  Implement this for <3 elements
                     cyclicAtime *oldbefore = readEl;
                     cyclicAtime *before = active->prev;
                     MUTUAL_CONNECT ( oldbefore, oldafter );
@@ -428,7 +428,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
     bool inSwappedSection = ( fromPos->chunk->status == MEM_SWAPPED );
     bool doRoundtrip = fromPos == countPos;
 
-    //TODO: Implement this for less than 3 elements!
+    ///\todo Implement this for less than 3 elements!
     while ( fromPos != countPos || doRoundtrip ) {
         doRoundtrip = false;
         if ( inSwappedSection ) {

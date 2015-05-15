@@ -166,7 +166,8 @@ TEST ( managedPtr, Unit_SmartPointery )
 
 TEST ( managedPtr, Unit_DeleteWhileInUse )
 {
-    /* TODO This test does not work, exception is handled by libc++ instead of gtest
+    ///\todo This test does not work, exception is handled by libc++ instead of gtest
+    /*
      * Idea: Death test, do we want to let everything die at this point?
     managedDummySwap swap(100);
     cyclicManagedMemory *managedMemory=new cyclicManagedMemory(&swap, 100);
