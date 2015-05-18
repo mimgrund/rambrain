@@ -218,6 +218,31 @@ TEST ( managedPtr, Unit_DirectAccessSwapped )
     }
 }
 
+class nurfuerspassclass
+{
+public:
+    nurfuerspassclass ( int a ) : val ( a ) {};
+    int val;
+};
+
+TEST ( managedPtr, Unit_CreateAndInitialize )
+{
+    const unsigned int alloc = 10u;
+    const unsigned int memsize = 1.5 * alloc * sizeof ( double );
+    const unsigned int swapsize = 10 * memsize;
+
+    managedDummySwap swap ( swapsize );
+    cyclicManagedMemory managedMemory ( &swap, memsize );
+
+    managedPtr<nurfuerspassclass> havefun ( 5, 5 );
+    adhereTo<nurfuerspassclass> hf ( havefun );
+    nurfuerspassclass *hfbuf = hf;
+    for ( int n = 0; n < 5; n++ ) {
+        ASSERT_EQ ( 5, hfbuf[n].val );
+    }
+
+}
+
 
 TEST ( managedPtr, Integration_DirectVsSmartAccess )
 {

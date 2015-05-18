@@ -46,7 +46,8 @@ public:
         ( *tracker )++;
     }
 
-    managedPtr ( unsigned int n_elem ) {
+    template <typename... ctor_args>
+    managedPtr ( unsigned int n_elem , ctor_args... Args ) {
         this->n_elem = n_elem;
         tracker = new unsigned int;
         ( *tracker ) = 0;
@@ -59,7 +60,7 @@ public:
         managedMemory::parent = chunk->id;
         setUse();
         for ( unsigned int n = 0; n < n_elem; n++ ) {
-            new ( ( ( T * ) chunk->locPtr ) + n ) T();
+            new ( ( ( T * ) chunk->locPtr ) + n ) T ( Args... );
         }
         unsetUse();
         managedMemory::parent = savedParent;
