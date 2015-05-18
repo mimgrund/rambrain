@@ -21,9 +21,16 @@ membrainConfig::~membrainConfig()
     clean();
 }
 
-void membrainConfig::reinit()
+void membrainConfig::reinit ( bool reread )
 {
     clean();
+    if ( reread ) {
+        bool ok = config.readConfig();
+
+        if ( !ok ) {
+            warnmsg ( "Could not read config file!" );
+        }
+    }
     init();
 }
 
@@ -39,19 +46,12 @@ void membrainConfig::resizeSwap ( global_bytesize memory )
     configuration &c = config.getConfig();
     c.swapMemory = memory;
     //! \todo implement a resize for the swap
-    throw unfinishedCodeException ( "Resize of swap memory is not implemented yet" );
+    reinit ( false );
 }
 
 void membrainConfig::init ()
 {
-    bool ok = config.readConfig();
-
-    if ( !ok ) {
-        warnmsg ( "Could not read config file!" );
-    }
-
-    configuration c = config.getConfig();
-
+    configuration c = getConfig();
     if ( c.swap == "managedDummySwap" ) {
         swap = new managedDummySwap ( c.swapMemory );
     } else if ( c.swap == "managedFileSwap" ) {
@@ -62,6 +62,7 @@ void membrainConfig::init ()
         manager = new cyclicManagedMemory ( swap, c.memory );
     }
 }
+
 
 void membrainConfig::clean()
 {

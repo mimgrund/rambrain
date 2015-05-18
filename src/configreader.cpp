@@ -49,7 +49,7 @@ configuration::configuration()
         struct statvfs stats;
         statvfs ( exe, &stats );
 
-        swapMemory = stats.f_bfree * stats.f_bsize;
+        swapMemory = min ( stats.f_bfree * stats.f_bsize / 2 , 100 * gig ); ///\todo overcome this limit when we've handled file handles...
     }
 }
 

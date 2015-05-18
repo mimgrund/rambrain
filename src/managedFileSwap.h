@@ -3,6 +3,7 @@
 
 #include "managedSwap.h"
 #include <stdio.h>
+#include <unistd.h>
 #include <map>
 
 //Test classes
@@ -74,7 +75,7 @@ public:
     virtual unsigned int swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks );
     virtual bool swapOut ( managedMemoryChunk *chunk );
 
-    static const unsigned int pageSize;
+    const unsigned int pageSize;
 
 private:
     pageFileLocation determinePFLoc ( global_offset g_offset, global_bytesize length );

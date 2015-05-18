@@ -18,7 +18,7 @@ public:
     membrainConfig();
     ~membrainConfig();
 
-    void reinit();
+    void reinit ( bool reread = true );
 
     inline configuration getConfig() {
         return config.getConfig();
