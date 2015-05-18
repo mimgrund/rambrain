@@ -111,7 +111,7 @@ TEST ( adhereTo, Unit_AccessData )
     delete global;
 }
 
-TEST ( adhereTo, Unit_BasicOpenMP )
+TEST ( adhereTo, Unit_Multithreading )
 {
     const int count = 100;
     managedDummySwap swap ( 10000 );
