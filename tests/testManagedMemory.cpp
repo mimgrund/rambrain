@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "managedMemory.h"
 #include "dummyManagedMemory.h"
+#include "initialisation.h"
 
 using namespace membrain;
 
@@ -12,8 +13,6 @@ TEST ( managedMemory, Unit_DefaultManagerPresent )
 TEST ( managedMemory, Unit_DefaultManagerPresentAfterAllocation )
 {
     managedMemory *mm = new dummyManagedMemory();
-    managedMemory::defaultManager = mm;
-
     delete mm;
 
     EXPECT_TRUE ( managedMemory::defaultManager != NULL );

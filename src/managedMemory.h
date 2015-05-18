@@ -74,7 +74,7 @@ protected:
     memoryID memID_pace = 1;
 
 
-    static managedMemory *dummyManager;
+    managedMemory *previousManager;
     static bool noThrow;
     static bool Throw ( memoryException e );
 

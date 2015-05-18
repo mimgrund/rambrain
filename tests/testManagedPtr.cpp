@@ -9,7 +9,7 @@ using namespace membrain;
 
 TEST ( managedPtr, Unit_NoMemoryManager )
 {
-    EXPECT_THROW ( managedPtr<double> ptr1 ( 10 ), memoryException );
+    EXPECT_NO_THROW ( managedPtr<double> ptr1 ( 10 ) );
 
     managedDummySwap swap ( 100 );
     cyclicManagedMemory managedMemory ( &swap, 100 );
@@ -218,15 +218,17 @@ TEST ( managedPtr, Unit_DirectAccessSwapped )
     }
 }
 
-class nurfuerspassclass
-{
-public:
-    nurfuerspassclass ( int a ) : val ( a ) {};
-    int val;
-};
 
 TEST ( managedPtr, Unit_CreateAndInitialize )
 {
+
+    class nurfuerspassclass
+    {
+    public:
+        nurfuerspassclass ( int a ) : val ( a ) {};
+        int val;
+    };
+
     const unsigned int alloc = 10u;
     const unsigned int memsize = 1.5 * alloc * sizeof ( double );
     const unsigned int swapsize = 10 * memsize;
@@ -241,6 +243,23 @@ TEST ( managedPtr, Unit_CreateAndInitialize )
         ASSERT_EQ ( 5, hfbuf[n].val );
     }
 
+}
+
+TEST ( managedPtr, Unit_ZeroSizedObjects )
+{
+    managedDummySwap swap ( 200 );
+    cyclicManagedMemory managedMemory ( &swap, 200 );
+//     double a[0];
+//     *a=1337.;
+    managedPtr<bool> ptrnull ( 0 );
+    managedPtr<double> ptr ( 5 );
+    for ( int n = 0; n < 5; n++ ) {
+        ptr[n] = n;
+    }
+
+    for ( int n = 0; n < 5; n++ ) {
+        EXPECT_EQ ( n, ptr[n] );
+    }
 }
 
 

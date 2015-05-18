@@ -50,10 +50,11 @@ public:
     managedPtr ( unsigned int n_elem , ctor_args... Args ) {
         this->n_elem = n_elem;
         tracker = new unsigned int;
-        ( *tracker ) = 0;
+        ( *tracker ) = 1;
         if ( n_elem == 0 ) {
-            throw memoryException ( "Cannot allocate zero sized object." );
+            return;
         }
+
         chunk = managedMemory::defaultManager->mmalloc ( sizeof ( T ) * n_elem );
         //Now call constructor and save possible children's sake:
         memoryID savedParent = managedMemory::parent;
@@ -64,7 +65,7 @@ public:
         }
         unsetUse();
         managedMemory::parent = savedParent;
-        ( *tracker ) = 1;
+
     }
 
 
@@ -134,22 +135,26 @@ private:
     template <class G>
     typename std::enable_if<std::is_class<G>::value>::type
     mDelete (  ) {
-        bool oldthrow = managedMemory::defaultManager->noThrow;
-        managedMemory::defaultManager->noThrow = true;
-        for ( unsigned int n = 0; n < n_elem; n++ ) {
-            ( ( ( G * ) chunk->locPtr ) + n )->~G();
+        if ( n_elem > 0 ) {
+            bool oldthrow = managedMemory::defaultManager->noThrow;
+            managedMemory::defaultManager->noThrow = true;
+            for ( unsigned int n = 0; n < n_elem; n++ ) {
+                ( ( ( G * ) chunk->locPtr ) + n )->~G();
+            }
+            managedMemory::defaultManager->mfree ( chunk->id );
+            managedMemory::defaultManager->noThrow = oldthrow;
         }
-        managedMemory::defaultManager->mfree ( chunk->id );
-        managedMemory::defaultManager->noThrow = oldthrow;
         delete tracker;
     }
     template <class G>
     typename std::enable_if < !std::is_class<G>::value >::type
     mDelete (  ) {
-        bool oldthrow = managedMemory::defaultManager->noThrow;
-        managedMemory::defaultManager->noThrow = true;
-        managedMemory::defaultManager->mfree ( chunk->id );
-        managedMemory::defaultManager->noThrow = oldthrow;
+        if ( n_elem > 0 ) {
+            bool oldthrow = managedMemory::defaultManager->noThrow;
+            managedMemory::defaultManager->noThrow = true;
+            managedMemory::defaultManager->mfree ( chunk->id );
+            managedMemory::defaultManager->noThrow = oldthrow;
+        }
         delete tracker;
     }
 

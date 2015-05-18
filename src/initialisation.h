@@ -37,6 +37,7 @@ private:
 
 };
 
+/// You will find the object in managedMemory.cpp as we have to define it in some 'used' file in the linker sense.
 extern membrainConfig config;
 
 }
