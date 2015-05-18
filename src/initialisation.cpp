@@ -70,7 +70,5 @@ void membrainConfig::clean()
     delete swap;
 }
 
-membrainConfig config;
-
 }
 }

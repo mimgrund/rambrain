@@ -3,14 +3,17 @@
 #include "exceptions.h"
 #include "dummyManagedMemory.h"
 #include <sys/signal.h>
+#include "initialisation.h"
+
 
 namespace membrain
 {
+namespace membrainglobals
+{
+membrainConfig config;
+}
 
-dummyManagedMemory dummy;
-
-managedMemory *managedMemory::dummyManager = &dummy;
-managedMemory *managedMemory::defaultManager = managedMemory::dummyManager;
+managedMemory *managedMemory::defaultManager;
 memoryID const managedMemory::root = 1;
 memoryID const managedMemory::invalid = 0;
 memoryID managedMemory::parent = 1;
@@ -24,6 +27,7 @@ pthread_cond_t managedMemory::swappingCond = PTHREAD_COND_INITIALIZER;
 managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
 {
     memory_max = size;
+    previousManager = defaultManager;
     defaultManager = this;
     managedMemoryChunk *chunk = mmalloc ( 0 );                //Create root element.
     chunk->status = MEM_ROOT;
@@ -42,7 +46,8 @@ managedMemory::~managedMemory()
     bool oldthrow = noThrow;
     noThrow = true;
     if ( defaultManager == this ) {
-        defaultManager = dummyManager;
+
+        defaultManager = previousManager;
     }
     //Clean up objects:
     recursiveMfree ( root );
@@ -279,17 +284,12 @@ void managedMemory::mfree ( memoryID id )
     if ( chunk ) {
         if ( chunk->id != root ) {
             schedulerDelete ( *chunk );
-        }
-
-        if ( chunk->status == MEM_ALLOCATED ) {
-            free ( chunk->locPtr );
-            memory_used -= chunk->size;
-        } else {
-            swap->swapDelete ( chunk );
-        }
-
-        //get rid of hierarchy:
-        if ( chunk->id != root ) {
+            if ( chunk->status == MEM_ALLOCATED ) {
+                free ( chunk->locPtr );
+                memory_used -= chunk->size;
+            } else {
+                swap->swapDelete ( chunk );
+            }
             managedMemoryChunk *pchunk = &resolveMemChunk ( chunk->parent );
             if ( pchunk->child == chunk->id ) {
                 pchunk->child = chunk->next;
