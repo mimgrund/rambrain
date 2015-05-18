@@ -11,6 +11,8 @@ class managedSwap
 {
 public:
     managedSwap ( global_bytesize size ) : swapSize ( size ), swapUsed ( 0 ) {}
+    virtual ~managedSwap() {}
+
     //Returns number of sucessfully swapped chunks
     virtual unsigned int swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks ) = 0;
     virtual bool swapOut ( managedMemoryChunk *chunk )  = 0;

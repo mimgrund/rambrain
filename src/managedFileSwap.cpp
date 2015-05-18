@@ -10,9 +10,7 @@
 namespace membrain
 {
 
-const unsigned int managedFileSwap::pageSize = sysconf ( _SC_PAGE_SIZE );
-
-managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile ) : managedSwap ( size )
+managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile ) : pageSize ( sysconf ( _SC_PAGE_SIZE ) ), managedSwap ( size )
 {
     if ( oneFile == 0 ) { // Layout this on your own:
 
@@ -118,6 +116,7 @@ bool managedFileSwap::openSwapFiles()
         throw memoryException ( "Swap files already opened. Close first" );
         return false;
     }
+    ///\todo Limit number of open swap file descriptors to something reasonable (<100?)
     swapFiles = ( FILE ** ) malloc ( sizeof ( FILE * ) *pageFileNumber );
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
