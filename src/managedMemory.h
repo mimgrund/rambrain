@@ -7,6 +7,7 @@
 #include "managedMemoryChunk.h"
 #include "managedSwap.h"
 #include "exceptions.h"
+#include "configreader.h"
 
 namespace membrain
 {
@@ -76,7 +77,6 @@ protected:
     static managedMemory *dummyManager;
     static bool noThrow;
     static bool Throw ( memoryException e );
-
 
     template<class T>
     friend class managedPtr;

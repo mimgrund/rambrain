@@ -43,7 +43,8 @@ private:
     float swapOutFrac = .8;
     float swapInFrac = .9;
 
-    bool preemtiveSwapIn = true; ///\todo : Change strategy dynamically.
+    bool preemtiveSwapIn = true; ///\todo Change strategy dynamically.
+
     unsigned int preemptiveBytes = 0;
     global_bytesize preemptiveTurnoffFraction = .01;
 
