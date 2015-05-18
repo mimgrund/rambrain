@@ -4,7 +4,7 @@
 #include "dummyManagedMemory.h"
 #include <sys/signal.h>
 #include "initialisation.h"
-
+#include "membrain_atomics.h"
 
 namespace membrain
 {
@@ -105,7 +105,10 @@ void managedMemory::ensureEnoughSpaceFor ( unsigned int sizereq )
 
 managedMemoryChunk *managedMemory::mmalloc ( unsigned int sizereq )
 {
+    ///\todo: The following function should obtain the lock for our action:
     ensureEnoughSpaceFor ( sizereq );
+
+    membrain_atomic_fetch_add ( &memory_used, sizereq ); //This may over-commit memory...
 
     //We are left with enough free space to malloc.
     managedMemoryChunk *chunk = new managedMemoryChunk ( parent, memID_pace++ );
@@ -119,7 +122,7 @@ managedMemoryChunk *managedMemory::mmalloc ( unsigned int sizereq )
     }
 
 
-    memory_used += sizereq;
+
     chunk->size = sizereq;
     chunk->child = invalid;
     chunk->parent = parent;

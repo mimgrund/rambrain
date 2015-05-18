@@ -325,3 +325,26 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
     infomsgf ( "Direct access ran for %d ms", msdirect );
     infomsgf ( "Direct access cost %g as much time as smart access", 1.0 * msdirect / mssmart );
 }
+
+TEST ( managedPtr, Unit_MultithreadingConcurrentCreateDelete )
+{
+    managedDummySwap swap ( 2000 );
+    cyclicManagedMemory managedMemory ( &swap, 2000 );
+
+    const unsigned int arrsize = 200;
+
+    managedPtr<double> *arr[arrsize];
+    for ( int i = 0; i < arrsize; ++i ) {
+        arr[i] = NULL;
+    }
+    #pragma omp parallel for
+    for ( int i = 0; i < arrsize; ++i ) {
+        arr[i] = new managedPtr<double> ( 1 );
+
+    }
+    #pragma omp parallel for
+    for ( int i = 0; i < arrsize; ++i ) {
+        delete arr[i];
+
+    }
+}
