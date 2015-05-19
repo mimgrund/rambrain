@@ -1,7 +1,8 @@
 #include "cyclicManagedMemory.h"
 #include "common.h"
 #include "exceptions.h"
-
+#include "membrain_atomics.h"
+#include <pthread.h>
 // #define VERYVERBOSE
 
 #ifdef VERYVERBOSE
@@ -12,10 +13,12 @@
 
 namespace membrain
 {
+pthread_mutex_t cyclicManagedMemory::cyclicTopoLock = PTHREAD_MUTEX_INITIALIZER;
 
 cyclicManagedMemory::cyclicManagedMemory ( managedSwap *swap, unsigned int size ) : managedMemory ( swap, size )
 {
 }
+
 
 void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk &chunk )
 {
@@ -25,7 +28,7 @@ void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk &chunk )
     //Couple chunk to atime and vice versa:
     neu->chunk = &chunk;
     chunk.schedBuf = ( void * ) neu;
-
+    pthread_mutex_lock ( &cyclicTopoLock );
     if ( active == NULL ) { // We're inserting first one
         neu->prev = neu->next = neu;
         counterActive = neu;
@@ -40,6 +43,7 @@ void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk &chunk )
         counterActive = neu;
     }
     active = neu;
+    pthread_mutex_unlock ( &cyclicTopoLock );
 }
 
 
@@ -47,19 +51,20 @@ void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk &chunk )
 void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
 {
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
-
     //Memory counting for what we account for:
     if ( chunk.status == MEM_SWAPPED ) {
-        memory_swapped -= chunk.size;
+        membrain_atomic_sub_fetch ( &memory_swapped, chunk.size );
     } else if ( counterActive->chunk->atime > chunk.atime ) { //preemptively loaded
-        preemptiveBytes -= chunk.size;
+        membrain_atomic_sub_fetch ( &preemptiveBytes, chunk.size );
     }
 
+    pthread_mutex_lock ( &cyclicTopoLock );
     //Hook out element:
     if ( element->next == element ) {
         active = NULL;
         counterActive = NULL;
         delete element;
+        pthread_mutex_unlock ( &cyclicTopoLock );
         return;
 
     }
@@ -80,19 +85,22 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
     }
 
     delete element;
+    pthread_mutex_unlock ( &cyclicTopoLock );
 }
 
 //Touch happens automatically after use, create, swapIn
 bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
 {
+    pthread_mutex_lock ( &cyclicTopoLock );
     if ( counterActive->chunk->atime > chunk.atime ) { //This chunk was preemptively loaded
-        preemptiveBytes -= chunk.size;
+        membrain_atomic_sub_fetch ( &preemptiveBytes, chunk.size );
     }
 
     //Put this object to begin of loop:
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
 
     if ( active == element ) {
+        pthread_mutex_unlock ( &cyclicTopoLock );
         return true;
     }
 
@@ -104,6 +112,7 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
 
     if ( active->prev == element ) {
         active = element;
+        pthread_mutex_unlock ( &cyclicTopoLock );
         return true;
     };
 
@@ -116,6 +125,7 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
         MUTUAL_CONNECT ( element, active );
         MUTUAL_CONNECT ( active, after );
         active = element;
+        pthread_mutex_unlock ( &cyclicTopoLock );
         return true;
     }
 
@@ -128,6 +138,7 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
     MUTUAL_CONNECT ( before, element );
     MUTUAL_CONNECT ( element, after );
     active = element;
+    pthread_mutex_unlock ( &cyclicTopoLock );
     return true;
 }
 
@@ -202,7 +213,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             readEl = readEl->prev;
         };
         if ( ( swap->swapIn ( chunks, numberSelected ) != n ) ) {
-            printf ( "oink!\n" );
             return Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
 
         } else {
@@ -238,21 +248,37 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             return true;
         }
     } else {
-        ensureEnoughSpaceFor ( actual_obj_size );
+        pthread_mutex_unlock ( &topologicalMutex );
+        ensureEnoughSpaceAndLockTopo ( actual_obj_size );
         if ( swap->swapIn ( &chunk ) ) {
+            //Wait for object to be swapped in:
+            pthread_mutex_unlock ( &topologicalMutex );
+            pthread_mutex_lock ( &swappingMutex );
+            while ( true ) {
+                pthread_cond_wait ( &swappingCond, &swappingMutex );
+                if ( chunk.status == MEM_SWAPPEDINWAIT ) {
+                    break;
+                }
+            }
+            pthread_mutex_unlock ( &swappingMutex );
+            pthread_mutex_lock ( &topologicalMutex );
+            chunk.status = MEM_ALLOCATED;
             touch ( chunk );
+            pthread_mutex_lock ( &cyclicTopoLock );
             if ( counterActive->chunk->status == MEM_SWAPPED ) {
                 counterActive = active;
             }
+            pthread_mutex_unlock ( &cyclicTopoLock );
             memory_used += chunk.size;
             memory_swapped -= chunk.size;
 #ifdef SWAPSTATS
             swap_in_bytes += chunk.size;
             n_swap_in += 1;
 #endif
-
+            pthread_mutex_unlock ( &topologicalMutex );
             return true;
         } else {
+            pthread_mutex_unlock ( &topologicalMutex );
             return Throw ( memoryException ( "Could not swap in an element." ) );
         };
     }
@@ -263,12 +289,18 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 
 bool cyclicManagedMemory::checkCycle()
 {
+    pthread_mutex_lock ( &cyclicTopoLock );
+#ifdef PARENTAL_CONTROL
     unsigned int no_reg = memChunks.size() - 1;
+#else
+    unsigned int no_reg = memChunks.size();
+#endif
     unsigned int encountered = 0;
     cyclicAtime *cur = active;
     cyclicAtime *oldcur;
 
     if ( !cur ) {
+        pthread_mutex_unlock ( &cyclicTopoLock );
         if ( no_reg == 0 && counterActive == NULL ) {
             return true;
         } else {
@@ -284,17 +316,20 @@ bool cyclicManagedMemory::checkCycle()
         cur = cur->next;
         if ( oldcur != cur->prev ) {
             errmsg ( "Mutual connecion failure" );
+            pthread_mutex_unlock ( &cyclicTopoLock );
             return false;
         }
 
         if ( inActiveOnlySection ) {
             if ( oldcur->chunk->status == MEM_SWAPPED ) {
                 errmsg ( "Swapped elements in active section!" );
+                pthread_mutex_unlock ( &cyclicTopoLock );
                 return false;
             }
         } else {
             if ( oldcur->chunk->status == MEM_SWAPPED && !inSwapsection ) {
                 errmsg ( "Isolated swapped element block not tracked by counterActive found!" );
+                pthread_mutex_unlock ( &cyclicTopoLock );
                 return false;
             }
             if ( oldcur->chunk->status != MEM_SWAPPED ) {
@@ -307,7 +342,7 @@ bool cyclicManagedMemory::checkCycle()
         }
 
     } while ( cur != active );
-
+    pthread_mutex_unlock ( &cyclicTopoLock );
     if ( encountered != no_reg ) {
         errmsgf ( "Not all elements accessed. %d expected,  %d encountered", no_reg, encountered );
         return false;

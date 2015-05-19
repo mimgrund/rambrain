@@ -36,20 +36,26 @@ public:
     bool setUse ( managedMemoryChunk &chunk, bool writeAccess );
     bool unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets = 1 );
 
+
+#ifdef PARENTAL_CONTROL
     //Tree Management
     unsigned int getNumberOfChildren ( const memoryID &id );
     void printTree ( managedMemoryChunk *current = NULL, unsigned int nspaces = 0 );
-
-    static managedMemory *defaultManager;
     static const memoryID root;
-    static const memoryID invalid;
     static memoryID parent;
-
+    //We need the following two to correctly initialize class hierarchies:
+    static bool threadSynced;
+    static pthread_mutex_t parentalMutex;
+    void recursiveMfree ( memoryID id );
+#else
+    void linearMfree();
+#endif
+    static managedMemory *defaultManager;
+    static const memoryID invalid;
 protected:
     managedMemoryChunk *mmalloc ( unsigned int sizereq );
     bool mrealloc ( memoryID id, unsigned int sizereq );
     void mfree ( memoryID id );
-    void recursiveMfree ( memoryID id );
     managedMemoryChunk &resolveMemChunk ( const memoryID &id );
 
 
@@ -60,7 +66,9 @@ protected:
     virtual bool touch ( managedMemoryChunk &chunk ) = 0;
     virtual void schedulerRegister ( managedMemoryChunk &chunk ) = 0;
     virtual void schedulerDelete ( managedMemoryChunk &chunk ) = 0;
-    void ensureEnoughSpaceFor ( unsigned int sizereq );
+
+    ///This function ensures that there is sizereq space left in RAM and locks the topoLock
+    void ensureEnoughSpaceAndLockTopo ( unsigned int sizereq );
 
     //Swap Storage manager iface:
     managedSwap *swap = 0;
@@ -85,7 +93,7 @@ protected:
     //Signalled after every swapin. Synchronization is happening via stateChangeMutex
     static pthread_cond_t swappingCond;
     /*static pthread_cond_t topologicalCond;*/
-
+    static void signalSwappingCond();
 
     template<class T>
     friend class managedPtr;
@@ -112,6 +120,7 @@ public:
     static managedMemory *instance;
 
 #endif
+    static void versionInfo();
 };
 
 }

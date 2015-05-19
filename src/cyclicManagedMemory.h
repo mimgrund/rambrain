@@ -24,12 +24,15 @@ public:
     void printCycle();
     void printMemUsage();
     bool checkCycle();
-    //Returns old value:
+    ///\note not thread-safe - does not make sense to call it from different threads anyway
+    ///\note returns previous value
     bool setPreemptiveLoading ( bool preemptive );
 
 
 private:
+    ///\note protect call to swapIn by topologicalMutex
     virtual bool swapIn ( managedMemoryChunk &chunk );
+    ///\note protect call to swapOut by topologicalMutex
     virtual bool swapOut ( unsigned int min_size );
     virtual bool touch ( managedMemoryChunk &chunk );
     virtual void schedulerRegister ( managedMemoryChunk &chunk );
@@ -44,9 +47,12 @@ private:
     float swapInFrac = .9;
 
     bool preemtiveSwapIn = true; ///\todo Change strategy dynamically.
-
     unsigned int preemptiveBytes = 0;
+
+    static pthread_mutex_t cyclicTopoLock;
+
     global_bytesize preemptiveTurnoffFraction = .01;
+
 
 };
 

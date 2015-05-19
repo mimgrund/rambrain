@@ -70,15 +70,28 @@ public:
         }
 
         chunk = managedMemory::defaultManager->mmalloc ( sizeof ( T ) * n_elem );
+#ifdef PARENTAL_CONTROL
+        bool iamSyncer = false;
+        if ( !managedMemory::threadSynced ) {
+            pthread_mutex_lock ( &managedMemory::parentalMutex );
+            managedMemory::threadSynced = true;
+            iamSyncer = true;
+        }
         //Now call constructor and save possible children's sake:
         memoryID savedParent = managedMemory::parent;
         managedMemory::parent = chunk->id;
+#endif
         setUse();
         for ( unsigned int n = 0; n < n_elem; n++ ) {
             new ( ( ( T * ) chunk->locPtr ) + n ) T ( Args... );
         }
         unsetUse();
+#ifdef PARENTAL_CONTROL
         managedMemory::parent = savedParent;
+        if ( iamSyncer ) {
+            pthread_mutex_unlock ( &managedMemory::parentalMutex );
+        }
+#endif
 
         // before user can pass it around
     }

@@ -27,3 +27,8 @@ TEST ( managedMemory, Unit_BaseMemoryUsage )
     EXPECT_EQ ( 0u, managedMemory::defaultManager->getUsedMemory() );
     EXPECT_EQ ( 0u, managedMemory::defaultManager->getSwappedMemory() );
 }
+
+TEST ( managedMemory, DISABLED_VersionInfo )
+{
+    managedMemory::versionInfo();
+}

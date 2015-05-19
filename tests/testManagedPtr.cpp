@@ -17,6 +17,8 @@ TEST ( managedPtr, Unit_NoMemoryManager )
     ASSERT_NO_THROW ( managedPtr<double> ptr2 ( 10 ) );
 }
 
+
+#ifdef PARENTAL_CONTROL
 TEST ( managedPtr, Unit_ParentIDs )
 {
     managedDummySwap swap ( 100 );
@@ -26,7 +28,7 @@ TEST ( managedPtr, Unit_ParentIDs )
     ASSERT_NO_THROW ( managedPtr<double> ptr ( 10 ) );
     EXPECT_EQ ( parent, managedMemory::defaultManager->parent );
 }
-
+#endif
 TEST ( managedPtr, Unit_ChunkInUse )
 {
     managedDummySwap swap ( 100 );

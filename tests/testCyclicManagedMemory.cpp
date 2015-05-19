@@ -44,7 +44,7 @@ TEST ( cyclicManagedMemory, Unit_AllocatePointers )
     lPtr[n] = 1.; //Should not segfault
     } );
 }
-
+#ifdef PARENTAL_CONTROL
 TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
 {
     //Allocate Dummy swap
@@ -81,7 +81,7 @@ TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
     EXPECT_EQ ( 2 * ( sizeA + 10 * sizeDouble ), manager.getUsedMemory() );
 
 }
-
+#endif
 TEST ( cyclicManagedMemory, Unit_NotEnoughMemOrSwapSpace )
 {
     managedDummySwap swap1 ( 0 ), swap2 ( 1000 );
@@ -329,6 +329,7 @@ TEST ( cyclicManagedMemory, Unit_RandomAllocation )
         ASSERT_EQ ( manager.getSwappedMemory(), swap.getUsedSwap() );
     }
 }
+
 
 TEST ( cyclicManagedMemory, Unit_MissingPointerDeallocation )
 {

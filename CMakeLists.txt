@@ -4,10 +4,16 @@ project (membrain)
 
 option (BUILD_TESTS "Build tests" ON)
 option (SWAPSTATS "Swap stats" ON)
+option (PARENTAL_CONTROL "Hook up chunks in a tree" ON)
 
 if(SWAPSTATS)
     add_definitions(-DSWAPSTATS)
 endif()
+
+if(PARENTAL_CONTROL)
+    add_definitions(-DPARENTAL_CONTROL)
+endif()
+
 
 find_package (Threads REQUIRED)
 if (NOT CMAKE_USE_PTHREADS_INIT)
