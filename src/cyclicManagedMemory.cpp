@@ -263,7 +263,11 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 
 bool cyclicManagedMemory::checkCycle()
 {
+#ifdef PARENTAL_CONTROL
     unsigned int no_reg = memChunks.size() - 1;
+#else
+    unsigned int no_reg = memChunks.size();
+#endif
     unsigned int encountered = 0;
     cyclicAtime *cur = active;
     cyclicAtime *oldcur;

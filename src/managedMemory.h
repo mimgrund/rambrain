@@ -35,20 +35,23 @@ public:
     bool setUse ( managedMemoryChunk &chunk, bool writeAccess );
     bool unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets = 1 );
 
+
+#ifdef PARENTAL_CONTROL
     //Tree Management
     unsigned int getNumberOfChildren ( const memoryID &id );
     void printTree ( managedMemoryChunk *current = NULL, unsigned int nspaces = 0 );
-
-    static managedMemory *defaultManager;
     static const memoryID root;
-    static const memoryID invalid;
     static memoryID parent;
-
+    void recursiveMfree ( memoryID id );
+#else
+    void linearMfree();
+#endif
+    static managedMemory *defaultManager;
+    static const memoryID invalid;
 protected:
     managedMemoryChunk *mmalloc ( unsigned int sizereq );
     bool mrealloc ( memoryID id, unsigned int sizereq );
     void mfree ( memoryID id );
-    void recursiveMfree ( memoryID id );
     managedMemoryChunk &resolveMemChunk ( const memoryID &id );
 
 
@@ -103,6 +106,7 @@ public:
     static managedMemory *instance;
 
 #endif
+    static void versionInfo();
 };
 
 }

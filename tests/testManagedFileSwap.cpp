@@ -17,8 +17,11 @@ TEST ( managedFileSwap, Unit_ManualSwapping )
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
-
+#ifdef PARENTAL_CONTROL
     managedMemoryChunk *chunk = new managedMemoryChunk ( 0, 1 );
+#else
+    managedMemoryChunk *chunk = new managedMemoryChunk ( 1 );
+#endif
     chunk->status = MEM_ALLOCATED;
     chunk->locPtr = malloc ( dblsize );
     chunk->size = dblsize;
@@ -49,7 +52,12 @@ TEST ( managedFileSwap, Unit_ManualMultiSwapping )
 
     managedMemoryChunk *chunks[2];
     for ( int i = 0; i < 2; ++i ) {
+#ifdef PARENTAL_CONTROL
         chunks[i] = new managedMemoryChunk ( 0, i + 1 );
+#else
+        chunks[i] = new managedMemoryChunk ( i + 1 );
+#endif
+
         chunks[i]->status = MEM_ALLOCATED;
         chunks[i]->locPtr = malloc ( dblsize );
         chunks[i]->size = dblsize;
@@ -84,8 +92,11 @@ TEST ( managedFileSwap, Unit_ManualSwappingDelete )
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
-
+#ifdef PARENTAL_CONTROL
     managedMemoryChunk *chunk = new managedMemoryChunk ( 0, 1 );
+#else
+    managedMemoryChunk *chunk = new managedMemoryChunk ( 1 );
+#endif
     chunk->status = MEM_ALLOCATED;
     chunk->locPtr =  malloc ( dblsize );
     chunk->size = dblsize;

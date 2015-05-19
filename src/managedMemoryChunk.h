@@ -18,7 +18,11 @@ typedef unsigned int memoryAtime;
 class managedMemoryChunk
 {
 public:
+#ifdef PARENTAL_CONTROL
     managedMemoryChunk ( const memoryID &parent, const memoryID &me );
+#else
+    managedMemoryChunk ( const memoryID &me );
+#endif
 
     //Local management
     memoryStatus status;
@@ -27,11 +31,12 @@ public:
     unsigned int size;
 
     //Organization
-    memoryID parent;
     memoryID id;
+#ifdef PARENTAL_CONTROL
+    memoryID parent;
     memoryID next;
     memoryID child;
-
+#endif
     //Swap scheduling:
     memoryAtime atime;
     void *schedBuf; //Give the mem scheduler a place for a buffer.

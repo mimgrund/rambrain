@@ -4,7 +4,7 @@
 #include "dummyManagedMemory.h"
 #include <sys/signal.h>
 #include "initialisation.h"
-
+#include "git_info.h"
 
 namespace membrain
 {
@@ -14,9 +14,15 @@ membrainConfig config;
 }
 
 managedMemory *managedMemory::defaultManager;
+
+#ifdef PARENTAL_CONTROL
 memoryID const managedMemory::root = 1;
-memoryID const managedMemory::invalid = 0;
 memoryID managedMemory::parent = 1;
+#endif
+memoryID const managedMemory::invalid = 0;
+
+
+
 bool managedMemory::noThrow = false;
 
 managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
@@ -24,8 +30,10 @@ managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
     memory_max = size;
     previousManager = defaultManager;
     defaultManager = this;
+#ifdef PARENTAL_CONTROL
     managedMemoryChunk *chunk = mmalloc ( 0 );                //Create root element.
     chunk->status = MEM_ROOT;
+#endif
     this->swap = swap;
     if ( !swap ) {
         throw incompleteSetupException ( "no swap manager defined" );
@@ -44,8 +52,12 @@ managedMemory::~managedMemory()
 
         defaultManager = previousManager;
     }
+#ifdef PARENTAL_CONTROL
     //Clean up objects:
     recursiveMfree ( root );
+#else
+    linearMfree();
+#endif
     noThrow = oldthrow;
 }
 
@@ -103,7 +115,11 @@ managedMemoryChunk *managedMemory::mmalloc ( unsigned int sizereq )
     ensureEnoughSpaceFor ( sizereq );
 
     //We are left with enough free space to malloc.
+#ifdef PARENTAL_CONTROL
     managedMemoryChunk *chunk = new managedMemoryChunk ( parent, memID_pace++ );
+#else
+    managedMemoryChunk *chunk = new managedMemoryChunk ( memID_pace++ );
+#endif
     chunk->status = MEM_ALLOCATED;
     if ( sizereq != 0 ) {
         chunk->locPtr = malloc ( sizereq );
@@ -116,18 +132,24 @@ managedMemoryChunk *managedMemory::mmalloc ( unsigned int sizereq )
 
     memory_used += sizereq;
     chunk->size = sizereq;
+#ifdef PARENTAL_CONTROL
     chunk->child = invalid;
     chunk->parent = parent;
     chunk->swapBuf = NULL;
+#endif
+#ifdef PARENTAL_CONTROL
     if ( chunk->id == root ) {                                //We're inserting root elem.
+
         chunk->next = invalid;
+
         chunk->atime = 0;
     } else {
+#endif
         //Register this chunk in swapping logic:
         chunk->atime = atime++;
         schedulerRegister ( *chunk );
         touch ( *chunk );
-
+#ifdef PARENTAL_CONTROL
         //fill in tree:
         managedMemoryChunk &pchunk = resolveMemChunk ( parent );
         if ( pchunk.child == invalid ) {
@@ -139,6 +161,7 @@ managedMemoryChunk *managedMemory::mmalloc ( unsigned int sizereq )
         }
 
     }
+#endif
 
     memChunks.insert ( {chunk->id, chunk} );
     return chunk;
@@ -260,66 +283,56 @@ void managedMemory::mfree ( memoryID id )
 
         return;
     }
+
+
+
+#ifdef PARENTAL_CONTROL
     if ( chunk->child != invalid ) {
         Throw ( memoryException ( "Can not free memory which has active children" ) );
         return;
     }
-
-    if ( chunk ) {
-        if ( chunk->id != root ) {
-            schedulerDelete ( *chunk );
-            if ( chunk->status == MEM_ALLOCATED ) {
-                free ( chunk->locPtr );
-                memory_used -= chunk->size;
-            } else {
-                swap->swapDelete ( chunk );
-            }
-            managedMemoryChunk *pchunk = &resolveMemChunk ( chunk->parent );
-            if ( pchunk->child == chunk->id ) {
-                pchunk->child = chunk->next;
-            } else {
-                pchunk = &resolveMemChunk ( pchunk->child );
-                do {
-                    if ( pchunk->next == chunk->id ) {
-                        pchunk->next = chunk->next;
-                        break;
-                    };
-                    if ( pchunk->next == invalid ) {
-                        break;
-                    } else {
-                        pchunk = &resolveMemChunk ( pchunk->next );
-                    }
-                } while ( 1 == 1 );
-            }
-        }
-
-        //Delete element itself
-        memChunks.erase ( id );
-        delete ( chunk );
-    }
-}
-
-void managedMemory::recursiveMfree ( memoryID id )
-{
-    managedMemoryChunk *oldchunk = &resolveMemChunk ( id );
-    managedMemoryChunk *next;
-    do {
-        if ( oldchunk->child != invalid ) {
-            recursiveMfree ( oldchunk->child );
-        }
-        if ( oldchunk->next != invalid ) {
-            next = &resolveMemChunk ( oldchunk->next );
+    if ( chunk->id != root ) {
+        schedulerDelete ( *chunk );
+        if ( chunk->status == MEM_ALLOCATED ) {
+            free ( chunk->locPtr );
+            memory_used -= chunk->size;
         } else {
-            break;
+            swap->swapDelete ( chunk );
         }
-        mfree ( oldchunk->id );
-        oldchunk = next;
-    } while ( 1 == 1 );
-    mfree ( oldchunk->id );
+        managedMemoryChunk *pchunk = &resolveMemChunk ( chunk->parent );
+        if ( pchunk->child == chunk->id ) {
+            pchunk->child = chunk->next;
+        } else {
+            pchunk = &resolveMemChunk ( pchunk->child );
+            do {
+                if ( pchunk->next == chunk->id ) {
+                    pchunk->next = chunk->next;
+                    break;
+                };
+                if ( pchunk->next == invalid ) {
+                    break;
+                } else {
+                    pchunk = &resolveMemChunk ( pchunk->next );
+                }
+            } while ( 1 == 1 );
+        }
+    }
+#else
+    schedulerDelete ( *chunk );
+    if ( chunk->status == MEM_ALLOCATED ) {
+        free ( chunk->locPtr );
+        memory_used -= chunk->size;
+    } else {
+        swap->swapDelete ( chunk );
+    }
+#endif
+    //Delete element itself
+    memChunks.erase ( id );
+    delete ( chunk );
+
 }
 
-
-
+#ifdef PARENTAL_CONTROL
 
 unsigned int managedMemory::getNumberOfChildren ( const memoryID &id )
 {
@@ -335,6 +348,7 @@ unsigned int managedMemory::getNumberOfChildren ( const memoryID &id )
     }
     return no;
 }
+
 
 void managedMemory::printTree ( managedMemoryChunk *current, unsigned int nspaces )
 {
@@ -375,6 +389,40 @@ void managedMemory::printTree ( managedMemoryChunk *current, unsigned int nspace
     } while ( 1 == 1 );
 }
 
+///\note This function does not preserve correct deallocation order in class hierarchies, as such, it is not a valid garbage collector.
+void managedMemory::recursiveMfree ( memoryID id )
+{
+    managedMemoryChunk *oldchunk = &resolveMemChunk ( id );
+    managedMemoryChunk *next;
+    do {
+        if ( oldchunk->child != invalid ) {
+            recursiveMfree ( oldchunk->child );
+        }
+        if ( oldchunk->next != invalid ) {
+            next = &resolveMemChunk ( oldchunk->next );
+        } else {
+            break;
+        }
+        mfree ( oldchunk->id );
+        oldchunk = next;
+    } while ( 1 == 1 );
+    mfree ( oldchunk->id );
+}
+#else
+///\note This function does not preserve correct deallocation order in class hierarchies, as such, it is not a valid garbage collector.
+
+void managedMemory::linearMfree()
+{
+    if ( memChunks.size() == 0 ) {
+        return;
+    }
+    auto it = memChunks.begin();
+    do {
+        mfree ( it->first );
+    } while ( ++it != memChunks.end() );
+}
+
+#endif
 managedMemoryChunk &managedMemory::resolveMemChunk ( const memoryID &id )
 {
     return *memChunks[id];
@@ -407,7 +455,31 @@ void managedMemory::sigswapstats ( int signum )
     instance->swap_out_bytes_last = instance->swap_out_bytes;
     instance->swap_in_bytes_last = instance->swap_in_bytes;
 }
+#endif
+
+void managedMemory::versionInfo()
+{
+
+#ifdef SWAPSTATS
+    const char *swapstats = "with swapstats";
+#else
+    const char *swapstats = "without swapstats";
+#endif
+#ifdef PARENTAL_CONTROL
+    const char *parentalcontrol = "with parental control";
+#else
+    const char *parentalcontrol = "without parental_control";
+#endif
+
+    infomsgf ( "compiled from %s\n\ton %s at %s\n\
+                \t%s , %s\n\
+    \n \t git diff\n%s\n", gitCommit, __DATE__, __TIME__, swapstats, parentalcontrol, gitDiff );
+
 
 }
 
-#endif
+
+}
+
+
+

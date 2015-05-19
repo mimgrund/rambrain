@@ -4,9 +4,16 @@
 namespace membrain
 {
 
-managedMemoryChunk::managedMemoryChunk ( const memoryID &parent, const memoryID &me )
-    : useCnt ( 0 ), parent ( parent ), id ( me ), swapBuf ( NULL )
+#ifdef PARENTAL_CONTROL
+managedMemoryChunk::managedMemoryChunk ( const memoryID &parent, const memoryID &me ) :
+    useCnt ( 0 ),     parent ( parent ), id ( me ), swapBuf ( NULL )
+{
+}
+#else
+managedMemoryChunk::managedMemoryChunk (  const memoryID &me ) :
+    useCnt ( 0 ), id ( me ), swapBuf ( NULL )
 {
 }
 
+#endif
 }

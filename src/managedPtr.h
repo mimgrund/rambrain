@@ -56,15 +56,20 @@ public:
         }
 
         chunk = managedMemory::defaultManager->mmalloc ( sizeof ( T ) * n_elem );
+#ifdef PARENTAL_CONTROL
+
         //Now call constructor and save possible children's sake:
         memoryID savedParent = managedMemory::parent;
         managedMemory::parent = chunk->id;
+#endif
         setUse();
         for ( unsigned int n = 0; n < n_elem; n++ ) {
             new ( ( ( T * ) chunk->locPtr ) + n ) T ( Args... );
         }
         unsetUse();
+#ifdef PARENTAL_CONTROL
         managedMemory::parent = savedParent;
+#endif
 
     }
 
