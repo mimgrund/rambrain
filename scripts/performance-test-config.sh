@@ -52,3 +52,26 @@ do
   MatrixCleverTransposeMemory2[$i]=$(echo "" | awk "END {print 10.0 ^ ($i * 3.0 / 20.0 + 1.0)}")
   MatrixCleverTransposeMemory2[$i]=${MatrixTransposeMemory2[$i]%.*}
 done
+
+RunMatrixCleverTransposeOpenMP1=1
+#MatrixCleverTransposeOpenMPSize1=(1000 2000 3000 4000 5000)
+#MatrixCleverTransposeOpenMPMemory=(10 10 10 10 10)
+declare -a MatrixCleverTransposeOpenMPSize1
+declare -a MatrixCleverTransposeOpenMPMemory1
+for i in `seq 0 20`;
+do
+  MatrixCleverTransposeOpenMPSize1[$i]=$(echo "" | awk "END {print 10.0 ^ ($i * 3.0 / 20.0 + 1.0)}")
+  MatrixCleverTransposeOpenMPSize1[$i]=${MatrixTransposeSize1[$i]%.*}
+  MatrixCleverTransposeOpenMPMemory1[$i]=100
+done
+
+
+RunMatrixCleverTransposeOpenMP2=1
+declare -a MatrixCleverTransposeOpenMPSize2
+declare -a MatrixCleverTransposeOpenMPMemory2
+for i in `seq 0 20`;
+do
+  MatrixCleverTransposeOpenMPSize2[$i]=2000
+  MatrixCleverTransposeOpenMPMemory2[$i]=$(echo "" | awk "END {print 10.0 ^ ($i * 3.0 / 20.0 + 1.0)}")
+  MatrixCleverTransposeOpenMPMemory2[$i]=${MatrixTransposeMemory2[$i]%.*}
+done

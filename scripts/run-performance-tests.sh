@@ -192,6 +192,51 @@ then
   display MatrixCleverTranspose2.png &
 fi
 
+if [[ $RunMatrixCleverTransposeOpenMP2 -eq 1 ]] ;
+then
+  countRuns=${#MatrixCleverTransposeOpenMPSize2[@]}
+  
+  echo "Running ${countRuns} different matrix transposes ${TestRepetitions} times"
+  rm temp.dat
+  
+  for i in `seq 0 $((countRuns-1))`;
+  do
+    echo "Run $((i+1)) ..."
+    echo "./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTransposeOpenMP ${MatrixCleverTransposeOpenMPSize2[$i]} ${MatrixCleverTransposeOpenMPMemory2[$i]}"
+    
+    ./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTransposeOpenMP ${MatrixCleverTransposeOpenMPSize2[$i]} ${MatrixCleverTransposeOpenMPMemory2[$i]}
+    
+    echo -n "${MatrixCleverTransposeOpenMPSize2[$i]} ${MatrixCleverTransposeOpenMPMemory2[$i]} " >> temp.dat
+    while read line
+    do
+      if [[ ! "${line}" == \#* ]] ;
+      then
+        IFS='   ' read -a array <<< "$line"
+        
+        arrLength=countRuns=${#array[@]}
+        i=$((arrLength-2))
+        echo -n "${array[$i]} " >> temp.dat
+      fi
+    done < "perftest_MatrixCleverTransposeOpenMP#${MatrixCleverTransposeOpenMPSize2[$i]}#${MatrixCleverTransposeOpenMPMemory2[$i]}"
+    echo >> temp.dat
+
+  done
+  
+  rm temp.gnuplot
+  echo "set terminal postscript eps enhanced color 'Helvetica,10'" >> temp.gnuplot
+  echo "set output \"MatrixCleverTransposeOpenMP2.eps\"" >> temp.gnuplot
+  echo "set xlabel \"Matrix rows in main memory\"" >> temp.gnuplot
+  echo "set ylabel \"Execution time [ms]\"" >> temp.gnuplot
+  echo "set title \"Matrix clever transpose (openMP)\"" >> temp.gnuplot
+  echo "set log xy" >> temp.gnuplot
+  echo "plot 'temp.dat' using 2:3 with lines title \"Allocation & Definition\", \\" >> temp.gnuplot
+  echo "'temp.dat' using 2:4 with lines title \"Transposition\", \\" >> temp.gnuplot
+  echo "'temp.dat' using 2:5 with lines title \"Deletion\", \\" >> temp.gnuplot
+  echo "'temp.dat' using 2:(\$3+\$4+\$5) with lines title \"Total\"" >> temp.gnuplot
+  gnuplot temp.gnuplot
+  convert -density 300 -resize 1920x MatrixCleverTransposeOpenMP2.eps -flatten MatrixCleverTransposeOpenMP2.png
+  display MatrixCleverTransposeOpenMP2.png &
+fi
 
 rm temp.gnuplot
 rm temp.dat
