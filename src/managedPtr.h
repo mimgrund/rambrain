@@ -42,7 +42,7 @@ template <class T>
 class managedPtr
 {
 public:
-    managedPtr ( const managedPtr<T> &ref ) : tracker ( ref.tracker ), n_elem ( ref.n_elem ), chunk ( ref.chunk ) {
+    managedPtr ( const managedPtr<T> &ref ) : chunk ( ref.chunk ), tracker ( ref.tracker ), n_elem ( ref.n_elem ) {
         ( *tracker )++;
     }
 

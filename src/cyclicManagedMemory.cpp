@@ -154,7 +154,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     unsigned int actual_obj_size = chunk.size;
     //We want to read in what the user requested plus fill up the preemptive area with opportune guesses
 
-    global_bytesize swap_free = swap->getFreeSwap();
     bool preemptiveAutooff = swap->getFreeSwap() / swap->getSwapSize() > preemptiveTurnoffFraction;
 
     if ( preemtiveSwapIn && preemptiveAutooff ) {

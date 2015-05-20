@@ -42,7 +42,7 @@ int main ( int argc, char **argv )
     long mbytes_holdfree = atoi ( argv[1] );
     long mb_alloc = mbytes_avail - mbytes_holdfree;
 
-    printf ( "\nWe detected %d free mBytes\nAllocating %d\n", mbytes_avail, mb_alloc );
+    printf ( "\nWe detected %lu free mBytes\nAllocating %lu\n", mbytes_avail, mb_alloc );
     if ( mb_alloc <= 0 ) {
         printf ( "You don't need to nomnom, we're already fed up." );
         return -1;
@@ -54,7 +54,7 @@ int main ( int argc, char **argv )
     void *malloced[mb_alloc];
     for ( int c = 0; c < mb_alloc; ++c ) {
         malloced[c] = malloc ( chunkSize );
-        for ( int d = 0; d < chunkSize; ++d ) {
+        for ( unsigned int d = 0; d < chunkSize; ++d ) {
             ( ( char * ) malloced[c] ) [d] = 0x07;
         }
     }

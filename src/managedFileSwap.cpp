@@ -10,7 +10,7 @@
 namespace membrain
 {
 
-managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile ) : pageSize ( sysconf ( _SC_PAGE_SIZE ) ), managedSwap ( size )
+managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile ) : managedSwap ( size ), pageSize ( sysconf ( _SC_PAGE_SIZE ) )
 {
     if ( oneFile == 0 ) { // Layout this on your own:
 
@@ -21,7 +21,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     //calculate page File number:
     global_bytesize padding = oneFile % pageSize;
     if ( padding != 0 ) {
-        warnmsgf ( "requested single swap filesize is not a multiple of pageSize.\n\t %u Bytes left over.", padding );
+        warnmsgf ( "requested single swap filesize is not a multiple of pageSize.\n\t %lu Bytes left over.", padding );
         oneFile += pageSize - padding;
     }
     pageFileSize = oneFile;
@@ -223,7 +223,6 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
 
 void managedFileSwap::pffree ( pageFileLocation *pagePtr )
 {
-    pageFileLocation *free_start = pagePtr;
     bool endIsReached = false;
     do { //We possibly need multiple frees.
         pageFileLocation *next = pagePtr->glob_off_next;
@@ -339,6 +338,7 @@ bool managedFileSwap::swapOut ( managedMemoryChunk *chunk )
     return false;
 
 }
+
 unsigned int managedFileSwap::swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks )
 {
     unsigned int n_swapped = 0;
@@ -423,9 +423,6 @@ void managedFileSwap::copyMem ( const pageFileLocation &ref, void *ramBuf )
     };
 }
 
-
-
-
 void managedFileSwap::copyMem ( void *ramBuf, const pageFileLocation &ref )
 {
     const pageFileLocation *cur = &ref;
@@ -507,8 +504,6 @@ void *pageFileWindow::getMem ( const pageFileLocation &loc, global_bytesize &siz
     size = min ( windowBdryDistance, size );
 
     return ( char * ) buf + ( loc.offset - offset );
-
-
 }
 
 bool pageFileWindow::isInWindow ( const pageFileLocation &location, global_bytesize &offset_start, global_bytesize &offset_end )
@@ -534,19 +529,16 @@ bool pageFileWindow::isInWindow ( const pageFileLocation &location, global_bytes
         return false;
     }
 
-
     return startIn || endIn;
-
 }
+
 bool pageFileWindow::isInWindow ( const pageFileLocation &location, global_bytesize &length )
 {
     if ( location.file != file ) {
         return false;
     }
-    bool startIn = false;
     global_bytesize offset_start, offset_end;
     if ( location.offset >= offset && location.offset < offset + length ) {
-        startIn = true;
         offset_start = location.offset;
     } else {
         return false;
@@ -560,6 +552,7 @@ bool pageFileWindow::isInWindow ( const pageFileLocation &location, global_bytes
     length = offset_end - offset_start;
     return true;
 }
+
 bool pageFileWindow::isInWindow ( const pageFileLocation location )
 {
     if ( location.file != file ) {
@@ -596,6 +589,8 @@ void managedFileSwap::sigStat ( int signum )
             break;
         case PAGE_PART:
             fractured += it->second->size;
+            break;
+        default:
             break;
         }
     } while ( ++it != instance->all_space.end() );
