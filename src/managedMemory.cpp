@@ -200,7 +200,6 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
         waitForSwapout ( chunk, true );
     case MEM_SWAPPED:
         if ( !swapIn ( chunk ) ) {
-            printf ( "oink!\n" );
             return false;
         }
 #ifdef SWAPSTATS
@@ -221,8 +220,8 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
         ++swap_hits;
 #endif
         ++chunk.useCnt;
-        pthread_mutex_unlock ( &stateChangeMutex );
         touch ( chunk );
+        pthread_mutex_unlock ( &stateChangeMutex );
         return true;
     case MEM_ROOT:
         pthread_mutex_unlock ( &stateChangeMutex );

@@ -276,6 +276,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             return true;
         } else {
             //Unlock mutex under which we were called, as we'll be throwing...
+            pthread_mutex_unlock ( &stateChangeMutex );
             return Throw ( memoryException ( "Could not swap in an element." ) );
         };
     }

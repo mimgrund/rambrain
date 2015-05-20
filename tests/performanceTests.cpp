@@ -260,14 +260,13 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
 
     test->addTimeMeasurement();
 
-    // Transpose blockwise
-    unsigned int rows_fetch = memlines / 2 > size ? size : memlines / 2;
+    // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
+    unsigned int rows_fetch = memlines / 3 > size ? size : memlines / 3;
     unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
 
     adhereTo<double> *Arows[rows_fetch];
     adhereTo<double> *Brows[rows_fetch];
 
-    #pragma omp parallel for
     for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
         for ( unsigned int ii = 0; ii <= jj; ii++ ) {
             //A_iijj <-> B_jjii
@@ -279,13 +278,15 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
             unsigned int j_off = jj * rows_fetch; // Block A, horizontal index
 
             //Get rows A_ii** and B_jj** into memory:
+            #pragma omp parallel for
             for ( unsigned int i = 0; i < i_lim; ++i ) {
-                Arows[i] = new adhereTo<double> ( *rows[i + i_off] );
+                Arows[i] = new adhereTo<double> ( *rows[i + i_off], true );
             }
+            #pragma omp parallel for
             for ( unsigned int j = 0; j < j_lim; ++j ) {
-                Brows[j] = new adhereTo<double> ( *rows[j + j_off] );
+                Brows[j] = new adhereTo<double> ( *rows[j + j_off], true );
             }
-
+            #pragma omp parallel for
             for ( unsigned int j = 0; j < j_lim; j++ ) {
                 for ( unsigned int i = 0; i < ( jj == ii ? j : i_lim ); i++ ) { //Inner block matrix transpose, vertical index in A
                     //Inner block matrxi transpose, horizontal index in A
@@ -297,7 +298,6 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
                     Browdb[i + i_off] = inter; //set B_ji to former val of A_ij
                 }
             }
-
             for ( unsigned int i = 0; i < i_lim; ++i ) {
                 delete ( Arows[i] );
             }
@@ -306,6 +306,7 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
             }
         }
     }
+
 
     test->addTimeMeasurement();
 

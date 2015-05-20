@@ -266,72 +266,127 @@ class adhereTo
 public:
     adhereTo ( const adhereTo<T> &ref ) {
         this->data = ref.data;
-        if ( ref.loaded != 0 ) {
-            loadedWritable = ref.loadedWritable;
-            loaded = ref.loaded;
-            for ( unsigned int nloaded = 0; nloaded < ref.loaded; ++nloaded ) {
-                data->setUse ( loadedWritable );
-            }
-
-        } else {
-            loadedWritable = false;
-            loaded = 0;
+        loadedReadable = ref.loadedReadable;
+        loadedWritable = ref.loadedWritable;
+        if ( loadedWritable ) {
+            data->setUse ( loadedWritable );
+        }
+        if ( loadedReadable ) {
+            data->setUse ( loadedReadable );
         }
 
     };
 
     adhereTo ( managedPtr<T> &data, bool loadImidiately = false ) {
         this->data = &data;
-
         if ( loadImidiately ) {
-            loaded = ( data.setUse ( true ) ? 1 : 0 );
             loadedWritable = true;
+            data.setUse ( true );
         }
 
     }
 
     adhereTo<T> &operator= ( const adhereTo<T> &ref ) {
-        if ( loaded > 0 ) {
-            loaded = ( data->unsetUse ( loaded ) ? 0 : loaded );
+        if ( loadedReadable ) {
+            data->unsetUse();
+        }
+        if ( loadedWritable ) {
+            data->unsetUse();
         }
         this->data = ref.data;
-        if ( ref.loaded != 0 ) {
-            loadedWritable = ref.loadedWritable;
-            loaded = ref.loaded;
-            for ( unsigned int nloaded = 0; nloaded < ref.loaded; ++nloaded ) {
-                data->setUse ( loadedWritable );
-            }
-
-        } else {
-            loadedWritable = false;
-            loaded = 0;
+        loadedReadable = ref.loadedReadble;
+        loadedWritable = ref.loadedWritable;
+        if ( loadedWritable ) {
+            data->setUse ( loadedWritable );
+        }
+        if ( loadedReadable ) {
+            data->setUse ( loadedReadable );
         }
         return *this;
     }
 
     operator  T *() {
-        if ( loaded == 0 || !loadedWritable ) {
-            loaded += ( data->setUse ( true ) ? 1 : 0 );
+        if ( membrain_atomic_bool_compare_and_swap ( &loadedWritable, false, true ) ) {
+            data->setUse ( true );
         }
-        loadedWritable = true;
         return data->getLocPtr();
     }
     operator  const T *() {
-        if ( loaded == 0 ) {
-            loaded += ( data->setUse ( false ) ? 1 : 0 );
+        if ( membrain_atomic_bool_compare_and_swap ( &loadedReadable, false, true ) ) {
+            data->setUse ( false );
         }
-
         return data->getConstLocPtr();
     }
     ~adhereTo() {
-        if ( loaded > 0 ) {
-            loaded = ( data->unsetUse ( loaded ) ? 0 : loaded );
+        if ( loadedReadable ) {
+            data->unsetUse();
+        }
+        if ( loadedWritable ) {
+            data->unsetUse();
         }
     }
 private:
     managedPtr<T> *data;
-    unsigned int loaded = 0;
+
     bool loadedWritable = false;
+    bool loadedReadable = false;
+
+
+    // Test classes
+    friend class ::adhereTo_Unit_LoadUnload_Test;
+    friend class ::adhereTo_Unit_LoadUnloadConst_Test;
+    friend class ::adhereTo_Unit_TwiceAdhered_Test;
+};
+template <class T>
+class adhereToConst
+{
+public:
+    adhereToConst ( const adhereTo<T> &ref ) {
+        this->data = ref.data;
+        loadedReadable = ref.loadedReadble;
+        if ( loadedReadable ) {
+            data->setUse ( loadedReadable );
+        }
+
+    };
+
+    adhereToConst ( managedPtr<T> &data, bool loadImidiately = false ) {
+        this->data = &data;
+        if ( loadImidiately ) {
+            loadedReadable = true;
+            data.setUse ( false );
+        }
+
+    }
+
+    adhereToConst<T> &operator= ( const adhereTo<T> &ref ) {
+        if ( loadedReadable ) {
+            data->unsetUse();
+        }
+        this->data = ref.data;
+        loadedReadable = ref.loadedReadble;
+        if ( loadedReadable ) {
+            data->setUse ( loadedReadable );
+        }
+        return *this;
+    }
+
+
+    operator  const T *() {
+        if ( membrain_atomic_bool_compare_and_swap ( &loadedReadable, false, true ) ) {
+            data->setUse ( false );
+        }
+        return data->getConstLocPtr();
+    }
+    ~adhereToConst() {
+        if ( loadedReadable ) {
+            data->unsetUse();
+        }
+
+    }
+private:
+    managedPtr<T> *data;
+    bool loadedReadable = false;
 
 
     // Test classes
@@ -340,72 +395,6 @@ private:
     friend class ::adhereTo_Unit_TwiceAdhered_Test;
 };
 
-template <class T>
-class adhereToConst
-{
-public:
-    adhereToConst ( const adhereToConst<T> &ref ) {
-        this->data = ref.data;
-        if ( ref.loaded != 0 ) {
-            loaded = ref.loaded;
-            for ( unsigned int nloaded = 0; nloaded < ref.loaded; ++nloaded ) {
-                data->setUse ( false );
-            }
-
-        } else {
-            loaded = 0;
-        }
-
-    };
-
-    adhereToConst ( const managedPtr<T> &data, bool loadImidiately = false ) {
-        this->data = &data;
-
-        if ( loadImidiately ) {
-            loaded = ( data.setUse ( false ) ? 1 : 0 );
-        }
-
-    }
-
-    adhereToConst<T> &operator= ( const adhereTo<T> &ref ) {
-        if ( loaded > 0 ) {
-            loaded = ( data->unsetUse ( loaded ) ? 0 : loaded );
-        }
-        this->data = ref.data;
-        if ( ref.loaded != 0 ) {
-            loaded = ref.loaded;
-            for ( unsigned int nloaded = 0; nloaded < ref.loaded; ++nloaded ) {
-                data->setUse ( false );
-            }
-
-        } else {
-            loaded = 0;
-        }
-        return *this;
-    }
-
-    operator  const T *() {
-        if ( loaded == 0 ) {
-            loaded += ( data->setUse ( false ) ? 1 : 0 );
-        }
-
-        return data->getConstLocPtr();
-    }
-    ~adhereToConst() {
-        if ( loaded > 0 ) {
-            loaded = ( data->unsetUse ( loaded ) ? 0 : loaded );
-        }
-    }
-private:
-    const managedPtr<T> *data;
-    unsigned int loaded = 0;
-
-
-    // Test classes
-    friend class adhereTo_Unit_LoadUnload_Test;
-    friend class adhereTo_Unit_LoadUnloadConst_Test;
-    friend class adhereTo_Unit_TwiceAdhered_Test;
-};
 
 }
 
