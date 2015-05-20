@@ -3,7 +3,7 @@
 #include "exceptions.h"
 #include "dummyManagedMemory.h"
 #include <sys/signal.h>
-#include "initialisation.h"
+#include "membrainconfig.h"
 #include "git_info.h"
 
 namespace membrain

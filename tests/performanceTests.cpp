@@ -7,8 +7,7 @@
 #include "managedFileSwap.h"
 #include "cyclicManagedMemory.h"
 #include "managedPtr.h"
-
-#include "initialisation.h"
+#include "membrainconfig.h"
 
 using namespace std;
 using namespace membrain;
@@ -94,8 +93,6 @@ void runMatrixTranspose ( tester *test, char **args )
     const unsigned int mem = size * sizeof ( double ) *  memlines;
     const unsigned int swapmem = size * size * sizeof ( double ) * 2;
 
-    //managedFileSwap swap ( swapmem, "membrainswap-%d" );
-    //cyclicManagedMemory manager ( &swap, mem );
     membrainglobals::config.resizeMemory ( mem );
     membrainglobals::config.resizeSwap ( swapmem );
 
@@ -146,8 +143,6 @@ void runMatrixCleverTranspose ( tester *test, char **args )
     const unsigned int mem = size * sizeof ( double ) *  memlines;
     const unsigned int swapmem = size * size * sizeof ( double ) * 2;
 
-    //managedFileSwap swap ( swapmem, "membrainswap-%d" );
-    //cyclicManagedMemory manager ( &swap, mem );
     membrainglobals::config.resizeMemory ( mem );
     membrainglobals::config.resizeSwap ( swapmem );
 

@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 #include "managedMemory.h"
 #include "dummyManagedMemory.h"
-#include "initialisation.h"
 
 using namespace membrain;
 
