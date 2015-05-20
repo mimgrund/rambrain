@@ -46,12 +46,18 @@ public:
     //We need the following two to correctly initialize class hierarchies:
     static bool threadSynced;
     static pthread_mutex_t parentalMutex;
+    static pthread_cond_t parentalCond;
+    static pthread_t creatingThread;
+    static bool haveCreatingThread;
     void recursiveMfree ( memoryID id );
 #else
     void linearMfree();
 #endif
     static managedMemory *defaultManager;
     static const memoryID invalid;
+
+    static unsigned int arrivedSwapins;
+    static void signalSwappingCond();
 protected:
     managedMemoryChunk *mmalloc ( unsigned int sizereq );
     bool mrealloc ( memoryID id, unsigned int sizereq );
@@ -93,10 +99,10 @@ protected:
     //Signalled after every swapin. Synchronization is happening via stateChangeMutex
     static pthread_cond_t swappingCond;
     /*static pthread_cond_t topologicalCond;*/
-    static void signalSwappingCond();
 
     template<class T>
     friend class managedPtr;
+    friend class managedSwap;
 
 #ifdef SWAPSTATS
 protected:

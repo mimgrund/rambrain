@@ -34,7 +34,6 @@ protected:
     global_bytesize swapSize;
     global_bytesize swapUsed;
     global_bytesize swapFree;
-
 };
 
 }

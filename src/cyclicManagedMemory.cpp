@@ -254,12 +254,10 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             //Wait for object to be swapped in:
             pthread_mutex_unlock ( &topologicalMutex );
             pthread_mutex_lock ( &swappingMutex );
-            while ( true ) {
+            while ( arrivedSwapins == 0 || chunk.status == MEM_SWAPPEDINWAIT ) {
                 pthread_cond_wait ( &swappingCond, &swappingMutex );
-                if ( chunk.status == MEM_SWAPPEDINWAIT ) {
-                    break;
-                }
             }
+            arrivedSwapins -= 1;
             pthread_mutex_unlock ( &swappingMutex );
             pthread_mutex_lock ( &topologicalMutex );
             chunk.status = MEM_ALLOCATED;
@@ -395,6 +393,7 @@ void cyclicManagedMemory::printCycle()
 bool cyclicManagedMemory::swapOut ( unsigned int min_size )
 {
     if ( counterActive == 0 ) {
+        pthread_mutex_unlock ( &topologicalMutex );
         Throw ( memoryException ( "I can't swap out anything if there's nothing to swap out." ) );
     }
     VERBOSEPRINT ( "swapOutEntry" );
@@ -467,7 +466,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
     while ( fromPos != countPos || doRoundtrip ) {
         doRoundtrip = false;
         if ( inSwappedSection ) {
-            if ( fromPos->chunk->status != MEM_SWAPPED ) {
+            if ( fromPos->chunk->status != MEM_SWAPPED && fromPos->chunk->status != MEM_SWAPOUT ) {
                 inSwappedSection = false;
                 if ( moveEnd ) {
                     //  xxxxxxxxxxoooooooxxxxxxooooooo
@@ -493,7 +492,7 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
                 }
             }
         } else {
-            if ( fromPos->chunk->status == MEM_SWAPPED ) {
+            if ( fromPos->chunk->status == MEM_SWAPPED || fromPos->chunk->status == MEM_SWAPOUT ) {
                 inSwappedSection = true;
                 if ( moveEnd == NULL ) {
                     moveEnd = fromPos;

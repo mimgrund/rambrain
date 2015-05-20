@@ -6,6 +6,7 @@
 using namespace membrain;
 
 TEST ( dummyManagedMemory, Unit_ThrowsExceptions )
+
 {
     dummyManagedMemory mgr;
 

@@ -4,7 +4,7 @@ project (membrain)
 
 option (BUILD_TESTS "Build tests" ON)
 option (SWAPSTATS "Swap stats" ON)
-option (PARENTAL_CONTROL "Hook up chunks in a tree" ON)
+option (PARENTAL_CONTROL "Hook up chunks in a tree" OFF)
 
 if(SWAPSTATS)
     add_definitions(-DSWAPSTATS)
@@ -24,7 +24,7 @@ set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 set (LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 
 set (CMAKE_BUILD_TYPE DEBUG)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fopenmp -O2 -Wall") # -fPIC -fopenmp -g
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fopenmp -O0 -Wall") # -fPIC -fopenmp -g
 #set (CMAKE_EXE_LINKER_FLAGS -Wl  )
 if (CMAKE_CXX_COMPILER_ID MATCHES Clang)
 	add_definitions (-fcolor-diagnostics -fansi-escape-codes)

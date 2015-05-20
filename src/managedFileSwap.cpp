@@ -6,7 +6,7 @@
 #include <sys/signal.h>
 #include <sys/stat.h>
 #include "exceptions.h"
-
+#include "managedMemory.h"
 namespace membrain
 {
 
@@ -298,6 +298,7 @@ bool managedFileSwap::swapIn ( managedMemoryChunk *chunk )
         chunk->swapBuf = NULL; // Not strictly required
         chunk->status = MEM_ALLOCATED;
         swapUsed -= chunk->size;
+        managedMemory::signalSwappingCond();
         return true;
     } else {
         return false;
@@ -331,6 +332,7 @@ bool managedFileSwap::swapOut ( managedMemoryChunk *chunk )
             chunk->locPtr = NULL; // not strictly required.
             chunk->status = MEM_SWAPPED;
             swapUsed += chunk->size;
+            managedMemory::signalSwappingCond();
             return true;
         } else {
             return false;

@@ -18,9 +18,12 @@ managedMemory *managedMemory::defaultManager;
 
 #ifdef PARENTAL_CONTROL
 memoryID const managedMemory::root = 1;
-memoryID managedMemory::parent = 1;
+memoryID managedMemory::parent = managedMemory::root;
 bool managedMemory::threadSynced = false;
 pthread_mutex_t managedMemory::parentalMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t managedMemory::parentalCond = PTHREAD_COND_INITIALIZER;
+pthread_t managedMemory::creatingThread ;
+bool managedMemory::haveCreatingThread = false;
 #endif
 memoryID const managedMemory::invalid = 0;
 
@@ -31,7 +34,7 @@ pthread_mutex_t managedMemory::topologicalMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t managedMemory::swappingMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t managedMemory::swappingCond = PTHREAD_COND_INITIALIZER;
-
+unsigned int managedMemory::arrivedSwapins = 0;
 
 managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
 {
@@ -41,6 +44,8 @@ managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
 #ifdef PARENTAL_CONTROL
     managedMemoryChunk *chunk = mmalloc ( 0 );                //Create root element.
     chunk->status = MEM_ROOT;
+    haveCreatingThread = false;
+
 #endif
     this->swap = swap;
     if ( !swap ) {
@@ -117,17 +122,15 @@ void managedMemory::ensureEnoughSpaceAndLockTopo ( unsigned int sizereq )
             Throw ( memoryException ( "Could not swap memory" ) );
         } else {
             //We'll wait for possible swapOut to actually occur:
-            pthread_mutex_unlock ( &topologicalMutex );
+
             pthread_mutex_lock ( &swappingMutex );
-            while ( true ) {
+            while ( arrivedSwapins == 0 || ( sizereq + memory_used > memory_max ) ) {
                 pthread_cond_wait ( &swappingCond, &swappingMutex );
-                pthread_mutex_lock ( &topologicalMutex );
-                if ( sizereq + memory_used <= memory_max ) {
-                    pthread_mutex_unlock ( &swappingMutex );
-                    return;
-                }
-                pthread_mutex_unlock ( &topologicalMutex );
             }
+            arrivedSwapins -= 1;
+            pthread_mutex_unlock ( &topologicalMutex );
+            pthread_mutex_unlock ( &swappingMutex );
+
         }
     }
 }
@@ -184,6 +187,7 @@ managedMemoryChunk *managedMemory::mmalloc ( unsigned int sizereq )
         chunk->locPtr = malloc ( sizereq );
         if ( !chunk->locPtr ) {
             Throw ( memoryException ( "Malloc failed" ) );
+            pthread_mutex_unlock ( &topologicalMutex );
             return NULL;
         }
     }
@@ -241,8 +245,6 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
 
 
     case MEM_ROOT:
-    case MEM_DELETE:
-    case MEM_REGISTER:
         pthread_mutex_unlock ( &stateChangeMutex );
         return false;
 
@@ -253,6 +255,7 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
 
 bool managedMemory::mrealloc ( memoryID id, unsigned int sizereq )
 {
+    pthread_mutex_lock ( &topologicalMutex );
     managedMemoryChunk &chunk = resolveMemChunk ( id );
     if ( !setUse ( chunk ) ) {
         return false;
@@ -263,9 +266,11 @@ bool managedMemory::mrealloc ( memoryID id, unsigned int sizereq )
         chunk.size = sizereq;
         chunk.locPtr = realloced;
         unsetUse ( chunk );
+        pthread_mutex_unlock ( &topologicalMutex );
         return true;
     } else {
         unsetUse ( chunk );
+        pthread_mutex_unlock ( &topologicalMutex );
         return false;
     }
 }
@@ -304,6 +309,12 @@ bool managedMemory::Throw ( memoryException e )
         errmsg ( e.what() );
         return false;
     } else {
+#ifdef PARENTAL_CONTROL
+        if ( haveCreatingThread && pthread_equal ( pthread_self(), creatingThread ) ) {
+            pthread_mutex_unlock ( &parentalMutex );
+        }
+#endif
+
         throw e;
     }
 }
@@ -312,10 +323,12 @@ bool managedMemory::Throw ( memoryException e )
 
 void managedMemory::mfree ( memoryID id )
 {
+    pthread_mutex_lock ( &topologicalMutex );
     managedMemoryChunk *chunk = memChunks[id];
     if ( chunk->status & MEM_ALLOCATED_INUSE_READ ) {
-        Throw ( memoryException ( "Can not free memory which is in use" ) );
 
+        Throw ( memoryException ( "Can not free memory which is in use" ) );
+        pthread_mutex_unlock ( &topologicalMutex );
         return;
     }
 
@@ -324,6 +337,7 @@ void managedMemory::mfree ( memoryID id )
 #ifdef PARENTAL_CONTROL
     if ( chunk->child != invalid ) {
         Throw ( memoryException ( "Can not free memory which has active children" ) );
+        pthread_mutex_unlock ( &topologicalMutex );
         return;
     }
     if ( chunk->id != root ) {
@@ -364,7 +378,7 @@ void managedMemory::mfree ( memoryID id )
     //Delete element itself
     memChunks.erase ( id );
     delete ( chunk );
-
+    pthread_mutex_unlock ( &topologicalMutex );
 }
 
 #ifdef PARENTAL_CONTROL
@@ -515,7 +529,10 @@ void managedMemory::versionInfo()
 
 void managedMemory::signalSwappingCond()
 {
+    pthread_mutex_lock ( &swappingMutex );
+    arrivedSwapins += 1;
     pthread_cond_broadcast ( &swappingCond );
+    pthread_mutex_unlock ( &swappingMutex );
 }
 
 

@@ -69,18 +69,48 @@ public:
             return;
         }
 
-        chunk = managedMemory::defaultManager->mmalloc ( sizeof ( T ) * n_elem );
+
 #ifdef PARENTAL_CONTROL
+        /**I admit, this is a bit complicated. as we do not want users to carry around information about object parenthood
+        into their classes, we have to ensure that our 'memoryManager::parent' attribute is carried down the hierarchy correctly.
+        As this code part is accessed recursively throughout creation, we have to make sure that
+        * we do not lock twice (deadlock)
+        * we only continue if we're called by the currently active creation process
+        the following is not very elegant, but works. The idea behind this is that we admit one thread at a time to create
+        an object class hierarchy. In this way, the parent argument from below is correct.
+        This is synced by basically checking wether we should be a master or not based on a possibly setted threadID...
+        **/
         bool iamSyncer = false;
-        if ( !managedMemory::threadSynced ) {
-            pthread_mutex_lock ( &managedMemory::parentalMutex );
-            managedMemory::threadSynced = true;
+        if ( managedMemory::haveCreatingThread ) {
+            //We have a 'master thread' that tries to create a class hierarchy
+            //If we are this thread, we continue without locking, as this would be a deadlock
+            if ( !pthread_equal ( pthread_self(), managedMemory::creatingThread ) ) {
+                iamSyncer = true;
+            }
+
+        } else {
             iamSyncer = true;
         }
+
+        if ( iamSyncer ) {
+            //Wait until we gaim master thread privilege:
+            pthread_mutex_lock ( &managedMemory::parentalMutex );
+            while ( !membrain_atomic_bool_compare_and_swap ( &managedMemory::haveCreatingThread, false, true ) ) {
+                pthread_cond_wait ( &managedMemory::parentalCond, &managedMemory::parentalMutex );
+            }
+            //Set our thread id as the one without locking:
+            managedMemory::creatingThread = pthread_self();
+        }
+#endif
+
+        chunk = managedMemory::defaultManager->mmalloc ( sizeof ( T ) * n_elem );
+
+#ifdef PARENTAL_CONTROL
         //Now call constructor and save possible children's sake:
         memoryID savedParent = managedMemory::parent;
         managedMemory::parent = chunk->id;
 #endif
+
         setUse();
         for ( unsigned int n = 0; n < n_elem; n++ ) {
             new ( ( ( T * ) chunk->locPtr ) + n ) T ( Args... );
@@ -89,11 +119,13 @@ public:
 #ifdef PARENTAL_CONTROL
         managedMemory::parent = savedParent;
         if ( iamSyncer ) {
+            //drop master privilege:
+            managedMemory::haveCreatingThread = false;
             pthread_mutex_unlock ( &managedMemory::parentalMutex );
+            //Let others do the job:
+            pthread_cond_signal ( &managedMemory::parentalCond );
         }
 #endif
-
-        // before user can pass it around
     }
 
 
@@ -164,6 +196,14 @@ private:
     typename std::enable_if<std::is_class<G>::value>::type
     mDelete (  ) {
         if ( n_elem > 0 ) {
+// #ifdef PARENTAL_CONTROL
+//             //Start single threaded region:
+//             bool iamSyncer = false;
+//             if(membrain_atomic_bool_compare_and_swap(&managedMemory::threadSynced,false,true )){
+//                 iamSyncer = true;
+//                 pthread_mutex_lock ( &managedMemory::parentalMutex );
+//             }
+// #endif
             bool oldthrow = managedMemory::defaultManager->noThrow;
             managedMemory::defaultManager->noThrow = true;
             for ( unsigned int n = 0; n < n_elem; n++ ) {
@@ -171,6 +211,12 @@ private:
             }
             managedMemory::defaultManager->mfree ( chunk->id );
             managedMemory::defaultManager->noThrow = oldthrow;
+// #ifdef PARENTAL_CONTROL
+//             if(iamSyncer){
+//
+//                 pthread_mutex_unlock ( &managedMemory::parentalMutex );
+//             }
+// #endif
         }
         delete tracker;
     }

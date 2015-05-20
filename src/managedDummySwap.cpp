@@ -1,6 +1,7 @@
 #include <malloc.h>
 #include <memory.h>
 #include "managedDummySwap.h"
+#include "managedMemory.h"
 
 namespace membrain
 {
@@ -25,10 +26,16 @@ bool managedDummySwap::swapOut ( managedMemoryChunk *chunk )
         chunk->status = MEM_SWAPPED;
         swapUsed += chunk->size;
         swapFree -= chunk->size;
+        ///We are not writing asynchronous, thus, we have to signal that we're done writing...
+        managedMemory::signalSwappingCond();
+
         return true;
     } else {
+        ///We are not writing asynchronous, thus, we have to signal that we're done writing...
+        managedMemory::signalSwappingCond();
         return false;
     }
+
 
 }
 
@@ -53,10 +60,15 @@ bool managedDummySwap::swapIn ( managedMemoryChunk *chunk )
         chunk->status = MEM_ALLOCATED;
         swapUsed -= chunk->size;
         swapFree += chunk->size;
+        ///We are not writing asynchronous, thus, we have to signal that we're done reading...
+        managedMemory::signalSwappingCond();
         return true;
     } else {
+        ///We are not writing asynchronous, thus, we have to signal that we're done reading...
+        managedMemory::signalSwappingCond();
         return false;
     }
+
 }
 
 
