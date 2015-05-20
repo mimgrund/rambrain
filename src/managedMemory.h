@@ -93,8 +93,6 @@ protected:
     static bool noThrow;
     static bool Throw ( memoryException e );
 
-    static pthread_mutex_t topologicalMutex;
-    static pthread_mutex_t swappingMutex;
     static pthread_mutex_t stateChangeMutex;
     //Signalled after every swapin. Synchronization is happening via stateChangeMutex
     static pthread_cond_t swappingCond;
@@ -118,6 +116,9 @@ protected:
 
     global_bytesize swap_hits = 0;
     global_bytesize swap_misses = 0;
+
+    bool waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock = false );
+    bool waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock = false );
 public:
     void printSwapstats();
     void resetSwapstats();

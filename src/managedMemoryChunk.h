@@ -7,14 +7,13 @@ namespace membrain
 
 
 enum memoryStatus {MEM_ROOT = 0,
-                   MEM_ALLOCATED_INUSE_READ = 1,
-                   MEM_ALLOCATED_INUSE_WRITE = 3,
-                   MEM_ALLOCATED = 4,
-                   MEM_SWAPPED = 8,
-                   MEM_SWAPIN = 16,
-                   MEM_SWAPINANDWAIT = 32,
-                   MEM_SWAPPEDINWAIT = 64,
-                   MEM_SWAPOUT = 128
+                   MEM_ALLOCATED_INUSE_READ = 4 + 1,
+                   MEM_ALLOCATED_INUSE_WRITE = 4 + 2 + 1,
+                   MEM_ALLOCATED_INUSE = 1, //flaggy
+                   MEM_ALLOCATED = 4, //flaggy
+                   MEM_SWAPPED = 8, //flaggy
+                   MEM_SWAPIN = 16 + 8,
+                   MEM_SWAPOUT = 32
                   };
 
 typedef unsigned int memoryID;

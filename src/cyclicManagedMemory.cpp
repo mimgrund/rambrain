@@ -158,6 +158,11 @@ void cyclicManagedMemory::printMemUsage()
 bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 {
     VERBOSEPRINT ( "swapInEntry" );
+
+    if ( chunk.status & MEM_ALLOCATED ) {
+        return true;
+    }
+
     // We use the old border to ensure that sth is not swapped in again that was just swapped out.
     cyclicAtime *oldBorder = counterActive;
 
@@ -216,6 +221,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             return Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
 
         } else {
+            pthread_mutex_lock ( &cyclicTopoLock );
             cyclicAtime *beginSwapin = readEl->next;
             cyclicAtime *oldafter = endSwapin->next;
             if ( endSwapin != active ) { //swapped in element is already 'active' when all others have been swapped.
@@ -232,8 +238,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
                 }
                 active = endSwapin;
             }
-
-
+            pthread_mutex_unlock ( &cyclicTopoLock );
 
             memory_used += selectedReadinVol;
             memory_swapped -= selectedReadinVol;
@@ -245,21 +250,15 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             n_swap_in += 1;
 #endif
             VERBOSEPRINT ( "swapInBeforeReturn" );
+            waitForSwapin ( chunk, true );
             return true;
         }
     } else {
-        pthread_mutex_unlock ( &topologicalMutex );
         ensureEnoughSpaceAndLockTopo ( actual_obj_size );
+        //We have to check wether the block is still swapped or not
         if ( swap->swapIn ( &chunk ) ) {
             //Wait for object to be swapped in:
-            pthread_mutex_unlock ( &topologicalMutex );
-            pthread_mutex_lock ( &swappingMutex );
-            while ( arrivedSwapins == 0 || chunk.status == MEM_SWAPPEDINWAIT ) {
-                pthread_cond_wait ( &swappingCond, &swappingMutex );
-            }
-            arrivedSwapins -= 1;
-            pthread_mutex_unlock ( &swappingMutex );
-            pthread_mutex_lock ( &topologicalMutex );
+            waitForSwapin ( chunk, true );
             chunk.status = MEM_ALLOCATED;
             touch ( chunk );
             pthread_mutex_lock ( &cyclicTopoLock );
@@ -273,10 +272,10 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             swap_in_bytes += chunk.size;
             n_swap_in += 1;
 #endif
-            pthread_mutex_unlock ( &topologicalMutex );
+
             return true;
         } else {
-            pthread_mutex_unlock ( &topologicalMutex );
+            //Unlock mutex under which we were called, as we'll be throwing...
             return Throw ( memoryException ( "Could not swap in an element." ) );
         };
     }
@@ -393,7 +392,7 @@ void cyclicManagedMemory::printCycle()
 bool cyclicManagedMemory::swapOut ( unsigned int min_size )
 {
     if ( counterActive == 0 ) {
-        pthread_mutex_unlock ( &topologicalMutex );
+        pthread_mutex_unlock ( &stateChangeMutex );
         Throw ( memoryException ( "I can't swap out anything if there's nothing to swap out." ) );
     }
     VERBOSEPRINT ( "swapOutEntry" );
@@ -449,7 +448,6 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
         fromPos = fromPos->prev;
     } while ( fromPos != countPos );
     unsigned int real_unloaded = swap->swapOut ( unloadlist, unload );
-
     bool swapSuccess = ( real_unloaded == unload ) ;
     if ( !swapSuccess ) {
         return Throw ( memoryException ( "Could not swap out all elements. Swap full?" ) );
