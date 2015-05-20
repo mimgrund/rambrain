@@ -166,7 +166,7 @@ TEST ( managedPtr, Unit_SmartPointery )
 }
 
 
-TEST ( managedPtr, Unit_DeleteWhileInUse )
+TEST ( managedPtr, DISABLED_Unit_DeleteWhileInUse )
 {
     ///\todo This test does not work, exception is handled by libc++ instead of gtest
     /*
