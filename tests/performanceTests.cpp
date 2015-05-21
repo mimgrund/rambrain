@@ -238,7 +238,7 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
     const unsigned int size = atoi ( args[0] );
     const unsigned int memlines = atoi ( args[1] );
     const unsigned int mem = size * sizeof ( double ) *  memlines;
-    const unsigned int swapmem = size * size * sizeof ( double ) * 2;
+    const unsigned int swapmem = size * size * sizeof ( double ) * 4;
 
     //managedFileSwap swap ( swapmem, "membrainswap-%d" );
     //cyclicManagedMemory manager ( &swap, mem );
@@ -249,6 +249,7 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
 
     // Allocate and set
     managedPtr<double> *rows[size];
+    #pragma omp parallel for
     for ( unsigned int i = 0; i < size; ++i ) {
         rows[i] = new managedPtr<double> ( size );
         adhereTo<double> rowloc ( *rows[i] );
@@ -261,7 +262,8 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
     test->addTimeMeasurement();
 
     // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
-    unsigned int rows_fetch = memlines / 3 > size ? size : memlines / 3;
+
+    unsigned int rows_fetch = memlines / ( 4 ) > size ? size : memlines / ( 4 );
     unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
 
     adhereTo<double> *Arows[rows_fetch];
@@ -298,9 +300,11 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
                     Browdb[i + i_off] = inter; //set B_ji to former val of A_ij
                 }
             }
+            #pragma omp parallel for
             for ( unsigned int i = 0; i < i_lim; ++i ) {
                 delete ( Arows[i] );
             }
+            #pragma omp parallel for
             for ( unsigned int j = 0; j < j_lim; ++j ) {
                 delete ( Brows[j] );
             }
@@ -320,6 +324,7 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
     //     }
 
     // Delete
+    #pragma omp parallel for
     for ( unsigned int i = 0; i < size; ++i ) {
         delete rows[i];
     }
