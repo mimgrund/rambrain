@@ -244,7 +244,6 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
      *   ASSERT_EQ ( 16, swap.free_space.size() );*/
     infomsgf ( "%ld total swap in %ld swapfiles", swap.getSwapSize(), swap.all_space.size() );
 
-    unsigned int no_double = 100 * 1024;
     global_bytesize obj_size = 102400 * sizeof ( double );
     global_bytesize obj_no = totalswap / obj_size * 2;
     unsigned int seed = time ( NULL );
@@ -271,7 +270,7 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
             {
                 adhereTo<double> objoloc ( *objmask[no] );
                 double *darr =  objoloc;
-                for ( int k = 0; k < varsize; k++ ) {
+                for ( unsigned int k = 0; k < varsize; k++ ) {
                     darr[k] = k + varsize;
                 }
             }
@@ -317,8 +316,8 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
         ASSERT_EQ ( 0, mstat.st_size );
 
     }
-    ASSERT_EQ ( 16, swap.all_space.size() );
-    ASSERT_EQ ( 16, swap.free_space.size() );
+    ASSERT_EQ ( 16u, swap.all_space.size() );
+    ASSERT_EQ ( 16u, swap.free_space.size() );
 
     cyclicManagedMemory manager ( &swap, 1024 * 10 );
     {
@@ -347,7 +346,7 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
 
         }
         managedPtr<double> testarr3 ( 1024 );
-        ASSERT_EQ ( 8 * 1024 * 2, manager.getSwappedMemory() );
+        ASSERT_EQ ( 8 * 1024u * 2, manager.getSwappedMemory() );
         stat ( "/tmp/membrainswap-0", &first );
         ASSERT_TRUE ( S_ISREG ( first.st_mode ) );
         ASSERT_EQ ( 1024 * 1024, first.st_size ); //Size should not change.

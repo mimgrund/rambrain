@@ -166,7 +166,7 @@ TEST ( managedPtr, Unit_SmartPointery )
 }
 
 
-TEST ( managedPtr, Unit_DeleteWhileInUse )
+TEST ( managedPtr, DISABLED_Unit_DeleteWhileInUse )
 {
     ///\todo This test does not work, exception is handled by libc++ instead of gtest
     /*
@@ -209,7 +209,7 @@ TEST ( managedPtr, Unit_DirectAccessSwapped )
 
     managedPtr<double> ptr1 ( alloc );
     managedPtr<double> ptr2 ( alloc );
-    for ( int n = 0; n < alloc; n++ ) {
+    for ( unsigned int n = 0; n < alloc; n++ ) {
         ptr1[n] = n;
         ptr2[n] = -n;
     }
@@ -278,14 +278,14 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
     managedPtr<double> ptr1 ( alloc );
     {
         ADHERETOLOC ( double, ptr1, lptr1 );
-        for ( int n = 0; n < alloc; n++ ) {
+        for ( unsigned int n = 0; n < alloc; n++ ) {
             lptr1[n] = n;
         }
     }
     managedPtr<double> ptr2 ( alloc );
     {
         ADHERETOLOC ( double, ptr2, lptr2 );
-        for ( int n = 0; n < alloc; n++ ) {
+        for ( unsigned int n = 0; n < alloc; n++ ) {
             lptr2[n] = -n;
         }
     }
@@ -295,7 +295,7 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
     {
         ADHERETOLOC ( double, ptr1, lptr1 );
         for ( unsigned int r = 0; r < runs; ++r ) {
-            for ( int n = 0; n < alloc; n++ ) {
+            for ( unsigned int n = 0; n < alloc; n++ ) {
                 EXPECT_EQ ( n, lptr1[n] );
             }
         }
@@ -303,7 +303,7 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
     {
         ADHERETOLOC ( double, ptr2, lptr2 );
         for ( unsigned int r = 0; r < runs; ++r ) {
-            for ( int n = 0; n < alloc; n++ ) {
+            for ( unsigned int n = 0; n < alloc; n++ ) {
                 EXPECT_EQ ( -n, lptr2[n] );
             }
         }
@@ -316,7 +316,7 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
     t1 = chrono::high_resolution_clock::now();
 
     for ( unsigned int r = 0; r < runs; ++r ) {
-        for ( int n = 0; n < alloc; n++ ) {
+        for ( unsigned int n = 0; n < alloc; n++ ) {
             EXPECT_EQ ( n, ptr1[n] );
             EXPECT_EQ ( -n, ptr2[n] );
         }

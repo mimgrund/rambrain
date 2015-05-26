@@ -3,7 +3,7 @@
 #include "exceptions.h"
 #include "dummyManagedMemory.h"
 #include <sys/signal.h>
-#include "initialisation.h"
+#include "membrainconfig.h"
 #include "membrain_atomics.h"
 #include "git_info.h"
 
@@ -456,9 +456,9 @@ managedMemoryChunk &managedMemory::resolveMemChunk ( const memoryID &id )
 #ifdef SWAPSTATS
 void managedMemory::printSwapstats()
 {
-    infomsgf ( "A total of %d swapouts occured, writing out %ld bytes (%.3e Bytes/avg)\
-          \n\tA total of %d swapins occured, reading in %ld bytes (%.3e Bytes/avg)\
-          \n\twe used already loaded elements %d times, %d had to be fetched\
+    infomsgf ( "A total of %lu swapouts occured, writing out %lu bytes (%.3e Bytes/avg)\
+          \n\tA total of %lu swapins occured, reading in %lu bytes (%.3e Bytes/avg)\
+          \n\twe used already loaded elements %lu times, %lu had to be fetched\
           \n\tthus, the hits over misses rate was %.5f\
           \n\tfraction of swapped out ram (currently) %.2e", n_swap_out, swap_out_bytes, \
                ( ( float ) swap_out_bytes ) / n_swap_out, n_swap_in, swap_in_bytes, ( ( float ) swap_in_bytes ) / n_swap_in, \

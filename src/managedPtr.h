@@ -54,7 +54,7 @@ template <class T>
 class managedPtr
 {
 public:
-    managedPtr ( const managedPtr<T> &ref ) : tracker ( ref.tracker ), n_elem ( ref.n_elem ), chunk ( ref.chunk ) {
+    managedPtr ( const managedPtr<T> &ref ) : chunk ( ref.chunk ), tracker ( ref.tracker ), n_elem ( ref.n_elem ) {
 
         membrain_atomic_add_fetch ( tracker, 1 );
 
@@ -165,7 +165,7 @@ public:
     }
     DEPRECATED const T &operator[] ( int i ) const {
         const managedPtr<T> &self = *this;
-        ADHERETOLOC ( T, self, loc );
+        ADHERETOLOCCONST ( T, self, loc );
         return loc[i];
     }
 
@@ -340,7 +340,7 @@ public:
         this->data = ref.data;
         loadedReadable = ref.loadedReadble;
         if ( loadedReadable ) {
-            data->setUse ( loadedReadable );
+            data->setUse ( false );
         }
 
     };

@@ -8,7 +8,6 @@
 #include "managedMemoryChunk.h"
 #include "managedSwap.h"
 #include "exceptions.h"
-#include "configreader.h"
 
 namespace membrain
 {
