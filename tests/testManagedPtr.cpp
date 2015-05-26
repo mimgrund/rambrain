@@ -211,12 +211,12 @@ TEST ( managedPtr, Unit_DirectAccessSwapped )
     managedPtr<double> ptr2 ( alloc );
     for ( unsigned int n = 0; n < alloc; n++ ) {
         ptr1[n] = n;
-        ptr2[n] = -n;
+        ptr2[n] = 2 * n;
     }
 
     for ( int n = 0; n < alloc; n++ ) {
         EXPECT_EQ ( n, ptr1[n] );
-        EXPECT_EQ ( -n, ptr2[n] );
+        EXPECT_EQ ( 2 * n, ptr2[n] );
     }
 }
 
