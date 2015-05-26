@@ -90,7 +90,6 @@ protected:
 
 
     managedMemory *previousManager;
-    static bool noThrow;
     static bool Throw ( memoryException e );
 
     static pthread_mutex_t stateChangeMutex;

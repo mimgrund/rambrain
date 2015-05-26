@@ -29,7 +29,7 @@ memoryID const managedMemory::invalid = 0;
 
 
 
-bool managedMemory::noThrow = false;
+
 pthread_mutex_t managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t managedMemory::swappingCond = PTHREAD_COND_INITIALIZER;
 unsigned int managedMemory::arrivedSwapins = 0;
@@ -57,8 +57,7 @@ managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
 
 managedMemory::~managedMemory()
 {
-    bool oldthrow = noThrow;
-    noThrow = true;
+
     if ( defaultManager == this ) {
 
         defaultManager = previousManager;
@@ -69,7 +68,7 @@ managedMemory::~managedMemory()
 #else
     linearMfree();
 #endif
-    noThrow = oldthrow;
+
 }
 
 
@@ -283,18 +282,13 @@ bool managedMemory::unsetUse ( managedMemoryChunk &chunk , unsigned int no_unset
 
 bool managedMemory::Throw ( memoryException e )
 {
-    if ( noThrow ) {
-        errmsg ( e.what() );
-        return false;
-    } else {
-#ifdef PARENTAL_CONTROL
-        if ( haveCreatingThread && pthread_equal ( pthread_self(), creatingThread ) ) {
-            pthread_mutex_unlock ( &parentalMutex );
-        }
-#endif
 
-        throw e;
+#ifdef PARENTAL_CONTROL
+    if ( haveCreatingThread && pthread_equal ( pthread_self(), creatingThread ) ) {
+        pthread_mutex_unlock ( &parentalMutex );
     }
+#endif
+    throw e;
 }
 
 

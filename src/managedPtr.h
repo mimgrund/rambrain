@@ -204,13 +204,11 @@ private:
 //                 pthread_mutex_lock ( &managedMemory::parentalMutex );
 //             }
 // #endif
-            bool oldthrow = managedMemory::defaultManager->noThrow;
-            managedMemory::defaultManager->noThrow = true;
+
             for ( unsigned int n = 0; n < n_elem; n++ ) {
                 ( ( ( G * ) chunk->locPtr ) + n )->~G();
             }
             managedMemory::defaultManager->mfree ( chunk->id );
-            managedMemory::defaultManager->noThrow = oldthrow;
 // #ifdef PARENTAL_CONTROL
 //             if(iamSyncer){
 //
@@ -224,10 +222,7 @@ private:
     typename std::enable_if < !std::is_class<G>::value >::type
     mDelete (  ) {
         if ( n_elem > 0 ) {
-            bool oldthrow = managedMemory::defaultManager->noThrow;
-            managedMemory::defaultManager->noThrow = true;
             managedMemory::defaultManager->mfree ( chunk->id );
-            managedMemory::defaultManager->noThrow = oldthrow;
         }
         delete tracker;
     }
