@@ -29,8 +29,11 @@ void tester::addComment ( const char *comment )
 
 void tester::setSeed ( unsigned int seed )
 {
+
     seeds.back() = seed;
     seeded.back() = true;
+    srand48 ( seed );
+    srand ( seed );
 
     std::cout << "I am running with a seed of " << seed << std::endl;
 }

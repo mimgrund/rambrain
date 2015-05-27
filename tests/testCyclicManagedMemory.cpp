@@ -293,8 +293,8 @@ TEST ( cyclicManagedMemory, Unit_RandomAllocation )
     cyclicManagedMemory manager ( &swap, memsize );
 
     for ( unsigned int o = 0; o < 10; ++o ) {
-        const unsigned int arraysize = test.random ( 20 ) + 1;
-        const unsigned int targetsize = test.random ( 20 ) + 1;
+        const unsigned int arraysize = test.random ( 10 ) + 1;
+        const unsigned int targetsize = test.random ( 10 ) + 1;
         const unsigned int totalspace = arraysize * targetsize * sizeof ( double );
         const unsigned int swappedmin = ( totalspace > memsize ? totalspace - memsize : 0u );
         managedPtr<double> *arr[arraysize];
