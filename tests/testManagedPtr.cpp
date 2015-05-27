@@ -29,6 +29,7 @@ TEST ( managedPtr, Unit_ParentIDs )
     EXPECT_EQ ( parent, managedMemory::defaultManager->parent );
 }
 #endif
+
 TEST ( managedPtr, Unit_ChunkInUse )
 {
     managedDummySwap swap ( 100 );
@@ -251,8 +252,6 @@ TEST ( managedPtr, Unit_ZeroSizedObjects )
 {
     managedDummySwap swap ( 200 );
     cyclicManagedMemory managedMemory ( &swap, 200 );
-//     double a[0];
-//     *a=1337.;
     managedPtr<bool> ptrnull ( 0 );
     managedPtr<double> ptr ( 5 );
     for ( int n = 0; n < 5; n++ ) {
