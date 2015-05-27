@@ -2,6 +2,9 @@
 
 tester::tester ( const char *name ) : name ( name )
 {
+    //! @todo This is already designed such, that we can handle multiple seeds. Only the reseeding is missing.
+    seeds.push_back ( 0u );
+    seeded.push_back ( false );
 }
 
 tester::~tester()
@@ -24,6 +27,29 @@ void tester::addComment ( const char *comment )
     this->comment = std::string ( comment );
 }
 
+void tester::setSeed ( unsigned int seed )
+{
+    seeds.back() = seed;
+    seeded.back() = true;
+
+    std::cout << "I am running with a seed of " << seed << std::endl;
+}
+
+int tester::random ( int max )
+{
+    return static_cast<uint64_t> ( rand() ) * max / RAND_MAX;
+}
+
+uint64_t tester::random ( uint64_t max )
+{
+    return random ( static_cast<double> ( max ) );
+}
+
+double tester::random ( double max )
+{
+    return drand48() * max;
+}
+
 void tester::startNewCycle()
 {
     timeMeasures.push_back ( std::vector<std::chrono::high_resolution_clock::time_point>() );
@@ -31,6 +57,11 @@ void tester::startNewCycle()
 
 void tester::writeToFile()
 {
+    if ( std::string ( name ).empty() ) {
+        std::cerr << "Can not write to file without file name" << std::endl;
+        return;
+    }
+
     std::stringstream fileName;
     fileName << "perftest_" << name;
     for ( auto it = parameters.begin(); it != parameters.end(); ++it ) {
@@ -46,6 +77,24 @@ void tester::writeToFile()
 
     const int cyclesCount = timeMeasures.size();
     out << "# " << cyclesCount << " cycles run for average" << std::endl;
+
+    bool firstSeed = true;
+    for ( size_t i = 0; i < seeded.size(); ++i ) {
+        if ( seeded[i] ) {
+            if ( firstSeed ) {
+                out << "# Random seeds: ";
+                firstSeed = false;
+            }
+            out << seeds[i] << " ";
+        } else {
+            if ( ! firstSeed ) {
+                out << "* ";
+            }
+        }
+    }
+    if ( !firstSeed ) {
+        out << std::endl;
+    }
 
     if ( ! comment.empty() ) {
         out << "# " << comment << std::endl;

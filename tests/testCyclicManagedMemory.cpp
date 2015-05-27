@@ -5,21 +5,9 @@
 #include "managedPtr.h"
 #include "managedDummySwap.h"
 #include "exceptions.h"
+#include "tester.h"
 
 using namespace membrain;
-
-//#define SWAPSTATSLONG
-
-class A
-{
-public:
-    managedPtr<double> testelements = managedPtr<double> ( 10 );
-    void test() {
-        ADHERETO ( double, testelements );
-        testelements[0] = 3;
-    }
-};
-
 
 TEST ( cyclicManagedMemory, Unit_AllocatePointers )
 {
@@ -44,9 +32,20 @@ TEST ( cyclicManagedMemory, Unit_AllocatePointers )
     lPtr[n] = 1.; //Should not segfault
     } );
 }
+
 #ifdef PARENTAL_CONTROL
 TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
 {
+    class A
+    {
+    public:
+        managedPtr<double> testelements = managedPtr<double> ( 10 );
+        void test() {
+            ADHERETO ( double, testelements );
+            testelements[0] = 3;
+        }
+    };
+
     //Allocate Dummy swap
     managedDummySwap swap ( 100 );
     //Allocate Manager
@@ -82,6 +81,7 @@ TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
 
 }
 #endif
+
 TEST ( cyclicManagedMemory, Unit_NotEnoughMemOrSwapSpace )
 {
     managedDummySwap swap1 ( 0 ), swap2 ( 1000 );
@@ -158,6 +158,8 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
     const  int fac = 1000;
     const  int memsize = 10.240 * fac;
     const  int allocarrn = 4 * fac;
+    tester test;
+    test.setSeed();
 
     //Allocate Dummy swap
     managedDummySwap swap ( allocarrn * 100 );
@@ -183,7 +185,7 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
         ASSERT_TRUE ( manager.checkCycle() );
         //Write fun to tree, but require swapping:
         for ( int n = 0; n < allocarrn; ++n ) {
-            unsigned int randomi = random() * allocarrn / RAND_MAX;
+            unsigned int randomi = test.random ( allocarrn );
             adhereTo<double> aLoc ( *ptrs[randomi] );
 
             ASSERT_TRUE ( manager.checkCycle() );
@@ -282,18 +284,17 @@ TEST ( cyclicManagedMemory, Unit_VariousSize )
 
 TEST ( cyclicManagedMemory, Unit_RandomAllocation )
 {
-    unsigned int seed = time ( NULL );
-    srand ( seed );
-    infomsgf ( "RNG seed is %d", seed );
     const unsigned int memsize = sizeof ( double ) * 10;
     const unsigned int swapmem = 10000 * memsize;
+    tester test;
+    test.setSeed();
 
     managedDummySwap swap ( swapmem );
     cyclicManagedMemory manager ( &swap, memsize );
 
     for ( unsigned int o = 0; o < 10; ++o ) {
-        const unsigned int arraysize = rand_r ( &seed ) / RAND_MAX * 20 + 1;
-        const unsigned int targetsize = rand_r ( &seed ) / RAND_MAX * 20 + 1;
+        const unsigned int arraysize = test.random ( 20 ) + 1;
+        const unsigned int targetsize = test.random ( 20 ) + 1;
         const unsigned int totalspace = arraysize * targetsize * sizeof ( double );
         const unsigned int swappedmin = ( totalspace > memsize ? totalspace - memsize : 0u );
         managedPtr<double> *arr[arraysize];

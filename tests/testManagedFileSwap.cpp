@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include "common.h"
 #include <chrono>
+#include "tester.h"
 
 using namespace membrain;
 
@@ -180,6 +181,9 @@ TEST ( managedFileSwap, Integration_RandomAccess )
 {
     global_bytesize oneswap = 1024 * 1024 * ( global_bytesize ) 16;
     global_bytesize totalswap = 16 * oneswap;
+    tester test;
+    test.setSeed();
+
     managedFileSwap swap ( totalswap, "./membrainswap-%d", oneswap );
     cyclicManagedMemory manager ( &swap, oneswap );
 
@@ -198,7 +202,7 @@ TEST ( managedFileSwap, Integration_RandomAccess )
         objmask[n] = NULL;
     }
     for ( unsigned int n = 0; n < 10 * obj_no; ++n ) {
-        global_bytesize no = ( ( double ) rand() / RAND_MAX ) * obj_no;
+        global_bytesize no = test.random ( obj_no );
 
         if ( objmask[no] == NULL ) {
             objmask[no] = new managedPtr<double> ( 102400 );
@@ -235,6 +239,9 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
 {
     global_bytesize oneswap = 1024 * 1024 * ( global_bytesize ) 16;
     global_bytesize totalswap = 16 * oneswap;
+    tester test;
+    test.setSeed();
+
     managedFileSwap swap ( totalswap, "./membrainswap-%d", oneswap );
     cyclicManagedMemory manager ( &swap, oneswap );
 
@@ -246,11 +253,6 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
 
     global_bytesize obj_size = 102400 * sizeof ( double );
     global_bytesize obj_no = totalswap / obj_size * 2;
-    unsigned int seed = time ( NULL );
-    //seed = 1429875886;
-    srand ( seed );
-    infomsgf ( "I am running with a seed of %d", seed );
-
 
     managedPtr<double> **objmask = ( managedPtr<double> ** ) malloc ( sizeof ( managedPtr<double> * ) *obj_no );
     for ( unsigned int n = 0; n < obj_no; ++n ) {
@@ -258,11 +260,11 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
     }
     for ( unsigned int n = 0; n < 10 * obj_no; ++n ) {
 
-        global_bytesize no = ( ( double ) rand() / RAND_MAX ) * obj_no;
+        global_bytesize no = test.random ( obj_no );
         ASSERT_TRUE ( manager.checkCycle() );
         if ( objmask[no] == NULL ) {
 
-            unsigned int varsize = ( ( double ) rand() / RAND_MAX + .5 ) * 102400;
+            unsigned int varsize = ( test.random() + 0.5 ) * 102400;
             if ( ( varsize + 102400 * 2. ) *sizeof ( double ) > swap.getFreeSwap() ) {
                 continue;
             }
