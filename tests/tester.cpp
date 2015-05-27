@@ -2,9 +2,7 @@
 
 tester::tester ( const char *name ) : name ( name )
 {
-    //! @todo This is already designed such, that we can handle multiple seeds. Only the reseeding is missing.
-    seeds.push_back ( 0u );
-    seeded.push_back ( false );
+    startNewRNGCycle();
 }
 
 tester::~tester()
@@ -29,7 +27,6 @@ void tester::addComment ( const char *comment )
 
 void tester::setSeed ( unsigned int seed )
 {
-
     seeds.back() = seed;
     seeded.back() = true;
     srand48 ( seed );
@@ -38,24 +35,30 @@ void tester::setSeed ( unsigned int seed )
     std::cout << "I am running with a seed of " << seed << std::endl;
 }
 
-int tester::random ( int max )
+int tester::random ( int max ) const
 {
     return static_cast<uint64_t> ( rand() ) * max / RAND_MAX;
 }
 
-uint64_t tester::random ( uint64_t max )
+uint64_t tester::random ( uint64_t max ) const
 {
     return random ( static_cast<double> ( max ) );
 }
 
-double tester::random ( double max )
+double tester::random ( double max ) const
 {
     return drand48() * max;
 }
 
-void tester::startNewCycle()
+void tester::startNewTimeCycle()
 {
     timeMeasures.push_back ( std::vector<std::chrono::high_resolution_clock::time_point>() );
+}
+
+void tester::startNewRNGCycle()
+{
+    seeds.push_back ( 0u );
+    seeded.push_back ( false );
 }
 
 void tester::writeToFile()
@@ -139,4 +142,15 @@ void tester::writeToFile()
     }
 
     out << std::flush;
+}
+
+std::vector<int64_t> tester::getDurationsForCurrentCycle() const
+{
+    std::vector<int64_t> durations;
+
+    for ( auto it = timeMeasures.back().begin(), jt = timeMeasures.back().begin() + 1; it != timeMeasures.back().end() && jt != timeMeasures.back().end(); ++it, ++jt ) {
+        durations.push_back ( std::chrono::duration_cast<std::chrono::milliseconds> ( ( *jt ) - ( *it ) ).count() );
+    }
+
+    return durations;
 }

@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
-#include <chrono>
 #include "managedPtr.h"
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
 #include "exceptions.h"
+#include "tester.h"
 
 using namespace membrain;
 
@@ -271,6 +271,8 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
     const unsigned int memsize = 1.5 * alloc * sizeof ( double );
     const unsigned int swapsize = 10 * memsize;
     const unsigned int runs = 10;
+    tester test;
+    test.startNewTimeCycle();
 
     managedDummySwap swap ( swapsize );
     cyclicManagedMemory managedMemory ( &swap, memsize );
@@ -290,7 +292,7 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
         }
     }
 
-    chrono::high_resolution_clock::time_point t1 = chrono::high_resolution_clock::now();
+    test.addTimeMeasurement();
 
     {
         ADHERETOLOC ( double, ptr1, lptr1 );
@@ -309,11 +311,7 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
         }
     }
 
-    chrono::high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now();
-    unsigned int mssmart = std::chrono::duration_cast<chrono::milliseconds> ( t2 - t1 ).count();
-    infomsgf ( "Smart access ran for %d ms", mssmart );
-
-    t1 = chrono::high_resolution_clock::now();
+    test.addTimeMeasurement();
 
     for ( unsigned int r = 0; r < runs; ++r ) {
         for ( unsigned int n = 0; n < alloc; n++ ) {
@@ -322,10 +320,12 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
         }
     }
 
-    t2 = chrono::high_resolution_clock::now();
-    unsigned int msdirect = std::chrono::duration_cast<chrono::milliseconds> ( t2 - t1 ).count();
-    infomsgf ( "Direct access ran for %d ms", msdirect );
-    infomsgf ( "Direct access cost %g as much time as smart access", 1.0 * msdirect / mssmart );
+    test.addTimeMeasurement();
+
+    std::vector<int64_t> durations = test.getDurationsForCurrentCycle();
+    infomsgf ( "Smart access ran for %d ms", durations[0] );
+    infomsgf ( "Direct access ran for %d ms", durations[1] );
+    infomsgf ( "Direct access cost %g as much time as smart access", 1.0 * durations[1] / durations[0] );
 }
 
 TEST ( managedPtr, Unit_MultithreadingConcurrentCreateDelete )

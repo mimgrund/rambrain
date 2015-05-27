@@ -69,7 +69,7 @@ int main ( int argc, char **argv )
                 }
 
                 for ( int r = 0; r < repetitions; ++r ) {
-                    myTester.startNewCycle();
+                    myTester.startNewTimeCycle();
                     it->test ( &myTester, args );
                 }
 

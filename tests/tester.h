@@ -19,13 +19,16 @@ public:
     void addComment ( const char *comment );
     void setSeed ( unsigned int seed = time ( NULL ) );
 
-    int random ( int max );
-    uint64_t random ( uint64_t max );
-    double random ( double max = 1.0 );
+    int random ( int max ) const;
+    uint64_t random ( uint64_t max ) const;
+    double random ( double max = 1.0 ) const;
 
-    void startNewCycle();
+    void startNewTimeCycle();
+    void startNewRNGCycle();
 
     void writeToFile();
+
+    std::vector<int64_t> getDurationsForCurrentCycle() const;
 
 private:
     const char *name;
