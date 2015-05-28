@@ -423,17 +423,18 @@ void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
 
 matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "MatrixTranspose" )
 {
-    firstParameter.min = 10;
-    firstParameter.max = 10000;
-    firstParameter.steps = 20;
-    firstParameter.deltaLog = true;
-    firstParameter.mean = 10000;
+    //! @todo do we really want to keep this here?
+    parameter1.min = 10;
+    parameter1.max = 10000;
+    parameter1.steps = 20;
+    parameter1.deltaLog = true;
+    parameter1.mean = 10000;
 
-    secondParameter.min = 10;
-    secondParameter.max = 10000;
-    secondParameter.steps = 20;
-    secondParameter.deltaLog = true;
-    secondParameter.mean = 100;
+    parameter2.min = 10;
+    parameter2.max = 10000;
+    parameter2.steps = 20;
+    parameter2.deltaLog = true;
+    parameter2.mean = 100;
 }
 
 void matrixTransposeTest::actualTestMethod()

@@ -111,22 +111,30 @@ protected:
 };
 
 
-class matrixTransposeTest : public performanceTest<int, int>
-{
+#define PARAMREFS(number, param, params...) testParameter<param> &parameter##number = performanceTest<param, ##params>::parameter
 
-public:
-    matrixTransposeTest();
-    virtual ~matrixTransposeTest() {}
+#define ONEPARAM(param) PARAMREFS(1, param)
+#define TWOPARAMS(param1, param2) PARAMREFS(1, param1, param2); \
+                                  PARAMREFS(2, param2)
 
-protected:
-    //! @todo pass parameters, need to adjust method signature based on inheritence signature
-    virtual void actualTestMethod();
+#define TESTCLASS(name, parammacro, params...) \
+    class name : public performanceTest<params> \
+    { \
+    public: \
+        name(); \
+        virtual ~name() {} \
+    protected: \
+        virtual void actualTestMethod(); \
+        parammacro; \
+    }
 
-    //! @todo macro for something like this or even to build the whole class declaration?
-    testParameter<int> &firstParameter = performanceTest<int, int>::parameter;
-    testParameter<int> &secondParameter = performanceTest<int>::parameter;
+#define ONEPARAMTEST(name, param) TESTCLASS(name, ONEPARAM(param), param)
+#define TWOPARAMTEST(name, param1, param2) TESTCLASS(name, TWOPARAMS(param1, param2), param1, param2)
 
-};
+
+// Actual performance test classes come here
+
+TWOPARAMTEST ( matrixTransposeTest, int, int );
 
 
 #endif // PERFORMANCETESTS_H
