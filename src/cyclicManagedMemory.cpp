@@ -150,8 +150,8 @@ bool cyclicManagedMemory::setPreemptiveLoading ( bool preemptive )
 }
 void cyclicManagedMemory::printMemUsage()
 {
-    unsigned int claimed_use = swap->getUsedSwap();
-    fprintf ( stderr, "%u\t%u=%u\t%u\n", memory_used, claimed_use, memory_swapped, preemptiveBytes );
+    global_bytesize claimed_use = swap->getUsedSwap();
+    fprintf ( stderr, "%lu\t%lu=%lu\t%lu\n", memory_used, claimed_use, memory_swapped, preemptiveBytes );
 }
 
 
@@ -365,8 +365,17 @@ void cyclicManagedMemory::printCycle()
         case MEM_ALLOCATED:
             status[0] = 'A';
             break;
+        case MEM_SWAPIN:
+            status[0] = 'I';
+            break;
+        case MEM_SWAPOUT:
+            status[0] = 'O';
+            break;
         case MEM_SWAPPED:
             status[0] = 'S';
+            break;
+        case MEM_ALLOCATED_INUSE:
+            status[0] = '?';
             break;
         case MEM_ALLOCATED_INUSE_WRITE:
             status[0] = 'W';
@@ -389,7 +398,7 @@ void cyclicManagedMemory::printCycle()
     printf ( "\n" );
 }
 
-bool cyclicManagedMemory::swapOut ( unsigned int min_size )
+bool cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
 {
     if ( counterActive == 0 ) {
         pthread_mutex_unlock ( &stateChangeMutex );
@@ -397,12 +406,12 @@ bool cyclicManagedMemory::swapOut ( unsigned int min_size )
     }
     VERBOSEPRINT ( "swapOutEntry" );
     if ( min_size > memory_max ) {
-        errmsgf ( "Cannot swap out %d Bytes for this object as the RAM only holds %d bytes by your definition", min_size, memory_max );
+        errmsgf ( "Cannot swap out %lu Bytes for this object as the RAM only holds %lu bytes by your definition", min_size, memory_max );
         return false;
     }
     global_bytesize swap_free = swap->getFreeSwap();
     if ( min_size > swap_free ) {
-        errmsgf ( "Cannot swap out %d Bytes for this object as Swap space has only %ld free Bytes.", min_size, swap_free );
+        errmsgf ( "Cannot swap out %lu Bytes for this object as Swap space has only %lu free Bytes.", min_size, swap_free );
         return false;
     }
 
