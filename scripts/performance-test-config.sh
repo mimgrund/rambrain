@@ -66,7 +66,7 @@ do
 done
 
 
-RunMatrixCleverTransposeOpenMP2=1
+RunMatrixCleverTransposeOpenMP2=0
 declare -a MatrixCleverTransposeOpenMPSize2
 declare -a MatrixCleverTransposeOpenMPMemory2
 for i in `seq 0 20`;
@@ -74,4 +74,27 @@ do
   MatrixCleverTransposeOpenMPSize2[$i]=10000
   MatrixCleverTransposeOpenMPMemory2[$i]=$(echo "" | awk "END {print 10.0 ^ ($i * 3.0 / 20.0 + 2.0)}")
   MatrixCleverTransposeOpenMPMemory2[$i]=${MatrixCleverTransposeOpenMPMemory2[$i]%.*}
+done
+
+RunMatrixCleverBlockTransposeOpenMP1=1
+#MatrixCleverBlockTransposeOpenMPSize1=(1000 2000 3000 4000 5000)
+#MatrixCleverBlockTransposeOpenMPMemory=(10 10 10 10 10)
+declare -a MatrixCleverBlockTransposeOpenMPSize1
+declare -a MatrixCleverBlockTransposeOpenMPMemory1
+for i in `seq 0 20`;
+do
+  MatrixCleverBlockTransposeOpenMPSize1[$i]=$(echo "" | awk "END {print 10.0 ^ ($i * 3.0 / 20.0 + 1.0)}")
+  MatrixCleverBlockTransposeOpenMPSize1[$i]=${MatrixCleverBlockTransposeOpenMPSize1[$i]%.*}
+  MatrixCleverBlockTransposeOpenMPMemory1[$i]=100
+done
+
+
+RunMatrixCleverBlockTransposeOpenMP2=1
+declare -a MatrixCleverBlockTransposeOpenMPSize2
+declare -a MatrixCleverBlockTransposeOpenMPMemory2
+for i in `seq 0 20`;
+do
+  MatrixCleverBlockTransposeOpenMPSize2[$i]=10000
+  MatrixCleverBlockTransposeOpenMPMemory2[$i]=$(echo "" | awk "END {print 10.0 ^ ($i * 3.0 / 20.0 + 2.0)}")
+  MatrixCleverBlockTransposeOpenMPMemory2[$i]=${MatrixCleverBlockTransposeOpenMPMemory2[$i]%.*}
 done

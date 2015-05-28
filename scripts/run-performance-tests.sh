@@ -192,21 +192,21 @@ then
   display MatrixCleverTranspose2.png &
 fi
 
-if [[ $RunMatrixCleverTransposeOpenMP2 -eq 1 ]] ;
+if [[ $RunMatrixCleverBlockTransposeOpenMP1 -eq 1 ]] ;
 then
-  countRuns=${#MatrixCleverTransposeOpenMPSize2[@]}
+  countRuns=${#MatrixCleverBlockTransposeOpenMPSize1[@]}
   
-  echo "Running ${countRuns} different matrix transposes ${TestRepetitions} times"
+  echo "Running ${countRuns} different matrix transposeOpenMPs ${TestRepetitions} times"
   rm temp.dat
   
   for i in `seq 0 $((countRuns-1))`;
   do
     echo "Run $((i+1)) ..."
-    echo "./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTransposeOpenMP ${MatrixCleverTransposeOpenMPSize2[$i]} ${MatrixCleverTransposeOpenMPMemory2[$i]}"
+    echo "./bin/membrain-performancetests ${TestRepetitions} MatrixCleverBlockTransposeOpenMP ${MatrixCleverBlockTransposeOpenMPSize1[$i]} ${MatrixCleverBlockTransposeOpenMPMemory1[$i]}"
     
-    ./bin/membrain-performancetests ${TestRepetitions} MatrixCleverTransposeOpenMP ${MatrixCleverTransposeOpenMPSize2[$i]} ${MatrixCleverTransposeOpenMPMemory2[$i]}
+    ./bin/membrain-performancetests ${TestRepetitions} MatrixCleverBlockTransposeOpenMP ${MatrixCleverBlockTransposeOpenMPSize1[$i]} ${MatrixCleverBlockTransposeOpenMPMemory1[$i]}
     
-    echo -n "${MatrixCleverTransposeOpenMPSize2[$i]} ${MatrixCleverTransposeOpenMPMemory2[$i]} " >> temp.dat
+    echo -n "${MatrixCleverBlockTransposeOpenMPSize1[$i]} ${MatrixCleverBlockTransposeOpenMPMemory1[$i]} " >> temp.dat
     while read line
     do
       if [[ ! "${line}" == \#* ]] ;
@@ -217,14 +217,60 @@ then
         i=$((arrLength-2))
         echo -n "${array[$i]} " >> temp.dat
       fi
-    done < "perftest_MatrixCleverTransposeOpenMP#${MatrixCleverTransposeOpenMPSize2[$i]}#${MatrixCleverTransposeOpenMPMemory2[$i]}"
+    done < "perftest_MatrixCleverBlockTransposeOpenMP#${MatrixCleverBlockTransposeOpenMPSize1[$i]}#${MatrixCleverBlockTransposeOpenMPMemory1[$i]}"
     echo >> temp.dat
 
   done
   
   rm temp.gnuplot
   echo "set terminal postscript eps enhanced color 'Helvetica,10'" >> temp.gnuplot
-  echo "set output \"MatrixCleverTransposeOpenMP2.eps\"" >> temp.gnuplot
+  echo "set output \"MatrixCleverBlockTransposeOpenMP1.eps\"" >> temp.gnuplot
+  echo "set xlabel \"Matrix size per dimension\"" >> temp.gnuplot
+  echo "set ylabel \"Execution time [ms]\"" >> temp.gnuplot
+  echo "set title \"Matrix clever transposeOpenMP\"" >> temp.gnuplot
+  echo "set log xy" >> temp.gnuplot
+  echo "plot 'temp.dat' using 1:3 with lines title \"Allocation & Definition\", \\" >> temp.gnuplot
+  echo "'temp.dat' using 1:4 with lines title \"Transposition\", \\" >> temp.gnuplot
+  echo "'temp.dat' using 1:5 with lines title \"Deletion\", \\" >> temp.gnuplot
+  echo "'temp.dat' using 1:(\$3+\$4+\$5) with lines title \"Total\"" >> temp.gnuplot
+  gnuplot temp.gnuplot
+  convert -density 300 -resize 1920x MatrixCleverBlockTransposeOpenMP1.eps -flatten MatrixCleverBlockTransposeOpenMP1.png
+  display MatrixCleverBlockTransposeOpenMP1.png &
+fi
+
+if [[ $RunMatrixCleverBlockTransposeOpenMP2 -eq 1 ]] ;
+then
+  countRuns=${#MatrixCleverBlockTransposeOpenMPSize2[@]}
+  
+  echo "Running ${countRuns} different matrix transposes ${TestRepetitions} times"
+  rm temp.dat
+  
+  for i in `seq 0 $((countRuns-1))`;
+  do
+    echo "Run $((i+1)) ..."
+    echo "./bin/membrain-performancetests ${TestRepetitions} MatrixCleverBlockTransposeOpenMP ${MatrixCleverBlockTransposeOpenMPSize2[$i]} ${MatrixCleverBlockTransposeOpenMPMemory2[$i]}"
+    
+    ./bin/membrain-performancetests ${TestRepetitions} MatrixCleverBlockTransposeOpenMP ${MatrixCleverBlockTransposeOpenMPSize2[$i]} ${MatrixCleverBlockTransposeOpenMPMemory2[$i]}
+    
+    echo -n "${MatrixCleverBlockTransposeOpenMPSize2[$i]} ${MatrixCleverBlockTransposeOpenMPMemory2[$i]} " >> temp.dat
+    while read line
+    do
+      if [[ ! "${line}" == \#* ]] ;
+      then
+        IFS='   ' read -a array <<< "$line"
+        
+        arrLength=countRuns=${#array[@]}
+        i=$((arrLength-2))
+        echo -n "${array[$i]} " >> temp.dat
+      fi
+    done < "perftest_MatrixCleverBlockTransposeOpenMP#${MatrixCleverBlockTransposeOpenMPSize2[$i]}#${MatrixCleverBlockTransposeOpenMPMemory2[$i]}"
+    echo >> temp.dat
+
+  done
+  
+  rm temp.gnuplot
+  echo "set terminal postscript eps enhanced color 'Helvetica,10'" >> temp.gnuplot
+  echo "set output \"MatrixCleverBlockTransposeOpenMP2.eps\"" >> temp.gnuplot
   echo "set xlabel \"Matrix rows in main memory\"" >> temp.gnuplot
   echo "set ylabel \"Execution time [ms]\"" >> temp.gnuplot
   echo "set title \"Matrix clever transpose (openMP)\"" >> temp.gnuplot
@@ -234,9 +280,11 @@ then
   echo "'temp.dat' using 2:5 with lines title \"Deletion\", \\" >> temp.gnuplot
   echo "'temp.dat' using 2:(\$3+\$4+\$5) with lines title \"Total\"" >> temp.gnuplot
   gnuplot temp.gnuplot
-  convert -density 300 -resize 1920x MatrixCleverTransposeOpenMP2.eps -flatten MatrixCleverTransposeOpenMP2.png
-  display MatrixCleverTransposeOpenMP2.png &
+  convert -density 300 -resize 1920x MatrixCleverBlockTransposeOpenMP2.eps -flatten MatrixCleverBlockTransposeOpenMP2.png
+  display MatrixCleverBlockTransposeOpenMP2.png &
 fi
+
+
 
 rm temp.gnuplot
 rm temp.dat
