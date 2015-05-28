@@ -35,6 +35,8 @@ struct testMethod {
 
 
 
+
+template<typename T>
 class testParameter
 {
 
@@ -42,23 +44,11 @@ public:
     testParameter() {}
     virtual ~testParameter() {}
 
-};
-
-
-template<typename T>
-class testParameterImpl : testParameter
-{
-
-public:
-    testParameterImpl() : testParameter() {}
-    virtual ~testParameterImpl() {}
-
     T min, max, delta, mean;
 
 };
 
 
-template<int parameterCount>
 class performanceTest
 {
 
@@ -70,12 +60,43 @@ public:
 
 protected:
     const char *name;
-    testParameter parameter[parameterCount];
 
 };
 
 
-class matrixTransposeTest : public performanceTest<2>
+template<typename... U>
+class parameterCollection;
+
+
+template<typename T, typename... U>
+class parameterCollection<T, U...> : public parameterCollection<U...>
+{
+
+public:
+    parameterCollection () : parameterCollection<U...>() {}
+    virtual ~parameterCollection() {}
+
+protected:
+    testParameter<T> parameter;
+
+};
+
+
+template<typename T>
+class parameterCollection<T>
+{
+
+public:
+    parameterCollection () {}
+    virtual ~parameterCollection() {}
+
+protected:
+    testParameter<T> parameter;
+
+};
+
+
+class matrixTransposeTest : public performanceTest, parameterCollection<int, int>
 {
 
 public:
