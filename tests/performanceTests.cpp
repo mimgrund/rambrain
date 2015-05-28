@@ -424,6 +424,17 @@ void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
 
 matrixTransposeTest::matrixTransposeTest() : performanceTest ( "MatrixTranspose" ), parameterCollection<int, int>()
 {
+    firstParameter.min = 10;
+    firstParameter.max = 10000;
+    firstParameter.steps = 20;
+    firstParameter.deltaLog = true;
+    firstParameter.mean = 10000;
+
+    secondParameter.min = 10;
+    secondParameter.max = 10000;
+    secondParameter.steps = 20;
+    secondParameter.deltaLog = true;
+    secondParameter.mean = 100;
 }
 
 void matrixTransposeTest::runTests ( const char *comment )

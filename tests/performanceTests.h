@@ -44,7 +44,9 @@ public:
     testParameter() {}
     virtual ~testParameter() {}
 
-    T min, max, delta, mean;
+    T min, max, mean;
+    unsigned int steps;
+    bool deltaLog;
 
 };
 
@@ -96,7 +98,7 @@ protected:
 };
 
 
-class matrixTransposeTest : public performanceTest, parameterCollection<int, int>
+class matrixTransposeTest : public performanceTest, public parameterCollection<int, int>
 {
 
 public:
@@ -104,6 +106,11 @@ public:
     virtual ~matrixTransposeTest() {}
 
     virtual void runTests ( const char *comment = "" );
+
+protected:
+    //! @todo macro for something like this or even to build the whole class declaration?
+    testParameter<int> &firstParameter = parameterCollection<int, int>::parameter;
+    testParameter<int> &secondParameter = parameterCollection<int>::parameter;
 
 };
 
