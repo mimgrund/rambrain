@@ -15,7 +15,7 @@ namespace membrain
 {
 pthread_mutex_t cyclicManagedMemory::cyclicTopoLock = PTHREAD_MUTEX_INITIALIZER;
 
-cyclicManagedMemory::cyclicManagedMemory ( managedSwap *swap, unsigned int size ) : managedMemory ( swap, size )
+cyclicManagedMemory::cyclicManagedMemory ( managedSwap *swap, global_bytesize size ) : managedMemory ( swap, size )
 {
 }
 
@@ -167,17 +167,17 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     cyclicAtime *oldBorder = counterActive;
 
 
-    unsigned int actual_obj_size = chunk.size;
+    global_bytesize actual_obj_size = chunk.size;
     //We want to read in what the user requested plus fill up the preemptive area with opportune guesses
 
     bool preemptiveAutooff = swap->getFreeSwap() / swap->getSwapSize() > preemptiveTurnoffFraction;
 
     if ( preemtiveSwapIn && preemptiveAutooff ) {
-        unsigned int targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
+        global_bytesize targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
         //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
         //Swap out if we want to read in more than what we thought:
         if ( targetReadinVol + memory_used > memory_max ) {
-            unsigned int targetSwapoutVol = actual_obj_size + ( 1. - swapOutFrac ) * memory_max - preemptiveBytes;
+            global_bytesize targetSwapoutVol = actual_obj_size + ( 1. - swapOutFrac ) * memory_max - preemptiveBytes;
 
             if ( !swapOut ( targetSwapoutVol ) ) {
                 if ( memory_used + actual_obj_size > memory_max ) {
@@ -197,7 +197,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         cyclicAtime *readEl = ( cyclicAtime * ) chunk.schedBuf;
         cyclicAtime *cur = readEl;
         cyclicAtime *endSwapin = readEl;
-        unsigned int selectedReadinVol = 0;
+        global_bytesize selectedReadinVol = 0;
         unsigned int numberSelected = 0;
 
         do {
@@ -415,17 +415,17 @@ bool cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
         return false;
     }
 
-    unsigned int mem_alloc_max = memory_max * swapOutFrac; //<- This is target size
-    unsigned int mem_swap_min = memory_used > mem_alloc_max ? memory_used - mem_alloc_max : 0;
-    unsigned int mem_swap = mem_swap_min < min_size ? min_size : mem_swap_min;
+    global_bytesize mem_alloc_max = memory_max * swapOutFrac; //<- This is target size
+    global_bytesize mem_swap_min = memory_used > mem_alloc_max ? memory_used - mem_alloc_max : 0;
+    global_bytesize mem_swap = mem_swap_min < min_size ? min_size : mem_swap_min;
 
     mem_swap = mem_swap > swap_free ? min_size : mem_swap;
 
     cyclicAtime *fromPos = counterActive;
     cyclicAtime *countPos = counterActive;
-    unsigned int unload_size = 0, unload = 0;
-    unsigned int unload_size2 = 0;
-    unsigned int passed = 0;
+    global_bytesize unload_size = 0;
+    global_bytesize unload_size2 = 0;
+    unsigned int passed = 0, unload = 0;
     while ( unload_size < mem_swap ) {
         ++passed;
         if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size <= swap_free ) ) {

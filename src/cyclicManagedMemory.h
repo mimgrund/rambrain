@@ -18,7 +18,7 @@ struct cyclicAtime {
 class cyclicManagedMemory : public managedMemory
 {
 public:
-    cyclicManagedMemory ( managedSwap *swap, unsigned int size );
+    cyclicManagedMemory ( membrain::managedSwap *swap, membrain::global_bytesize size );
     virtual ~cyclicManagedMemory() {}
 
     void printCycle();
