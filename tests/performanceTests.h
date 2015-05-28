@@ -55,20 +55,6 @@ template<typename... U>
 class performanceTest;
 
 
-template<typename T, typename... U>
-class performanceTest<T, U...> : public performanceTest<U...>
-{
-
-public:
-    performanceTest ( const char *name ) : performanceTest<U...> ( name ) {}
-    virtual ~performanceTest() {}
-
-protected:
-    testParameter<T> parameter;
-
-};
-
-
 template<typename T>
 class performanceTest<T>
 {
@@ -77,17 +63,49 @@ public:
     performanceTest ( const char *name ) : name ( name ) {}
     virtual ~performanceTest() {}
 
-    virtual void runTests ( const char *comment = "" ) = 0;
+    virtual void runTests () {
+        for ( unsigned int i = 0; i < paramCount; ++i ) {
+            runTestForParameter ( i );
+        }
+    }
 
 protected:
-    template <typename U>
-    void runTestForParameter ( testParameter<U> parameter ) {
+    //! @todo add plotting
+    void runTestForParameter ( unsigned int i ) {
         //! @todo implement
     }
 
     virtual void actualTestMethod() = 0;
 
+    virtual void setParameterCount ( unsigned int count ) {
+        if ( count > paramCount ) {
+            paramCount = count;
+        }
+    }
+
     const char *name;
+
+    testParameter<T> parameter;
+    unsigned int paramCount = 1;
+
+};
+
+
+template<typename T, typename... U>
+class performanceTest<T, U...> : public performanceTest<U...>
+{
+
+public:
+    performanceTest ( const char *name ) : performanceTest<U...> ( name ) {
+        setParameterCount ( 1 + sizeof... ( U ) );
+    }
+
+    virtual ~performanceTest() {}
+
+protected:
+    virtual void setParameterCount ( unsigned int count ) {
+        performanceTest<U...>::setParameterCount ( count );
+    }
 
     testParameter<T> parameter;
 
@@ -100,13 +118,6 @@ class matrixTransposeTest : public performanceTest<int, int>
 public:
     matrixTransposeTest();
     virtual ~matrixTransposeTest() {}
-
-    //! @todo macro for something like this or even to build the whole class declaration?
-    //! @todo add plotting
-    virtual void runTests ( const char *comment = "" ) {
-        runTestForParameter ( firstParameter );
-        runTestForParameter ( secondParameter );
-    }
 
 protected:
     //! @todo pass parameters, need to adjust method signature based on inheritence signature
