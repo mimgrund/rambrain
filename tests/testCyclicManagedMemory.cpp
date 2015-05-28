@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <time.h>
 #include <stdlib.h>
+#include "xmmintrin.h"
 #include "cyclicManagedMemory.h"
 #include "managedPtr.h"
 #include "managedDummySwap.h"
@@ -384,4 +385,61 @@ TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceInTotal )
     delete ptr3;
     delete ptr4;
     delete ptr5;
+}
+
+TEST ( cyclicManagedMemory, Unit_WorkingWithSSE )
+{
+    union sixteen {
+        float f[4];
+        __m128 simd;
+    } __attribute__ ( ( aligned ( 16 ) ) );
+
+    const unsigned int memsize = sizeof ( double ) * 3;
+    const unsigned int swapmem = memsize * 100;
+
+    managedDummySwap swap ( swapmem );
+    cyclicManagedMemory manager ( &swap, memsize );
+
+    managedPtr<sixteen> ptr1 ( 1 );
+    {
+        ADHERETOLOC ( sixteen, ptr1, locptr1 );
+        for ( int i = 0; i < 4; ++i ) {
+            locptr1[0].f[i] = i;
+        }
+    }
+
+    managedPtr<sixteen> ptr2 ( 1 );
+    {
+        ADHERETOLOC ( sixteen, ptr2, locptr2 );
+        for ( int i = 0; i < 4; ++i ) {
+            locptr2[0].f[i] = i + 5;
+        }
+    }
+
+    {
+        ADHERETOLOC ( sixteen, ptr1, locptr1 );
+        for ( int i = 0; i < 4; ++i ) {
+            ASSERT_EQ ( i, locptr1[0].f[i] );
+        }
+
+        sixteen s;
+        for ( int i = 0; i < 4; ++i ) {
+            s.f[i] = 10 * i;
+        }
+        locptr1[0].simd = _mm_add_ps ( locptr1[0].simd, s.simd );
+    }
+
+    {
+        ADHERETOLOCCONST ( sixteen, ptr2, locptr2 );
+        for ( int i = 0; i < 4; ++i ) {
+            ASSERT_EQ ( i + 5, locptr2[0].f[i] );
+        }
+    }
+
+    {
+        ADHERETOLOC ( sixteen, ptr1, locptr1 );
+        for ( int i = 0; i < 4; ++i ) {
+            ASSERT_EQ ( 11 * i, locptr1[0].f[i] );
+        }
+    }
 }
