@@ -6,23 +6,22 @@
 #include <sys/stat.h>
 #include "exceptions.h"
 #include "managedMemory.h"
+#include <aio.h>
+#include <signal.h>
 namespace membrain
 {
-
+  
 managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile ) : managedSwap ( size ), pageSize ( sysconf ( _SC_PAGE_SIZE ) )
 {
+    
+  
     if ( oneFile == 0 ) { // Layout this on your own:
 
         global_bytesize myg = size / 16;
         oneFile = min ( gig, myg );
         oneFile = max ( mib, oneFile );
     }
-    //calculate page File number:
-    global_bytesize padding = oneFile % pageSize;
-    if ( padding != 0 ) {
-        warnmsgf ( "requested single swap filesize is not a multiple of pageSize.\n\t %lu Bytes left over.", padding );
-        oneFile += pageSize - padding;
-    }
+    
     pageFileSize = oneFile;
     if ( size % oneFile != 0 ) {
         pageFileNumber = size / oneFile + 1;
@@ -46,12 +45,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
 
     //Initialize swapmalloc:
     for ( unsigned int n = 0; n < pageFileNumber; n++ ) {
-        pageFileLocation *pfloc = new pageFileLocation;
-        pfloc->file = n;
-        pfloc->offset = 0;
-        pfloc->size = pageFileSize;
-        pfloc->glob_off_next = NULL; // We may use 0 for invalid, as the first one is never the next.
-        pfloc->status = PAGE_FREE;
+        pageFileLocation *pfloc = new pageFileLocation(n,0,pageFileSize);
         free_space[n * pageFileSize] = pfloc;
         all_space[n * pageFileSize] = pfloc;
     }
@@ -68,6 +62,14 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
 
     instance = this;
     signal ( SIGUSR2, managedFileSwap::sigStat );
+    
+    //Event handler for aio:
+      evhandler.sigev_notify = SIGEV_THREAD;
+      evhandler     .sigev_signo = 0;
+      evhandler.sigev_value.sival_ptr = NULL;
+      evhandler.sigev_notify_function = managedFileSwap::staticAsyncIoArrived;
+      evhandler.sigev_notify_attributes=0;
+      
 
 }
 
@@ -343,37 +345,46 @@ global_offset managedFileSwap::determineGlobalOffset ( const pageFileLocation &r
 }
 pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, global_bytesize length )
 {
-    pageFileLocation pfLoc;
-    pfLoc.size = length;
-    pfLoc.file = g_offset / pageFileSize;
-    pfLoc.offset = g_offset - pfLoc.file * pageFileSize;
-    pfLoc.glob_off_next = NULL;
-    pfLoc.status = PAGE_UNKNOWN_STATE;
+    pageFileLocation pfLoc(g_offset / pageFileSize,g_offset - pfLoc.file * pageFileSize,length,PAGE_UNKNOWN_STATE);
     return pfLoc;
 }
 
 
 
-
-void managedFileSwap::copyMem ( const pageFileLocation &ref, void *ramBuf )
+void managedFileSwap::scheduleCopy( pageFileLocation &ref, void* ramBuf, bool reverse)
 {
-    const pageFileLocation *cur = &ref;
+  if(reverse){
+    //Check what is to check for a copy from ref to ramBuf:
+    if(ref.status&MEM_ALLOCATED)
+      throw memoryException("Cannot copy in buffer that is already allocated");
+    
+  }else{
+    if(ref.status&MEM_SWAPPED)
+      throw memoryException("Cannot copy out buffer that is already swapped");
+    
+  }
+  ref.aio_ptr = new struct aiocb;
+  ref.aio_ptr->aio_buf = ramBuf;
+  ref.aio_ptr->aio_fildes = fileno(swapFiles[ref.file]);
+  ref.aio_ptr->aio_nbytes = ref.size;
+  ref.aio_ptr->aio_offset = ref.offset;
+  ref.aio_ptr->aio_reqprio = 0;///@todo: make this configurable
+  ref.aio_ptr->aio_sigevent = evhandler;
+  ref.aio_ptr->aio_sigevent.sigev_value.sival_ptr = &ref;
+}
+
+
+void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf )
+{
+    pageFileLocation *cur = &ref;
     char *cramBuf = ( char * ) ramBuf;
     global_bytesize offset = 0;
     while ( true ) { //Sift through all pageChunks that have to be read
         global_offset g_off = determineGlobalOffset ( *cur );
 
         global_bytesize pageChunkSize = cur->size;
-        while ( pageChunkSize > 0 ) { //Sift through potential window change
-            pageFileLocation loc = determinePFLoc ( g_off, pageChunkSize );
-            global_bytesize pagedIn = pageChunkSize;
-            void *pageFileBuf = getMem ( loc, pagedIn );
-            memcpy ( pageFileBuf, cramBuf + offset, pagedIn );
-            pageChunkSize -= pagedIn;
-            offset += pagedIn;
-            g_off += pagedIn;
-        }
-
+	offset+=cur->size;
+	scheduleCopy(*cur,(void*)(cramBuf + offset));
         if ( cur->status == PAGE_END ) {//I have completely written this pageChunk.
             break;
         }
@@ -381,25 +392,18 @@ void managedFileSwap::copyMem ( const pageFileLocation &ref, void *ramBuf )
     };
 }
 
-void managedFileSwap::copyMem ( void *ramBuf, const pageFileLocation &ref )
+void managedFileSwap::copyMem ( void *ramBuf,  pageFileLocation &ref )
 {
-    const pageFileLocation *cur = &ref;
+    pageFileLocation *cur = &ref;
     char *cramBuf = ( char * ) ramBuf;
     global_bytesize offset = 0;
     while ( true ) { //Sift through all pageChunks that have to be read
         global_offset g_off = determineGlobalOffset ( *cur );
 
         global_bytesize pageChunkSize = cur->size;
-        while ( pageChunkSize > 0 ) { //Sift through potential window change
-            pageFileLocation loc = determinePFLoc ( g_off, pageChunkSize );
-            global_bytesize pagedIn = pageChunkSize;
-            void *pageFileBuf = getMem ( loc, pagedIn );
-            memcpy ( cramBuf + offset, pageFileBuf, pagedIn );
-            pageChunkSize -= pagedIn;
-            offset += pagedIn;
-            g_off += pagedIn;
-        }
-        if ( cur->status == PAGE_END ) {
+	offset+=cur->size;
+	scheduleCopy(cramBuf + offset,*cur);
+        if ( cur->status == PAGE_END ) {//I have completely written this pageChunk.
             break;
         }
         cur = cur->glob_off_next;

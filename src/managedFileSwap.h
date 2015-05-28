@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <map>
+#include <aio.h>
+#include <signal.h>
 
 //Test classes
 class managedFileSwap_Unit_SwapAllocation_Test;
@@ -25,14 +27,16 @@ typedef uint64_t global_offset;
 
 
 //This will be stored in managedMemoryChunk::swapBuf :
-struct pageFileLocationStruct {
+class pageFileLocation{
+public:
+    pageFileLocation(unsigned int file, global_bytesize offset,global_bytesize size, pageChunkStatus status=PAGE_FREE): file(file), offset(offset),size(size),glob_off_next(NULL),status(status),aio_ptr(NULL) {};
     unsigned int file;
-    unsigned int offset;
-    unsigned int size;
-    struct pageFileLocationStruct *glob_off_next;//This points if used to the next part, if free to the next free chunk.
+    global_bytesize offset;
+    global_bytesize size;
+    pageFileLocation *glob_off_next;//This points if used to the next part, if free to the next free chunk.
     pageChunkStatus status;
+    struct aiocb *aio_ptr;
 };
-typedef struct pageFileLocationStruct pageFileLocation;
 
 
 
@@ -72,8 +76,10 @@ private:
     FILE **swapFiles = NULL;
 
     //Memory copy:
-    void copyMem ( void *ramBuf, const pageFileLocation &ref );
-    void copyMem ( const pageFileLocation &ref, void *ramBuf );
+    void scheduleCopy(membrain::pageFileLocation& ref, void* ramBuf, bool reverse = false);
+    inline void scheduleCopy(void *ramBuf, pageFileLocation &ref) {scheduleCopy(ref,ramBuf,true);};
+    void copyMem ( void* ramBuf, membrain::pageFileLocation& ref );
+    void copyMem ( membrain::pageFileLocation& ref, void* ramBuf );
 
 
     bool filesOpen = false;
@@ -87,7 +93,13 @@ private:
     std::map<global_offset, pageFileLocation *> free_space;
     std::map<global_offset, pageFileLocation *> all_space;
 
-
+    
+    //sigEvent Handler:
+    struct sigevent evhandler;
+    void asyncIoArrived(union sigval &signal);
+public:
+    static void	staticAsyncIoArrived(union sigval signal) {instance->asyncIoArrived(signal);};
+protected:
     //Test classes
     friend class ::managedFileSwap_Unit_SwapAllocation_Test;
     friend class ::managedFileSwap_Integration_RandomAccess_Test;
