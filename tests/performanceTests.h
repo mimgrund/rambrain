@@ -41,8 +41,13 @@ class testParameter
 {
 
 public:
-    testParameter() {}
-    virtual ~testParameter() {}
+    T valueAtStep ( unsigned int step ) {
+        if ( deltaLog ) {
+            return pow ( 10.0, ( log10 ( max ) - log10 ( min ) ) * step / steps );
+        } else {
+            return ( max - min ) * step / steps;
+        }
+    }
 
     T min, max, mean;
     unsigned int steps;
@@ -74,8 +79,6 @@ protected:
     void runTestForParameter ( unsigned int i ) {
         //! @todo implement
     }
-
-    virtual void actualTestMethod() = 0;
 
     virtual void setParameterCount ( unsigned int count ) {
         if ( count > paramCount ) {
@@ -124,7 +127,7 @@ protected:
         name(); \
         virtual ~name() {} \
     protected: \
-        virtual void actualTestMethod(); \
+        static void actualTestMethod(tester&, params); \
         parammacro; \
     }
 

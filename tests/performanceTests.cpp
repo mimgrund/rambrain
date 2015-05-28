@@ -423,7 +423,6 @@ void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
 
 matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "MatrixTranspose" )
 {
-    //! @todo do we really want to keep this here?
     parameter1.min = 10;
     parameter1.max = 10000;
     parameter1.steps = 20;
@@ -437,7 +436,52 @@ matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "Matrix
     parameter2.mean = 100;
 }
 
-void matrixTransposeTest::actualTestMethod()
+void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
 {
-    //! @todo implement
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 2;
+
+    membrainglobals::config.resizeMemory ( mem );
+    membrainglobals::config.resizeSwap ( swapmem );
+
+    test.addTimeMeasurement();
+
+    // Allocate and set
+    managedPtr<double> *rows[size];
+    for ( unsigned int i = 0; i < size; ++i ) {
+        rows[i] = new managedPtr<double> ( size );
+        adhereTo<double> rowloc ( *rows[i] );
+        double *rowdbl =  rowloc;
+        for ( unsigned int j = 0; j < size; ++j ) {
+            rowdbl[j] = i * size + j;
+        }
+    }
+
+    test.addTimeMeasurement();
+
+    // Transpose
+    for ( unsigned int i = 0; i < size; ++i ) {
+        adhereTo<double> rowloc1 ( *rows[i] );
+        double *rowdbl1 =  rowloc1;
+        for ( unsigned int j = i + 1; j < size; ++j ) {
+            adhereTo<double> rowloc2 ( *rows[j] );
+            double *rowdbl2 =  rowloc2;
+
+            double buffer = rowdbl1[j];
+            rowdbl1[j] = rowdbl2[i];
+            rowdbl2[i] = buffer;
+        }
+    }
+
+    test.addTimeMeasurement();
+
+
+    // Delete
+    for ( unsigned int i = 0; i < size; ++i ) {
+        delete rows[i];
+    }
+
+    test.addTimeMeasurement();
 }
