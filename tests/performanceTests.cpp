@@ -421,7 +421,6 @@ void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
 
 
 
-
 matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "MatrixTranspose" )
 {
     firstParameter.min = 10;
@@ -437,9 +436,7 @@ matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "Matrix
     secondParameter.mean = 100;
 }
 
-void matrixTransposeTest::runTests ( const char *comment )
+void matrixTransposeTest::actualTestMethod()
 {
     //! @todo implement
 }
-
-

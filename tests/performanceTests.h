@@ -80,6 +80,13 @@ public:
     virtual void runTests ( const char *comment = "" ) = 0;
 
 protected:
+    template <typename U>
+    void runTestForParameter ( testParameter<U> parameter ) {
+        //! @todo implement
+    }
+
+    virtual void actualTestMethod() = 0;
+
     const char *name;
 
     testParameter<T> parameter;
@@ -94,9 +101,17 @@ public:
     matrixTransposeTest();
     virtual ~matrixTransposeTest() {}
 
-    virtual void runTests ( const char *comment = "" );
+    //! @todo macro for something like this or even to build the whole class declaration?
+    //! @todo add plotting
+    virtual void runTests ( const char *comment = "" ) {
+        runTestForParameter ( firstParameter );
+        runTestForParameter ( secondParameter );
+    }
 
 protected:
+    //! @todo pass parameters, need to adjust method signature based on inheritence signature
+    virtual void actualTestMethod();
+
     //! @todo macro for something like this or even to build the whole class declaration?
     testParameter<int> &firstParameter = performanceTest<int, int>::parameter;
     testParameter<int> &secondParameter = performanceTest<int>::parameter;
