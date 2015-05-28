@@ -51,7 +51,26 @@ public:
 };
 
 
-class performanceTest
+template<typename... U>
+class performanceTest;
+
+
+template<typename T, typename... U>
+class performanceTest<T, U...> : public performanceTest<U...>
+{
+
+public:
+    performanceTest ( const char *name ) : performanceTest<U...> ( name ) {}
+    virtual ~performanceTest() {}
+
+protected:
+    testParameter<T> parameter;
+
+};
+
+
+template<typename T>
+class performanceTest<T>
 {
 
 public:
@@ -63,42 +82,12 @@ public:
 protected:
     const char *name;
 
-};
-
-
-template<typename... U>
-class parameterCollection;
-
-
-template<typename T, typename... U>
-class parameterCollection<T, U...> : public parameterCollection<U...>
-{
-
-public:
-    parameterCollection () : parameterCollection<U...>() {}
-    virtual ~parameterCollection() {}
-
-protected:
     testParameter<T> parameter;
 
 };
 
 
-template<typename T>
-class parameterCollection<T>
-{
-
-public:
-    parameterCollection () {}
-    virtual ~parameterCollection() {}
-
-protected:
-    testParameter<T> parameter;
-
-};
-
-
-class matrixTransposeTest : public performanceTest, public parameterCollection<int, int>
+class matrixTransposeTest : public performanceTest<int, int>
 {
 
 public:
@@ -109,8 +98,8 @@ public:
 
 protected:
     //! @todo macro for something like this or even to build the whole class declaration?
-    testParameter<int> &firstParameter = parameterCollection<int, int>::parameter;
-    testParameter<int> &secondParameter = parameterCollection<int>::parameter;
+    testParameter<int> &firstParameter = performanceTest<int, int>::parameter;
+    testParameter<int> &secondParameter = performanceTest<int>::parameter;
 
 };
 
