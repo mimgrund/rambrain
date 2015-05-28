@@ -5,6 +5,8 @@
 #include <vector>
 #include <cstring>
 #include <cmath>
+#include <string>
+#include <sstream>
 
 #include "tester.h"
 
@@ -60,6 +62,7 @@ template<typename... U>
 class performanceTest;
 
 
+//! @todo add plotting
 template<typename T>
 class performanceTest<T>
 {
@@ -69,22 +72,23 @@ public:
     virtual ~performanceTest() {}
 
     virtual void runTests () {
-        for ( unsigned int i = 0; i < paramCount; ++i ) {
-            runTestForParameter ( i );
+        for ( unsigned int param = 0; param < paramCount; ++param ) {
+            unsigned int steps = getStepsForParam ( param );
+            string params = getParamsString ( param, step );
+            //! @todo call performance test process
         }
     }
 
 protected:
-    //! @todo add plotting
-    void runTestForParameter ( unsigned int i ) {
-        //! @todo implement
-    }
 
     virtual void setParameterCount ( unsigned int count ) {
         if ( count > paramCount ) {
             paramCount = count;
         }
     }
+
+    virtual unsigned int getStepsForParam ( unsigned int varryParam ) = 0;
+    virtual string getParamsString ( unsigned int varryParam, unsigned int step ) = 0;
 
     const char *name;
 
@@ -128,6 +132,12 @@ protected:
         virtual ~name() {} \
     protected: \
         static void actualTestMethod(tester&, params); \
+        virtual unsigned int getStepsForParam(unsigned int varryParam) { \
+            /!* @todo implement */ \
+        } \
+        virtual string getParamsString(unsigned int varryParam, unsigned int step) { \
+            /!* @todo implement */ \
+        } \
         parammacro; \
     }
 
