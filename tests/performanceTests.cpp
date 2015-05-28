@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <cmath>
 
 #include "tester.h"
 
@@ -15,6 +16,7 @@ using namespace membrain;
 void runMatrixTranspose ( tester *test, char **args );
 void runMatrixCleverTranspose ( tester *test, char **args );
 void runMatrixCleverTransposeOpenMP ( tester *test, char **args );
+void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args );
 
 struct testMethod {
     testMethod ( const char *name, int argumentCount, void ( *test ) ( tester *, char ** ), const char *comment )
@@ -34,6 +36,7 @@ int main ( int argc, char **argv )
     tests.push_back ( testMethod ( "MatrixTranspose", 2, runMatrixTranspose, "Measurements of allocation and definition, transposition, deletion times" ) );
     tests.push_back ( testMethod ( "MatrixCleverTranspose", 2, runMatrixCleverTranspose, "Measurements of allocation and definition, transposition, deletion times, but with a clever transposition algorithm" ) );
     tests.push_back ( testMethod ( "MatrixCleverTransposeOpenMP", 2, runMatrixCleverTransposeOpenMP, "Same as cleverTranspose, but with OpenMP" ) );
+    tests.push_back ( testMethod ( "MatrixCleverBlockTransposeOpenMP", 2, runMatrixCleverBlockTransposeOpenMP, "Same as cleverTranspose, but with OpenMP and blockwise multiplication" ) );
 
     int i = 1;
     if ( i >= argc ) {
@@ -321,6 +324,120 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
     // Delete
     #pragma omp parallel for
     for ( unsigned int i = 0; i < size; ++i ) {
+        delete rows[i];
+    }
+    test->addTimeMeasurement();
+}
+
+void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
+{
+    const unsigned int size = atoi ( args[0] );
+    const unsigned int memlines = atoi ( args[1] );
+    const unsigned int mem = size * sizeof ( double ) *  memlines;
+    const unsigned int swapmem = size * size * sizeof ( double ) * 4;
+
+    //managedFileSwap swap ( swapmem, "membrainswap-%d" );
+    //cyclicManagedMemory manager ( &swap, mem );
+    membrainglobals::config.resizeMemory ( mem );
+    membrainglobals::config.resizeSwap ( swapmem );
+
+
+    test->addTimeMeasurement();
+
+    // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
+
+    unsigned int rows_fetch = sqrt ( memlines * size / 2 );
+    unsigned int blocksize = rows_fetch * rows_fetch;
+
+    unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
+
+    //Blocks are rows_fetch² matrices stored in n_blocks² blocks.
+
+#define blockIdx(x,y) ((x/rows_fetch)*n_blocks+y/rows_fetch)
+#define inBlockX(x,y) (x%rows_fetch)
+#define inBlockY(x,y) (y%rows_fetch)
+#define inBlockIdx(x,y) (inBlockX(x,y)*rows_fetch+inBlockY(x,y))
+    // Allocate and set
+    managedPtr<double> *rows[n_blocks * n_blocks];
+    for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
+        for ( unsigned int ii = 0; ii < n_blocks; ii++ ) {
+            rows[ii * n_blocks + jj] = new managedPtr<double> ( blocksize );
+            adhereTo<double> adh ( *rows[ii * n_blocks + jj] );
+            double *locPtr = adh;
+            unsigned int i_lim = ( ii + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, vertical limit
+            unsigned int j_lim = rows_fetch;//( jj + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, horizontal limit
+            #pragma omp parallel for
+            for ( int i = 0; i < i_lim; i++ ) {
+                for ( int j = 0; j < j_lim; j++ ) {
+                    locPtr[i * rows_fetch + j] = ( ii * rows_fetch + i ) * size + ( j + rows_fetch * jj );
+                }
+            }
+        }
+    }
+    test->addTimeMeasurement();
+//     for ( unsigned int i = 0; i < size; ++i ) {
+//         for ( unsigned int j = 0; j < size; ++j ) {
+//             unsigned int blckidx = blockIdx(i,j);
+//             unsigned int inblck = inBlockIdx(i,j);
+//             adhereTo<double> adh(*rows[blckidx]);
+//             double * loc = adh;
+//             //             if(loc[inblck] != j * size + i)
+//             //                 printf("Failed check!");
+//             //printf("%d,%d\t",blckidx,inblck);
+//             printf("%e\t",loc[inblck]);
+//         }
+//         printf("\n");
+//     }
+
+    for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
+        for ( unsigned int ii = 0; ii <= jj; ii++ ) {
+            //A_iijj <-> B_jjii
+
+            //Reserve rows ii and jj
+            unsigned int i_lim = ( ii + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, vertical limit
+            unsigned int j_lim = ( jj + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, horizontal limit
+
+            //Get rows A_ii** and B_jj** into memory:
+            adhereTo<double> aBlock ( *rows[ii * n_blocks + jj] );
+            adhereTo<double> bBlock ( *rows[jj * n_blocks + ii] );
+
+            double *aLoc = aBlock;
+            double *bLoc = bBlock;
+
+            #pragma omp parallel for
+            for ( unsigned int j = 0; j < j_lim; j++ ) {
+                for ( unsigned int i = 0; i < ( jj == ii ? j : i_lim ); i++ ) { //Inner block matrix transpose, vertical index in A
+                    //Inner block matrxi transpose, horizontal index in A
+                    double inter = aLoc[i * rows_fetch + j]; //Store inner element A_ij
+                    aLoc[i * rows_fetch + j] = bLoc[j * rows_fetch + i]; //Override with element of B_ji
+                    bLoc[j * rows_fetch + i] = inter; //set B_ji to former val of A_ij
+                }
+            }
+        }
+    }
+
+    test->addTimeMeasurement();
+// //      printf("\n");
+//     for ( unsigned int i = 0; i < size; ++i ) {
+//         for ( unsigned int j = 0; j < size; ++j ) {
+//             unsigned int blckidx = blockIdx(i,j);
+//             unsigned int inblck = inBlockIdx(i,j);
+//             adhereTo<double> adh(*rows[blckidx]);
+//             double * loc = adh;
+//                         if(loc[inblck] != j * size + i)
+//                             printf("Failed check!");
+// //             printf("%d,%d\t",blckidx,inblck);
+// //             printf("%e\t",loc[inblck]);
+//         }
+// //         printf("\n");
+//     }
+
+
+
+
+    // Delete
+    #pragma omp parallel for
+    for ( unsigned int i = 0; i < n_blocks * n_blocks; ++i ) {
         delete rows[i];
     }
 
