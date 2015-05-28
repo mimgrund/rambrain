@@ -1,32 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <cstring>
-#include <cmath>
-
-#include "tester.h"
-
-#include "managedFileSwap.h"
-#include "cyclicManagedMemory.h"
-#include "managedPtr.h"
-#include "membrainconfig.h"
-
-using namespace std;
-using namespace membrain;
-
-void runMatrixTranspose ( tester *test, char **args );
-void runMatrixCleverTranspose ( tester *test, char **args );
-void runMatrixCleverTransposeOpenMP ( tester *test, char **args );
-void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args );
-
-struct testMethod {
-    testMethod ( const char *name, int argumentCount, void ( *test ) ( tester *, char ** ), const char *comment )
-        : name ( name ), comment ( comment ), argumentCount ( argumentCount ), test ( test ) {}
-
-    const char *name, *comment;
-    int argumentCount;
-    void ( *test ) ( tester *, char ** );
-};
-
+#include "performanceTests.h"
 
 int main ( int argc, char **argv )
 {
@@ -443,3 +415,20 @@ void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
 
     test->addTimeMeasurement();
 }
+
+
+
+
+
+
+
+matrixTransposeTest::matrixTransposeTest() : performanceTest ( "MatrixTranspose" )
+{
+}
+
+void matrixTransposeTest::runTests ( const char *comment )
+{
+    //! @todo implement
+}
+
+
