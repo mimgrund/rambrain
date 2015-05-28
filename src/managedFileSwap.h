@@ -38,29 +38,6 @@ typedef struct pageFileLocationStruct pageFileLocation;
 
 class managedFileSwap;
 
-class pageFileWindow
-{
-public:
-    pageFileWindow ( const pageFileLocation &location, managedFileSwap &swap );
-    ~pageFileWindow();
-
-    bool isInWindow ( const pageFileLocation &location, global_bytesize &offset_start, global_bytesize &offset_end );
-    bool isInWindow ( const pageFileLocation &location, global_bytesize &length );
-    bool isInWindow ( const pageFileLocation );
-
-    void triggerSync ( bool async = true );
-    float percentageClean();
-    void *getMem ( const pageFileLocation &loc, global_bytesize &size );
-private:
-    void *buf;
-    global_bytesize offset;
-    global_bytesize length;
-    unsigned int file;
-    unsigned int window;
-};
-
-
-
 
 class managedFileSwap : public managedSwap
 {
@@ -94,11 +71,6 @@ private:
 
     FILE **swapFiles = NULL;
 
-    //Window handling:
-    pageFileWindow **windows = NULL;
-    void *getMem ( const pageFileLocation &loc, global_bytesize &size );
-    pageFileWindow *getWindowTo ( const pageFileLocation & );
-
     //Memory copy:
     void copyMem ( void *ramBuf, const pageFileLocation &ref );
     void copyMem ( const pageFileLocation &ref, void *ramBuf );
@@ -115,7 +87,6 @@ private:
     std::map<global_offset, pageFileLocation *> free_space;
     std::map<global_offset, pageFileLocation *> all_space;
 
-    friend pageFileWindow;
 
     //Test classes
     friend class ::managedFileSwap_Unit_SwapAllocation_Test;

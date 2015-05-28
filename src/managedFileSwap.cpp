@@ -1,6 +1,5 @@
 #include "managedFileSwap.h"
 #include "common.h"
-#include <sys/mman.h>
 #include <unistd.h>
 #include <string.h>
 #include <sys/signal.h>
@@ -67,12 +66,6 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
         warnmsg ( "requested single swap filesize is not a multiple of pageSize*16 or 128MiB" );
     }
 
-    //Initialize one swap-window into first swap file:
-    windows = ( pageFileWindow ** ) malloc ( sizeof ( pageFileWindow * ) *windowNumber );
-    for ( unsigned int n = 0; n < windowNumber; ++n ) {
-        windows[n] = 0;
-    }
-
     instance = this;
     signal ( SIGUSR2, managedFileSwap::sigStat );
 
@@ -80,13 +73,6 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
 
 managedFileSwap::~managedFileSwap()
 {
-    if ( windows ) {
-        for ( unsigned int n = 0; n < windowNumber; ++n )
-            if ( windows[n] ) {
-                delete windows[n];
-            }
-        free ( windows );
-    };
     closeSwapFiles();
     free ( ( void * ) filemask );
     if ( all_space.size() > 0 ) {
@@ -368,36 +354,6 @@ pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, globa
 
 
 
-pageFileWindow *managedFileSwap::getWindowTo ( const pageFileLocation &loc )
-{
-    unsigned int w;
-    for ( w = 0; w < windowNumber; ++w ) {
-        if ( !windows[w] ) {
-            break;
-        }
-        if ( windows[w]->isInWindow ( loc ) ) {
-            return windows[w];
-        }
-
-    }
-    if ( w == windowNumber ) {
-        //We have to throw out a window
-        ///\todo More clever selection strategy than:
-        w = ( lastCreatedWindow + 1 ) % windowNumber;
-        delete windows[w];
-    }
-    windows[w] = new pageFileWindow ( loc, *this );
-    lastCreatedWindow = w;
-    return windows[w];
-}
-
-void *managedFileSwap::getMem ( const pageFileLocation &loc, global_bytesize &size )
-{
-    pageFileWindow *window = getWindowTo ( loc );
-    return window->getMem ( loc, size );
-
-}
-
 
 void managedFileSwap::copyMem ( const pageFileLocation &ref, void *ramBuf )
 {
@@ -449,159 +405,6 @@ void managedFileSwap::copyMem ( void *ramBuf, const pageFileLocation &ref )
         cur = cur->glob_off_next;
     };
 }
-
-
-//Page File Window Class:
-
-pageFileWindow::pageFileWindow ( const pageFileLocation &location, managedFileSwap &swap )
-{
-    //We use fixed size windows as everything else will be very complicated when determining to which windows to write to.
-    offset = location.offset - location.offset % swap.windowSize; //local offset in file
-
-    length = swap.windowSize; //window length.
-    file = location.file; //which file.
-
-    const unsigned int fd = fileno ( swap.swapFiles[location.file] );
-
-    //check whether swapfile is big enough, if not, rescale:
-    struct stat stats;
-    fstat ( fd, &stats );
-    global_bytesize destsize = offset + length;
-    if ( stats.st_size < destsize ) {
-
-        if ( ftruncate ( fd, destsize ) == -1 ) {
-            throw memoryException ( "could not resize swap file" );
-        }
-    }
-
-    buf = mmap ( NULL, length, PROT_READ | PROT_WRITE, MAP_SHARED, fd, offset );
-    if ( buf == MAP_FAILED ) {
-        throw memoryException ( "memory map failed!" );
-    }
-}
-
-pageFileWindow::~pageFileWindow()
-{
-    munmap ( buf, length );
-}
-
-void pageFileWindow::triggerSync ( bool async )
-{
-    msync ( buf, length, async ? MS_ASYNC : MS_SYNC );
-}
-
-
-void *pageFileWindow::getMem ( const pageFileLocation &loc, global_bytesize &size )
-{
-    if ( loc.file != file ) {
-        return NULL;
-    }
-    if ( loc.offset < offset ) {
-        return NULL;
-    }
-    if ( loc.offset > offset + length ) {
-        return NULL;
-    }
-    global_bytesize windowBdryDistance = length - loc.offset % length;
-    size = min ( windowBdryDistance, size );
-
-    return ( char * ) buf + ( loc.offset - offset );
-}
-
-bool pageFileWindow::isInWindow ( const pageFileLocation &location, global_bytesize &offset_start, global_bytesize &offset_end )
-{
-    if ( location.file != file ) {
-        return false;
-    }
-    bool startIn = false;
-    bool endIn = false;
-    if ( location.offset >= offset && location.offset < offset + length ) {
-        startIn = true;
-        offset_start = location.offset;
-    } else {
-        offset_start = 0;
-    }
-    if ( location.offset + location.size >= offset && location.offset + location.size < offset + length ) {
-        endIn = true;
-        offset_end = location.offset + location.size;
-    } else {
-        offset_end = offset + length;
-    }
-    if ( !startIn && !endIn ) {
-        return false;
-    }
-
-    return startIn || endIn;
-}
-
-bool pageFileWindow::isInWindow ( const pageFileLocation &location, global_bytesize &length )
-{
-    if ( location.file != file ) {
-        return false;
-    }
-    global_bytesize offset_start, offset_end;
-    if ( location.offset >= offset && location.offset < offset + length ) {
-        offset_start = location.offset;
-    } else {
-        return false;
-        offset_start = 0;
-    }
-    if ( location.offset + location.size >= offset && location.offset + location.size < offset + length ) {
-        offset_end = location.offset + location.size;
-    } else {
-        offset_end = offset + length;
-    }
-    length = offset_end - offset_start;
-    return true;
-}
-
-bool pageFileWindow::isInWindow ( const pageFileLocation location )
-{
-    if ( location.file != file ) {
-        return false;
-    }
-    if ( location.offset >= offset && location.offset < offset + length ) {
-        return true;
-    }
-    return false;
-
-
-}
-
-void managedFileSwap::sigStat ( int signum )
-{
-    global_bytesize total_space = instance->swapSize;
-    global_bytesize free_space = 0;
-    global_bytesize free_space2 = 0;
-    global_bytesize fractured = 0;
-    global_bytesize partend = 0;
-    auto it = instance->free_space.begin();
-    do {
-        free_space += it->second->size;
-    } while ( ++it != instance->free_space.end() );
-
-    it = instance->all_space.begin();
-    do {
-        switch ( it->second->status ) {
-        case PAGE_END:
-            partend += it->second->size;
-            break;
-        case PAGE_FREE:
-            free_space2 += it->second->size;
-            break;
-        case PAGE_PART:
-            fractured += it->second->size;
-            break;
-        default:
-            break;
-        }
-    } while ( ++it != instance->all_space.end() );
-
-    printf ( "%ld\t%ld\t%ld\t%e\t%e\t%s\n", free_space, partend, fractured, ( ( double ) free_space ) / ( partend + fractured + free_space ), ( ( ( double ) ( total_space ) - ( partend + fractured + free_space ) ) / ( total_space ) ), ( free_space == instance->swapFree ? "sane" : "insane" ) );
-
-
-}
-
 managedFileSwap *managedFileSwap::instance = NULL;
 
 }
