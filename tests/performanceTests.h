@@ -97,16 +97,15 @@ class performanceTest<T, U...> : public performanceTest<U...>
 
 public:
     performanceTest ( const char *name ) : performanceTest<U...> ( name ) {
-        setParameterCount ( 1 + sizeof... ( U ) );
+        unsigned int s = 1 + sizeof... ( U );
+        if ( s > this->paramCount ) {
+            this->paramCount = s;
+        }
     }
 
     virtual ~performanceTest() {}
 
 protected:
-    virtual void setParameterCount ( unsigned int count ) {
-        performanceTest<U...>::setParameterCount ( count );
-    }
-
     testParameter<T> parameter;
 
 };
