@@ -15,7 +15,7 @@ public:
     virtual ~dummyManagedMemory() {}
 
 protected:
-    inline virtual bool swapOut ( unsigned int  ) {
+    inline virtual bool swapOut ( global_bytesize ) {
         pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
         throw memoryException ( "No memory manager in place." );
     }

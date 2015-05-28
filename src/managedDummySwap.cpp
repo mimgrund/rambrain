@@ -6,7 +6,7 @@
 namespace membrain
 {
 
-managedDummySwap::managedDummySwap ( unsigned int size ) : managedSwap ( size )
+managedDummySwap::managedDummySwap ( global_bytesize size ) : managedSwap ( size )
 {
     swapFree = swapSize = size;
     swapUsed = 0;

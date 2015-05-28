@@ -19,14 +19,14 @@ class managedPtr;
 class managedMemory
 {
 public:
-    managedMemory ( managedSwap *swap, unsigned int size = 1073741824 );
+    managedMemory ( managedSwap *swap, global_bytesize size = 1073741824 );
     virtual ~managedMemory();
 
     //Memory Management options
-    bool setMemoryLimit ( unsigned int size );
-    unsigned int getMemoryLimit () const;
-    unsigned int getUsedMemory() const;
-    unsigned int getSwappedMemory() const;
+    bool setMemoryLimit ( global_bytesize size );
+    global_bytesize getMemoryLimit () const;
+    global_bytesize getUsedMemory() const;
+    global_bytesize getSwappedMemory() const;
 
 
     //Chunk Management
@@ -58,14 +58,14 @@ public:
     static unsigned int arrivedSwapins;
     static void signalSwappingCond();
 protected:
-    managedMemoryChunk *mmalloc ( unsigned int sizereq );
-    bool mrealloc ( memoryID id, unsigned int sizereq );
+    managedMemoryChunk *mmalloc ( global_bytesize sizereq );
+    bool mrealloc ( memoryID id, global_bytesize sizereq );
     void mfree ( memoryID id );
     managedMemoryChunk &resolveMemChunk ( const memoryID &id );
 
 
     //Swapping strategy
-    virtual bool swapOut ( unsigned int min_size ) = 0;
+    virtual bool swapOut ( global_bytesize min_size ) = 0;
     virtual bool swapIn ( memoryID id );
     virtual bool swapIn ( managedMemoryChunk &chunk ) = 0;
     virtual bool touch ( managedMemoryChunk &chunk ) = 0;
@@ -73,14 +73,14 @@ protected:
     virtual void schedulerDelete ( managedMemoryChunk &chunk ) = 0;
 
     ///This function ensures that there is sizereq space left in RAM and locks the topoLock
-    void ensureEnoughSpaceAndLockTopo ( unsigned int sizereq );
+    void ensureEnoughSpaceAndLockTopo ( global_bytesize sizereq );
 
     //Swap Storage manager iface:
     managedSwap *swap = 0;
 
-    unsigned int memory_max; //1GB
-    unsigned int memory_used = 0;
-    unsigned int memory_swapped = 0;
+    global_bytesize memory_max; //1GB
+    global_bytesize memory_used = 0;
+    global_bytesize memory_swapped = 0;
 
     std::map<memoryID, managedMemoryChunk *> memChunks;
 

@@ -18,7 +18,7 @@ struct cyclicAtime {
 class cyclicManagedMemory : public managedMemory
 {
 public:
-    cyclicManagedMemory ( managedSwap *swap, unsigned int size );
+    cyclicManagedMemory ( membrain::managedSwap *swap, membrain::global_bytesize size );
     virtual ~cyclicManagedMemory() {}
 
     void printCycle();
@@ -33,7 +33,7 @@ private:
     ///\note protect call to swapIn by topologicalMutex
     virtual bool swapIn ( managedMemoryChunk &chunk );
     ///\note protect call to swapOut by topologicalMutex
-    virtual bool swapOut ( unsigned int min_size );
+    virtual bool swapOut ( global_bytesize min_size );
     virtual bool touch ( managedMemoryChunk &chunk );
     virtual void schedulerRegister ( managedMemoryChunk &chunk );
     virtual void schedulerDelete ( managedMemoryChunk &chunk );
@@ -41,13 +41,12 @@ private:
     //loop pointers:
     cyclicAtime *active = NULL;
     cyclicAtime *counterActive = NULL;
-    unsigned int diff = 0;
 
     float swapOutFrac = .8;
     float swapInFrac = .9;
 
     bool preemtiveSwapIn = true; ///\todo Change strategy dynamically.
-    unsigned int preemptiveBytes = 0;
+    global_bytesize preemptiveBytes = 0;
 
     static pthread_mutex_t cyclicTopoLock;
 

@@ -34,7 +34,7 @@ pthread_mutex_t managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t managedMemory::swappingCond = PTHREAD_COND_INITIALIZER;
 unsigned int managedMemory::arrivedSwapins = 0;
 
-managedMemory::managedMemory ( managedSwap *swap, unsigned int size  )
+managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
 {
     memory_max = size;
     previousManager = defaultManager;
@@ -72,22 +72,22 @@ managedMemory::~managedMemory()
 }
 
 
-unsigned int managedMemory::getMemoryLimit () const
+global_bytesize managedMemory::getMemoryLimit () const
 {
     return memory_max;
 }
-unsigned int managedMemory::getUsedMemory() const
+global_bytesize managedMemory::getUsedMemory() const
 {
     return memory_used;
 }
-unsigned int managedMemory::getSwappedMemory() const
+global_bytesize managedMemory::getSwappedMemory() const
 {
     return memory_swapped;
 }
 
 
 
-bool managedMemory::setMemoryLimit ( unsigned int size )
+bool managedMemory::setMemoryLimit ( global_bytesize size )
 {
     if ( size > memory_max ) {
         memory_max = size;
@@ -95,7 +95,7 @@ bool managedMemory::setMemoryLimit ( unsigned int size )
     } else {
         if ( size < memory_used ) {
             //Try to swap out as much memory as needed:
-            unsigned int tobefreed = ( memory_used - size );
+            global_bytesize tobefreed = ( memory_used - size );
             if ( !swapOut ( tobefreed ) ) {
                 return false;
             }
@@ -110,7 +110,7 @@ bool managedMemory::setMemoryLimit ( unsigned int size )
     return false;                                             //Resetting this is not implemented yet.
 }
 
-void managedMemory::ensureEnoughSpaceAndLockTopo ( unsigned int sizereq )
+void managedMemory::ensureEnoughSpaceAndLockTopo ( membrain::global_bytesize sizereq )
 {
     if ( sizereq + memory_used > memory_max ) {
         if ( !swapOut ( sizereq + memory_used - memory_max ) ) { //Execute swapOut in protected context
@@ -126,7 +126,7 @@ void managedMemory::ensureEnoughSpaceAndLockTopo ( unsigned int sizereq )
 }
 
 
-managedMemoryChunk *managedMemory::mmalloc ( unsigned int sizereq )
+managedMemoryChunk *managedMemory::mmalloc ( global_bytesize sizereq )
 {
     pthread_mutex_lock ( &stateChangeMutex );
     ensureEnoughSpaceAndLockTopo ( sizereq );
@@ -209,6 +209,7 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
         waitForSwapin ( chunk, true );
     case MEM_ALLOCATED:
         chunk.status = MEM_ALLOCATED_INUSE_READ;
+    case MEM_ALLOCATED_INUSE:
     case MEM_ALLOCATED_INUSE_READ:
         if ( writeAccess ) {
             chunk.status = MEM_ALLOCATED_INUSE_WRITE;
@@ -230,7 +231,7 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
     return false;
 }
 
-bool managedMemory::mrealloc ( memoryID id, unsigned int sizereq )
+bool managedMemory::mrealloc ( memoryID id, global_bytesize sizereq )
 {
     managedMemoryChunk &chunk = resolveMemChunk ( id );
     if ( !setUse ( chunk ) ) {
@@ -541,6 +542,7 @@ bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLoc
     if ( !keepSwapLock ) {
         pthread_mutex_unlock ( &stateChangeMutex );
     }
+    return true;
 }
 
 

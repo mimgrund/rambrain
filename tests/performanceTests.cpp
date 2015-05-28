@@ -93,10 +93,10 @@ int main ( int argc, char **argv )
 
 void runMatrixTranspose ( tester *test, char **args )
 {
-    const unsigned int size = atoi ( args[0] );
-    const unsigned int memlines = atoi ( args[1] );
-    const unsigned int mem = size * sizeof ( double ) *  memlines;
-    const unsigned int swapmem = size * size * sizeof ( double ) * 2;
+    const global_bytesize size = atoi ( args[0] );
+    const global_bytesize memlines = atoi ( args[1] );
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 2;
 
     membrainglobals::config.resizeMemory ( mem );
     membrainglobals::config.resizeSwap ( swapmem );
@@ -143,10 +143,10 @@ void runMatrixTranspose ( tester *test, char **args )
 
 void runMatrixCleverTranspose ( tester *test, char **args )
 {
-    const unsigned int size = atoi ( args[0] );
-    const unsigned int memlines = atoi ( args[1] );
-    const unsigned int mem = size * sizeof ( double ) *  memlines;
-    const unsigned int swapmem = size * size * sizeof ( double ) * 2;
+    const global_bytesize size = atoi ( args[0] );
+    const global_bytesize memlines = atoi ( args[1] );
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 2;
 
     membrainglobals::config.resizeMemory ( mem );
     membrainglobals::config.resizeSwap ( swapmem );
@@ -233,10 +233,10 @@ void runMatrixCleverTranspose ( tester *test, char **args )
 
 void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
 {
-    const unsigned int size = atoi ( args[0] );
-    const unsigned int memlines = atoi ( args[1] );
-    const unsigned int mem = size * sizeof ( double ) *  memlines;
-    const unsigned int swapmem = size * size * sizeof ( double ) * 4;
+    const global_bytesize size = atoi ( args[0] );
+    const global_bytesize memlines = atoi ( args[1] );
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
     //managedFileSwap swap ( swapmem, "membrainswap-%d" );
     //cyclicManagedMemory manager ( &swap, mem );
@@ -331,10 +331,10 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
 
 void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
 {
-    const unsigned int size = atoi ( args[0] );
-    const unsigned int memlines = atoi ( args[1] );
-    const unsigned int mem = size * sizeof ( double ) *  memlines;
-    const unsigned int swapmem = size * size * sizeof ( double ) * 4;
+    const global_bytesize size = atoi ( args[0] );
+    const global_bytesize memlines = atoi ( args[1] );
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
     //managedFileSwap swap ( swapmem, "membrainswap-%d" );
     //cyclicManagedMemory manager ( &swap, mem );
@@ -367,8 +367,8 @@ void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
             unsigned int i_lim = ( ii + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, vertical limit
             unsigned int j_lim = rows_fetch;//( jj + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, horizontal limit
             #pragma omp parallel for
-            for ( int i = 0; i < i_lim; i++ ) {
-                for ( int j = 0; j < j_lim; j++ ) {
+            for ( unsigned int i = 0; i < i_lim; i++ ) {
+                for ( unsigned int j = 0; j < j_lim; j++ ) {
                     locPtr[i * rows_fetch + j] = ( ii * rows_fetch + i ) * size + ( j + rows_fetch * jj );
                 }
             }

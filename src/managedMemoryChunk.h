@@ -1,6 +1,6 @@
 #ifndef MANAGEDMEMORYCHUNK_H
 #define MANAGEDMEMORYCHUNK_H
-
+#include "common.h"
 namespace membrain
 {
 
@@ -42,7 +42,7 @@ public:
     memoryStatus status;
     unsigned short useCnt;
     void *locPtr;
-    unsigned int size;
+    global_bytesize size;
 
     //Organization
     memoryID id;
