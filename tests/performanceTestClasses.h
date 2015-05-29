@@ -110,9 +110,9 @@ protected:
         return parameters[parameters.size() - varryParam - 1]->steps;
     }
 
-    virtual string getParamsString ( unsigned int varryParam, unsigned int step ) {
+    virtual string getParamsString ( int varryParam, unsigned int step ) {
         stringstream ss;
-        for ( unsigned int i = parameters.size() - 1; i >= 0; --i ) {
+        for ( int i = parameters.size() - 1; i >= 0; --i ) {
             if ( i == varryParam ) {
                 ss << parameters[i]->valueAsString ( step );
             } else {
