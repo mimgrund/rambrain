@@ -7,6 +7,7 @@
 #include <cmath>
 #include <string>
 #include <sstream>
+#include <cstdlib>
 
 #include "tester.h"
 
@@ -89,7 +90,6 @@ template<typename... U>
 class performanceTest;
 
 
-//! @todo add plotting
 template<typename T>
 class performanceTest<T>
 {
@@ -100,13 +100,16 @@ public:
     }
     virtual ~performanceTest() {}
 
-    virtual void runTests () {
+    virtual void runTests ( unsigned int repetitions ) {
         for ( unsigned int param = 0; param < parameters.size(); ++param ) {
             unsigned int steps = getStepsForParam ( param );
             for ( unsigned int step = 0; step < steps; ++step ) {
                 string params = getParamsString ( param, step );
-                //! @todo call performance test process
+                stringstream call;
+                call << "./membrain-performancetests " << repetitions << " " << name << " " << params;
+                system ( call.str().c_str() );
             }
+            //! @todo do plotting
         }
     }
 
@@ -158,6 +161,9 @@ protected:
 #define ONEPARAM(param) PARAMREFS(1, param)
 #define TWOPARAMS(param1, param2) PARAMREFS(1, param1, param2); \
                                   PARAMREFS(2, param2)
+#define THREEARAMS(param1, param2, param3) PARAMREFS(1, param1, param2, param3); \
+                                           PARAMREFS(2, param2, param3) \
+                                           PARAMREFS(3, param3)
 
 #define TESTCLASS(name, parammacro, params...) \
     class name : public performanceTest<params> \
@@ -172,6 +178,7 @@ protected:
 
 #define ONEPARAMTEST(name, param) TESTCLASS(name, ONEPARAM(param), param)
 #define TWOPARAMTEST(name, param1, param2) TESTCLASS(name, TWOPARAMS(param1, param2), param1, param2)
+#define THREEPARAMTEST(name, param1, param2, param3) TESTCLASS(name, THREEPARAMS(param1, param2, param3), param1, param2, param3)
 
 
 // Actual performance test classes come here
