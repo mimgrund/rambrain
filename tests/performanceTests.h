@@ -74,8 +74,10 @@ public:
     virtual void runTests () {
         for ( unsigned int param = 0; param < paramCount; ++param ) {
             unsigned int steps = getStepsForParam ( param );
-            string params = getParamsString ( param, step );
-            //! @todo call performance test process
+            for ( unsigned int step = 0; step < steps; ++step ) {
+                string params = getParamsString ( param, step );
+                //! @todo call performance test process
+            }
         }
     }
 
@@ -124,8 +126,6 @@ protected:
 #define TWOPARAMS(param1, param2) PARAMREFS(1, param1, param2); \
                                   PARAMREFS(2, param2)
 
-#define PARAMMEMBER(nr) parameter##nr
-
 #define TESTCLASS(name, parammacro, params...) \
     class name : public performanceTest<params> \
     { \
@@ -135,10 +135,10 @@ protected:
     protected: \
         static void actualTestMethod(tester&, params); \
         virtual unsigned int getStepsForParam(unsigned int varryParam) { \
-            PARAMMEMBER(varryParam) \
+            return 0; \
         } \
         virtual string getParamsString(unsigned int varryParam, unsigned int step) { \
-            /!* @todo implement */ \
+            return ""; \
         } \
         parammacro; \
     }
