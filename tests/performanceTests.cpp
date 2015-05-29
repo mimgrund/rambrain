@@ -23,8 +23,28 @@ int main ( int argc, char **argv )
     while ( i < argc ) {
         std::cout << "Attempting to run " << argv[i] << std::endl;
         tester myTester ( argv[i] );
+        for ( int j = i + 1; j < argc; ++j ) {
+            myTester.addParameter ( argv[j] );
+        }
 
-        //! @todo run the respective test
+        //! @todo can i perhaps auto generate this via the declaration macros? should name be static?
+        for ( int r = 0; r < repetitions; ++r ) {
+            myTester.startNewTimeCycle();
+
+            if ( matrixTransposeTestInstance.itsMe ( argv[i] ) ) {
+                matrixCleverTransposeTestInstance.actualTestMethod ( myTester, atoi ( argv[++i] ), atoi ( argv[++i] ) );
+            } else if ( matrixCleverTransposeTestInstance.itsMe ( argv[i] ) ) {
+                matrixCleverTransposeTestInstance.actualTestMethod ( myTester, atoi ( argv[++i] ), atoi ( argv[++i] ) );
+            } else if ( matrixCleverTransposeOpenMPTestInstance.itsMe ( argv[i] ) ) {
+                matrixCleverTransposeOpenMPTestInstance.actualTestMethod ( myTester, atoi ( argv[++i] ), atoi ( argv[++i] ) );
+            } else if ( matrixCleverBlockTransposeOpenMPTestInstance.itsMe ( argv[i] ) ) {
+                matrixCleverBlockTransposeOpenMPTestInstance.actualTestMethod ( myTester, atoi ( argv[++i] ), atoi ( argv[++i] ) );
+            }
+        }
+
+        myTester.writeToFile();
+
+        //! @todo plotting?
 
         /*for ( vector<testMethod>::iterator it = tests.begin(); it != tests.end(); ++it ) {
             if ( strcmp ( it->name, argv[i] ) == 0 ) {

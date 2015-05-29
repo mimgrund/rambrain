@@ -81,8 +81,12 @@ public:
     }
     virtual ~performanceTest() {}
 
-    virtual void runTestsIfMe ( string name, unsigned int repetitions ) {
-        if ( this->name == name ) {
+    virtual bool itsMe ( const string &name ) const {
+        return this->name == name;
+    }
+
+    virtual void runTestsIfMe ( const string &name, unsigned int repetitions ) {
+        if ( itsMe ( name ) ) {
             runTests ( repetitions );
         }
     }
@@ -158,10 +162,9 @@ protected:
     public: \
         name(); \
         virtual ~name() {} \
+        static void actualTestMethod(tester&, params); \
         parammacro; \
         static string comment; \
-    protected: \
-        static void actualTestMethod(tester&, params); \
     }; \
     extern name name##Instance
 
