@@ -124,6 +124,8 @@ protected:
 #define TWOPARAMS(param1, param2) PARAMREFS(1, param1, param2); \
                                   PARAMREFS(2, param2)
 
+#define PARAMMEMBER(nr) parameter##nr
+
 #define TESTCLASS(name, parammacro, params...) \
     class name : public performanceTest<params> \
     { \
@@ -133,7 +135,7 @@ protected:
     protected: \
         static void actualTestMethod(tester&, params); \
         virtual unsigned int getStepsForParam(unsigned int varryParam) { \
-            /!* @todo implement */ \
+            PARAMMEMBER(varryParam) \
         } \
         virtual string getParamsString(unsigned int varryParam, unsigned int step) { \
             /!* @todo implement */ \
