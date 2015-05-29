@@ -92,6 +92,7 @@ public:
     }
 
     virtual void runTests ( unsigned int repetitions ) {
+        cout << "Running test case " << name << std::endl;
         for ( unsigned int param = 0; param < parameters.size(); ++param ) {
             unsigned int steps = getStepsForParam ( param );
             for ( unsigned int step = 0; step < steps; ++step ) {

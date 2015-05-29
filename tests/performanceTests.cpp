@@ -10,37 +10,47 @@ using namespace std;
 
 int main ( int argc, char **argv )
 {
-    std::cout << "Starting performance tests" << std::endl;
+    cout << "Starting performance tests" << endl;
+    cout << "Called with: ";
+    for ( int i = 0; i < argc; ++i ) {
+        cout << argv[i] << " ";
+    }
+    cout << endl << endl;
 
     int i = 1;
     if ( i >= argc ) {
-        std::cerr << "Not enough arguments supplied, expected number of repetitions followed by test directives, exiting" << std::endl;
+        cerr << "Not enough arguments supplied, expected number of repetitions followed by test directives, exiting" << endl;
         return 2;
     }
 
     int repetitions = atoi ( argv[i++] );
 
     while ( i < argc ) {
-        std::cout << "Attempting to run " << argv[i] << std::endl;
+        cout << "Attempting to run " << argv[i] << endl;
         tester myTester ( argv[i] );
-        for ( int j = i + 1; j < argc; ++j ) {
+        int j;
+        for ( j = i + 1; j < argc; ++j ) {
             myTester.addParameter ( argv[j] );
         }
 
         //! @todo can i perhaps auto generate this via the declaration macros? should name be static?
-        for ( int r = 0; r < repetitions; ++r ) {
+        for ( int r = 0, j = i; r < repetitions; ++r ) {
             myTester.startNewTimeCycle();
 
-            if ( matrixTransposeTestInstance.itsMe ( argv[i] ) ) {
-                matrixCleverTransposeTestInstance.actualTestMethod ( myTester, atoi ( argv[++i] ), atoi ( argv[++i] ) );
-            } else if ( matrixCleverTransposeTestInstance.itsMe ( argv[i] ) ) {
-                matrixCleverTransposeTestInstance.actualTestMethod ( myTester, atoi ( argv[++i] ), atoi ( argv[++i] ) );
-            } else if ( matrixCleverTransposeOpenMPTestInstance.itsMe ( argv[i] ) ) {
-                matrixCleverTransposeOpenMPTestInstance.actualTestMethod ( myTester, atoi ( argv[++i] ), atoi ( argv[++i] ) );
-            } else if ( matrixCleverBlockTransposeOpenMPTestInstance.itsMe ( argv[i] ) ) {
-                matrixCleverBlockTransposeOpenMPTestInstance.actualTestMethod ( myTester, atoi ( argv[++i] ), atoi ( argv[++i] ) );
+            if ( matrixTransposeTestInstance.itsMe ( argv[j] ) ) {
+                matrixTransposeTestInstance.actualTestMethod ( myTester, atoi ( argv[++j] ), atoi ( argv[++j] ) );
+            } else if ( matrixCleverTransposeTestInstance.itsMe ( argv[j] ) ) {
+                matrixCleverTransposeTestInstance.actualTestMethod ( myTester, atoi ( argv[++j] ), atoi ( argv[++j] ) );
+            } else if ( matrixCleverTransposeOpenMPTestInstance.itsMe ( argv[j] ) ) {
+                matrixCleverTransposeOpenMPTestInstance.actualTestMethod ( myTester, atoi ( argv[++j] ), atoi ( argv[++j] ) );
+            } else if ( matrixCleverBlockTransposeOpenMPTestInstance.itsMe ( argv[j] ) ) {
+                matrixCleverBlockTransposeOpenMPTestInstance.actualTestMethod ( myTester, atoi ( argv[++j] ), atoi ( argv[++j] ) );
+            } else {
+                cerr << "No registered test case matched, aborting..." << endl;
+                return 1;
             }
         }
+        i = j + 1;
 
         myTester.writeToFile();
 
@@ -51,7 +61,7 @@ int main ( int argc, char **argv )
                 ++i;
 
                 if ( i + it->argumentCount > argc ) {
-                    std::cerr << "Not enough arguments supplied for test parameters, exiting" << std::endl;
+                    cerr << "Not enough arguments supplied for test parameters, exiting" << endl;
                     return 1;
                 }
 
@@ -64,7 +74,7 @@ int main ( int argc, char **argv )
                     for ( int j = 0; j < it->argumentCount; ++j, ++i ) {
                         args[j] = argv[i];
                         myTester.addParameter ( args[j] );
-                        std::cout << "Parameter " << j << ": " << args[j] << std::endl;
+                        cout << "Parameter " << j << ": " << args[j] << endl;
                     }
                 }
 
@@ -84,6 +94,6 @@ int main ( int argc, char **argv )
         */
     }
 
-    std::cout << "Performance tests done" << std::endl;
+    cout << "Performance tests done" << endl;
     return 0;
 }
