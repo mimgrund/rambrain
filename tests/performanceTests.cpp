@@ -38,13 +38,17 @@ int main ( int argc, char **argv )
             myTester.startNewTimeCycle();
 
             if ( matrixTransposeTestInstance.itsMe ( argv[j] ) ) {
-                matrixTransposeTestInstance.actualTestMethod ( myTester, atoi ( argv[++j] ), atoi ( argv[++j] ) );
+                int p1 = atoi ( argv[++j] ), p2 = atoi ( argv[++j] );
+                matrixTransposeTestInstance.actualTestMethod ( myTester, p1, p2 );
             } else if ( matrixCleverTransposeTestInstance.itsMe ( argv[j] ) ) {
-                matrixCleverTransposeTestInstance.actualTestMethod ( myTester, atoi ( argv[++j] ), atoi ( argv[++j] ) );
+                int p1 = atoi ( argv[++j] ), p2 = atoi ( argv[++j] );
+                matrixCleverTransposeTestInstance.actualTestMethod ( myTester, p1, p2 );
             } else if ( matrixCleverTransposeOpenMPTestInstance.itsMe ( argv[j] ) ) {
-                matrixCleverTransposeOpenMPTestInstance.actualTestMethod ( myTester, atoi ( argv[++j] ), atoi ( argv[++j] ) );
+                int p1 = atoi ( argv[++j] ), p2 = atoi ( argv[++j] );
+                matrixCleverTransposeOpenMPTestInstance.actualTestMethod ( myTester, p1, p2 );
             } else if ( matrixCleverBlockTransposeOpenMPTestInstance.itsMe ( argv[j] ) ) {
-                matrixCleverBlockTransposeOpenMPTestInstance.actualTestMethod ( myTester, atoi ( argv[++j] ), atoi ( argv[++j] ) );
+                int p1 = atoi ( argv[++j] ), p2 = atoi ( argv[++j] );
+                matrixCleverBlockTransposeOpenMPTestInstance.actualTestMethod ( myTester, p1, p2 );
             } else {
                 cerr << "No registered test case matched, aborting..." << endl;
                 return 1;
