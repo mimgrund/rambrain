@@ -37,12 +37,37 @@ struct testMethod {
 
 
 
+class testParameterBase
+{
+public:
+    virtual ~testParameterBase() {}
+
+    virtual string valueAsString() = 0;
+    virtual string valueAsString ( unsigned int step ) = 0;
+
+    unsigned int steps;
+    bool deltaLog;
+};
+
 
 template<typename T>
-class testParameter
+class testParameter : public testParameterBase
 {
 
 public:
+    virtual ~testParameter() {}
+
+    virtual inline string valueAsString() {
+        return toString ( mean );
+    }
+
+    virtual inline string valueAsString ( unsigned int step ) {
+        return toString ( valueAtStep ( step ) );
+    }
+
+    T min, max, mean;
+
+protected:
     T valueAtStep ( unsigned int step ) {
         if ( deltaLog ) {
             return pow ( 10.0, ( log10 ( max ) - log10 ( min ) ) * step / steps );
@@ -51,9 +76,11 @@ public:
         }
     }
 
-    T min, max, mean;
-    unsigned int steps;
-    bool deltaLog;
+    string toString ( const T &t ) {
+        stringstream ss;
+        ss << t;
+        return ss.str();
+    }
 
 };
 
@@ -68,11 +95,13 @@ class performanceTest<T>
 {
 
 public:
-    performanceTest ( const char *name ) : name ( name ) {}
+    performanceTest ( const char *name ) : name ( name ) {
+        parameters.push_back ( &parameter );
+    }
     virtual ~performanceTest() {}
 
     virtual void runTests () {
-        for ( unsigned int param = 0; param < paramCount; ++param ) {
+        for ( unsigned int param = 0; param < parameters.size(); ++param ) {
             unsigned int steps = getStepsForParam ( param );
             for ( unsigned int step = 0; step < steps; ++step ) {
                 string params = getParamsString ( param, step );
@@ -82,20 +111,27 @@ public:
     }
 
 protected:
-
-    virtual void setParameterCount ( unsigned int count ) {
-        if ( count > paramCount ) {
-            paramCount = count;
-        }
+    inline unsigned int getStepsForParam ( unsigned int varryParam ) {
+        return parameters[parameters.size() - varryParam - 1]->steps;
     }
 
-    virtual unsigned int getStepsForParam ( unsigned int varryParam ) = 0;
-    virtual string getParamsString ( unsigned int varryParam, unsigned int step ) = 0;
+    virtual string getParamsString ( unsigned int varryParam, unsigned int step ) {
+        stringstream ss;
+        for ( unsigned int i = parameters.size() - 1; i >= 0; --i ) {
+            if ( i == varryParam ) {
+                ss << parameters[i]->valueAsString ( step );
+            } else {
+                ss << parameters[i]->valueAsString();
+            }
+            ss << " ";
+        }
+        return ss.str();
+    }
 
     const char *name;
 
     testParameter<T> parameter;
-    unsigned int paramCount = 1;
+    vector<testParameterBase *> parameters;
 
 };
 
@@ -106,10 +142,7 @@ class performanceTest<T, U...> : public performanceTest<U...>
 
 public:
     performanceTest ( const char *name ) : performanceTest<U...> ( name ) {
-        unsigned int s = 1 + sizeof... ( U );
-        if ( s > this->paramCount ) {
-            this->paramCount = s;
-        }
+        this->parameters.push_back ( &parameter );
     }
 
     virtual ~performanceTest() {}
@@ -132,15 +165,9 @@ protected:
     public: \
         name(); \
         virtual ~name() {} \
+        parammacro; \
     protected: \
         static void actualTestMethod(tester&, params); \
-        virtual unsigned int getStepsForParam(unsigned int varryParam) { \
-            return 0; \
-        } \
-        virtual string getParamsString(unsigned int varryParam, unsigned int step) { \
-            return ""; \
-        } \
-        parammacro; \
     }
 
 #define ONEPARAMTEST(name, param) TESTCLASS(name, ONEPARAM(param), param)
