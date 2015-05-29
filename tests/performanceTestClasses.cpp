@@ -1,5 +1,8 @@
 #include "performanceTestClasses.h"
 
+string matrixTransposeTest::comment = "Measurements of allocation and definition, transposition, deletion times";
+matrixTransposeTest matrixTransposeTestInstance;
+
 matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "MatrixTranspose" )
 {
     parameter1.min = 10;
@@ -17,6 +20,8 @@ matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "Matrix
 
 void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
 {
+    test.addComment ( comment.c_str() );
+
     const global_bytesize size = param1;
     const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
@@ -65,6 +70,9 @@ void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param
     test.addTimeMeasurement();
 }
 
+string matrixCleverTransposeTest::comment = "Measurements of allocation and definition, transposition, deletion times, but with a clever transposition algorithm";
+matrixCleverTransposeTest matrixCleverTransposeTestInstance;
+
 matrixCleverTransposeTest::matrixCleverTransposeTest() : performanceTest<int, int> ( "MatrixCleverTranspose" )
 {
     parameter1.min = 10;
@@ -82,6 +90,8 @@ matrixCleverTransposeTest::matrixCleverTransposeTest() : performanceTest<int, in
 
 void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
 {
+    test.addComment ( comment.c_str() );
+
     const global_bytesize size = param1;
     const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
@@ -170,6 +180,9 @@ void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int
     test.addTimeMeasurement();
 }
 
+string matrixCleverTransposeOpenMPTest::comment = "Same as cleverTranspose, but with OpenMP";
+matrixCleverTransposeOpenMPTest matrixCleverTransposeOpenMPTestInstance;
+
 matrixCleverTransposeOpenMPTest::matrixCleverTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverTransposeOpenMP" )
 {
     parameter1.min = 10;
@@ -187,6 +200,8 @@ matrixCleverTransposeOpenMPTest::matrixCleverTransposeOpenMPTest() : performance
 
 void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
 {
+    test.addComment ( comment.c_str() );
+
     const global_bytesize size = param1;
     const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
@@ -283,6 +298,9 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
     test.addTimeMeasurement();
 }
 
+string matrixCleverBlockTransposeOpenMPTest::comment = "Same as cleverTranspose, but with OpenMP and blockwise multiplication";
+matrixCleverBlockTransposeOpenMPTest matrixCleverBlockTransposeOpenMPTestInstance;
+
 matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverBlockTransposeOpenMP" )
 {
     parameter1.min = 10;
@@ -300,6 +318,8 @@ matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : p
 
 void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
 {
+    test.addComment ( comment.c_str() );
+
     const global_bytesize size = param1;
     const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;

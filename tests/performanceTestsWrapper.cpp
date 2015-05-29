@@ -9,9 +9,8 @@ int main ( int argc, char **argv )
         repetitions = atoi ( argv[1] );
     }
 
-    // Allocate test classes and eventually make changes to test parameters if desired
-    matrixTransposeTest matrixTranspose;
+    // Eventually make changes to test parameters of allocated test classes if desired
 
     // Run tests
-    matrixTranspose.runTests ( repetitions );
+    matrixTransposeTestInstance.runTests ( repetitions );
 }

@@ -81,6 +81,12 @@ public:
     }
     virtual ~performanceTest() {}
 
+    virtual void runTestsIfMe ( string name, unsigned int repetitions ) {
+        if ( this->name == name ) {
+            runTests ( repetitions );
+        }
+    }
+
     virtual void runTests ( unsigned int repetitions ) {
         for ( unsigned int param = 0; param < parameters.size(); ++param ) {
             unsigned int steps = getStepsForParam ( param );
@@ -153,9 +159,11 @@ protected:
         name(); \
         virtual ~name() {} \
         parammacro; \
+        static string comment; \
     protected: \
         static void actualTestMethod(tester&, params); \
-    }
+    }; \
+    extern name name##Instance
 
 #define ONEPARAMTEST(name, param) TESTCLASS(name, ONEPARAM(param), param)
 #define TWOPARAMTEST(name, param1, param2) TESTCLASS(name, TWOPARAMS(param1, param2), param1, param2)
