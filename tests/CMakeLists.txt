@@ -33,10 +33,20 @@ target_link_libraries (membrain-integrationtests gmock gtest pthread membrain)
 file(GLOB TEST_SOURCES
         "performanceTests.cpp"
         "tester.cpp"
+        "performanceTestClasses.cpp"
 )
 add_executable(membrain-performancetests ${TEST_SOURCES})
 add_custom_command(TARGET membrain-performancetests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 target_link_libraries (membrain-performancetests pthread membrain)
+
+file(GLOB TEST_SOURCES
+        "performanceTestsWrapper.cpp"
+        "tester.cpp"
+        "performanceTestClasses.cpp"
+)
+add_executable(membrain-performancetestswrapper ${TEST_SOURCES})
+add_custom_command(TARGET membrain-performancetestswrapper PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+target_link_libraries (membrain-performancetestswrapper pthread membrain)
 
 file(GLOB TEST_SOURCES
         "memeater.cpp"

@@ -1,79 +1,31 @@
-#include "performanceTests.h"
+#include "performanceTestClasses.h"
 
-int main ( int argc, char **argv )
+matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "MatrixTranspose" )
 {
-    std::cout << "Starting performance tests" << std::endl;
+    parameter1.min = 10;
+    parameter1.max = 10000;
+    parameter1.steps = 20;
+    parameter1.deltaLog = true;
+    parameter1.mean = 10000;
 
-    vector<testMethod> tests;
-    tests.push_back ( testMethod ( "MatrixTranspose", 2, runMatrixTranspose, "Measurements of allocation and definition, transposition, deletion times" ) );
-    tests.push_back ( testMethod ( "MatrixCleverTranspose", 2, runMatrixCleverTranspose, "Measurements of allocation and definition, transposition, deletion times, but with a clever transposition algorithm" ) );
-    tests.push_back ( testMethod ( "MatrixCleverTransposeOpenMP", 2, runMatrixCleverTransposeOpenMP, "Same as cleverTranspose, but with OpenMP" ) );
-    tests.push_back ( testMethod ( "MatrixCleverBlockTransposeOpenMP", 2, runMatrixCleverBlockTransposeOpenMP, "Same as cleverTranspose, but with OpenMP and blockwise multiplication" ) );
-
-    int i = 1;
-    if ( i >= argc ) {
-        std::cerr << "Not enough arguments supplied, expected number of repetitions followed by test directives, exiting" << std::endl;
-        return 2;
-    }
-
-    int repetitions = atoi ( argv[i++] );
-
-    while ( i < argc ) {
-        std::cout << "Attempting to run " << argv[i] << std::endl;
-
-        for ( vector<testMethod>::iterator it = tests.begin(); it != tests.end(); ++it ) {
-            if ( strcmp ( it->name, argv[i] ) == 0 ) {
-                ++i;
-
-                if ( i + it->argumentCount > argc ) {
-                    std::cerr << "Not enough arguments supplied for test parameters, exiting" << std::endl;
-                    return 1;
-                }
-
-                tester myTester ( it->name );
-                myTester.addComment ( it->comment );
-
-                char **args = 0;
-                if ( it->argumentCount > 0 ) {
-                    args = new char *[it->argumentCount];
-                    for ( int j = 0; j < it->argumentCount; ++j, ++i ) {
-                        args[j] = argv[i];
-                        myTester.addParameter ( args[j] );
-                        std::cout << "Parameter " << j << ": " << args[j] << std::endl;
-                    }
-                }
-
-                for ( int r = 0; r < repetitions; ++r ) {
-                    myTester.startNewTimeCycle();
-                    it->test ( &myTester, args );
-                }
-
-                myTester.writeToFile();
-
-                if ( it->argumentCount > 0 ) {
-                    delete[] args;
-                }
-                break;
-            }
-        }
-    }
-
-    std::cout << "Performance tests done" << std::endl;
-    return 0;
+    parameter2.min = 10;
+    parameter2.max = 10000;
+    parameter2.steps = 20;
+    parameter2.deltaLog = true;
+    parameter2.mean = 100;
 }
 
-
-void runMatrixTranspose ( tester *test, char **args )
+void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
 {
-    const global_bytesize size = atoi ( args[0] );
-    const global_bytesize memlines = atoi ( args[1] );
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 2;
 
     membrainglobals::config.resizeMemory ( mem );
     membrainglobals::config.resizeSwap ( swapmem );
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 
     // Allocate and set
     managedPtr<double> *rows[size];
@@ -86,7 +38,7 @@ void runMatrixTranspose ( tester *test, char **args )
         }
     }
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 
     // Transpose
     for ( unsigned int i = 0; i < size; ++i ) {
@@ -102,7 +54,7 @@ void runMatrixTranspose ( tester *test, char **args )
         }
     }
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 
 
     // Delete
@@ -110,20 +62,35 @@ void runMatrixTranspose ( tester *test, char **args )
         delete rows[i];
     }
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 }
 
-void runMatrixCleverTranspose ( tester *test, char **args )
+matrixCleverTransposeTest::matrixCleverTransposeTest() : performanceTest<int, int> ( "MatrixCleverTranspose" )
 {
-    const global_bytesize size = atoi ( args[0] );
-    const global_bytesize memlines = atoi ( args[1] );
+    parameter1.min = 10;
+    parameter1.max = 10000;
+    parameter1.steps = 20;
+    parameter1.deltaLog = true;
+    parameter1.mean = 10000;
+
+    parameter2.min = 10;
+    parameter2.max = 10000;
+    parameter2.steps = 20;
+    parameter2.deltaLog = true;
+    parameter2.mean = 100;
+}
+
+void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
+{
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 2;
 
     membrainglobals::config.resizeMemory ( mem );
     membrainglobals::config.resizeSwap ( swapmem );
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 
     // Allocate and set
     managedPtr<double> *rows[size];
@@ -136,7 +103,7 @@ void runMatrixCleverTranspose ( tester *test, char **args )
         }
     }
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 
     // Transpose blockwise
     unsigned int rows_fetch = memlines / 2 > size ? size : memlines / 2;
@@ -184,7 +151,7 @@ void runMatrixCleverTranspose ( tester *test, char **args )
         }
     }
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 
 //     for ( unsigned int i = 0; i < size; ++i ) {
 //         adhereTo<double> rowloc ( *rows[i] );
@@ -200,13 +167,28 @@ void runMatrixCleverTranspose ( tester *test, char **args )
         delete rows[i];
     }
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 }
 
-void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
+matrixCleverTransposeOpenMPTest::matrixCleverTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverTransposeOpenMP" )
 {
-    const global_bytesize size = atoi ( args[0] );
-    const global_bytesize memlines = atoi ( args[1] );
+    parameter1.min = 10;
+    parameter1.max = 10000;
+    parameter1.steps = 20;
+    parameter1.deltaLog = true;
+    parameter1.mean = 10000;
+
+    parameter2.min = 10;
+    parameter2.max = 10000;
+    parameter2.steps = 20;
+    parameter2.deltaLog = true;
+    parameter2.mean = 100;
+}
+
+void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
+{
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
@@ -215,7 +197,7 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
     membrainglobals::config.resizeMemory ( mem );
     membrainglobals::config.resizeSwap ( swapmem );
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 
     // Allocate and set
     managedPtr<double> *rows[size];
@@ -229,7 +211,7 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
         }
     }
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 
     // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
 
@@ -282,7 +264,7 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
     }
 
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 
     //     for ( unsigned int i = 0; i < size; ++i ) {
     //         adhereTo<double> rowloc ( *rows[i] );
@@ -298,13 +280,28 @@ void runMatrixCleverTransposeOpenMP ( tester *test, char **args )
     for ( unsigned int i = 0; i < size; ++i ) {
         delete rows[i];
     }
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 }
 
-void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
+matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverBlockTransposeOpenMP" )
 {
-    const global_bytesize size = atoi ( args[0] );
-    const global_bytesize memlines = atoi ( args[1] );
+    parameter1.min = 10;
+    parameter1.max = 10000;
+    parameter1.steps = 20;
+    parameter1.deltaLog = true;
+    parameter1.mean = 10000;
+
+    parameter2.min = 10;
+    parameter2.max = 10000;
+    parameter2.steps = 20;
+    parameter2.deltaLog = true;
+    parameter2.mean = 100;
+}
+
+void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
+{
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
@@ -314,7 +311,7 @@ void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
     membrainglobals::config.resizeSwap ( swapmem );
 
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 
     // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
 
@@ -346,7 +343,7 @@ void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
             }
         }
     }
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 //     for ( unsigned int i = 0; i < size; ++i ) {
 //         for ( unsigned int j = 0; j < size; ++j ) {
 //             unsigned int blckidx = blockIdx(i,j);
@@ -388,7 +385,7 @@ void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
         }
     }
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 // //      printf("\n");
 //     for ( unsigned int i = 0; i < size; ++i ) {
 //         for ( unsigned int j = 0; j < size; ++j ) {
@@ -413,10 +410,5 @@ void runMatrixCleverBlockTransposeOpenMP ( tester *test, char **args )
         delete rows[i];
     }
 
-    test->addTimeMeasurement();
+    test.addTimeMeasurement();
 }
-
-
-
-
-
