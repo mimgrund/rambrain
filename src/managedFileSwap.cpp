@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 #include "exceptions.h"
 #include "managedMemory.h"
+#include "membrain_atomics.h"
 #include <aio.h>
 #include <signal.h>
 namespace membrain
@@ -65,7 +66,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     
     //Event handler for aio:
       evhandler.sigev_notify = SIGEV_THREAD;
-      evhandler     .sigev_signo = 0;
+      evhandler.sigev_signo = 0;
       evhandler.sigev_value.sival_ptr = NULL;
       evhandler.sigev_notify_function = managedFileSwap::staticAsyncIoArrived;
       evhandler.sigev_notify_attributes=0;
@@ -118,7 +119,7 @@ bool managedFileSwap::openSwapFiles()
     return true;
 }
 
-pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size )
+pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemoryChunk *chunk )
 {
     ///\todo This may be rather stupid at the moment
 
@@ -138,6 +139,7 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size )
     if ( found ) {
         res = allocInFree ( found, size );
         res->status = PAGE_END;//Don't forget to set the status of the allocated memory.
+        res->glob_off_next.chunk = chunk;
     } else { //We need to write out the data in parts.
 
 
@@ -164,10 +166,11 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size )
                     res = neu;
                 }
                 if ( former ) {
-                    former->glob_off_next = neu;
+                    former->glob_off_next.glob_off_next = neu;
                 }
                 if ( size == 0 ) {
-                    break;
+		  neu->glob_off_next.chunk = chunk;
+                  break;
                 }
                 former = neu;
                 it = free_space.find ( nextFreeOffset );
@@ -197,7 +200,7 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
         pageFileLocation *neu = new pageFileLocation ( *freeChunk );
         freeChunk->offset += size;
         freeChunk->size -= size;
-        freeChunk->glob_off_next = NULL;
+        freeChunk->glob_off_next.glob_off_next = NULL;
         global_offset newfreeloc = determineGlobalOffset ( *freeChunk );
         free_space[newfreeloc] = freeChunk;
         neu->size = size;
@@ -213,7 +216,7 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
 {
     bool endIsReached = false;
     do { //We possibly need multiple frees.
-        pageFileLocation *next = pagePtr->glob_off_next;
+        pageFileLocation *next = pagePtr->glob_off_next.glob_off_next;
         endIsReached = ( pagePtr->status == PAGE_END );
         global_offset goff = determineGlobalOffset ( *pagePtr );
         auto it = all_space.find ( goff );
@@ -281,11 +284,6 @@ bool managedFileSwap::swapIn ( managedMemoryChunk *chunk )
     if ( buf ) {
         chunk->locPtr = buf;
         copyMem ( chunk->locPtr, * ( ( pageFileLocation * ) chunk->swapBuf ) );
-        pffree ( ( pageFileLocation * ) chunk->swapBuf );
-        chunk->swapBuf = NULL; // Not strictly required
-        chunk->status = MEM_ALLOCATED;
-        swapUsed -= chunk->size;
-        managedMemory::signalSwappingCond();
         return true;
     } else {
         return false;
@@ -311,15 +309,11 @@ bool managedFileSwap::swapOut ( managedMemoryChunk *chunk )
         ///\todo implement swapOUt if we already hold a memory copy.
         throw unfinishedCodeException ( "Swap out for read only memory chunk" );
     } else {
-        pageFileLocation *newAlloced = pfmalloc ( chunk->size );
+        pageFileLocation *newAlloced = pfmalloc ( chunk->size, chunk );
         if ( newAlloced ) {
             chunk->swapBuf = newAlloced;
             copyMem ( *newAlloced, chunk->locPtr );
-            free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
-            chunk->locPtr = NULL; // not strictly required.
-            chunk->status = MEM_SWAPPED;
-            swapUsed += chunk->size;
-            managedMemory::signalSwappingCond();
+	    swapUsed += chunk->size;
             return true;
         } else {
             return false;
@@ -351,7 +345,7 @@ pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, globa
 
 
 
-void managedFileSwap::scheduleCopy( pageFileLocation &ref, void* ramBuf, bool reverse)
+void managedFileSwap::scheduleCopy( pageFileLocation &ref, void* ramBuf, int * tracker, bool reverse)
 {
   if(reverse){
     //Check what is to check for a copy from ref to ramBuf:
@@ -363,15 +357,66 @@ void managedFileSwap::scheduleCopy( pageFileLocation &ref, void* ramBuf, bool re
       throw memoryException("Cannot copy out buffer that is already swapped");
     
   }
-  ref.aio_ptr = new struct aiocb;
-  ref.aio_ptr->aio_buf = ramBuf;
-  ref.aio_ptr->aio_fildes = fileno(swapFiles[ref.file]);
-  ref.aio_ptr->aio_nbytes = ref.size;
-  ref.aio_ptr->aio_offset = ref.offset;
-  ref.aio_ptr->aio_reqprio = 0;///@todo: make this configurable
-  ref.aio_ptr->aio_sigevent = evhandler;
-  ref.aio_ptr->aio_sigevent.sigev_value.sival_ptr = &ref;
+  ref.aio_ptr = new struct aiotracker;
+  struct aiocb *aio=&(ref.aio_ptr->aio);
+  aio->aio_buf = ramBuf;
+  aio->aio_fildes = fileno(swapFiles[ref.file]);
+  aio->aio_nbytes = ref.size;
+  aio->aio_offset = ref.offset;
+  aio->aio_reqprio = 0;///@todo: make this configurable
+  aio->aio_sigevent = evhandler;
+  aio->aio_sigevent.sigev_value.sival_ptr = &ref;
+  ref.aio_ptr->tracker = tracker;
+  membrain_atomic_fetch_add(tracker,1);
+  int res = reverse?aio_read(aio):aio_write(aio);
+  if(res!=0)
+    throw memoryException("Could not enqueue request");
+      
 }
+
+void managedFileSwap::completeTransactionOn(pageFileLocation* ref)
+{
+  delete ref->aio_ptr->tracker;
+  while(ref->status != PAGE_END)
+    ref = ref->glob_off_next.glob_off_next;
+  managedMemoryChunk *chunk=ref->glob_off_next.chunk;
+  switch(chunk->status){
+    case MEM_SWAPIN:
+      pffree ( ( pageFileLocation * ) chunk->swapBuf );
+      chunk->swapBuf = NULL; // Not strictly required
+      chunk->status = MEM_ALLOCATED;
+      swapUsed -= chunk->size;
+      break;
+    case MEM_SWAPOUT:
+      free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
+      chunk->locPtr = NULL; // not strictly required.
+      chunk->status = MEM_SWAPPED;
+      
+      break;
+    default:
+      break;
+  }
+  managedMemory::signalSwappingCond();
+}
+
+
+void managedFileSwap::asyncIoArrived(sigval& signal)
+{
+  pageFileLocation *ref = (pageFileLocation *)signal.sival_ptr;
+  int *tracker = ref->aio_ptr->tracker;
+  //Check if aio was completed:
+  int err = aio_error(&(ref->aio_ptr->aio));
+  if(err == 0){//This part arrived successfully
+    int lastval = membrain_atomic_fetch_add(tracker,-1);
+    if(lastval==1)
+      completeTransactionOn(ref);
+    delete ref->aio_ptr;
+  }else{
+    ///@todo: find out if this may happen regularly or just in case of error.
+  }
+  
+}
+
 
 
 void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf )
@@ -379,17 +424,17 @@ void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf )
     pageFileLocation *cur = &ref;
     char *cramBuf = ( char * ) ramBuf;
     global_bytesize offset = 0;
+    int *tracker = new int;
+    *tracker = 1;
     while ( true ) { //Sift through all pageChunks that have to be read
-        global_offset g_off = determineGlobalOffset ( *cur );
-
-        global_bytesize pageChunkSize = cur->size;
 	offset+=cur->size;
-	scheduleCopy(*cur,(void*)(cramBuf + offset));
+	scheduleCopy(*cur,(void*)(cramBuf + offset),tracker);
         if ( cur->status == PAGE_END ) {//I have completely written this pageChunk.
             break;
         }
-        cur = cur->glob_off_next;
+        cur = cur->glob_off_next.glob_off_next;
     };
+    membrain_atomic_fetch_add(tracker,-1);
 }
 
 void managedFileSwap::copyMem ( void *ramBuf,  pageFileLocation &ref )
@@ -397,18 +442,55 @@ void managedFileSwap::copyMem ( void *ramBuf,  pageFileLocation &ref )
     pageFileLocation *cur = &ref;
     char *cramBuf = ( char * ) ramBuf;
     global_bytesize offset = 0;
+    int *tracker = new int;
+    *tracker = 1;
     while ( true ) { //Sift through all pageChunks that have to be read
-        global_offset g_off = determineGlobalOffset ( *cur );
-
-        global_bytesize pageChunkSize = cur->size;
 	offset+=cur->size;
-	scheduleCopy(cramBuf + offset,*cur);
+	scheduleCopy(cramBuf + offset,*cur,tracker);
         if ( cur->status == PAGE_END ) {//I have completely written this pageChunk.
             break;
         }
-        cur = cur->glob_off_next;
+        cur = cur->glob_off_next.glob_off_next;
     };
+    membrain_atomic_fetch_add(tracker,-1);
 }
 managedFileSwap *managedFileSwap::instance = NULL;
 
+void managedFileSwap::sigStat ( int signum )
+{
+    global_bytesize total_space = instance->swapSize;
+    global_bytesize free_space = 0;
+    global_bytesize free_space2 = 0;
+    global_bytesize fractured = 0;
+    global_bytesize partend = 0;
+    auto it = instance->free_space.begin();
+    do {
+        free_space += it->second->size;
+    } while ( ++it != instance->free_space.end() );
+
+    it = instance->all_space.begin();
+    do {
+        switch ( it->second->status ) {
+        case PAGE_END:
+            partend += it->second->size;
+            break;
+        case PAGE_FREE:
+            free_space2 += it->second->size;
+            break;
+        case PAGE_PART:
+            fractured += it->second->size;
+            break;
+        default:
+            break;
+        }
+    } while ( ++it != instance->all_space.end() );
+
+    printf ( "%ld\t%ld\t%ld\t%e\t%e\t%s\n", free_space, partend, fractured, ( ( double ) free_space ) / ( partend + fractured + free_space ), ( ( ( double ) ( total_space ) - ( partend + fractured + free_space ) ) / ( total_space ) ), ( free_space == instance->swapFree ? "sane" : "insane" ) );
+
+
 }
+
+
+
+}
+

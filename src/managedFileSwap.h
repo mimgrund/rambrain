@@ -25,17 +25,30 @@ enum pageChunkStatus {PAGE_FREE = 1,
 
 typedef uint64_t global_offset;
 
+class pageFileLocation;
+
+struct aiotracker{
+  struct aiocb aio;
+  int *tracker;
+};
+
+union glob_off_union{
+  
+  pageFileLocation *glob_off_next;
+  managedMemoryChunk *chunk;
+  glob_off_union() {chunk = NULL;};
+};
 
 //This will be stored in managedMemoryChunk::swapBuf :
 class pageFileLocation{
 public:
-    pageFileLocation(unsigned int file, global_bytesize offset,global_bytesize size, pageChunkStatus status=PAGE_FREE): file(file), offset(offset),size(size),glob_off_next(NULL),status(status),aio_ptr(NULL) {};
+    pageFileLocation(unsigned int file, global_bytesize offset,global_bytesize size, pageChunkStatus status=PAGE_FREE): file(file), offset(offset),size(size),status(status),aio_ptr(NULL) {};
     unsigned int file;
     global_bytesize offset;
     global_bytesize size;
-    pageFileLocation *glob_off_next;//This points if used to the next part, if free to the next free chunk.
+    union glob_off_union glob_off_next;//This points if used to the next part, if free to the next free chunk, if PAGE_END points to memchunk.
     pageChunkStatus status;
-    struct aiocb *aio_ptr;
+    struct aiotracker *aio_ptr;
 };
 
 
@@ -76,17 +89,17 @@ private:
     FILE **swapFiles = NULL;
 
     //Memory copy:
-    void scheduleCopy(membrain::pageFileLocation& ref, void* ramBuf, bool reverse = false);
-    inline void scheduleCopy(void *ramBuf, pageFileLocation &ref) {scheduleCopy(ref,ramBuf,true);};
+    void scheduleCopy(membrain::pageFileLocation& ref, void* ramBuf, int* parttracker, bool reverse = false);
+    inline void scheduleCopy(void *ramBuf, pageFileLocation &ref, int* parttracker) {scheduleCopy(ref,ramBuf,parttracker,true);};
     void copyMem ( void* ramBuf, membrain::pageFileLocation& ref );
     void copyMem ( membrain::pageFileLocation& ref, void* ramBuf );
-
+    
 
     bool filesOpen = false;
 
 
     //page file malloc:
-    pageFileLocation *pfmalloc ( global_bytesize size );
+    pageFileLocation *pfmalloc ( membrain::global_bytesize size, membrain::managedMemoryChunk* chunk );
     void pffree ( pageFileLocation *pagePtr );
     pageFileLocation *allocInFree ( pageFileLocation *freeChunk, global_bytesize size );
 
@@ -97,6 +110,7 @@ private:
     //sigEvent Handler:
     struct sigevent evhandler;
     void asyncIoArrived(union sigval &signal);
+    void completeTransactionOn(membrain::pageFileLocation* ref);
 public:
     static void	staticAsyncIoArrived(union sigval signal) {instance->asyncIoArrived(signal);};
 protected:
