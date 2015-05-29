@@ -13,4 +13,7 @@ int main ( int argc, char **argv )
 
     // Run tests
     matrixTransposeTestInstance.runTests ( repetitions );
+    matrixCleverTransposeTestInstance.runTests ( repetitions );
+    matrixCleverTransposeOpenMPTestInstance.runTests ( repetitions );
+    matrixCleverBlockTransposeOpenMPTestInstance.runTests ( repetitions );
 }
