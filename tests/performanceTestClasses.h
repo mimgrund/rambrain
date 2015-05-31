@@ -52,9 +52,9 @@ public:
 protected:
     T valueAtStep ( unsigned int step ) {
         if ( deltaLog ) {
-            return pow ( 10.0, ( log10 ( max ) - log10 ( min ) ) * step / steps );
+            return pow ( 10.0, ( log10 ( max ) - log10 ( min ) ) * step / steps ) * min;
         } else {
-            return ( max - min ) * step / steps;
+            return ( max - min ) * step / steps + min;
         }
     }
 
@@ -99,6 +99,7 @@ public:
                 string params = getParamsString ( param, step );
                 stringstream call;
                 call << "./membrain-performancetests " << repetitions << " " << name << " " << params;
+                cout << "Calling: " << call.str() << endl;
                 system ( call.str().c_str() );
             }
             //! @todo do plotting
