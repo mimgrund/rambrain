@@ -57,45 +57,6 @@ int main ( int argc, char **argv )
         i = j + 1;
 
         myTester.writeToFile();
-
-        //! @todo plotting?
-
-        /*for ( vector<testMethod>::iterator it = tests.begin(); it != tests.end(); ++it ) {
-            if ( strcmp ( it->name, argv[i] ) == 0 ) {
-                ++i;
-
-                if ( i + it->argumentCount > argc ) {
-                    cerr << "Not enough arguments supplied for test parameters, exiting" << endl;
-                    return 1;
-                }
-
-                tester myTester ( it->name );
-                myTester.addComment ( it->comment );
-
-                char **args = 0;
-                if ( it->argumentCount > 0 ) {
-                    args = new char *[it->argumentCount];
-                    for ( int j = 0; j < it->argumentCount; ++j, ++i ) {
-                        args[j] = argv[i];
-                        myTester.addParameter ( args[j] );
-                        cout << "Parameter " << j << ": " << args[j] << endl;
-                    }
-                }
-
-                for ( int r = 0; r < repetitions; ++r ) {
-                    myTester.startNewTimeCycle();
-                    it->test ( &myTester, args );
-                }
-
-                myTester.writeToFile();
-
-                if ( it->argumentCount > 0 ) {
-                    delete[] args;
-                }
-                break;
-            }
-        }
-        */
     }
 
     cout << "Performance tests done" << endl;
