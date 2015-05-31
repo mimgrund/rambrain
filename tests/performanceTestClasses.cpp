@@ -70,6 +70,16 @@ void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param
     test.addTimeMeasurement();
 }
 
+string matrixTransposeTest::generateMyGnuplotPlotPart ( const string &file )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\";
+    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\";
+    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\";
+    ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
+}
+
 string matrixCleverTransposeTest::comment = "Measurements of allocation and definition, transposition, deletion times, but with a clever transposition algorithm";
 matrixCleverTransposeTest matrixCleverTransposeTestInstance;
 
@@ -178,6 +188,16 @@ void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int
     }
 
     test.addTimeMeasurement();
+}
+
+string matrixCleverTransposeTest::generateMyGnuplotPlotPart ( const string &file )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\";
+    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\";
+    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\";
+    ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
 }
 
 string matrixCleverTransposeOpenMPTest::comment = "Same as cleverTranspose, but with OpenMP";
@@ -296,6 +316,16 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
         delete rows[i];
     }
     test.addTimeMeasurement();
+}
+
+string matrixCleverTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string &file )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\";
+    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\";
+    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\";
+    ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
 }
 
 string matrixCleverBlockTransposeOpenMPTest::comment = "Same as cleverTranspose, but with OpenMP and blockwise multiplication";
@@ -431,4 +461,14 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
     }
 
     test.addTimeMeasurement();
+}
+
+string matrixCleverBlockTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string &file )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\";
+    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\";
+    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\";
+    ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
 }

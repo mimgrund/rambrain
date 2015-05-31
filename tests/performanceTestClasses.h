@@ -29,6 +29,7 @@ public:
 
     unsigned int steps;
     bool deltaLog;
+    string name;
 };
 
 
@@ -95,14 +96,29 @@ public:
         cout << "Running test case " << name << std::endl;
         for ( int param = parameters.size() - 1; param >= 0; --param ) {
             unsigned int steps = getStepsForParam ( param );
+            ofstream temp ( "temp.dat" );
+
             for ( unsigned int step = 0; step < steps; ++step ) {
                 string params = getParamsString ( param, step );
                 stringstream call;
                 call << "./membrain-performancetests " << repetitions << " " << name << " " << params;
                 cout << "Calling: " << call.str() << endl;
                 system ( call.str().c_str() );
+
+                resultToTempFile ( param, step, temp );
+                temp << endl;
             }
-            //! @todo do plotting
+
+            temp.close();
+            ofstream gnutemp ( "temp.gnuplot" );
+            string outname = name + param;
+            gnutemp << generateGnuplotScript ( outname, parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog );
+            gnutemp.close();
+
+            cout << "Calling gnuplot and displaying result" << endl;
+            system ( "gnuplot temp.gnuplot" );
+            system ( ( "convert -density 300 -resize 1920x " + outname + ".eps -flatten " + outname + ".png" ).c_str() );
+            system ( ( "display " + outname + ".png &" ).c_str() );
         }
     }
 
@@ -111,7 +127,7 @@ protected:
         return parameters[parameters.size() - varryParam - 1]->steps;
     }
 
-    virtual string getParamsString ( int varryParam, unsigned int step ) {
+    virtual string getParamsString ( int varryParam, unsigned int step, const string &delimiter = " " ) {
         stringstream ss;
         for ( int i = parameters.size() - 1; i >= 0; --i ) {
             if ( i == varryParam ) {
@@ -119,10 +135,58 @@ protected:
             } else {
                 ss << parameters[i]->valueAsString();
             }
-            ss << " ";
+            ss << delimiter;
         }
         return ss.str();
     }
+
+    virtual string getTestOutfile ( int varryParam, unsigned int step ) {
+        stringstream ss;
+        ss << "performancetest_" << name;
+        for ( int i = parameters.size() - 1; i >= 0; --i ) {
+            if ( i == varryParam ) {
+                ss << "#" << parameters[i]->valueAsString ( step );
+            } else {
+                ss << "#" << parameters[i]->valueAsString();
+            }
+        }
+        return ss.str();
+    }
+
+    virtual void resultToTempFile ( int varryParam, unsigned int step, ofstream &file ) {
+        file << getParamsString ( varryParam, step, "\t" );
+        ifstream test ( getTestOutfile ( varryParam, step ) );
+        string line;
+        while ( getline ( test, line ) ) {
+            if ( line.find ( '#' ) != 0 ) {
+                stringstream ss ( line );
+                vector<string> parts;
+                string part;
+                while ( getline ( ss, part, '\t' ) ) {
+                    parts.push_back ( part );
+                }
+                file << parts[parts.size() - 2] << '\t';
+            }
+        }
+    }
+
+    virtual string generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log ) {
+        stringstream ss;
+        ss << "set terminal postscript eps enhanced color 'Helvetica,10'";
+        ss << "set output \"" << name << ".eps\"";
+        ss << "set xlabel \"" << xlabel << "\"";
+        ss << "set ylabel \"" << ylabel << "\"";
+        ss << "set title \"" << title << "\"";
+        if ( log ) {
+            ss << "set log xy";
+        } else {
+            ss << "set log y";
+        }
+        ss << generateMyGnuplotPlotPart ( "temp.dat" );
+        return ss.str();
+    }
+
+    virtual string generateMyGnuplotPlotPart ( const string &file ) = 0;
 
     const char *name;
 
@@ -165,6 +229,7 @@ protected:
         name(); \
         virtual ~name() {} \
         static void actualTestMethod(tester&, params); \
+        virtual string generateMyGnuplotPlotPart(const string& file); \
         parammacro; \
         static string comment; \
     }; \
