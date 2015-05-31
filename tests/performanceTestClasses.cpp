@@ -9,13 +9,13 @@ matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "Matrix
     parameter1.max = 10000;
     parameter1.steps = 20;
     parameter1.deltaLog = true;
-    parameter1.mean = 10000;
+    parameter1.mean = 8000;
 
     parameter2.min = 10;
     parameter2.max = 10000;
     parameter2.steps = 20;
     parameter2.deltaLog = true;
-    parameter2.mean = 10000;
+    parameter2.mean = 2000;
 }
 
 void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -79,7 +79,7 @@ matrixCleverTransposeTest::matrixCleverTransposeTest() : performanceTest<int, in
     parameter1.max = 10000;
     parameter1.steps = 20;
     parameter1.deltaLog = true;
-    parameter1.mean = 10000;
+    parameter1.mean = 8000;
 
     parameter2.min = 10;
     parameter2.max = 10000;
@@ -189,7 +189,7 @@ matrixCleverTransposeOpenMPTest::matrixCleverTransposeOpenMPTest() : performance
     parameter1.max = 10000;
     parameter1.steps = 20;
     parameter1.deltaLog = true;
-    parameter1.mean = 10000;
+    parameter1.mean = 8000;
 
     parameter2.min = 10;
     parameter2.max = 10000;
@@ -307,7 +307,7 @@ matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : p
     parameter1.max = 10000;
     parameter1.steps = 20;
     parameter1.deltaLog = true;
-    parameter1.mean = 10000;
+    parameter1.mean = 8000;
 
     parameter2.min = 10;
     parameter2.max = 10000;
