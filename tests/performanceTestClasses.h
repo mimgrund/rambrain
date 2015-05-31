@@ -172,15 +172,15 @@ protected:
 
     virtual string generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log ) {
         stringstream ss;
-        ss << "set terminal postscript eps enhanced color 'Helvetica,10'";
-        ss << "set output \"" << name << ".eps\"";
-        ss << "set xlabel \"" << xlabel << "\"";
-        ss << "set ylabel \"" << ylabel << "\"";
-        ss << "set title \"" << title << "\"";
+        ss << "set terminal postscript eps enhanced color 'Helvetica,10'" << endl;
+        ss << "set output \"" << name << ".eps\"" << endl;
+        ss << "set xlabel \"" << xlabel << "\"" << endl;
+        ss << "set ylabel \"" << ylabel << "\"" << endl;
+        ss << "set title \"" << title << "\"" << endl;
         if ( log ) {
-            ss << "set log xy";
+            ss << "set log xy" << endl;
         } else {
-            ss << "set log y";
+            ss << "set log y" << endl;
         }
         ss << generateMyGnuplotPlotPart ( "temp.dat" );
         return ss.str();

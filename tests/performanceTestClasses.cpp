@@ -73,10 +73,10 @@ void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param
 string matrixTransposeTest::generateMyGnuplotPlotPart ( const string &file )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\";
-    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\";
-    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\";
-    ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"";
+    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"" << endl;
     return ss.str();
 }
 
