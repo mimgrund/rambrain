@@ -53,9 +53,9 @@ public:
 protected:
     T valueAtStep ( unsigned int step ) {
         if ( deltaLog ) {
-            return pow ( 10.0, ( log10 ( max ) - log10 ( min ) ) * step / steps ) * min;
+            return pow ( 10.0, ( log10 ( max ) - log10 ( min ) ) * step / ( steps - 1 ) ) * min;
         } else {
-            return ( max - min ) * step / steps + min;
+            return ( max - min ) * step / ( steps - 1 ) + min;
         }
     }
 
@@ -111,14 +111,16 @@ public:
 
             temp.close();
             ofstream gnutemp ( "temp.gnuplot" );
-            string outname = name + param;
-            gnutemp << generateGnuplotScript ( outname, parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog );
+            stringstream outname;
+            outname << name << param << ".eps";
+            cout << "Generating output file " << outname.str() << endl;
+            gnutemp << generateGnuplotScript ( outname.str(), parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog );
             gnutemp.close();
 
             cout << "Calling gnuplot and displaying result" << endl;
             system ( "gnuplot temp.gnuplot" );
-            system ( ( "convert -density 300 -resize 1920x " + outname + ".eps -flatten " + outname + ".png" ).c_str() );
-            system ( ( "display " + outname + ".png &" ).c_str() );
+            system ( ( "convert -density 300 -resize 1920x " + outname.str() + ".eps -flatten " + outname.str() + ".png" ).c_str() );
+            system ( ( "display " + outname.str() + ".png &" ).c_str() );
         }
     }
 
@@ -142,7 +144,7 @@ protected:
 
     virtual string getTestOutfile ( int varryParam, unsigned int step ) {
         stringstream ss;
-        ss << "performancetest_" << name;
+        ss << "perftest_" << name;
         for ( int i = parameters.size() - 1; i >= 0; --i ) {
             if ( i == varryParam ) {
                 ss << "#" << parameters[i]->valueAsString ( step );
@@ -158,7 +160,7 @@ protected:
         ifstream test ( getTestOutfile ( varryParam, step ) );
         string line;
         while ( getline ( test, line ) ) {
-            if ( line.find ( '#' ) != 0 ) {
+            if ( line.find ( '#' ) == string::npos ) {
                 stringstream ss ( line );
                 vector<string> parts;
                 string part;

@@ -10,12 +10,14 @@ matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "Matrix
     parameter1.steps = 20;
     parameter1.deltaLog = true;
     parameter1.mean = 8000;
+    parameter1.name = "Matrix size per dimension";
 
     parameter2.min = 10;
     parameter2.max = 10000;
     parameter2.steps = 20;
     parameter2.deltaLog = true;
     parameter2.mean = 2000;
+    parameter2.name = "Matrix rows in main memory";
 }
 
 void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -90,12 +92,14 @@ matrixCleverTransposeTest::matrixCleverTransposeTest() : performanceTest<int, in
     parameter1.steps = 20;
     parameter1.deltaLog = true;
     parameter1.mean = 8000;
+    parameter1.name = "Matrix size per dimension";
 
     parameter2.min = 10;
     parameter2.max = 10000;
     parameter2.steps = 20;
     parameter2.deltaLog = true;
-    parameter2.mean = 1000;
+    parameter2.mean = 2000;
+    parameter2.name = "Matrix rows in main memory";
 }
 
 void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -210,12 +214,14 @@ matrixCleverTransposeOpenMPTest::matrixCleverTransposeOpenMPTest() : performance
     parameter1.steps = 20;
     parameter1.deltaLog = true;
     parameter1.mean = 8000;
+    parameter1.name = "Matrix size per dimension";
 
     parameter2.min = 10;
     parameter2.max = 10000;
     parameter2.steps = 20;
     parameter2.deltaLog = true;
-    parameter2.mean = 1000;
+    parameter2.mean = 2000;
+    parameter2.name = "Matrix rows in main memory";
 }
 
 void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -338,12 +344,14 @@ matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : p
     parameter1.steps = 20;
     parameter1.deltaLog = true;
     parameter1.mean = 8000;
+    parameter1.name = "Matrix size per dimension";
 
     parameter2.min = 10;
     parameter2.max = 10000;
     parameter2.steps = 20;
     parameter2.deltaLog = true;
-    parameter2.mean = 1000;
+    parameter2.mean = 2000;
+    parameter2.name = "Matrix rows in main memory";
 }
 
 void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
