@@ -34,7 +34,7 @@ int main ( int argc, char **argv )
         }
 
         //! @todo can i perhaps auto generate this via the declaration macros? should name be static?
-        for ( int r = 0, j = i; r < repetitions; ++r ) {
+        for ( int r = 0, j = i; r < repetitions; ++r, j = i ) {
             myTester.startNewTimeCycle();
 
             if ( matrixTransposeTestInstance.itsMe ( argv[j] ) ) {
