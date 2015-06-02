@@ -7,7 +7,7 @@ performanceTest<>::performanceTest ( const char *name ) : name ( name )
     testClasses.push_back ( this );
 }
 
-void performanceTest<>::runTests ( unsigned int repetitions )
+void performanceTest<>::runTests ( unsigned int repetitions, const string &path  )
 {
     cout << "Running test case " << name << std::endl;
     for ( int param = parameters.size() - 1; param >= 0; --param ) {
@@ -17,7 +17,7 @@ void performanceTest<>::runTests ( unsigned int repetitions )
         for ( unsigned int step = 0; step < steps; ++step ) {
             string params = getParamsString ( param, step );
             stringstream call;
-            call << "./membrain-performancetests " << repetitions << " " << name << " " << params;
+            call << path << "membrain-performancetests " << repetitions << " " << name << " " << params;
             cout << "Calling: " << call.str() << endl;
             system ( call.str().c_str() );
 
@@ -40,12 +40,12 @@ void performanceTest<>::runTests ( unsigned int repetitions )
     }
 }
 
-void performanceTest<>::runRegisteredTests ( unsigned int repetitions )
+void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const string &path )
 {
     for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
         performanceTest<> *test = *it;
         if ( test->enabled ) {
-            test->runTests ( repetitions );
+            test->runTests ( repetitions, path );
         } else {
             cout << "Skipping test " << test->name << " because it is disabled." << endl;
         }

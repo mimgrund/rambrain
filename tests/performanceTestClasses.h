@@ -90,8 +90,8 @@ public:
         }
     }
 
-    virtual void runTests ( unsigned int repetitions );
-    static void runRegisteredTests ( unsigned int repetitions );
+    virtual void runTests ( unsigned int repetitions, const string &path = "./" );
+    static void runRegisteredTests ( unsigned int repetitions, const string &path = "./" );
     static void enableTest ( const string &name, bool enabled );
     static void enableAllTests ( bool enabled );
     static void unregisterTest ( const string &name );
