@@ -24,8 +24,8 @@ bool managedDummySwap::swapOut ( managedMemoryChunk *chunk )
         free ( chunk->locPtr );
         chunk->locPtr = NULL; // not strictly required.
         chunk->status = MEM_SWAPPED;
-        swapUsed += chunk->size;
-        swapFree -= chunk->size;
+	claimUsageof(chunk->size,false,true);
+	claimUsageof(chunk->size,true,false);
         ///We are not writing asynchronous, thus, we have to signal that we're done writing...
         managedMemory::signalSwappingCond();
 
@@ -58,8 +58,8 @@ bool managedDummySwap::swapIn ( managedMemoryChunk *chunk )
         free ( chunk->swapBuf );
         chunk->swapBuf = NULL; // Not strictly required
         chunk->status = MEM_ALLOCATED;
-        swapUsed -= chunk->size;
-        swapFree += chunk->size;
+	claimUsageof(chunk->size,false,false);
+	claimUsageof(chunk->size,true,true);
         ///We are not writing asynchronous, thus, we have to signal that we're done reading...
         managedMemory::signalSwappingCond();
         return true;
@@ -85,8 +85,7 @@ unsigned int managedDummySwap::swapIn ( managedMemoryChunk **chunklist, unsigned
 void managedDummySwap::swapDelete ( managedMemoryChunk *chunk )
 {
     if ( chunk->status == MEM_SWAPPED ) {
-        swapUsed -= chunk->size;
-        swapFree += chunk->size;
+	claimUsageof(chunk->size,false,false);
         free ( chunk->swapBuf );
     }
 }

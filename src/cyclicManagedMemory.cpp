@@ -2,6 +2,7 @@
 #include "common.h"
 #include "exceptions.h"
 #include "membrain_atomics.h"
+#include "managedSwap.h"
 #include <pthread.h>
 // #define VERYVERBOSE
 
@@ -52,8 +53,8 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
 {
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
     //Memory counting for what we account for:
-    if ( chunk.status == MEM_SWAPPED ) {
-        membrain_atomic_sub_fetch ( &memory_swapped, chunk.size );
+    if ( chunk.status & MEM_SWAPPED ) {
+       
     } else if ( counterActive->chunk->atime > chunk.atime ) { //preemptively loaded
         membrain_atomic_sub_fetch ( &preemptiveBytes, chunk.size );
     }
@@ -238,9 +239,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
                 active = endSwapin;
             }
             pthread_mutex_unlock ( &cyclicTopoLock );
-
-            memory_used += selectedReadinVol;
-            memory_swapped -= selectedReadinVol;
             preemptiveBytes += selectedReadinVol - actual_obj_size;
             chunk.atime = atime++;
 
@@ -265,8 +263,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
                 counterActive = active;
             }
             pthread_mutex_unlock ( &cyclicTopoLock );
-            memory_used += chunk.size;
-            memory_swapped -= chunk.size;
 #ifdef SWAPSTATS
             swap_in_bytes += chunk.size;
             n_swap_in += 1;
@@ -528,9 +524,6 @@ bool cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
     counterActive = cleanFrom->prev;
     VERBOSEPRINT ( "swapOutReturn" );
     if ( swapSuccess ) {
-
-        memory_swapped += unload_size;
-        memory_used -= unload_size;
 #ifdef SWAPSTATS
         swap_out_bytes += unload_size;
         n_swap_out += 1;

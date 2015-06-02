@@ -548,5 +548,21 @@ bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLoc
 
 }
 
+void membrain::managedMemory::claimUsageof(membrain::global_bytesize bytes, bool rambytes,bool used)
+{
+  if(rambytes){
+    if(used){
+      membrain_atomic_fetch_add(&memory_used,bytes);
+    }else{
+      membrain_atomic_fetch_sub(&memory_used,bytes);
+    }
+  }else{
+    if(used){
+      membrain_atomic_fetch_add(&memory_swapped,bytes);
+    }else{
+      membrain_atomic_fetch_sub(&memory_swapped,bytes);
+    }
+  }
+}
 
 

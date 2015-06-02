@@ -91,6 +91,8 @@ private:
     unsigned int windowSize;
     unsigned int windowNumber;
     unsigned int lastCreatedWindow = 0;
+    
+    
 
     float swapFileResizeFrac = .1; ///@todo: Possibly make this configurable?
     
@@ -119,6 +121,8 @@ private:
     struct sigevent evhandler;
     void asyncIoArrived(union sigval &signal);
     void completeTransactionOn(membrain::pageFileLocation* ref);
+    
+    
 public:
     static void	staticAsyncIoArrived(union sigval signal) {instance->asyncIoArrived(signal);};
 protected:

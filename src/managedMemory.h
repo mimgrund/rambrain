@@ -6,12 +6,11 @@
 #include <pthread.h>
 
 #include "managedMemoryChunk.h"
-#include "managedSwap.h"
 #include "exceptions.h"
 
 namespace membrain
 {
-
+  class managedSwap;
 template<class T>
 class managedPtr;
 
@@ -117,6 +116,7 @@ protected:
 
     bool waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock = false );
     bool waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock = false );
+    void claimUsageof(global_bytesize bytes, bool rambytes,bool used);
 public:
     void printSwapstats();
     void resetSwapstats();

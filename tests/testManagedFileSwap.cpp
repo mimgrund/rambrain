@@ -9,7 +9,7 @@
 
 using namespace membrain;
 
-TEST ( managedFileSwap, Unit_ManualSwapping )
+TEST ( managedFileSwap, Unit_ManualSwapping ) //This screws default manager, as byte accounting is done asynchronously (invoked by managedFileSwap...)
 {
     const unsigned int dblamount = 100;
     const unsigned int dblsize = dblamount * sizeof ( double );
@@ -28,12 +28,12 @@ TEST ( managedFileSwap, Unit_ManualSwapping )
     chunk->size = dblsize;
 
     EXPECT_TRUE ( swap.swapOut ( chunk ) );
-
+    swap.waitForCleanExit();
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
-    swap.swapIn ( chunk );
-
+    EXPECT_TRUE (swap.swapIn ( chunk )) ;
+    swap.waitForCleanExit();
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
@@ -65,12 +65,12 @@ TEST ( managedFileSwap, Unit_ManualMultiSwapping )
     }
 
     swap.swapOut ( chunks, 2 );
-
+    swap.waitForCleanExit();
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 2 * dblsize, swap.getUsedSwap() );
 
     swap.swapIn ( chunks, 2 );
-
+    swap.waitForCleanExit();
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
@@ -103,12 +103,14 @@ TEST ( managedFileSwap, Unit_ManualSwappingDelete )
     chunk->size = dblsize;
 
     swap.swapOut ( chunk );
-
+    swap.waitForCleanExit();
+    
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
     swap.swapDelete ( chunk );
-
+    swap.waitForCleanExit();
+    
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 

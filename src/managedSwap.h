@@ -3,7 +3,8 @@
 
 #include "managedMemoryChunk.h"
 #include "common.h"
-
+#include "managedMemory.h"
+#include "membrain_atomics.h"
 namespace membrain
 {
 
@@ -11,7 +12,7 @@ class managedSwap
 {
 public:
     managedSwap ( global_bytesize size ) : swapSize ( size ), swapUsed ( 0 ) {}
-    virtual ~managedSwap() {}
+    virtual ~managedSwap() {waitForCleanExit();}
 
     //Returns number of sucessfully swapped chunks
     virtual unsigned int swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks ) = 0;
@@ -30,10 +31,30 @@ public:
         return swapFree;
     }
 
+    void claimUsageof(global_bytesize bytes, bool rambytes,bool used) {
+      managedMemory::defaultManager->claimUsageof(bytes,rambytes,used);
+      if(!rambytes){
+	if(used){
+	  membrain_atomic_fetch_sub(&swapFree,bytes);
+	  membrain_atomic_fetch_add(&swapUsed,bytes);
+	}else{
+	  membrain_atomic_fetch_add(&swapFree,bytes);
+	  membrain_atomic_fetch_sub(&swapUsed,bytes);
+	}
+      }
+    };
+    /** Function waits for all asynchronous IO to complete. 
+      * The wait is implemented non-performant as a normal user does not have to wait for this.
+      * Implementing this with a _cond just destroys performance in the respective swapIn/out procedures without increasing any user space functionality. **/
+    void waitForCleanExit(){
+      while(totalSwapActionsQueued!=0)
+      {printf("queued %d\r",totalSwapActionsQueued);};
+    };
 protected:
     global_bytesize swapSize;
     global_bytesize swapUsed;
     global_bytesize swapFree;
+    unsigned int totalSwapActionsQueued = 0;
 };
 
 }
