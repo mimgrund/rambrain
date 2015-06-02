@@ -40,8 +40,9 @@ void performanceTest<>::runTests ( unsigned int repetitions )
     }
 }
 
-void performanceTest<>::runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int &offset, int argumentscount )
+bool performanceTest<>::runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int &offset, int argumentscount )
 {
+    bool foundOne = false;
     for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
         performanceTest<> *test = *it;
         if ( test->itsMe ( name ) ) {
@@ -54,8 +55,16 @@ void performanceTest<>::runRespectiveTest ( const string &name, tester &myTester
                     offset = myOffset;
                 }
             }
+            foundOne = true;
+            break;
         }
     }
+
+    if ( !foundOne ) {
+        cerr << "Did not match any test case!" << endl;
+    }
+
+    return foundOne;
 }
 
 string performanceTest<>::getParamsString ( int varryParam, unsigned int step, const string &delimiter )

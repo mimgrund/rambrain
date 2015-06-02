@@ -33,9 +33,12 @@ int main ( int argc, char **argv )
             myTester.addParameter ( argv[j] );
         }
 
-        performanceTest<>::runRespectiveTest ( argv[i], myTester, repetitions, argv, i, argc );
+        ++i;
+        bool success = performanceTest<>::runRespectiveTest ( argv[i - 1], myTester, repetitions, argv, i, argc );
 
-        myTester.writeToFile();
+        if ( success ) {
+            myTester.writeToFile();
+        }
     }
 
     cout << "Performance tests done" << endl;
