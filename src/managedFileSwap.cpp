@@ -368,7 +368,8 @@ void managedFileSwap::scheduleCopy( pageFileLocation &ref, void* ramBuf, int * t
     ftruncate(swapFiles[ref.file].fileno, neededSize);
     swapFiles[ref.file].currentSize = neededSize;
   }
-  
+  membrain_atomic_fetch_add(tracker,1);
+  membrain_atomic_fetch_add(&totalSwapActionsQueued,1);
   ref.aio_ptr = new struct aiotracker;
   struct aiocb *aio=&(ref.aio_ptr->aio);
   aio->aio_buf = ramBuf;
@@ -382,9 +383,12 @@ void managedFileSwap::scheduleCopy( pageFileLocation &ref, void* ramBuf, int * t
 #ifdef DBG_AIO
   reverse?printf("scheduling read\n"):printf("scheduling write\n");
 #endif
-  membrain_atomic_fetch_add(tracker,1);
-  membrain_atomic_fetch_add(&totalSwapActionsQueued,1);
-  int res = reverse?aio_read(aio):aio_write(aio);
+  
+  int res;
+  if(reverse)
+     res = aio_read(aio);
+  else
+     res = aio_write(aio);
   if(res!=0)
     throw memoryException("Could not enqueue request");
       
@@ -392,6 +396,7 @@ void managedFileSwap::scheduleCopy( pageFileLocation &ref, void* ramBuf, int * t
 
 void managedFileSwap::completeTransactionOn(pageFileLocation* ref)
 {
+  printf("got a call\n");
   while(ref->status != PAGE_END)
     ref = ref->glob_off_next.glob_off_next;
   managedMemoryChunk *chunk=ref->glob_off_next.chunk;
@@ -447,6 +452,7 @@ void managedFileSwap::asyncIoArrived(sigval& signal)
     }
     membrain_atomic_fetch_sub(&totalSwapActionsQueued,1);//Do this at the very last line, as completeTransactionOn() has to be done beforehands.
   }else{
+    errmsgf("We have trouble in chunk %d, %d",ref->glob_off_next.chunk->id,err);
     ///@todo: find out if this may happen regularly or just in case of error.
   }
   
@@ -473,8 +479,10 @@ void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf )
     };
     unsigned int trval = membrain_atomic_fetch_sub(tracker,1);
     membrain_atomic_fetch_sub(&totalSwapActionsQueued,1);
-    if(trval==1)
+    if(trval==1){
        completeTransactionOn(cur);
+       delete tracker;
+    }
 }
 
 void managedFileSwap::copyMem ( void *ramBuf,  pageFileLocation &ref )
@@ -496,6 +504,7 @@ void managedFileSwap::copyMem ( void *ramBuf,  pageFileLocation &ref )
     unsigned int trval = membrain_atomic_fetch_add(tracker,-1);
     membrain_atomic_fetch_sub(&totalSwapActionsQueued,1);
     if(trval==1){
+       printf("completing in situ\n");
        completeTransactionOn(cur);
        delete tracker;
     }

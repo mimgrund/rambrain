@@ -32,7 +32,6 @@ memoryID const managedMemory::invalid = 0;
 
 pthread_mutex_t managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t managedMemory::swappingCond = PTHREAD_COND_INITIALIZER;
-unsigned int managedMemory::arrivedSwapins = 0;
 
 managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
 {
@@ -507,7 +506,6 @@ void managedMemory::versionInfo()
 
 void managedMemory::signalSwappingCond()
 {
-    arrivedSwapins += 1;
     pthread_cond_broadcast ( &swappingCond );
 }
 

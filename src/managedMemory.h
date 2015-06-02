@@ -55,7 +55,6 @@ public:
     static managedMemory *defaultManager;
     static const memoryID invalid;
 
-    static unsigned int arrivedSwapins;
     static void signalSwappingCond();
 protected:
     managedMemoryChunk *mmalloc ( global_bytesize sizereq );

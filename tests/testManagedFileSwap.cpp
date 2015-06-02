@@ -41,13 +41,13 @@ TEST ( managedFileSwap, Unit_ManualSwapping ) //This screws default manager, as 
     delete chunk;
 }
 
-TEST ( managedFileSwap, Unit_ManualMultiSwapping )
+TEST ( managedFileSwap, DISABLED_Unit_ManualMultiSwapping )
 {
     const unsigned int dblamount = 100;
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
     managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
-
+    
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
@@ -68,7 +68,6 @@ TEST ( managedFileSwap, Unit_ManualMultiSwapping )
     swap.waitForCleanExit();
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 2 * dblsize, swap.getUsedSwap() );
-
     swap.swapIn ( chunks, 2 );
     swap.waitForCleanExit();
     ASSERT_EQ ( mib, swap.getSwapSize() );
@@ -208,7 +207,7 @@ TEST ( managedFileSwap, Integration_RandomAccess )
 
         if ( objmask[no] == NULL ) {
 	    printf("washere\n");
-	    //manager.printCycle();
+	    ASSERT_TRUE(manager.checkCycle());
             objmask[no] = new managedPtr<double> ( 102400 );
             {
                 adhereTo<double> objoloc ( *objmask[no] );
