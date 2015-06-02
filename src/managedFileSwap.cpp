@@ -91,7 +91,7 @@ void managedFileSwap::closeSwapFiles()
 {
     if ( swapFiles ) {
         for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
-            fclose ( swapFiles[n] );
+            fclose ( swapFiles[n].descriptor);
         }
         free ( swapFiles );
     }
@@ -106,15 +106,17 @@ bool managedFileSwap::openSwapFiles()
         return false;
     }
     ///\todo Limit number of open swap file descriptors to something reasonable (<100?)
-    swapFiles = ( FILE ** ) malloc ( sizeof ( FILE * ) *pageFileNumber );
+    swapFiles = ( struct swapFileDesc * ) malloc ( sizeof ( struct swapFileDesc) *pageFileNumber );
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
         snprintf ( fname, 1024, filemask, n );
-        swapFiles[n] = fopen ( fname, "w+" );
-        if ( !swapFiles[n] ) {
+        swapFiles[n].descriptor = fopen ( fname, "w+" );
+        if ( !swapFiles[n].descriptor ) {
             throw memoryException ( "Could not open swap file." );
             return false;
         }
+        swapFiles[n].currentSize = 0;
+	swapFiles[n].fileno = fileno(swapFiles[n].descriptor);
     }
     return true;
 }
@@ -357,10 +359,23 @@ void managedFileSwap::scheduleCopy( pageFileLocation &ref, void* ramBuf, int * t
       throw memoryException("Cannot copy out buffer that is already swapped");
     
   }
+  
+  
+  //We possibly need to resize swap file:
+  global_bytesize neededSize = ref.size+ref.offset;
+  if(neededSize>swapFiles[ref.file].currentSize) // We need to resize swapFileDesc
+  {
+    global_bytesize resizeStep = pageFileSize*swapFileResizeFrac;
+    neededSize = neededSize % (resizeStep)==0?neededSize:resizeStep*(neededSize/resizeStep+1);
+    
+    ftruncate(swapFiles[ref.file].fileno, neededSize);
+    swapFiles[ref.file].currentSize = neededSize;
+  }
+  
   ref.aio_ptr = new struct aiotracker;
   struct aiocb *aio=&(ref.aio_ptr->aio);
   aio->aio_buf = ramBuf;
-  aio->aio_fildes = fileno(swapFiles[ref.file]);
+  aio->aio_fildes = swapFiles[ref.file].fileno;
   aio->aio_nbytes = ref.size;
   aio->aio_offset = ref.offset;
   aio->aio_reqprio = 0;///@todo: make this configurable

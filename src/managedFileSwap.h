@@ -27,6 +27,12 @@ typedef uint64_t global_offset;
 
 class pageFileLocation;
 
+struct swapFileDesc{
+  FILE *descriptor;
+  int fileno;
+  global_bytesize currentSize;
+};
+
 struct aiotracker{
   struct aiocb aio;
   int *tracker;
@@ -86,7 +92,9 @@ private:
     unsigned int windowNumber;
     unsigned int lastCreatedWindow = 0;
 
-    FILE **swapFiles = NULL;
+    float swapFileResizeFrac = .1; ///@todo: Possibly make this configurable?
+    
+    struct swapFileDesc *swapFiles = NULL;
 
     //Memory copy:
     void scheduleCopy(membrain::pageFileLocation& ref, void* ramBuf, int* parttracker, bool reverse = false);
