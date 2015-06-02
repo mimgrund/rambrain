@@ -30,7 +30,7 @@ void performanceTest<>::runTests ( unsigned int repetitions )
         stringstream outname;
         outname << name << param;
         cout << "Generating output file " << outname.str() << endl;
-        gnutemp << generateGnuplotScript ( outname.str(), parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog );
+        gnutemp << generateGnuplotScript ( outname.str(), parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog, parameters.size() - param );
         gnutemp.close();
 
         cout << "Calling gnuplot and displaying result" << endl;
@@ -113,7 +113,7 @@ void performanceTest<>::resultToTempFile ( int varryParam, unsigned int step, of
     }
 }
 
-string performanceTest<>::generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log )
+string performanceTest<>::generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn )
 {
     stringstream ss;
     ss << "set terminal postscript eps enhanced color 'Helvetica,10'" << endl;
@@ -126,7 +126,7 @@ string performanceTest<>::generateGnuplotScript ( const string &name, const stri
     } else {
         ss << "set log y" << endl;
     }
-    ss << generateMyGnuplotPlotPart ( "temp.dat" );
+    ss << generateMyGnuplotPlotPart ( "temp.dat", paramColumn );
     return ss.str();
 }
 
@@ -203,13 +203,13 @@ void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param
     test.addTimeMeasurement();
 }
 
-string matrixTransposeTest::generateMyGnuplotPlotPart ( const string &file )
+string matrixTransposeTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\" << endl;
-    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\" << endl;
-    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\" << endl;
-    ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"" << endl;
     return ss.str();
 }
 
@@ -325,13 +325,13 @@ void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int
     test.addTimeMeasurement();
 }
 
-string matrixCleverTransposeTest::generateMyGnuplotPlotPart ( const string &file )
+string matrixCleverTransposeTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\" << endl;
-    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\" << endl;
-    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\" << endl;
-    ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"";
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
 
@@ -455,13 +455,13 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
     test.addTimeMeasurement();
 }
 
-string matrixCleverTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string &file )
+string matrixCleverTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\" << endl;
-    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\" << endl;
-    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\" << endl;
-    ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"";
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
 
@@ -602,12 +602,12 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
     test.addTimeMeasurement();
 }
 
-string matrixCleverBlockTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string &file )
+string matrixCleverBlockTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\" << endl;
-    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\" << endl;
-    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\" << endl;
-    ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"";
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }

@@ -104,9 +104,9 @@ protected:
     virtual string getParamsString ( int varryParam, unsigned int step, const string &delimiter = " " );
     virtual string getTestOutfile ( int varryParam, unsigned int step );
     virtual void resultToTempFile ( int varryParam, unsigned int step, ofstream &file );
-    virtual string generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log );
+    virtual string generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn );
 
-    virtual string generateMyGnuplotPlotPart ( const string &file ) = 0;
+    virtual string generateMyGnuplotPlotPart ( const string &file, int paramColumn ) = 0;
 
     const char *name;
     vector<testParameterBase *> parameters;
@@ -162,7 +162,7 @@ protected:
         parammacro; \
         static string comment; \
     protected: \
-        virtual string generateMyGnuplotPlotPart(const string& file); \
+        virtual string generateMyGnuplotPlotPart(const string& file, int paramColumn); \
         template<typename T> \
         inline T convert(char* str) { \
             return T(str); \
