@@ -319,9 +319,9 @@ void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int
 string matrixCleverTransposeTest::generateMyGnuplotPlotPart ( const string &file )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\";
-    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\";
-    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\";
+    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
@@ -449,9 +449,9 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
 string matrixCleverTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string &file )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\";
-    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\";
-    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\";
+    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
@@ -596,9 +596,9 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
 string matrixCleverBlockTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string &file )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\";
-    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\";
-    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\";
+    ss << "plot '" << file << "' using 1:3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using 1:4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using 1:5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using 1:($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
