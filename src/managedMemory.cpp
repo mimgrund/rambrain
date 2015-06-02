@@ -113,7 +113,8 @@ bool managedMemory::setMemoryLimit ( global_bytesize size )
 void managedMemory::ensureEnoughSpaceAndLockTopo ( membrain::global_bytesize sizereq )
 {
     if ( sizereq + memory_used > memory_max ) {
-        if ( !swapOut ( sizereq + memory_used - memory_max ) ) { //Execute swapOut in protected context
+        if ( !swapOut ( sizereq + memory_used - memory_max )) { //Execute swapOut in protected context
+	  //We did not manage to swap out our stuff right away.
             pthread_mutex_unlock ( &stateChangeMutex );
             Throw ( memoryException ( "Could not swap memory" ) );
         } else {

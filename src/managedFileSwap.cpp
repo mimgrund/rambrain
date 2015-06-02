@@ -392,7 +392,6 @@ void managedFileSwap::scheduleCopy( pageFileLocation &ref, void* ramBuf, int * t
 
 void managedFileSwap::completeTransactionOn(pageFileLocation* ref)
 {
-  delete ref->aio_ptr->tracker;
   while(ref->status != PAGE_END)
     ref = ref->glob_off_next.glob_off_next;
   managedMemoryChunk *chunk=ref->glob_off_next.chunk;
@@ -402,24 +401,30 @@ void managedFileSwap::completeTransactionOn(pageFileLocation* ref)
       printf("Accounting for a swapin\n");
 #endif
       pffree ( ( pageFileLocation * ) chunk->swapBuf );
+      pthread_mutex_lock(&managedMemory::defaultManager->stateChangeMutex);
       chunk->swapBuf = NULL; // Not strictly required
       chunk->status = MEM_ALLOCATED;
       claimUsageof(chunk->size,false,false);
+      managedMemory::signalSwappingCond();
+      pthread_mutex_unlock(&managedMemory::defaultManager->stateChangeMutex);
       break;
     case MEM_SWAPOUT:
 #ifdef DBG_AIO
       printf("Accounting for a swapout\n");
 #endif
       free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
+      pthread_mutex_lock(&managedMemory::defaultManager->stateChangeMutex);
       chunk->locPtr = NULL; // not strictly required.
       chunk->status = MEM_SWAPPED;
       claimUsageof(chunk->size,true,false);
+      managedMemory::signalSwappingCond();
+      pthread_mutex_unlock(&managedMemory::defaultManager->stateChangeMutex);
       break;
     default:
       throw memoryException("AIO Synchronization broken!");
       break;
   }
-  managedMemory::signalSwappingCond();
+  
 }
 
 
@@ -434,11 +439,12 @@ void managedFileSwap::asyncIoArrived(sigval& signal)
   //Check if aio was completed:
   int err = aio_error(&(ref->aio_ptr->aio));
   if(err == 0){//This part arrived successfully
-    int lastval = membrain_atomic_fetch_sub(tracker,1);
-    
-    //if(lastval==1)
-      completeTransactionOn(ref);
     delete ref->aio_ptr;
+    int lastval = membrain_atomic_fetch_sub(tracker,1);
+    if(lastval==1){
+      completeTransactionOn(ref);
+      delete tracker;
+    }
     membrain_atomic_fetch_sub(&totalSwapActionsQueued,1);//Do this at the very last line, as completeTransactionOn() has to be done beforehands.
   }else{
     ///@todo: find out if this may happen regularly or just in case of error.
@@ -468,7 +474,7 @@ void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf )
     unsigned int trval = membrain_atomic_fetch_sub(tracker,1);
     membrain_atomic_fetch_sub(&totalSwapActionsQueued,1);
     if(trval==1)
-      completeTransactionOn(cur);
+       completeTransactionOn(cur);
 }
 
 void managedFileSwap::copyMem ( void *ramBuf,  pageFileLocation &ref )
@@ -478,6 +484,7 @@ void managedFileSwap::copyMem ( void *ramBuf,  pageFileLocation &ref )
     global_bytesize offset = 0;
     int *tracker = new int;
     *tracker = 1;
+    membrain_atomic_fetch_add(&totalSwapActionsQueued,1);
     while ( true ) { //Sift through all pageChunks that have to be read
 	offset+=cur->size;
 	scheduleCopy(cramBuf + offset,*cur,tracker);
@@ -486,7 +493,12 @@ void managedFileSwap::copyMem ( void *ramBuf,  pageFileLocation &ref )
         }
         cur = cur->glob_off_next.glob_off_next;
     };
-    membrain_atomic_fetch_add(tracker,-1);
+    unsigned int trval = membrain_atomic_fetch_add(tracker,-1);
+    membrain_atomic_fetch_sub(&totalSwapActionsQueued,1);
+    if(trval==1){
+       completeTransactionOn(cur);
+       delete tracker;
+    }
 }
 managedFileSwap *managedFileSwap::instance = NULL;
 

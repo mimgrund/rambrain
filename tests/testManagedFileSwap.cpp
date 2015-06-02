@@ -207,6 +207,8 @@ TEST ( managedFileSwap, Integration_RandomAccess )
         global_bytesize no = test.random ( obj_no );
 
         if ( objmask[no] == NULL ) {
+	    printf("washere\n");
+	    //manager.printCycle();
             objmask[no] = new managedPtr<double> ( 102400 );
             {
                 adhereTo<double> objoloc ( *objmask[no] );

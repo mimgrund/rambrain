@@ -10,6 +10,7 @@
 
 namespace membrain
 {
+  class managedFileSwap;
   class managedSwap;
 template<class T>
 class managedPtr;
@@ -98,6 +99,7 @@ protected:
     template<class T>
     friend class managedPtr;
     friend class managedSwap;
+    friend class managedFileSwap;
 
 #ifdef SWAPSTATS
 protected:

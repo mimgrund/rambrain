@@ -160,7 +160,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 {
     VERBOSEPRINT ( "swapInEntry" );
 
-    if ( chunk.status & MEM_ALLOCATED ) {
+    if ( chunk.status & MEM_ALLOCATED || chunk.status == MEM_SWAPIN) {
         return true;
     }
 
@@ -349,6 +349,10 @@ void cyclicManagedMemory::printCycle()
 {
     cyclicAtime *atime = active;
     checkCycle();
+    if(memChunks.size()<=0){
+      infomsg("No objects.");
+      return;
+    }
     printf ( "%d (%d)<-counterActive\n", counterActive->chunk->id, counterActive->chunk->atime );
     printf ( "%d => %d => %d\n", counterActive->prev->chunk->id, counterActive->chunk->id, counterActive->next->chunk->id );
     printf ( "%d (%d)<-active\n", active->chunk->id, active->chunk->atime );
@@ -435,7 +439,7 @@ bool cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
 
     }
     if ( fromPos == countPos && unload_size < min_size ) { //We've been round one time and could not make it.
-        return false;
+        return true;
     }
 
     managedMemoryChunk *unloadlist[unload];
