@@ -92,7 +92,9 @@ public:
 
     virtual void runTests ( unsigned int repetitions );
 
-    static void runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int offset, int argumentscount );
+    static void runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int &offset, int argumentscount );
+
+    virtual void actualTestMethod ( tester &test, char **arguments, int &offset, unsigned int argumentscount ) = 0;
 
 protected:
     virtual inline unsigned int getStepsForParam ( unsigned int varryParam ) {
@@ -108,7 +110,7 @@ protected:
 
     const char *name;
     vector<testParameterBase *> parameters;
-    vector<performanceTest<> *> testClasses;
+    static vector<performanceTest<> *> testClasses;
 
 };
 
@@ -139,14 +141,14 @@ protected:
                                            PARAMREFS(2, param2, param3); \
                                            PARAMREFS(3, param3)
 
-#define ONECONVERT(param) param p = convert(arguments[offset]); \
+#define ONECONVERT(param) param p = convert<param>(arguments[offset++]); \
                           actualTestMethod(test, p)
-#define TWOCONVERT(param1, param2) param1 p1 = convert(arguments[offset]); \
-                                   param2 p2 = convert(arguments[offset+1]); \
+#define TWOCONVERT(param1, param2) param1 p1 = convert<param1>(arguments[offset++]); \
+                                   param2 p2 = convert<param2>(arguments[offset++]); \
                                    actualTestMethod(test, p1, p2)
-#define THREECONVERT(param1, param2, param3) param1 p1 = convert(arguments[offset]); \
-                                             param2 p2 = convert(arguments[offset+1]); \
-                                             param3 p3 = convert(arguments[offset+2]); \
+#define THREECONVERT(param1, param2, param3) param1 p1 = convert<param1>(arguments[offset++]); \
+                                             param2 p2 = convert<param2>(arguments[offset++]); \
+                                             param3 p3 = convert<param3>(arguments[offset++]); \
                                              actualTestMethod(test, p1, p2, p3)
 
 #define TESTCLASS(name, parammacro, convertmacro, params...) \
@@ -155,18 +157,28 @@ protected:
     public: \
         name(); \
         virtual ~name() {} \
-        static void actualTestMethod(tester& test, char **arguments, int offset, int argumentscount) { \
-            if (argumentscount - offset < 999 /*TODO*/) { \
-                cerr << "Not enough parameters supplied for test!" << endl; \
-            } else {\
-                convertmacro; \
-            } \
-        } \
-        static void actualTestMethod(tester&, params); \
-        virtual string generateMyGnuplotPlotPart(const string& file); \
+        virtual inline void actualTestMethod(tester& test, char **arguments, int& offset, unsigned int argumentscount); \
+        virtual void actualTestMethod(tester&, params); \
         parammacro; \
         static string comment; \
+    protected: \
+        virtual string generateMyGnuplotPlotPart(const string& file); \
+        template<typename T> \
+        inline T convert(char* str) { \
+            return T(str); \
+        } \
     }; \
+    template<> \
+    inline int name::convert<int>(char* str) { \
+        return atoi(str); \
+    } \
+    void name::actualTestMethod(tester& test, char **arguments, int& offset, unsigned int argumentscount) { \
+        if (argumentscount - offset < parameters.size()) { \
+            cerr << "Not enough parameters supplied for test!" << endl; \
+        } else {\
+            convertmacro; \
+        } \
+    } \
     extern name name##Instance
 
 #define ONEPARAMTEST(name, param) TESTCLASS(name, ONEPARAM(param), ONECONVERT(param), param)

@@ -1,5 +1,7 @@
 #include "performanceTestClasses.h"
 
+vector<performanceTest<> *> performanceTest<>::testClasses;
+
 performanceTest<>::performanceTest ( const char *name ) : name ( name )
 {
     testClasses.push_back ( this );
@@ -38,14 +40,19 @@ void performanceTest<>::runTests ( unsigned int repetitions )
     }
 }
 
-static void performanceTest<>::runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int offset, int argumentscount )
+void performanceTest<>::runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int &offset, int argumentscount )
 {
     for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
-        performaceTest<> *test = *it;
+        performanceTest<> *test = *it;
         if ( test->itsMe ( name ) ) {
             for ( unsigned int r = 0; r < repetitions; ++r ) {
+                int myOffset = offset;
                 myTester.startNewTimeCycle();
-                test->actualTestMethod ( myTester, arguments, offset, argumentscount );
+                test->actualTestMethod ( myTester, arguments, myOffset, argumentscount );
+
+                if ( r == repetitions - 1 ) {
+                    offset = myOffset;
+                }
             }
         }
     }
