@@ -92,7 +92,7 @@ public:
 
     virtual void runTests ( unsigned int repetitions );
 
-    static void runRespectiveTest ( const string &name, unsigned int repetitions, char **arguments, int offset, int argumentscount );
+    static void runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int offset, int argumentscount );
 
 protected:
     virtual inline unsigned int getStepsForParam ( unsigned int varryParam ) {
@@ -136,15 +136,32 @@ protected:
 #define TWOPARAMS(param1, param2) PARAMREFS(1, param1, param2); \
                                   PARAMREFS(2, param2)
 #define THREEARAMS(param1, param2, param3) PARAMREFS(1, param1, param2, param3); \
-                                           PARAMREFS(2, param2, param3) \
+                                           PARAMREFS(2, param2, param3); \
                                            PARAMREFS(3, param3)
 
-#define TESTCLASS(name, parammacro, params...) \
+#define ONECONVERT(param) param p = convert(arguments[offset]); \
+                          actualTestMethod(test, p)
+#define TWOCONVERT(param1, param2) param1 p1 = convert(arguments[offset]); \
+                                   param2 p2 = convert(arguments[offset+1]); \
+                                   actualTestMethod(test, p1, p2)
+#define THREECONVERT(param1, param2, param3) param1 p1 = convert(arguments[offset]); \
+                                             param2 p2 = convert(arguments[offset+1]); \
+                                             param3 p3 = convert(arguments[offset+2]); \
+                                             actualTestMethod(test, p1, p2, p3)
+
+#define TESTCLASS(name, parammacro, convertmacro, params...) \
     class name : public performanceTest<params> \
     { \
     public: \
         name(); \
         virtual ~name() {} \
+        static void actualTestMethod(tester& test, char **arguments, int offset, int argumentscount) { \
+            if (argumentscount - offset < 999 /*TODO*/) { \
+                cerr << "Not enough parameters supplied for test!" << endl; \
+            } else {\
+                convertmacro; \
+            } \
+        } \
         static void actualTestMethod(tester&, params); \
         virtual string generateMyGnuplotPlotPart(const string& file); \
         parammacro; \
@@ -152,9 +169,9 @@ protected:
     }; \
     extern name name##Instance
 
-#define ONEPARAMTEST(name, param) TESTCLASS(name, ONEPARAM(param), param)
-#define TWOPARAMTEST(name, param1, param2) TESTCLASS(name, TWOPARAMS(param1, param2), param1, param2)
-#define THREEPARAMTEST(name, param1, param2, param3) TESTCLASS(name, THREEPARAMS(param1, param2, param3), param1, param2, param3)
+#define ONEPARAMTEST(name, param) TESTCLASS(name, ONEPARAM(param), ONECONVERT(param), param)
+#define TWOPARAMTEST(name, param1, param2) TESTCLASS(name, TWOPARAMS(param1, param2), TWOCONVERT(param1, param2), param1, param2)
+#define THREEPARAMTEST(name, param1, param2, param3) TESTCLASS(name, THREEPARAMS(param1, param2, param3), THREECONVERT(param1, param2, param3), param1, param2, param3)
 
 
 // Actual performance test classes come here

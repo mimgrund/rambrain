@@ -38,11 +38,15 @@ void performanceTest<>::runTests ( unsigned int repetitions )
     }
 }
 
-static void performanceTest<>::runRespectiveTest ( const string &name, unsigned int repetitions, char **arguments, int offset, int argumentscount )
+static void performanceTest<>::runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int offset, int argumentscount )
 {
     for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
-        if ( ( *it )->itsMe ( name ) ) {
-            //! @todo get parameters and run actualTestMethod
+        performaceTest<> *test = *it;
+        if ( test->itsMe ( name ) ) {
+            for ( unsigned int r = 0; r < repetitions; ++r ) {
+                myTester.startNewTimeCycle();
+                test->actualTestMethod ( myTester, arguments, offset, argumentscount );
+            }
         }
     }
 }
