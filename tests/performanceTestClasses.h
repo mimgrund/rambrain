@@ -91,6 +91,11 @@ public:
     }
 
     virtual void runTests ( unsigned int repetitions );
+    static void runRegisteredTests ( unsigned int repetitions );
+    static void enableTest ( const string &name, bool enabled );
+    static void enableAllTests ( bool enabled );
+    static void unregisterTest ( const string &name );
+    static void dumpTestInfo();
 
     static bool runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int &offset, int argumentscount );
 
@@ -109,6 +114,7 @@ protected:
     virtual string generateMyGnuplotPlotPart ( const string &file, int paramColumn ) = 0;
 
     const char *name;
+    bool enabled = true;
     vector<testParameterBase *> parameters;
     static vector<performanceTest<> *> testClasses;
 

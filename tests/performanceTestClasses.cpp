@@ -40,6 +40,67 @@ void performanceTest<>::runTests ( unsigned int repetitions )
     }
 }
 
+void performanceTest<>::runRegisteredTests ( unsigned int repetitions )
+{
+    for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
+        performanceTest<> *test = *it;
+        if ( test->enabled ) {
+            test->runTests ( repetitions );
+        } else {
+            cout << "Skipping test " << test->name << " because it is disabled." << endl;
+        }
+    }
+}
+
+void performanceTest<>::enableTest ( const string &name, bool enabled )
+{
+    for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
+        performanceTest<> *test = *it;
+        if ( test->itsMe ( name ) ) {
+            test->enabled = enabled;
+            break;
+        }
+    }
+}
+
+void performanceTest<>::enableAllTests ( bool enabled )
+{
+    for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
+        performanceTest<> *test = *it;
+        test->enabled = enabled;
+    }
+}
+
+void performanceTest<>::unregisterTest ( const string &name )
+{
+    for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
+        performanceTest<> *test = *it;
+        if ( test->itsMe ( name ) ) {
+            testClasses.erase ( it );
+            break;
+        }
+    }
+}
+
+void performanceTest<>::dumpTestInfo()
+{
+    for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
+        performanceTest<> *test = *it;
+
+        cout << "Test class " << test->name << " is currently " << ( test->enabled ? "enabled" : "disabled" ) << ". ";
+        cout << "It has " << test->parameters.size() << " parameters:" << endl;
+
+        for ( auto jt = test->parameters.begin(); jt != test->parameters.end(); ++jt ) {
+            testParameterBase *param = *jt;
+
+            cout << "\tFrom\t" << param->valueAsString ( 0 ) << "\tover\t"  << param->valueAsString() << "\tto\t" << param->valueAsString ( param->steps - 1 ) << "\tin ";
+            cout << param->steps << ( param->deltaLog ? " logarithmic" : " linear" ) << " steps" << endl;
+        }
+
+        cout << endl;
+    }
+}
+
 bool performanceTest<>::runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int &offset, int argumentscount )
 {
     bool foundOne = false;
