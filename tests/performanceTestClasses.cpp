@@ -28,7 +28,7 @@ void performanceTest<>::runTests ( unsigned int repetitions )
         temp.close();
         ofstream gnutemp ( "temp.gnuplot" );
         stringstream outname;
-        outname << name << param << ".eps";
+        outname << name << param;
         cout << "Generating output file " << outname.str() << endl;
         gnutemp << generateGnuplotScript ( outname.str(), parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog );
         gnutemp.close();
