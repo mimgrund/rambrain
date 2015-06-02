@@ -72,127 +72,39 @@ template<typename... U>
 class performanceTest;
 
 
-template<typename T>
-class performanceTest<T>
+template<>
+class performanceTest<>
 {
 
 public:
-    performanceTest ( const char *name ) : name ( name ) {
-        parameters.push_back ( &parameter );
-    }
+    performanceTest ( const char *name ) : name ( name ) {}
     virtual ~performanceTest() {}
 
-    virtual bool itsMe ( const string &name ) const {
+    virtual inline bool itsMe ( const string &name ) const {
         return this->name == name;
     }
 
-    virtual void runTestsIfMe ( const string &name, unsigned int repetitions ) {
+    virtual inline void runTestsIfMe ( const string &name, unsigned int repetitions ) {
         if ( itsMe ( name ) ) {
             runTests ( repetitions );
         }
     }
 
-    virtual void runTests ( unsigned int repetitions ) {
-        cout << "Running test case " << name << std::endl;
-        for ( int param = parameters.size() - 1; param >= 0; --param ) {
-            unsigned int steps = getStepsForParam ( param );
-            ofstream temp ( "temp.dat" );
-
-            for ( unsigned int step = 0; step < steps; ++step ) {
-                string params = getParamsString ( param, step );
-                stringstream call;
-                call << "./membrain-performancetests " << repetitions << " " << name << " " << params;
-                cout << "Calling: " << call.str() << endl;
-                system ( call.str().c_str() );
-
-                resultToTempFile ( param, step, temp );
-                temp << endl;
-            }
-
-            temp.close();
-            ofstream gnutemp ( "temp.gnuplot" );
-            stringstream outname;
-            outname << name << param << ".eps";
-            cout << "Generating output file " << outname.str() << endl;
-            gnutemp << generateGnuplotScript ( outname.str(), parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog );
-            gnutemp.close();
-
-            cout << "Calling gnuplot and displaying result" << endl;
-            system ( "gnuplot temp.gnuplot" );
-            system ( ( "convert -density 300 -resize 1920x " + outname.str() + ".eps -flatten " + outname.str() + ".png" ).c_str() );
-            system ( ( "display " + outname.str() + ".png &" ).c_str() );
-        }
-    }
+    virtual void runTests ( unsigned int repetitions );
 
 protected:
     virtual inline unsigned int getStepsForParam ( unsigned int varryParam ) {
         return parameters[parameters.size() - varryParam - 1]->steps;
     }
 
-    virtual string getParamsString ( int varryParam, unsigned int step, const string &delimiter = " " ) {
-        stringstream ss;
-        for ( int i = parameters.size() - 1; i >= 0; --i ) {
-            if ( i == varryParam ) {
-                ss << parameters[i]->valueAsString ( step );
-            } else {
-                ss << parameters[i]->valueAsString();
-            }
-            ss << delimiter;
-        }
-        return ss.str();
-    }
-
-    virtual string getTestOutfile ( int varryParam, unsigned int step ) {
-        stringstream ss;
-        ss << "perftest_" << name;
-        for ( int i = parameters.size() - 1; i >= 0; --i ) {
-            if ( i == varryParam ) {
-                ss << "#" << parameters[i]->valueAsString ( step );
-            } else {
-                ss << "#" << parameters[i]->valueAsString();
-            }
-        }
-        return ss.str();
-    }
-
-    virtual void resultToTempFile ( int varryParam, unsigned int step, ofstream &file ) {
-        file << getParamsString ( varryParam, step, "\t" );
-        ifstream test ( getTestOutfile ( varryParam, step ) );
-        string line;
-        while ( getline ( test, line ) ) {
-            if ( line.find ( '#' ) == string::npos ) {
-                stringstream ss ( line );
-                vector<string> parts;
-                string part;
-                while ( getline ( ss, part, '\t' ) ) {
-                    parts.push_back ( part );
-                }
-                file << parts[parts.size() - 2] << '\t';
-            }
-        }
-    }
-
-    virtual string generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log ) {
-        stringstream ss;
-        ss << "set terminal postscript eps enhanced color 'Helvetica,10'" << endl;
-        ss << "set output \"" << name << ".eps\"" << endl;
-        ss << "set xlabel \"" << xlabel << "\"" << endl;
-        ss << "set ylabel \"" << ylabel << "\"" << endl;
-        ss << "set title \"" << title << "\"" << endl;
-        if ( log ) {
-            ss << "set log xy" << endl;
-        } else {
-            ss << "set log y" << endl;
-        }
-        ss << generateMyGnuplotPlotPart ( "temp.dat" );
-        return ss.str();
-    }
+    virtual string getParamsString ( int varryParam, unsigned int step, const string &delimiter = " " );
+    virtual string getTestOutfile ( int varryParam, unsigned int step );
+    virtual void resultToTempFile ( int varryParam, unsigned int step, ofstream &file );
+    virtual string generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log );
 
     virtual string generateMyGnuplotPlotPart ( const string &file ) = 0;
 
     const char *name;
-
-    testParameter<T> parameter;
     vector<testParameterBase *> parameters;
 
 };
