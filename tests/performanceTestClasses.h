@@ -77,7 +77,7 @@ class performanceTest<>
 {
 
 public:
-    performanceTest ( const char *name ) : name ( name ) {}
+    performanceTest ( const char *name );
     virtual ~performanceTest() {}
 
     virtual inline bool itsMe ( const string &name ) const {
@@ -91,6 +91,8 @@ public:
     }
 
     virtual void runTests ( unsigned int repetitions );
+
+    static void runRespectiveTest ( const string &name, unsigned int repetitions, char **arguments, int offset, int argumentscount );
 
 protected:
     virtual inline unsigned int getStepsForParam ( unsigned int varryParam ) {
@@ -106,6 +108,7 @@ protected:
 
     const char *name;
     vector<testParameterBase *> parameters;
+    vector<performanceTest<> *> testClasses;
 
 };
 

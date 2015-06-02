@@ -1,5 +1,10 @@
 #include "performanceTestClasses.h"
 
+performanceTest<>::performanceTest ( const char *name ) : name ( name )
+{
+    testClasses.push_back ( this );
+}
+
 void performanceTest<>::runTests ( unsigned int repetitions )
 {
     cout << "Running test case " << name << std::endl;
@@ -30,6 +35,15 @@ void performanceTest<>::runTests ( unsigned int repetitions )
         system ( "gnuplot temp.gnuplot" );
         system ( ( "convert -density 300 -resize 1920x " + outname.str() + ".eps -flatten " + outname.str() + ".png" ).c_str() );
         system ( ( "display " + outname.str() + ".png &" ).c_str() );
+    }
+}
+
+static void performanceTest<>::runRespectiveTest ( const string &name, unsigned int repetitions, char **arguments, int offset, int argumentscount )
+{
+    for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
+        if ( ( *it )->itsMe ( name ) ) {
+            //! @todo get parameters and run actualTestMethod
+        }
     }
 }
 
