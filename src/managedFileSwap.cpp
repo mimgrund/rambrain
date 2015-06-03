@@ -470,12 +470,12 @@ void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf )
     *tracker = 1;
     membrain_atomic_fetch_add(&totalSwapActionsQueued,1);
     while ( true ) { //Sift through all pageChunks that have to be read
-	offset+=cur->size;
 	scheduleCopy(*cur,(void*)(cramBuf + offset),tracker);
         if ( cur->status == PAGE_END ) {//I have completely written this pageChunk.
             break;
         }
         cur = cur->glob_off_next.glob_off_next;
+	offset+=cur->size;
     };
     unsigned int trval = membrain_atomic_fetch_sub(tracker,1);
     membrain_atomic_fetch_sub(&totalSwapActionsQueued,1);
@@ -494,11 +494,11 @@ void managedFileSwap::copyMem ( void *ramBuf,  pageFileLocation &ref )
     *tracker = 1;
     membrain_atomic_fetch_add(&totalSwapActionsQueued,1);
     while ( true ) { //Sift through all pageChunks that have to be read
-	offset+=cur->size;
 	scheduleCopy(cramBuf + offset,*cur,tracker);
         if ( cur->status == PAGE_END ) {//I have completely written this pageChunk.
             break;
         }
+        offset+=cur->size;
         cur = cur->glob_off_next.glob_off_next;
     };
     unsigned int trval = membrain_atomic_fetch_add(tracker,-1);
