@@ -100,6 +100,7 @@ public:
     static bool runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int &offset, int argumentscount );
 
     virtual void actualTestMethod ( tester &test, char **arguments, int &offset, unsigned int argumentscount ) = 0;
+    virtual string getComment() = 0;
 
 protected:
     virtual inline unsigned int getStepsForParam ( unsigned int varryParam ) {
@@ -165,6 +166,7 @@ protected:
         virtual ~name() {} \
         virtual inline void actualTestMethod(tester& test, char **arguments, int& offset, unsigned int argumentscount); \
         virtual void actualTestMethod(tester&, params); \
+        virtual inline string getComment() { return comment; } \
         parammacro; \
         static string comment; \
     protected: \

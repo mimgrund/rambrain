@@ -107,6 +107,7 @@ bool performanceTest<>::runRespectiveTest ( const string &name, tester &myTester
     for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
         performanceTest<> *test = *it;
         if ( test->itsMe ( name ) ) {
+            myTester.addComment ( test->getComment().c_str() );
             for ( unsigned int r = 0; r < repetitions; ++r ) {
                 int myOffset = offset;
                 myTester.startNewTimeCycle();
@@ -192,6 +193,9 @@ string performanceTest<>::generateGnuplotScript ( const string &name, const stri
 }
 
 
+//! TEST CLASSES BEGIN HERE
+
+
 string matrixTransposeTest::comment = "Measurements of allocation and definition, transposition, deletion times";
 matrixTransposeTest matrixTransposeTestInstance;
 
@@ -214,8 +218,6 @@ matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "Matrix
 
 void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
 {
-    test.addComment ( comment.c_str() );
-
     const global_bytesize size = param1;
     const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
@@ -296,8 +298,6 @@ matrixCleverTransposeTest::matrixCleverTransposeTest() : performanceTest<int, in
 
 void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
 {
-    test.addComment ( comment.c_str() );
-
     const global_bytesize size = param1;
     const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
@@ -418,8 +418,6 @@ matrixCleverTransposeOpenMPTest::matrixCleverTransposeOpenMPTest() : performance
 
 void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
 {
-    test.addComment ( comment.c_str() );
-
     const global_bytesize size = param1;
     const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
@@ -548,8 +546,6 @@ matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : p
 
 void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
 {
-    test.addComment ( comment.c_str() );
-
     const global_bytesize size = param1;
     const global_bytesize memlines = param2;
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
