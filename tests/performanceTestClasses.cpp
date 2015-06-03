@@ -193,27 +193,26 @@ string performanceTest<>::generateGnuplotScript ( const string &name, const stri
 }
 
 
-//! TEST CLASSES BEGIN HERE
+//! TEST CLASSES BEGIN HERE, SOME CONVENIENCE MACROS:
+
+#define TESTSTATICS(name, commenttext) string name::comment = commenttext; \
+                                       name name##Instance
+
+#define TESTPARAM(param, minimum, maximum, nrsteps, log, meanvalue, paramname) parameter##param.min = minimum; \
+                                                                                   parameter##param.max = maximum; \
+                                                                                   parameter##param.steps = nrsteps; \
+                                                                                   parameter##param.deltaLog = log; \
+                                                                                   parameter##param.mean = meanvalue; \
+                                                                                   parameter##param.name = paramname
 
 
-string matrixTransposeTest::comment = "Measurements of allocation and definition, transposition, deletion times";
-matrixTransposeTest matrixTransposeTestInstance;
+
+TESTSTATICS ( matrixTransposeTest, "Measurements of allocation and definition, transposition, deletion times" );
 
 matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "MatrixTranspose" )
 {
-    parameter1.min = 10;
-    parameter1.max = 10000;
-    parameter1.steps = 20;
-    parameter1.deltaLog = true;
-    parameter1.mean = 8000;
-    parameter1.name = "Matrix size per dimension";
-
-    parameter2.min = 10;
-    parameter2.max = 10000;
-    parameter2.steps = 20;
-    parameter2.deltaLog = true;
-    parameter2.mean = 2000;
-    parameter2.name = "Matrix rows in main memory";
+    TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
+    TESTPARAM ( 1, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -276,24 +275,13 @@ string matrixTransposeTest::generateMyGnuplotPlotPart ( const string &file , int
     return ss.str();
 }
 
-string matrixCleverTransposeTest::comment = "Measurements of allocation and definition, transposition, deletion times, but with a clever transposition algorithm";
-matrixCleverTransposeTest matrixCleverTransposeTestInstance;
+
+TESTSTATICS ( matrixCleverTransposeTest, "Measurements of allocation and definition, transposition, deletion times, but with a clever transposition algorithm" );
 
 matrixCleverTransposeTest::matrixCleverTransposeTest() : performanceTest<int, int> ( "MatrixCleverTranspose" )
 {
-    parameter1.min = 10;
-    parameter1.max = 10000;
-    parameter1.steps = 20;
-    parameter1.deltaLog = true;
-    parameter1.mean = 8000;
-    parameter1.name = "Matrix size per dimension";
-
-    parameter2.min = 10;
-    parameter2.max = 10000;
-    parameter2.steps = 20;
-    parameter2.deltaLog = true;
-    parameter2.mean = 2000;
-    parameter2.name = "Matrix rows in main memory";
+    TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
+    TESTPARAM ( 1, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -396,24 +384,13 @@ string matrixCleverTransposeTest::generateMyGnuplotPlotPart ( const string &file
     return ss.str();
 }
 
-string matrixCleverTransposeOpenMPTest::comment = "Same as cleverTranspose, but with OpenMP";
-matrixCleverTransposeOpenMPTest matrixCleverTransposeOpenMPTestInstance;
+
+TESTSTATICS ( matrixCleverTransposeOpenMPTest, "Same as cleverTranspose, but with OpenMP" );
 
 matrixCleverTransposeOpenMPTest::matrixCleverTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverTransposeOpenMP" )
 {
-    parameter1.min = 10;
-    parameter1.max = 10000;
-    parameter1.steps = 20;
-    parameter1.deltaLog = true;
-    parameter1.mean = 8000;
-    parameter1.name = "Matrix size per dimension";
-
-    parameter2.min = 10;
-    parameter2.max = 10000;
-    parameter2.steps = 20;
-    parameter2.deltaLog = true;
-    parameter2.mean = 2000;
-    parameter2.name = "Matrix rows in main memory";
+    TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
+    TESTPARAM ( 1, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -524,24 +501,13 @@ string matrixCleverTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string
     return ss.str();
 }
 
-string matrixCleverBlockTransposeOpenMPTest::comment = "Same as cleverTranspose, but with OpenMP and blockwise multiplication";
-matrixCleverBlockTransposeOpenMPTest matrixCleverBlockTransposeOpenMPTestInstance;
+
+TESTSTATICS ( matrixCleverBlockTransposeOpenMPTest, "Same as cleverTranspose, but with OpenMP and blockwise multiplication" );
 
 matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverBlockTransposeOpenMP" )
 {
-    parameter1.min = 10;
-    parameter1.max = 10000;
-    parameter1.steps = 20;
-    parameter1.deltaLog = true;
-    parameter1.mean = 8000;
-    parameter1.name = "Matrix size per dimension";
-
-    parameter2.min = 10;
-    parameter2.max = 10000;
-    parameter2.steps = 20;
-    parameter2.deltaLog = true;
-    parameter2.mean = 2000;
-    parameter2.name = "Matrix rows in main memory";
+    TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
+    TESTPARAM ( 1, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
