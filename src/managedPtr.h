@@ -345,7 +345,7 @@ public:
 
     };
 
-    adhereToConst ( managedPtr<T> &data, bool loadImidiately = false ) {
+    adhereToConst ( const managedPtr<T> &data, bool loadImidiately = false ) {
         this->data = &data;
         if ( loadImidiately ) {
             loadedReadable = true;
