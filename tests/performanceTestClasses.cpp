@@ -206,7 +206,7 @@ TESTSTATICS ( matrixTransposeTest, "Measurements of allocation and definition, t
 matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "MatrixTranspose" )
 {
     TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
-    TESTPARAM ( 1, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    TESTPARAM ( 2, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -275,7 +275,7 @@ TESTSTATICS ( matrixCleverTransposeTest, "Measurements of allocation and definit
 matrixCleverTransposeTest::matrixCleverTransposeTest() : performanceTest<int, int> ( "MatrixCleverTranspose" )
 {
     TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
-    TESTPARAM ( 1, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    TESTPARAM ( 2, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -384,7 +384,7 @@ TESTSTATICS ( matrixCleverTransposeOpenMPTest, "Same as cleverTranspose, but wit
 matrixCleverTransposeOpenMPTest::matrixCleverTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverTransposeOpenMP" )
 {
     TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
-    TESTPARAM ( 1, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    TESTPARAM ( 2, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -501,7 +501,7 @@ TESTSTATICS ( matrixCleverBlockTransposeOpenMPTest, "Same as cleverTranspose, bu
 matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverBlockTransposeOpenMP" )
 {
     TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
-    TESTPARAM ( 1, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    TESTPARAM ( 2, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
