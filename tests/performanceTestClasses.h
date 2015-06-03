@@ -8,6 +8,7 @@
 #include <string>
 #include <sstream>
 #include <cstdlib>
+#include <map>
 
 #include "tester.h"
 
@@ -80,16 +81,6 @@ public:
     performanceTest ( const char *name );
     virtual ~performanceTest() {}
 
-    virtual inline bool itsMe ( const string &name ) const {
-        return this->name == name;
-    }
-
-    virtual inline void runTestsIfMe ( const string &name, unsigned int repetitions ) {
-        if ( itsMe ( name ) ) {
-            runTests ( repetitions );
-        }
-    }
-
     virtual void runTests ( unsigned int repetitions, const string &path = "./" );
     static void runRegisteredTests ( unsigned int repetitions, const string &path = "./" );
     static void enableTest ( const string &name, bool enabled );
@@ -117,7 +108,7 @@ protected:
     const char *name;
     bool enabled = true;
     vector<testParameterBase *> parameters;
-    static vector<performanceTest<> *> testClasses;
+    static map<string, performanceTest<> *> testClasses;
 
 };
 

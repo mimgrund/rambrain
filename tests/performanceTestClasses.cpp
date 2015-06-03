@@ -1,10 +1,10 @@
 #include "performanceTestClasses.h"
 
-vector<performanceTest<> *> performanceTest<>::testClasses;
+map<string, performanceTest<> *> performanceTest<>::testClasses;
 
 performanceTest<>::performanceTest ( const char *name ) : name ( name )
 {
-    testClasses.push_back ( this );
+    testClasses[name] = this;
 }
 
 void performanceTest<>::runTests ( unsigned int repetitions, const string &path  )
@@ -43,7 +43,7 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
 void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const string &path )
 {
     for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
-        performanceTest<> *test = *it;
+        performanceTest<> *test = it->second;
         if ( test->enabled ) {
             test->runTests ( repetitions, path );
         } else {
@@ -54,38 +54,37 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
 
 void performanceTest<>::enableTest ( const string &name, bool enabled )
 {
-    for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
-        performanceTest<> *test = *it;
-        if ( test->itsMe ( name ) ) {
-            test->enabled = enabled;
-            break;
-        }
+    auto it = testClasses.find ( name );
+    if ( it != testClasses.end() ) {
+        performanceTest<> *test = it->second;
+        test->enabled = enabled;
+    } else {
+        cerr << "Test " << name << " not found " << endl;
     }
 }
 
 void performanceTest<>::enableAllTests ( bool enabled )
 {
     for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
-        performanceTest<> *test = *it;
+        performanceTest<> *test = it->second;
         test->enabled = enabled;
     }
 }
 
 void performanceTest<>::unregisterTest ( const string &name )
 {
-    for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
-        performanceTest<> *test = *it;
-        if ( test->itsMe ( name ) ) {
-            testClasses.erase ( it );
-            break;
-        }
+    auto it = testClasses.find ( name );
+    if ( it != testClasses.end() ) {
+        testClasses.erase ( it );
+    } else {
+        cerr << "Test " << name << " not found " << endl;
     }
 }
 
 void performanceTest<>::dumpTestInfo()
 {
     for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
-        performanceTest<> *test = *it;
+        performanceTest<> *test = it->second;
 
         cout << "Test class " << test->name << " is currently " << ( test->enabled ? "enabled" : "disabled" ) << ". ";
         cout << "It has " << test->parameters.size() << " parameters:" << endl;
@@ -103,30 +102,25 @@ void performanceTest<>::dumpTestInfo()
 
 bool performanceTest<>::runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int &offset, int argumentscount )
 {
-    bool foundOne = false;
-    for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
-        performanceTest<> *test = *it;
-        if ( test->itsMe ( name ) ) {
-            myTester.addComment ( test->getComment().c_str() );
-            for ( unsigned int r = 0; r < repetitions; ++r ) {
-                int myOffset = offset;
-                myTester.startNewTimeCycle();
-                test->actualTestMethod ( myTester, arguments, myOffset, argumentscount );
+    auto it = testClasses.find ( name );
+    if ( it != testClasses.end() ) {
+        performanceTest<> *test = it->second;
+        for ( unsigned int r = 0; r < repetitions; ++r ) {
+            int myOffset = offset;
+            myTester.startNewTimeCycle();
+            test->actualTestMethod ( myTester, arguments, myOffset, argumentscount );
 
-                if ( r == repetitions - 1 ) {
-                    offset = myOffset;
-                }
+            if ( r == repetitions - 1 ) {
+                offset = myOffset;
             }
-            foundOne = true;
-            break;
         }
-    }
 
-    if ( !foundOne ) {
-        cerr << "Did not match any test case!" << endl;
-    }
+        return true;
+    } else {
+        cerr << "Test " << name << " not found " << endl;
 
-    return foundOne;
+        return false;
+    }
 }
 
 string performanceTest<>::getParamsString ( int varryParam, unsigned int step, const string &delimiter )
