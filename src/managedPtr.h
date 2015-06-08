@@ -380,7 +380,7 @@ public:
 
     }
 private:
-    managedPtr<T> *data;
+    const managedPtr<T> *data;
     bool loadedReadable = false;
 
 
