@@ -54,7 +54,7 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
     //Memory counting for what we account for:
     if ( chunk.status & MEM_SWAPPED ) {
-       
+
     } else if ( counterActive->chunk->atime > chunk.atime ) { //preemptively loaded
         membrain_atomic_sub_fetch ( &preemptiveBytes, chunk.size );
     }
@@ -160,7 +160,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 {
     VERBOSEPRINT ( "swapInEntry" );
 
-    if ( chunk.status & MEM_ALLOCATED || chunk.status == MEM_SWAPIN) {
+    if ( chunk.status & MEM_ALLOCATED || chunk.status == MEM_SWAPIN ) {
         return true;
     }
 
@@ -301,7 +301,7 @@ bool cyclicManagedMemory::checkCycle()
         }
     }
 
-    bool inActiveOnlySection = ( active->chunk->status == MEM_SWAPPED ? false : true );
+    bool inActiveOnlySection = ( active->chunk->status == MEM_SWAPPED || active->chunk->status == MEM_SWAPOUT ? false : true );
     bool inSwapsection = true;
     do {
         ++encountered;
@@ -314,7 +314,7 @@ bool cyclicManagedMemory::checkCycle()
         }
 
         if ( inActiveOnlySection ) {
-            if ( oldcur->chunk->status == MEM_SWAPPED ) {
+            if ( oldcur->chunk->status == MEM_SWAPPED || oldcur->chunk->status == MEM_SWAPOUT ) {
                 errmsg ( "Swapped elements in active section!" );
                 pthread_mutex_unlock ( &cyclicTopoLock );
                 return false;
@@ -325,7 +325,7 @@ bool cyclicManagedMemory::checkCycle()
                 pthread_mutex_unlock ( &cyclicTopoLock );
                 return false;
             }
-            if ( oldcur->chunk->status != MEM_SWAPPED ) {
+            if ( oldcur->chunk->status != MEM_SWAPPED && oldcur->chunk->status != MEM_SWAPOUT ) {
                 inSwapsection = false;
             }
         }
@@ -349,9 +349,9 @@ void cyclicManagedMemory::printCycle()
 {
     cyclicAtime *atime = active;
     checkCycle();
-    if(memChunks.size()<=0){
-      infomsg("No objects.");
-      return;
+    if ( memChunks.size() <= 0 ) {
+        infomsg ( "No objects." );
+        return;
     }
     printf ( "%d (%d)<-counterActive\n", counterActive->chunk->id, counterActive->chunk->atime );
     printf ( "%d => %d => %d\n", counterActive->prev->chunk->id, counterActive->chunk->id, counterActive->next->chunk->id );
@@ -466,7 +466,7 @@ bool cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
     cyclicAtime *moveEnd, *cleanFrom;
     moveEnd = NULL;
     cleanFrom = counterActive->next;
-    bool inSwappedSection = ( fromPos->chunk->status == MEM_SWAPPED );
+    bool inSwappedSection = ( fromPos->chunk->status == MEM_SWAPPED | fromPos->chunk->status == MEM_SWAPOUT );
     bool doRoundtrip = fromPos == countPos;
 
     ///\todo Implement this for less than 3 elements!
