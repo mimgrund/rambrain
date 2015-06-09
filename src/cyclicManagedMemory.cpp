@@ -53,10 +53,11 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
 {
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
     //Memory counting for what we account for:
-    if ( chunk.status & MEM_SWAPPED ) {
+    if ( chunk.status == MEM_SWAPPED || chunk.status == MEM_SWAPOUT ) {
 
-    } else if ( counterActive->chunk->atime > chunk.atime ) { //preemptively loaded
+    } else if ( chunk.preemptiveLoaded ) {
         membrain_atomic_sub_fetch ( &preemptiveBytes, chunk.size );
+        chunk.preemptiveLoaded = false;
     }
 
     pthread_mutex_lock ( &cyclicTopoLock );
@@ -93,8 +94,9 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
 bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
 {
     pthread_mutex_lock ( &cyclicTopoLock );
-    if ( counterActive->chunk->atime > chunk.atime ) { //This chunk was preemptively loaded
+    if ( chunk.preemptiveLoaded ) { //This chunk was preemptively loaded
         membrain_atomic_sub_fetch ( &preemptiveBytes, chunk.size );
+        chunk.preemptiveLoaded = false;
     }
 
     //Put this object to begin of loop:
@@ -108,8 +110,6 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
     if ( counterActive == element ) {
         counterActive = counterActive->prev;
     }
-
-    chunk.atime = atime++; //increase atime only if we accessed a different element in between
 
     if ( active->prev == element ) {
         active = element;
@@ -205,6 +205,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             if ( selectedReadinVol + cur->chunk->size > targetReadinVol ) {
                 break;
             }
+            cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
             selectedReadinVol += cur->chunk->size;
             cur = cur->prev;
             ++numberSelected;
@@ -240,7 +241,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             }
             pthread_mutex_unlock ( &cyclicTopoLock );
             preemptiveBytes += selectedReadinVol - actual_obj_size;
-            chunk.atime = atime++;
 
 #ifdef SWAPSTATS
             swap_in_bytes += selectedReadinVol;
@@ -353,9 +353,9 @@ void cyclicManagedMemory::printCycle()
         infomsg ( "No objects." );
         return;
     }
-    printf ( "%d (%d)<-counterActive\n", counterActive->chunk->id, counterActive->chunk->atime );
+    printf ( "%d (%s)<-counterActive\n", counterActive->chunk->id, ( counterActive->chunk->preemptiveLoaded ? "p" : " " ) );
     printf ( "%d => %d => %d\n", counterActive->prev->chunk->id, counterActive->chunk->id, counterActive->next->chunk->id );
-    printf ( "%d (%d)<-active\n", active->chunk->id, active->chunk->atime );
+    printf ( "%d (%s)<-active\n", active->chunk->id, ( active->chunk->preemptiveLoaded ? "p" : " " ) );
     printf ( "%d => %d => %d\n", active->prev->chunk->id, active->chunk->id, active->next->chunk->id );
     printf ( "\n" );
     do {
@@ -388,9 +388,9 @@ void cyclicManagedMemory::printCycle()
             break;
         }
         if ( atime == counterActive ) {
-            printf ( "%d (%d) %s <-counterActive\n", atime->chunk->id, atime->chunk->atime, status );
+            printf ( "%d (%s) %s <-counterActive\n", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
         } else {
-            printf ( "%d (%d) %s \n", atime->chunk->id, atime->chunk->atime, status );
+            printf ( "%d (%s) %s \n", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
         }
         atime = atime->next;
     } while ( atime != active );
