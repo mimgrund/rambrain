@@ -276,7 +276,7 @@ void managedFileSwap::swapDelete ( managedMemoryChunk *chunk )
         pageFileLocation *loc = ( pageFileLocation * ) chunk->swapBuf;
         pffree ( loc );
     }
-    swapUsed -= chunk->size;
+    claimUsageof ( chunk->size, false, false );
 }
 
 bool managedFileSwap::swapIn ( managedMemoryChunk *chunk )

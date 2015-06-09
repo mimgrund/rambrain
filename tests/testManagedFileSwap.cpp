@@ -32,7 +32,7 @@ TEST ( managedFileSwap, Unit_ManualSwapping ) //This screws default manager, as 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
-    EXPECT_TRUE (swap.swapIn ( chunk )) ;
+    EXPECT_TRUE ( swap.swapIn ( chunk ) ) ;
     swap.waitForCleanExit();
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
@@ -47,7 +47,7 @@ TEST ( managedFileSwap, DISABLED_Unit_ManualMultiSwapping )
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
     managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
-    
+
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
@@ -103,13 +103,13 @@ TEST ( managedFileSwap, Unit_ManualSwappingDelete )
 
     swap.swapOut ( chunk );
     swap.waitForCleanExit();
-    
+
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
 
     swap.swapDelete ( chunk );
     swap.waitForCleanExit();
-    
+
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
@@ -206,8 +206,8 @@ TEST ( managedFileSwap, Integration_RandomAccess )
         global_bytesize no = test.random ( obj_no );
 
         if ( objmask[no] == NULL ) {
-	    printf("washere\n");
-	    ASSERT_TRUE(manager.checkCycle());
+            printf ( "washere\n" );
+            ASSERT_TRUE ( manager.checkCycle() );
             objmask[no] = new managedPtr<double> ( 102400 );
             {
                 adhereTo<double> objoloc ( *objmask[no] );
@@ -340,7 +340,7 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
         struct stat first;
         stat ( "/tmp/membrainswap-0", &first );
         ASSERT_TRUE ( S_ISREG ( first.st_mode ) );
-        ASSERT_EQ ( 1024 * 1024, first.st_size ); // should be 1/16th pageFileSize
+        ASSERT_EQ ( ( ( unsigned int ) ( ( 1024 * 1024 * 16 ) * swap.swapFileResizeFrac ) ), first.st_size ); // should be 1/16th pageFileSize
         for ( int n = 1; n < 16; n++ ) {
             char fname[70];
             snprintf ( fname, 70, "/tmp/membrainswap-%d", n );
@@ -354,7 +354,7 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
         ASSERT_EQ ( 8 * 1024u * 2, manager.getSwappedMemory() );
         stat ( "/tmp/membrainswap-0", &first );
         ASSERT_TRUE ( S_ISREG ( first.st_mode ) );
-        ASSERT_EQ ( 1024 * 1024, first.st_size ); //Size should not change.
+        ASSERT_EQ ( ( ( unsigned int ) ( ( 1024 * 1024 * 16 ) * swap.swapFileResizeFrac ) ), first.st_size ); //Size should not change.
         for ( int n = 1; n < 16; n++ ) {
             char fname[70];
             snprintf ( fname, 70, "/tmp/membrainswap-%d", n );
@@ -364,7 +364,10 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
             ASSERT_EQ ( 0, mstat.st_size );
 
         }
+
     }
+    swap.waitForCleanExit();
+
     ASSERT_EQ ( 0, manager.getSwappedMemory() ); //Deallocated all pointers
     ASSERT_EQ ( 0, swap.getUsedSwap() );
     ASSERT_EQ ( 16, swap.all_space.size() );
