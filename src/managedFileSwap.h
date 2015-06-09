@@ -27,28 +27,31 @@ typedef uint64_t global_offset;
 
 class pageFileLocation;
 
-struct swapFileDesc{
-  FILE *descriptor;
-  int fileno;
-  global_bytesize currentSize;
+struct swapFileDesc {
+    FILE *descriptor;
+    int fileno;
+    global_bytesize currentSize;
 };
 
-struct aiotracker{
-  struct aiocb aio;
-  int *tracker;
+struct aiotracker {
+    struct aiocb aio;
+    int *tracker;
 };
 
-union glob_off_union{
-  
-  pageFileLocation *glob_off_next;
-  managedMemoryChunk *chunk;
-  glob_off_union() {chunk = NULL;};
+union glob_off_union {
+
+    pageFileLocation *glob_off_next;
+    managedMemoryChunk *chunk;
+    glob_off_union() {
+        chunk = NULL;
+    };
 };
 
 //This will be stored in managedMemoryChunk::swapBuf :
-class pageFileLocation{
+class pageFileLocation
+{
 public:
-    pageFileLocation(unsigned int file, global_bytesize offset,global_bytesize size, pageChunkStatus status=PAGE_FREE): file(file), offset(offset),size(size),status(status),aio_ptr(NULL) {};
+    pageFileLocation ( unsigned int file, global_bytesize offset, global_bytesize size, pageChunkStatus status = PAGE_FREE ) : file ( file ), offset ( offset ), size ( size ), status ( status ), aio_ptr ( NULL ) {};
     unsigned int file;
     global_bytesize offset;
     global_bytesize size;
@@ -91,40 +94,47 @@ private:
     unsigned int windowSize;
     unsigned int windowNumber;
     unsigned int lastCreatedWindow = 0;
-    
-    
+
+
 
     float swapFileResizeFrac = .1; ///@todo: Possibly make this configurable?
-    
+
     struct swapFileDesc *swapFiles = NULL;
 
     //Memory copy:
-    void scheduleCopy(membrain::pageFileLocation& ref, void* ramBuf, int* parttracker, bool reverse = false);
-    inline void scheduleCopy(void *ramBuf, pageFileLocation &ref, int* parttracker) {scheduleCopy(ref,ramBuf,parttracker,true);};
-    void copyMem ( void* ramBuf, membrain::pageFileLocation& ref );
-    void copyMem ( membrain::pageFileLocation& ref, void* ramBuf );
-    
+    void scheduleCopy ( membrain::pageFileLocation &ref, void *ramBuf, int *parttracker, bool reverse = false );
+    void copyMem ( membrain::pageFileLocation &ref, void *ramBuf, bool reverse = false  )  ;
+
+    inline void copyMem ( void *ramBuf, membrain::pageFileLocation &ref ) {
+        copyMem ( ref, ramBuf, true );
+    };
+    inline void scheduleCopy ( void *ramBuf, pageFileLocation &ref, int *parttracker ) {
+        scheduleCopy ( ref, ramBuf, parttracker, true );
+    };
+
 
     bool filesOpen = false;
 
 
     //page file malloc:
-    pageFileLocation *pfmalloc ( membrain::global_bytesize size, membrain::managedMemoryChunk* chunk );
+    pageFileLocation *pfmalloc ( membrain::global_bytesize size, membrain::managedMemoryChunk *chunk );
     void pffree ( pageFileLocation *pagePtr );
     pageFileLocation *allocInFree ( pageFileLocation *freeChunk, global_bytesize size );
 
     std::map<global_offset, pageFileLocation *> free_space;
     std::map<global_offset, pageFileLocation *> all_space;
 
-    
+
     //sigEvent Handler:
     struct sigevent evhandler;
-    void asyncIoArrived(union sigval &signal);
-    void completeTransactionOn(membrain::pageFileLocation* ref);
-    
-    
+    void asyncIoArrived ( union sigval &signal );
+    void completeTransactionOn ( membrain::pageFileLocation *ref );
+
+
 public:
-    static void	staticAsyncIoArrived(union sigval signal) {instance->asyncIoArrived(signal);};
+    static void	staticAsyncIoArrived ( union sigval signal ) {
+        instance->asyncIoArrived ( signal );
+    };
 protected:
     //Test classes
     friend class ::managedFileSwap_Unit_SwapAllocation_Test;

@@ -13,18 +13,18 @@
 #define DBG_AIO
 namespace membrain
 {
-  
+
 managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile ) : managedSwap ( size ), pageSize ( sysconf ( _SC_PAGE_SIZE ) )
 {
-    
-  
+
+
     if ( oneFile == 0 ) { // Layout this on your own:
 
         global_bytesize myg = size / 16;
         oneFile = min ( gig, myg );
         oneFile = max ( mib, oneFile );
     }
-    
+
     pageFileSize = oneFile;
     if ( size % oneFile != 0 ) {
         pageFileNumber = size / oneFile + 1;
@@ -48,7 +48,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
 
     //Initialize swapmalloc:
     for ( unsigned int n = 0; n < pageFileNumber; n++ ) {
-        pageFileLocation *pfloc = new pageFileLocation(n,0,pageFileSize);
+        pageFileLocation *pfloc = new pageFileLocation ( n, 0, pageFileSize );
         free_space[n * pageFileSize] = pfloc;
         all_space[n * pageFileSize] = pfloc;
     }
@@ -65,14 +65,14 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
 
     instance = this;
     signal ( SIGUSR2, managedFileSwap::sigStat );
-    
+
     //Event handler for aio:
-      evhandler.sigev_notify = SIGEV_THREAD;
-      evhandler.sigev_signo = 0;
-      evhandler.sigev_value.sival_ptr = NULL;
-      evhandler.sigev_notify_function = managedFileSwap::staticAsyncIoArrived;
-      evhandler.sigev_notify_attributes=0;
-      
+    evhandler.sigev_notify = SIGEV_THREAD;
+    evhandler.sigev_signo = 0;
+    evhandler.sigev_value.sival_ptr = NULL;
+    evhandler.sigev_notify_function = managedFileSwap::staticAsyncIoArrived;
+    evhandler.sigev_notify_attributes = 0;
+
 
 }
 
@@ -93,7 +93,7 @@ void managedFileSwap::closeSwapFiles()
 {
     if ( swapFiles ) {
         for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
-            fclose ( swapFiles[n].descriptor);
+            fclose ( swapFiles[n].descriptor );
         }
         free ( swapFiles );
     }
@@ -108,7 +108,7 @@ bool managedFileSwap::openSwapFiles()
         return false;
     }
     ///\todo Limit number of open swap file descriptors to something reasonable (<100?)
-    swapFiles = ( struct swapFileDesc * ) malloc ( sizeof ( struct swapFileDesc) *pageFileNumber );
+    swapFiles = ( struct swapFileDesc * ) malloc ( sizeof ( struct swapFileDesc ) * pageFileNumber );
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
         snprintf ( fname, 1024, filemask, n );
@@ -118,7 +118,7 @@ bool managedFileSwap::openSwapFiles()
             return false;
         }
         swapFiles[n].currentSize = 0;
-	swapFiles[n].fileno = fileno(swapFiles[n].descriptor);
+        swapFiles[n].fileno = fileno ( swapFiles[n].descriptor );
     }
     return true;
 }
@@ -173,8 +173,8 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemor
                     former->glob_off_next.glob_off_next = neu;
                 }
                 if ( size == 0 ) {
-		  neu->glob_off_next.chunk = chunk;
-                  break;
+                    neu->glob_off_next.chunk = chunk;
+                    break;
                 }
                 former = neu;
                 it = free_space.find ( nextFreeOffset );
@@ -286,12 +286,13 @@ bool managedFileSwap::swapIn ( managedMemoryChunk *chunk )
         return false;
     }
     if ( buf ) {
-	if(chunk->status & MEM_ALLOCATED || chunk->status == MEM_SWAPIN)
-	  return true;//chunk is available or will become available
+        if ( chunk->status & MEM_ALLOCATED || chunk->status == MEM_SWAPIN ) {
+            return true;    //chunk is available or will become available
+        }
         chunk->locPtr = buf;
-        claimUsageof(chunk->size,true,true);
-	chunk->status = MEM_SWAPIN;
-	copyMem ( chunk->locPtr, * ( ( pageFileLocation * ) chunk->swapBuf ) );
+        claimUsageof ( chunk->size, true, true );
+        chunk->status = MEM_SWAPIN;
+        copyMem ( chunk->locPtr, * ( ( pageFileLocation * ) chunk->swapBuf ) );
         return true;
     } else {
         return false;
@@ -312,8 +313,9 @@ bool managedFileSwap::swapOut ( managedMemoryChunk *chunk )
     if ( chunk->size + swapUsed > swapSize ) {
         return false;
     }
-    if(chunk->status & MEM_SWAPPED || chunk->status == MEM_SWAPOUT)
-	  return true;//chunk is or will be swapped
+    if ( chunk->status & MEM_SWAPPED || chunk->status == MEM_SWAPOUT ) {
+        return true;    //chunk is or will be swapped
+    }
     if ( chunk->swapBuf ) { //We already have a position to store to! (happens when read-only was triggered)
         ///\todo implement swapOUt if we already hold a memory copy.
         throw unfinishedCodeException ( "Swap out for read only memory chunk" );
@@ -321,9 +323,9 @@ bool managedFileSwap::swapOut ( managedMemoryChunk *chunk )
         pageFileLocation *newAlloced = pfmalloc ( chunk->size, chunk );
         if ( newAlloced ) {
             chunk->swapBuf = newAlloced;
-            claimUsageof(chunk->size,false,true);
-	    chunk->status = MEM_SWAPOUT;
-	    copyMem ( *newAlloced, chunk->locPtr );
+            claimUsageof ( chunk->size, false, true );
+            chunk->status = MEM_SWAPOUT;
+            copyMem ( *newAlloced, chunk->locPtr );
             return true;
         } else {
             return false;
@@ -349,166 +351,138 @@ global_offset managedFileSwap::determineGlobalOffset ( const pageFileLocation &r
 }
 pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, global_bytesize length )
 {
-    pageFileLocation pfLoc(g_offset / pageFileSize,g_offset - pfLoc.file * pageFileSize,length,PAGE_UNKNOWN_STATE);
+    pageFileLocation pfLoc ( g_offset / pageFileSize, g_offset - pfLoc.file * pageFileSize, length, PAGE_UNKNOWN_STATE );
     return pfLoc;
 }
 
 
 
-void managedFileSwap::scheduleCopy( pageFileLocation &ref, void* ramBuf, int * tracker, bool reverse)
+void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *tracker, bool reverse )
 {
 
-  //We possibly need to resize swap file:
-  global_bytesize neededSize = ref.size+ref.offset;
-  if(neededSize>swapFiles[ref.file].currentSize) // We need to resize swapFileDesc
-  {
-    global_bytesize resizeStep = pageFileSize*swapFileResizeFrac;
-    neededSize = neededSize % (resizeStep)==0?neededSize:resizeStep*(neededSize/resizeStep+1);
-    
-    ftruncate(swapFiles[ref.file].fileno, neededSize);
-    swapFiles[ref.file].currentSize = neededSize;
-  }
-  membrain_atomic_fetch_add(tracker,1);
-  membrain_atomic_fetch_add(&totalSwapActionsQueued,1);
-  ref.aio_ptr = new struct aiotracker;
-  struct aiocb *aio=&(ref.aio_ptr->aio);
-  aio->aio_buf = ramBuf;
-  aio->aio_fildes = swapFiles[ref.file].fileno;
-  aio->aio_nbytes = ref.size;
-  aio->aio_offset = ref.offset;
-  aio->aio_reqprio = 0;///@todo: make this configurable
-  aio->aio_sigevent = evhandler;
-  aio->aio_sigevent.sigev_value.sival_ptr = &ref;
-  ref.aio_ptr->tracker = tracker;
+    //We possibly need to resize swap file:
+    global_bytesize neededSize = ref.size + ref.offset;
+    if ( neededSize > swapFiles[ref.file].currentSize ) { // We need to resize swapFileDesc
+        global_bytesize resizeStep = pageFileSize * swapFileResizeFrac;
+        neededSize = neededSize % ( resizeStep ) == 0 ? neededSize : resizeStep * ( neededSize / resizeStep + 1 );
+
+        ftruncate ( swapFiles[ref.file].fileno, neededSize );
+        swapFiles[ref.file].currentSize = neededSize;
+    }
+    membrain_atomic_fetch_add ( tracker, 1 );
+    membrain_atomic_fetch_add ( &totalSwapActionsQueued, 1 );
+    ref.aio_ptr = new struct aiotracker;
+    struct aiocb *aio = & ( ref.aio_ptr->aio );
+    aio->aio_buf = ramBuf;
+    aio->aio_fildes = swapFiles[ref.file].fileno;
+    aio->aio_nbytes = ref.size;
+    aio->aio_offset = ref.offset;
+    aio->aio_reqprio = 0;///@todo: make this configurable
+    aio->aio_sigevent = evhandler;
+    aio->aio_sigevent.sigev_value.sival_ptr = &ref;
+    ref.aio_ptr->tracker = tracker;
 #ifdef DBG_AIO
-  reverse?printf("scheduling read\n"):printf("scheduling write\n");
+    reverse ? printf ( "scheduling read\n" ) : printf ( "scheduling write\n" );
 #endif
-  
-  int res;
-  if(reverse)
-     res = aio_read(aio);
-  else
-     res = aio_write(aio);
-  if(res!=0)
-    throw memoryException("Could not enqueue request");
-      
+
+    int res;
+    res = reverse ? aio_read ( aio ) : aio_write ( aio );
+    if ( res != 0 ) {
+        throw memoryException ( "Could not enqueue request" );
+    }
+
 }
 
-void managedFileSwap::completeTransactionOn(pageFileLocation* ref)
+void managedFileSwap::completeTransactionOn ( pageFileLocation *ref )
 {
-  printf("got a call\n");
-  while(ref->status != PAGE_END)
-    ref = ref->glob_off_next.glob_off_next;
-  managedMemoryChunk *chunk=ref->glob_off_next.chunk;
-  switch(chunk->status){
+    printf ( "got a call\n" );
+    while ( ref->status != PAGE_END ) {
+        ref = ref->glob_off_next.glob_off_next;
+    }
+    managedMemoryChunk *chunk = ref->glob_off_next.chunk;
+    switch ( chunk->status ) {
     case MEM_SWAPIN:
 #ifdef DBG_AIO
-      printf("Accounting for a swapin\n");
+        printf ( "Accounting for a swapin\n" );
 #endif
-      pffree ( ( pageFileLocation * ) chunk->swapBuf );
-      pthread_mutex_lock(&managedMemory::defaultManager->stateChangeMutex);
-      chunk->swapBuf = NULL; // Not strictly required
-      chunk->status = MEM_ALLOCATED;
-      claimUsageof(chunk->size,false,false);
-      managedMemory::signalSwappingCond();
-      pthread_mutex_unlock(&managedMemory::defaultManager->stateChangeMutex);
-      break;
+        pffree ( ( pageFileLocation * ) chunk->swapBuf );
+        pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+        chunk->swapBuf = NULL; // Not strictly required
+        chunk->status = MEM_ALLOCATED;
+        claimUsageof ( chunk->size, false, false );
+        managedMemory::signalSwappingCond();
+        pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
+        break;
     case MEM_SWAPOUT:
 #ifdef DBG_AIO
-      printf("Accounting for a swapout\n");
+        printf ( "Accounting for a swapout\n" );
 #endif
-      free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
-      pthread_mutex_lock(&managedMemory::defaultManager->stateChangeMutex);
-      chunk->locPtr = NULL; // not strictly required.
-      chunk->status = MEM_SWAPPED;
-      claimUsageof(chunk->size,true,false);
-      managedMemory::signalSwappingCond();
-      pthread_mutex_unlock(&managedMemory::defaultManager->stateChangeMutex);
-      break;
+        free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
+        pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+        chunk->locPtr = NULL; // not strictly required.
+        chunk->status = MEM_SWAPPED;
+        claimUsageof ( chunk->size, true, false );
+        managedMemory::signalSwappingCond();
+        pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
+        break;
     default:
-      throw memoryException("AIO Synchronization broken!");
-      break;
-  }
-  
+        throw memoryException ( "AIO Synchronization broken!" );
+        break;
+    }
+
 }
 
 
-void managedFileSwap::asyncIoArrived(sigval& signal)
+void managedFileSwap::asyncIoArrived ( sigval &signal )
 {
-  
-  pageFileLocation *ref = (pageFileLocation *)signal.sival_ptr;
+
+    pageFileLocation *ref = ( pageFileLocation * ) signal.sival_ptr;
 #ifdef DBG_AIO
-  printf("aio: async io arrived, chunk of size %d\n",ref->size);
+    printf ( "aio: async io arrived, chunk of size %d\n", ref->size );
 #endif
-  int *tracker = ref->aio_ptr->tracker;
-  //Check if aio was completed:
-  int err = aio_error(&(ref->aio_ptr->aio));
-  if(err == 0){//This part arrived successfully
-    delete ref->aio_ptr;
-    int lastval = membrain_atomic_fetch_sub(tracker,1);
-    if(lastval==1){
-      completeTransactionOn(ref);
-      delete tracker;
+    int *tracker = ref->aio_ptr->tracker;
+    //Check if aio was completed:
+    int err = aio_error ( & ( ref->aio_ptr->aio ) );
+    if ( err == 0 ) { //This part arrived successfully
+        delete ref->aio_ptr;
+        int lastval = membrain_atomic_fetch_sub ( tracker, 1 );
+        if ( lastval == 1 ) {
+            completeTransactionOn ( ref );
+            delete tracker;
+        }
+        membrain_atomic_fetch_sub ( &totalSwapActionsQueued, 1 ); //Do this at the very last line, as completeTransactionOn() has to be done beforehands.
+    } else {
+        errmsgf ( "We have trouble in chunk %d, %d", ref->glob_off_next.chunk->id, err );
+        ///@todo: find out if this may happen regularly or just in case of error.
     }
-    membrain_atomic_fetch_sub(&totalSwapActionsQueued,1);//Do this at the very last line, as completeTransactionOn() has to be done beforehands.
-  }else{
-    errmsgf("We have trouble in chunk %d, %d",ref->glob_off_next.chunk->id,err);
-    ///@todo: find out if this may happen regularly or just in case of error.
-  }
-  
-  
 }
 
 
 
-void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf )
+void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf , bool reverse )
 {
     pageFileLocation *cur = &ref;
     char *cramBuf = ( char * ) ramBuf;
     global_bytesize offset = 0;
     int *tracker = new int;
     *tracker = 1;
-    membrain_atomic_fetch_add(&totalSwapActionsQueued,1);
+    membrain_atomic_fetch_add ( &totalSwapActionsQueued, 1 );
     while ( true ) { //Sift through all pageChunks that have to be read
-	scheduleCopy(*cur,(void*)(cramBuf + offset),tracker);
+        scheduleCopy ( *cur, ( void * ) ( cramBuf + offset ), tracker, reverse );
         if ( cur->status == PAGE_END ) {//I have completely written this pageChunk.
             break;
         }
+        offset += cur->size;
         cur = cur->glob_off_next.glob_off_next;
-	offset+=cur->size;
     };
-    unsigned int trval = membrain_atomic_fetch_sub(tracker,1);
-    membrain_atomic_fetch_sub(&totalSwapActionsQueued,1);
-    if(trval==1){
-       completeTransactionOn(cur);
-       delete tracker;
+    unsigned int trval = membrain_atomic_fetch_sub ( tracker, 1 );
+    membrain_atomic_fetch_sub ( &totalSwapActionsQueued, 1 );
+    if ( trval == 1 ) {
+        completeTransactionOn ( cur );
+        delete tracker;
     }
 }
 
-void managedFileSwap::copyMem ( void *ramBuf,  pageFileLocation &ref )
-{
-    pageFileLocation *cur = &ref;
-    char *cramBuf = ( char * ) ramBuf;
-    global_bytesize offset = 0;
-    int *tracker = new int;
-    *tracker = 1;
-    membrain_atomic_fetch_add(&totalSwapActionsQueued,1);
-    while ( true ) { //Sift through all pageChunks that have to be read
-	scheduleCopy(cramBuf + offset,*cur,tracker);
-        if ( cur->status == PAGE_END ) {//I have completely written this pageChunk.
-            break;
-        }
-        offset+=cur->size;
-        cur = cur->glob_off_next.glob_off_next;
-    };
-    unsigned int trval = membrain_atomic_fetch_add(tracker,-1);
-    membrain_atomic_fetch_sub(&totalSwapActionsQueued,1);
-    if(trval==1){
-       printf("completing in situ\n");
-       completeTransactionOn(cur);
-       delete tracker;
-    }
-}
 managedFileSwap *managedFileSwap::instance = NULL;
 
 void managedFileSwap::sigStat ( int signum )
