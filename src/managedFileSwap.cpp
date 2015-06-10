@@ -310,7 +310,7 @@ global_bytesize managedFileSwap::swapIn ( managedMemoryChunk **chunklist, unsign
 
 global_bytesize managedFileSwap::swapOut ( managedMemoryChunk *chunk )
 {
-    if ( chunk->size + swapUsed > swapSize ) {
+    if ( chunk->size > swapFree ) {
         return 0;
     }
     if ( chunk->status == MEM_SWAPPED || chunk->status == MEM_SWAPOUT ) {
