@@ -29,11 +29,12 @@ public:
     bool setPreemptiveLoading ( bool preemptive );
 
 
+
 private:
     ///\note protect call to swapIn by topologicalMutex
     virtual bool swapIn ( managedMemoryChunk &chunk );
     ///\note protect call to swapOut by topologicalMutex
-    virtual bool swapOut ( global_bytesize min_size );
+    virtual swapErrorCode swapOut ( global_bytesize min_size );
     virtual bool touch ( managedMemoryChunk &chunk );
     virtual void schedulerRegister ( managedMemoryChunk &chunk );
     virtual void schedulerDelete ( managedMemoryChunk &chunk );

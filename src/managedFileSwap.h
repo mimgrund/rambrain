@@ -73,10 +73,10 @@ public:
     ~managedFileSwap();
 
     virtual void swapDelete ( managedMemoryChunk *chunk );
-    virtual unsigned int swapIn ( managedMemoryChunk **chunklist, unsigned int nchunks );
-    virtual bool swapIn ( managedMemoryChunk *chunk );
-    virtual unsigned int swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks );
-    virtual bool swapOut ( managedMemoryChunk *chunk );
+    virtual global_bytesize swapIn ( managedMemoryChunk **chunklist, unsigned int nchunks );
+    virtual global_bytesize swapIn ( managedMemoryChunk *chunk );
+    virtual global_bytesize swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks );
+    virtual global_bytesize swapOut ( managedMemoryChunk *chunk );
 
     const unsigned int pageSize;
 

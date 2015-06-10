@@ -171,27 +171,19 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     global_bytesize actual_obj_size = chunk.size;
     //We want to read in what the user requested plus fill up the preemptive area with opportune guesses
 
-    bool preemptiveAutooff = swap->getFreeSwap() / swap->getSwapSize() > preemptiveTurnoffFraction;
+    bool preemptiveAutoon = swap->getFreeSwap() / swap->getSwapSize() > preemptiveTurnoffFraction;
 
-    if ( preemtiveSwapIn && preemptiveAutooff ) {
+    if ( preemtiveSwapIn && preemptiveAutoon ) {
         global_bytesize targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
         //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
         //Swap out if we want to read in more than what we thought:
         if ( targetReadinVol + memory_used > memory_max ) {
             global_bytesize targetSwapoutVol = actual_obj_size + ( 1. - swapOutFrac ) * memory_max - preemptiveBytes;
-
-            if ( !swapOut ( targetSwapoutVol ) ) {
-                if ( memory_used + actual_obj_size > memory_max ) {
-                    if ( swapOut ( memory_used + actual_obj_size - memory_max ) ) {
-                        targetReadinVol = actual_obj_size;
-                    } else {
-                        return Throw ( memoryException ( "Out of Memory." ) );
-                    }
-                } else {
-                    targetReadinVol = actual_obj_size;
-                }
+            swapErrorCode err = swapOut ( targetSwapoutVol );
+            if ( err != ERR_SUCCESS ) {
+                ensureEnoughSpaceAndLockTopo ( actual_obj_size );
+                targetReadinVol = actual_obj_size;
             }
-
 
         }
         VERBOSEPRINT ( "swapInAfterSwap" );
@@ -218,7 +210,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             chunks[n++] = readEl->chunk;
             readEl = readEl->prev;
         };
-        if ( ( swap->swapIn ( chunks, numberSelected ) != n ) ) {
+        if ( ( swap->swapIn ( chunks, numberSelected ) != selectedReadinVol ) ) {
             return Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
 
         } else {
@@ -253,7 +245,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     } else {
         ensureEnoughSpaceAndLockTopo ( actual_obj_size );
         //We have to check wether the block is still swapped or not
-        if ( swap->swapIn ( &chunk ) ) {
+        if ( swap->swapIn ( &chunk ) == chunk.size ) {
             //Wait for object to be swapped in:
             waitForSwapin ( chunk, true );
             chunk.status = MEM_ALLOCATED;
@@ -398,7 +390,7 @@ void cyclicManagedMemory::printCycle()
     printf ( "\n" );
 }
 
-bool cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
+cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
 {
     if ( counterActive == 0 ) {
         pthread_mutex_unlock ( &stateChangeMutex );
@@ -406,13 +398,11 @@ bool cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
     }
     VERBOSEPRINT ( "swapOutEntry" );
     if ( min_size > memory_max ) {
-        errmsgf ( "Cannot swap out %lu Bytes for this object as the RAM only holds %lu bytes by your definition", min_size, memory_max );
-        return false;
+        return ERR_MORETHANTOTALRAM;
     }
     global_bytesize swap_free = swap->getFreeSwap();
     if ( min_size > swap_free ) {
-        errmsgf ( "Cannot swap out %lu Bytes for this object as Swap space has only %lu free Bytes.", min_size, swap_free );
-        return false;
+        return ERR_SWAPFULL;
     }
 
     global_bytesize mem_alloc_max = memory_max * swapOutFrac; //<- This is target size
@@ -429,8 +419,10 @@ bool cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
     while ( unload_size < mem_swap ) {
         ++passed;
         if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size <= swap_free ) ) {
-            unload_size += countPos->chunk->size;
-            ++unload;
+            if ( countPos->chunk->size + unload_size < swap_free ) {
+                unload_size += countPos->chunk->size;
+                ++unload;
+            }
         }
         countPos = countPos->prev;
         if ( fromPos == countPos ) {
@@ -438,29 +430,29 @@ bool cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
         }
 
     }
-    if ( fromPos == countPos && unload_size < min_size ) { //We've been round one time and could not make it.
-        return true;
-    }
 
     managedMemoryChunk *unloadlist[unload];
     managedMemoryChunk **unloadElem = unloadlist;
 
     do {
         if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) ) {
-            *unloadElem = fromPos->chunk;
-            ++unloadElem;
-            unload_size2 += fromPos->chunk->size;
-            if ( fromPos == active ) {
-                active = fromPos->prev;
+            if ( countPos->chunk->size + unload_size2 < swap_free ) {
+                *unloadElem = fromPos->chunk;
+                ++unloadElem;
+                unload_size2 += fromPos->chunk->size;
+                if ( fromPos == active ) {
+                    active = fromPos->prev;
+                }
             }
         }
         fromPos = fromPos->prev;
     } while ( fromPos != countPos );
-    unsigned int real_unloaded = swap->swapOut ( unloadlist, unload );
-    bool swapSuccess = ( real_unloaded == unload ) ;
+    global_bytesize real_unloaded = swap->swapOut ( unloadlist, unload );
+    bool swapSuccess = ( real_unloaded == unload_size2 ) ;
     if ( !swapSuccess ) {
-        return Throw ( memoryException ( "Could not swap out all elements. Swap full?" ) );
-
+        if ( real_unloaded == 0 ) {
+            return ERR_NOTENOUGHCANDIDATES;
+        }
     }
     fromPos = counterActive;
     cyclicAtime *moveEnd, *cleanFrom;
@@ -527,14 +519,19 @@ bool cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
     }
     counterActive = cleanFrom->prev;
     VERBOSEPRINT ( "swapOutReturn" );
+
     if ( swapSuccess ) {
 #ifdef SWAPSTATS
         swap_out_bytes += unload_size;
         n_swap_out += 1;
 #endif
-        return true;
+        return ERR_SUCCESS;
     } else {
-        return false;
+        if ( real_unloaded > min_size ) {
+            return ERR_SUCCESS;
+        } else {
+            return ERR_NOTENOUGHCANDIDATES;
+        }
     }
 }
 

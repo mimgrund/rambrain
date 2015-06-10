@@ -10,8 +10,8 @@
 
 namespace membrain
 {
-  class managedFileSwap;
-  class managedSwap;
+class managedFileSwap;
+class managedSwap;
 template<class T>
 class managedPtr;
 
@@ -64,7 +64,13 @@ protected:
 
 
     //Swapping strategy
-    virtual bool swapOut ( global_bytesize min_size ) = 0;
+    enum swapErrorCode {
+        ERR_SUCCESS,
+        ERR_SWAPFULL,
+        ERR_MORETHANTOTALRAM,
+        ERR_NOTENOUGHCANDIDATES
+    };
+    virtual swapErrorCode swapOut ( global_bytesize min_size ) = 0;
     virtual bool swapIn ( memoryID id );
     virtual bool swapIn ( managedMemoryChunk &chunk ) = 0;
     virtual bool touch ( managedMemoryChunk &chunk ) = 0;
@@ -80,6 +86,7 @@ protected:
     global_bytesize memory_max; //1GB
     global_bytesize memory_used = 0;
     global_bytesize memory_swapped = 0;
+    global_bytesize memory_tobefreed = 0;
 
     std::map<memoryID, managedMemoryChunk *> memChunks;
 
@@ -117,7 +124,8 @@ protected:
 
     bool waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock = false );
     bool waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock = false );
-    void claimUsageof(global_bytesize bytes, bool rambytes,bool used);
+    void claimUsageof ( global_bytesize bytes, bool rambytes, bool used );
+    void claimTobefreed ( global_bytesize bytes, bool tobefreed );
 public:
     void printSwapstats();
     void resetSwapstats();

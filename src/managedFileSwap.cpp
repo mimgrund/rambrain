@@ -279,42 +279,42 @@ void managedFileSwap::swapDelete ( managedMemoryChunk *chunk )
     claimUsageof ( chunk->size, false, false );
 }
 
-bool managedFileSwap::swapIn ( managedMemoryChunk *chunk )
+global_bytesize managedFileSwap::swapIn ( managedMemoryChunk *chunk )
 {
     void *buf = malloc ( chunk->size );
     if ( !chunk->swapBuf ) {
-        return false;
+        return 0;
     }
     if ( buf ) {
         if ( chunk->status & MEM_ALLOCATED || chunk->status == MEM_SWAPIN ) {
-            return true;    //chunk is available or will become available
+            return chunk->size;    //chunk is available or will become available
         }
         chunk->locPtr = buf;
         claimUsageof ( chunk->size, true, true );
         chunk->status = MEM_SWAPIN;
         copyMem ( chunk->locPtr, * ( ( pageFileLocation * ) chunk->swapBuf ) );
-        return true;
+        return chunk->size;
     } else {
-        return false;
+        return 0;
     }
 }
 
-unsigned int managedFileSwap::swapIn ( managedMemoryChunk **chunklist, unsigned int nchunks )
+global_bytesize managedFileSwap::swapIn ( managedMemoryChunk **chunklist, unsigned int nchunks )
 {
-    unsigned int n_swapped = 0;
+    global_bytesize n_swapped = 0;
     for ( unsigned int n = 0; n < nchunks; ++n ) {
-        n_swapped += ( swapIn ( chunklist[n] ) ? 1 : 0 );
+        n_swapped += swapIn ( chunklist[n] ) ;
     }
     return n_swapped;
 }
 
-bool managedFileSwap::swapOut ( managedMemoryChunk *chunk )
+global_bytesize managedFileSwap::swapOut ( managedMemoryChunk *chunk )
 {
     if ( chunk->size + swapUsed > swapSize ) {
-        return false;
+        return 0;
     }
-    if ( chunk->status & MEM_SWAPPED || chunk->status == MEM_SWAPOUT ) {
-        return true;    //chunk is or will be swapped
+    if ( chunk->status == MEM_SWAPPED || chunk->status == MEM_SWAPOUT ) {
+        return chunk->size;    //chunk is or will be swapped
     }
     if ( chunk->swapBuf ) { //We already have a position to store to! (happens when read-only was triggered)
         ///\todo implement swapOUt if we already hold a memory copy.
@@ -324,22 +324,23 @@ bool managedFileSwap::swapOut ( managedMemoryChunk *chunk )
         if ( newAlloced ) {
             chunk->swapBuf = newAlloced;
             claimUsageof ( chunk->size, false, true );
+            managedMemory::defaultManager->claimTobefreed ( chunk->size, true );
             chunk->status = MEM_SWAPOUT;
             copyMem ( *newAlloced, chunk->locPtr );
-            return true;
+            return chunk->size;
         } else {
-            return false;
+            return 0;
         }
     }
-    return false;
+    return 0;
 
 }
 
-unsigned int managedFileSwap::swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks )
+global_bytesize managedFileSwap::swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks )
 {
-    unsigned int n_swapped = 0;
+    global_bytesize n_swapped = 0;
     for ( unsigned int n = 0; n < nchunks; ++n ) {
-        n_swapped += ( swapOut ( chunklist[n] ) ? 1 : 0 );
+        n_swapped += swapOut ( chunklist[n] );
     }
     return n_swapped;
 }
@@ -395,7 +396,9 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
 
 void managedFileSwap::completeTransactionOn ( pageFileLocation *ref )
 {
+#ifdef DBG_AIO
     printf ( "got a call\n" );
+#endif
     while ( ref->status != PAGE_END ) {
         ref = ref->glob_off_next.glob_off_next;
     }
@@ -422,6 +425,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref )
         chunk->locPtr = NULL; // not strictly required.
         chunk->status = MEM_SWAPPED;
         claimUsageof ( chunk->size, true, false );
+        managedMemory::defaultManager->claimTobefreed ( chunk->size, false );
         managedMemory::signalSwappingCond();
         pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
         break;

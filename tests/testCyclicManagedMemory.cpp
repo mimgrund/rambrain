@@ -250,12 +250,10 @@ TEST ( cyclicManagedMemory, Unit_VariousSize )
         const unsigned int totalspace = 8 * targetsize * sizeof ( double );
         const unsigned int swappedmin = ( totalspace > memsize ? totalspace - memsize : 0u );
         managedPtr<double> *arr[8];
-
         for ( unsigned int p = 0; p < 8; ++p ) {
             arr[p] = new managedPtr<double> ( targetsize );
             ASSERT_TRUE ( manager.checkCycle() );
         }
-
         ASSERT_GE ( swap.getUsedSwap(), swappedmin );
         ASSERT_EQ ( manager.getSwappedMemory(), swap.getUsedSwap() );
 
@@ -265,19 +263,16 @@ TEST ( cyclicManagedMemory, Unit_VariousSize )
             locA[0] = o + p;
             ASSERT_TRUE ( manager.checkCycle() );
         }
-
         for ( unsigned int p = 0; p < 8; ++p ) {
             managedPtr<double> &a = *arr[p];
             ADHERETOLOC ( double, a, locA );
             EXPECT_EQ ( o + p, locA[0] );
             ASSERT_TRUE ( manager.checkCycle() );
         }
-
         for ( unsigned int p = 0; p < 8; ++p ) {
             delete arr[p];
             ASSERT_TRUE ( manager.checkCycle() );
         }
-
         ASSERT_EQ ( 0u, swap.getUsedSwap() );
         ASSERT_EQ ( manager.getSwappedMemory(), swap.getUsedSwap() );
     }

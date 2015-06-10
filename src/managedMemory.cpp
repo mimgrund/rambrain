@@ -95,7 +95,7 @@ bool managedMemory::setMemoryLimit ( global_bytesize size )
         if ( size < memory_used ) {
             //Try to swap out as much memory as needed:
             global_bytesize tobefreed = ( memory_used - size );
-            if ( !swapOut ( tobefreed ) ) {
+            if ( swapOut ( tobefreed ) != ERR_SUCCESS ) {
                 return false;
             }
             memory_max = size;
@@ -111,16 +111,22 @@ bool managedMemory::setMemoryLimit ( global_bytesize size )
 
 void managedMemory::ensureEnoughSpaceAndLockTopo ( membrain::global_bytesize sizereq )
 {
-    if ( sizereq + memory_used > memory_max ) {
-        if ( !swapOut ( sizereq + memory_used - memory_max ) ) { //Execute swapOut in protected context
-            //We did not manage to swap out our stuff right away.
-            pthread_mutex_unlock ( &stateChangeMutex );
-            Throw ( memoryException ( "Could not swap memory" ) );
-        } else {
-            //We'll wait for possible swapOut to actually occur:
-            while ( sizereq + memory_used > memory_max ) {
-                pthread_cond_wait ( &swappingCond, &stateChangeMutex );
+    while ( sizereq + memory_used > memory_max ) {
+        printf ( "%ld \t %ld \t %ld \n", memory_used, memory_max, memory_tobefreed );
+        if ( sizereq + memory_used - memory_tobefreed > memory_max ) {
+            printf ( "p %ld \t %ld \t %ld \n", memory_used, memory_max, memory_tobefreed );
+            managedMemory::swapErrorCode err = swapOut ( sizereq - ( memory_max - memory_used ) - memory_tobefreed );
+            printf ( "a %ld \t %ld \t %ld \n", memory_used, memory_max, memory_tobefreed );
+            if (  err != ERR_SUCCESS ) { //Execute swapOut in protected context
+
+                //We did not manage to swap out our stuff right away.
+                pthread_mutex_unlock ( &stateChangeMutex );
+                Throw ( memoryException ( "Could not swap memory" ) );
             }
+
+        }
+        if ( sizereq + memory_used > memory_max ) {
+            pthread_cond_wait ( &swappingCond, &stateChangeMutex );
         }
     }
 }
@@ -195,7 +201,9 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
     pthread_mutex_lock ( &stateChangeMutex );
     switch ( chunk.status ) {
     case MEM_SWAPOUT: // Object is about to be swapped out.
-        waitForSwapout ( chunk, true );
+        if ( !waitForSwapout ( chunk, true ) ) {
+            return false;
+        }
     case MEM_SWAPPED:
         if ( !swapIn ( chunk ) ) {
             return false;
@@ -205,7 +213,9 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
         --swap_hits;
 #endif
     case MEM_SWAPIN: // Wait for object to appear
-        waitForSwapin ( chunk, true );
+        if ( !waitForSwapin ( chunk, true ) ) {
+            return false;
+        }
     case MEM_ALLOCATED:
         chunk.status = MEM_ALLOCATED_INUSE_READ;
     case MEM_ALLOCATED_INUSE:
@@ -510,11 +520,11 @@ void managedMemory::signalSwappingCond()
 
 bool managedMemory::waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock )
 {
-    if ( chunk.status & MEM_ALLOCATED ) { //We would wait indefinitely, as the chunk is not about to appear
+    if ( chunk.status == MEM_SWAPOUT ) { //Chunk is about to be swapped out...
         if ( !keepSwapLock ) {
             pthread_mutex_unlock ( &stateChangeMutex );
         }
-        return true;
+        return false;
     }
     while ( ! ( chunk.status & MEM_ALLOCATED ) ) {
         pthread_cond_wait ( &swappingCond, &stateChangeMutex );
@@ -528,13 +538,13 @@ bool managedMemory::waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock
 
 bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock )
 {
-    if ( chunk.status  & MEM_SWAPPED ) { //We would wait indefinitely, as the chunk is not about to appear
+    if ( chunk.status == MEM_SWAPIN ) { //We would wait indefinitely, as the chunk is not about to appear
         if ( !keepSwapLock ) {
             pthread_mutex_unlock ( &stateChangeMutex );
         }
         return false;
     }
-    while ( ! ( chunk.status & MEM_SWAPPED ) ) {
+    while ( ! ( chunk.status == MEM_SWAPPED ) ) {
         pthread_cond_wait ( &swappingCond, &stateChangeMutex );
     }
     if ( !keepSwapLock ) {
@@ -548,19 +558,22 @@ bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLoc
 
 void membrain::managedMemory::claimUsageof ( membrain::global_bytesize bytes, bool rambytes, bool used )
 {
-    if ( rambytes ) {
-        if ( used ) {
-            membrain_atomic_fetch_add ( &memory_used, bytes );
-        } else {
-            membrain_atomic_fetch_sub ( &memory_used, bytes );
-        }
+    if ( used ) {
+        membrain_atomic_fetch_add ( rambytes ? &memory_used : &memory_swapped, bytes );
     } else {
-        if ( used ) {
-            membrain_atomic_fetch_add ( &memory_swapped, bytes );
-        } else {
-            membrain_atomic_fetch_sub ( &memory_swapped, bytes );
-        }
+        membrain_atomic_fetch_sub ( rambytes ? &memory_used : &memory_swapped, bytes );
+    }
+
+}
+
+void membrain::managedMemory::claimTobefreed ( membrain::global_bytesize bytes, bool tobefreed )
+{
+    if ( tobefreed ) {
+        membrain_atomic_fetch_add ( &memory_tobefreed, bytes );
+    } else {
+        membrain_atomic_fetch_sub ( &memory_tobefreed, bytes );
     }
 }
+
 
 
