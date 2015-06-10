@@ -206,7 +206,6 @@ TEST ( managedFileSwap, Integration_RandomAccess )
         global_bytesize no = test.random ( obj_no );
 
         if ( objmask[no] == NULL ) {
-            printf ( "washere\n" );
             ASSERT_TRUE ( manager.checkCycle() );
             objmask[no] = new managedPtr<double> ( 102400 );
             {
@@ -381,7 +380,6 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
     managedPtr<double> *ptarr[1641];
     for ( unsigned int n = 0; n < 1639; n++ ) { // Create just as much as fit into RAM+1 swapfile
         ptarr[n] = new managedPtr<double> ( tenkbdoublearrsize );
-        printf ( "%d\n", n );
         ASSERT_TRUE ( manager.checkCycle() );
     };
     ASSERT_EQ ( doublearrsize, manager.getUsedMemory() );
@@ -458,26 +456,21 @@ TEST ( managedFileSwap, Unit_SwapSingleIsland )
     ASSERT_EQ ( mib, swap.getSwapSize() );
 
     //ASSERT_NO_THROW (
-    printf ( "A\n" );
     managedPtr<double> ptr1 ( bigdblamount ); // To fill up swap
 
     ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getUsedMemory() );
     ASSERT_EQ ( 0, manager.getSwappedMemory() );
-    printf ( "B\n" );
     managedPtr<double> ptr2 ( bigdblamount ); // To fill up memory
 
     ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getUsedMemory() );
     ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getSwappedMemory() );
-    manager.printCycle();
-    printf ( "C\n" );
+
     managedPtr<double> ptr3 ( smalldblamount ); // Can fit in swap
 
     ASSERT_EQ ( ( smalldblamount + bigdblamount ) * sizeof ( double ), manager.getUsedMemory() );
     ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getSwappedMemory() );
 
     swap.waitForCleanExit();
-    printf ( "D\n" );
-    manager.printCycle();
     managedPtr<double> ptr4 ( smalldblamount ); // Can fit in remaining memory
 
 

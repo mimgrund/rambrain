@@ -10,7 +10,7 @@
 #include <aio.h>
 #include <signal.h>
 
-#define DBG_AIO
+//#define DBG_AIO
 namespace membrain
 {
 
@@ -190,7 +190,6 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemor
 
 pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, global_bytesize size )
 {
-    printf ( "oink! %lu \n", swapFree );
     //Hook out the block of free space:
     global_offset formerfree_off = determineGlobalOffset ( *freeChunk );
     free_space.erase ( formerfree_off );
@@ -199,7 +198,6 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
         //Thus, use the free chunk for your data.
         membrain_atomic_fetch_sub ( &swapFree, freeChunk->size - size ); //Account for not mallocable overhead
         freeChunk->size = size;
-        printf ( "oink 2! %lu \n", swapFree );
         return freeChunk;
     } else {
         //membrain_atomic_fetch_sub(&swapFree,size); //Account for not mallocable overhead
@@ -212,7 +210,6 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
         neu->size = size;
         all_space[newfreeloc] = freeChunk; //inserts.
         all_space[formerfree_off] = neu;//overwrites.
-        printf ( "oink 3! %lu \n", swapFree );
         return neu;
 
     }

@@ -401,7 +401,6 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
         return ERR_MORETHANTOTALRAM;
     }
     global_bytesize swap_free = swap->getFreeSwap();
-    printf ( "Free swap %ld", swap_free );
     if ( min_size > swap_free ) {
         return ERR_SWAPFULL;
     }
