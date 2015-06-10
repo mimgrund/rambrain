@@ -457,37 +457,38 @@ TEST ( managedFileSwap, Unit_SwapSingleIsland )
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
 
-    ASSERT_NO_THROW (
-        printf ( "A\n" );
-        managedPtr<double> ptr1 ( bigdblamount ); // To fill up swap
+    //ASSERT_NO_THROW (
+    printf ( "A\n" );
+    managedPtr<double> ptr1 ( bigdblamount ); // To fill up swap
 
-        ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getUsedMemory() );
-        ASSERT_EQ ( 0, manager.getSwappedMemory() );
-        printf ( "B\n" );
-        managedPtr<double> ptr2 ( bigdblamount ); // To fill up memory
+    ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getUsedMemory() );
+    ASSERT_EQ ( 0, manager.getSwappedMemory() );
+    printf ( "B\n" );
+    managedPtr<double> ptr2 ( bigdblamount ); // To fill up memory
 
-        ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getUsedMemory() );
-        ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getSwappedMemory() );
-        manager.printCycle();
-        printf ( "C\n" );
-        managedPtr<double> ptr3 ( smalldblamount ); // Can fit in swap
+    ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getUsedMemory() );
+    ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getSwappedMemory() );
+    manager.printCycle();
+    printf ( "C\n" );
+    managedPtr<double> ptr3 ( smalldblamount ); // Can fit in swap
 
-        ASSERT_EQ ( ( smalldblamount + bigdblamount ) * sizeof ( double ), manager.getUsedMemory() );
-        ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getSwappedMemory() );
+    ASSERT_EQ ( ( smalldblamount + bigdblamount ) * sizeof ( double ), manager.getUsedMemory() );
+    ASSERT_EQ ( ( bigdblamount ) * sizeof ( double ), manager.getSwappedMemory() );
 
-        printf ( "D\n" );
-        manager.printCycle();
-        managedPtr<double> ptr4 ( smalldblamount ); // Can fit in remaining memory
+    swap.waitForCleanExit();
+    printf ( "D\n" );
+    manager.printCycle();
+    managedPtr<double> ptr4 ( smalldblamount ); // Can fit in remaining memory
 
 
-        ASSERT_EQ ( ( smalldblamount + bigdblamount ) * sizeof ( double ), manager.getUsedMemory() );
-        ASSERT_EQ ( ( smalldblamount + bigdblamount ) * sizeof ( double ), manager.getSwappedMemory() );
+    ASSERT_EQ ( ( smalldblamount + bigdblamount ) * sizeof ( double ), manager.getUsedMemory() );
+    ASSERT_EQ ( ( smalldblamount + bigdblamount ) * sizeof ( double ), manager.getSwappedMemory() );
 
-        ASSERT_EQ ( MEM_SWAPPED, ptr1.chunk->status );
-        ASSERT_EQ ( MEM_ALLOCATED, ptr2.chunk->status );
-        ASSERT_EQ ( MEM_SWAPPED, ptr3.chunk->status );
-        ASSERT_EQ ( MEM_ALLOCATED, ptr4.chunk->status );
-    );
+    ASSERT_EQ ( MEM_SWAPPED, ptr1.chunk->status );
+    ASSERT_EQ ( MEM_ALLOCATED, ptr2.chunk->status );
+    ASSERT_EQ ( MEM_SWAPPED, ptr3.chunk->status );
+    ASSERT_EQ ( MEM_ALLOCATED, ptr4.chunk->status );
+    //);
 }
 
 

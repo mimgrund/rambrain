@@ -32,7 +32,7 @@ global_bytesize managedDummySwap::swapOut ( managedMemoryChunk *chunk )
         return chunk->size;
     } else {
         ///We are not writing asynchronous, thus, we have to signal that we're done writing...
-        managedMemory::signalSwappingCond();
+        //managedMemory::signalSwappingCond();
         return 0;
     }
 

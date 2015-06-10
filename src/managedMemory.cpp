@@ -112,7 +112,7 @@ bool managedMemory::setMemoryLimit ( global_bytesize size )
 void managedMemory::ensureEnoughSpaceAndLockTopo ( membrain::global_bytesize sizereq )
 {
     while ( sizereq + memory_used > memory_max ) {
-        printf ( "%ld \t %ld \t %ld \n", memory_used, memory_max, memory_tobefreed );
+        printf ( "%ld \t %ld \t %ld, %ld\n", memory_used, memory_max, memory_tobefreed, sizereq );
         if ( sizereq + memory_used - memory_tobefreed > memory_max ) {
             printf ( "p %ld \t %ld \t %ld \n", memory_used, memory_max, memory_tobefreed );
             managedMemory::swapErrorCode err = swapOut ( sizereq - ( memory_max - memory_used ) - memory_tobefreed );

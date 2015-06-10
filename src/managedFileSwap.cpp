@@ -190,17 +190,19 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemor
 
 pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, global_bytesize size )
 {
+    printf ( "oink! %lu \n", swapFree );
     //Hook out the block of free space:
     global_offset formerfree_off = determineGlobalOffset ( *freeChunk );
     free_space.erase ( formerfree_off );
     //We want to allocate a new chunk or use the chunk at hand.
     if ( freeChunk->size - size < sizeof ( pageFileLocation ) ) { //Memory to manage free space exceeds free space (actually more than)
         //Thus, use the free chunk for your data.
-        swapFree -= freeChunk->size; //Account for not mallocable overhead
+        membrain_atomic_fetch_sub ( &swapFree, freeChunk->size - size ); //Account for not mallocable overhead
         freeChunk->size = size;
+        printf ( "oink 2! %lu \n", swapFree );
         return freeChunk;
     } else {
-        swapFree -= size; //Account for not mallocable overhead
+        //membrain_atomic_fetch_sub(&swapFree,size); //Account for not mallocable overhead
         pageFileLocation *neu = new pageFileLocation ( *freeChunk );
         freeChunk->offset += size;
         freeChunk->size -= size;
@@ -210,6 +212,7 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
         neu->size = size;
         all_space[newfreeloc] = freeChunk; //inserts.
         all_space[formerfree_off] = neu;//overwrites.
+        printf ( "oink 3! %lu \n", swapFree );
         return neu;
 
     }
@@ -224,7 +227,7 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
         endIsReached = ( pagePtr->status == PAGE_END );
         global_offset goff = determineGlobalOffset ( *pagePtr );
         auto it = all_space.find ( goff );
-        swapFree += pagePtr->size;
+        membrain_atomic_fetch_add ( &swapFree, pagePtr->size );
         //Check if we have free space before us to merge with:
         if ( pagePtr->offset != 0 && it != all_space.begin() )
             if ( ( --it )->second->status == PAGE_FREE ) {
@@ -242,7 +245,7 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
         global_offset nextoff = ( it == all_space.end() ? swapSize : determineGlobalOffset ( * ( it->second ) ) );
         global_bytesize size = nextoff - goff;
         if ( pagePtr->size != size ) {
-            swapFree += size - pagePtr->size;
+            membrain_atomic_fetch_add ( &swapFree, size - pagePtr->size );
             pagePtr->size = size;
         };
 

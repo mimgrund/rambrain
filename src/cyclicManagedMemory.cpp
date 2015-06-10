@@ -401,6 +401,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
         return ERR_MORETHANTOTALRAM;
     }
     global_bytesize swap_free = swap->getFreeSwap();
+    printf ( "Free swap %ld", swap_free );
     if ( min_size > swap_free ) {
         return ERR_SWAPFULL;
     }
@@ -419,7 +420,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
     while ( unload_size < mem_swap ) {
         ++passed;
         if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size <= swap_free ) ) {
-            if ( countPos->chunk->size + unload_size < swap_free ) {
+            if ( countPos->chunk->size + unload_size <= swap_free ) {
                 unload_size += countPos->chunk->size;
                 ++unload;
             }
@@ -436,7 +437,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
 
     do {
         if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) ) {
-            if ( countPos->chunk->size + unload_size2 < swap_free ) {
+            if ( fromPos->chunk->size + unload_size2 <= swap_free ) {
                 *unloadElem = fromPos->chunk;
                 ++unloadElem;
                 unload_size2 += fromPos->chunk->size;
