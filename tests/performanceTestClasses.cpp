@@ -678,19 +678,21 @@ void matrixMultiplyTest::actualTestMethod ( tester &test, int param1, int param2
     test.addTimeMeasurement();
 
     // Calculate C = A * B
+    //#pragma omp parallel for
     for ( global_bytesize i = 0; i < size; ++i ) {
         adhereTo<double> adhRowA ( *rowsA[i] );
         adhereTo<double> adhRowC ( *rowsC[i] );
         double *rowA = adhRowA;
         double *rowC = adhRowC;
-
         for ( global_bytesize j = 0; j < size; ++j ) {
             adhereTo<double> adhColB ( *colsB[j] );
             double *colB = adhColB;
+            double erg = 0;
 
             for ( global_bytesize k = 0; k < size; ++k ) {
-                rowC[j] += rowA[k] * colB[k];
+                erg += rowA[k] * colB[k];
             }
+            rowC[j] += erg;
         }
     }
 
