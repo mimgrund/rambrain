@@ -205,8 +205,8 @@ TESTSTATICS ( matrixTransposeTest, "Measurements of allocation and definition, t
 
 matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "MatrixTranspose" )
 {
-    TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
-    TESTPARAM ( 2, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -274,8 +274,8 @@ TESTSTATICS ( matrixCleverTransposeTest, "Measurements of allocation and definit
 
 matrixCleverTransposeTest::matrixCleverTransposeTest() : performanceTest<int, int> ( "MatrixCleverTranspose" )
 {
-    TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
-    TESTPARAM ( 2, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -383,8 +383,8 @@ TESTSTATICS ( matrixCleverTransposeOpenMPTest, "Same as cleverTranspose, but wit
 
 matrixCleverTransposeOpenMPTest::matrixCleverTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverTransposeOpenMP" )
 {
-    TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
-    TESTPARAM ( 2, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -500,8 +500,8 @@ TESTSTATICS ( matrixCleverBlockTransposeOpenMPTest, "Same as cleverTranspose, bu
 
 matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverBlockTransposeOpenMP" )
 {
-    TESTPARAM ( 1, 10, 10000, 20, true, 8000, "Matrix size per dimension" );
-    TESTPARAM ( 2, 10, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
 }
 
 void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -624,6 +624,95 @@ string matrixCleverBlockTransposeOpenMPTest::generateMyGnuplotPlotPart ( const s
     stringstream ss;
     ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
+}
+
+
+TESTSTATICS ( matrixMultiplyTest, "Matrix multiplication with matrices being stored in columns / rows" );
+
+matrixMultiplyTest::matrixMultiplyTest() : performanceTest<int, int> ( "MatrixMultiply" )
+{
+    TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 4000, 30000, 20, true, 12000, "Matrix rows in main memory" );
+}
+
+void matrixMultiplyTest::actualTestMethod ( tester &test, int param1, int param2 )
+{
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
+
+    membrainglobals::config.resizeMemory ( mem );
+    membrainglobals::config.resizeSwap ( swapmem );
+
+
+    test.addTimeMeasurement();
+
+    // Allocate and set matrixes A, B and C
+    managedPtr<double> *rowsA[size];
+    managedPtr<double> *colsB[size];
+    managedPtr<double> *rowsC[size];
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        rowsA[i] = new managedPtr<double> ( size );
+        colsB[i] = new managedPtr<double> ( size );
+        rowsC[i] = new managedPtr<double> ( size );
+
+        adhereTo<double> adhRowA ( *rowsA[i] );
+        adhereTo<double> adhColB ( *colsB[i] );
+        adhereTo<double> adhRowC ( *rowsC[i] );
+
+        double *rowA = adhRowA;
+        double *colB = adhColB;
+        double *rowC = adhRowC;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            rowA[j] = j;
+            colB[j] = j;
+            rowC[j] = 0.0;
+        }
+    }
+
+    test.addTimeMeasurement();
+
+    // Calculate C = A * B
+    //#pragma omp parallel for
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        adhereTo<double> adhRowA ( *rowsA[i] );
+        adhereTo<double> adhRowC ( *rowsC[i] );
+        double *rowA = adhRowA;
+        double *rowC = adhRowC;
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            adhereTo<double> adhColB ( *colsB[j] );
+            double *colB = adhColB;
+            double erg = 0;
+
+            for ( global_bytesize k = 0; k < size; ++k ) {
+                erg += rowA[k] * colB[k];
+            }
+            rowC[j] += erg;
+        }
+    }
+
+    test.addTimeMeasurement();
+
+    // Delete
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        delete rowsA[i];
+        delete colsB[i];
+        delete rowsC[i];
+    }
+
+    test.addTimeMeasurement();
+}
+
+string matrixMultiplyTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();

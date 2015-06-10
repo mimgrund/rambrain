@@ -191,5 +191,6 @@ TWOPARAMTEST ( matrixTransposeTest, int, int );
 TWOPARAMTEST ( matrixCleverTransposeTest, int, int );
 TWOPARAMTEST ( matrixCleverTransposeOpenMPTest, int, int );
 TWOPARAMTEST ( matrixCleverBlockTransposeOpenMPTest, int, int );
+TWOPARAMTEST ( matrixMultiplyTest, int, int );
 
 #endif // PERFORMANCETESTCLASSES_H
