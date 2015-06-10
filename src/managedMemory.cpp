@@ -112,8 +112,8 @@ bool managedMemory::setMemoryLimit ( global_bytesize size )
 void managedMemory::ensureEnoughSpaceAndLockTopo ( membrain::global_bytesize sizereq )
 {
     if ( sizereq + memory_used > memory_max ) {
-        if ( !swapOut ( sizereq + memory_used - memory_max )) { //Execute swapOut in protected context
-	  //We did not manage to swap out our stuff right away.
+        if ( !swapOut ( sizereq + memory_used - memory_max ) ) { //Execute swapOut in protected context
+            //We did not manage to swap out our stuff right away.
             pthread_mutex_unlock ( &stateChangeMutex );
             Throw ( memoryException ( "Could not swap memory" ) );
         } else {
@@ -131,7 +131,7 @@ managedMemoryChunk *managedMemory::mmalloc ( global_bytesize sizereq )
     pthread_mutex_lock ( &stateChangeMutex );
     ensureEnoughSpaceAndLockTopo ( sizereq );
 
-    memory_used += sizereq;
+    membrain_atomic_fetch_add ( &memory_used, sizereq );
 
     //We are left with enough free space to malloc.
 #ifdef PARENTAL_CONTROL
@@ -155,7 +155,6 @@ managedMemoryChunk *managedMemory::mmalloc ( global_bytesize sizereq )
     } else {
 #endif
         //Register this chunk in swapping logic:
-        chunk->atime = atime++;
         schedulerRegister ( *chunk );
         touch ( *chunk );
 #ifdef PARENTAL_CONTROL
@@ -240,7 +239,7 @@ bool managedMemory::mrealloc ( memoryID id, global_bytesize sizereq )
     pthread_mutex_lock ( &stateChangeMutex );
     void *realloced = realloc ( chunk.locPtr, sizereq );
     if ( realloced ) {
-        memory_used -= chunk.size - sizereq;
+        membrain_atomic_fetch_sub ( &memory_used, chunk.size - sizereq );
         chunk.size = sizereq;
         chunk.locPtr = realloced;
         pthread_mutex_unlock ( &stateChangeMutex );
@@ -316,7 +315,7 @@ void managedMemory::mfree ( memoryID id )
         schedulerDelete ( *chunk );
         if ( chunk->status == MEM_ALLOCATED ) {
             free ( chunk->locPtr );
-            memory_used -= chunk->size;
+            membrain_atomic_fetch_sub ( &memory_used, chunk->size );
         } else {
             swap->swapDelete ( chunk );
         }
@@ -342,7 +341,7 @@ void managedMemory::mfree ( memoryID id )
     schedulerDelete ( *chunk );
     if ( chunk->status == MEM_ALLOCATED ) {
         free ( chunk->locPtr );
-        memory_used -= chunk->size;
+        membrain_atomic_fetch_sub ( &memory_used, chunk->size );
     } else {
         swap->swapDelete ( chunk );
     }
@@ -547,21 +546,21 @@ bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLoc
 
 }
 
-void membrain::managedMemory::claimUsageof(membrain::global_bytesize bytes, bool rambytes,bool used)
+void membrain::managedMemory::claimUsageof ( membrain::global_bytesize bytes, bool rambytes, bool used )
 {
-  if(rambytes){
-    if(used){
-      membrain_atomic_fetch_add(&memory_used,bytes);
-    }else{
-      membrain_atomic_fetch_sub(&memory_used,bytes);
+    if ( rambytes ) {
+        if ( used ) {
+            membrain_atomic_fetch_add ( &memory_used, bytes );
+        } else {
+            membrain_atomic_fetch_sub ( &memory_used, bytes );
+        }
+    } else {
+        if ( used ) {
+            membrain_atomic_fetch_add ( &memory_swapped, bytes );
+        } else {
+            membrain_atomic_fetch_sub ( &memory_swapped, bytes );
+        }
     }
-  }else{
-    if(used){
-      membrain_atomic_fetch_add(&memory_swapped,bytes);
-    }else{
-      membrain_atomic_fetch_sub(&memory_swapped,bytes);
-    }
-  }
 }
 
 

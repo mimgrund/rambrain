@@ -16,8 +16,8 @@ enum memoryStatus {MEM_ROOT = 0,
                    MEM_SWAPOUT = 32
                   };
 
-typedef unsigned int memoryID;
-typedef unsigned int memoryAtime;
+typedef uint64_t memoryID;
+typedef uint64_t memoryAtime;
 
 /** \brief manages all managed Chunks of raw memory
  *
@@ -51,8 +51,9 @@ public:
     memoryID next;
     memoryID child;
 #endif
+    bool preemptiveLoaded = false;
+
     //Swap scheduling:
-    memoryAtime atime;
     void *schedBuf; //Give the mem scheduler a place for a buffer.
 
     //Swap raw management:
