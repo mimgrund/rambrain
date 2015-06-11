@@ -225,6 +225,17 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
         global_offset goff = determineGlobalOffset ( *pagePtr );
         auto it = all_space.find ( goff );
         membrain_atomic_fetch_add ( &swapFree, pagePtr->size );
+
+        //Delete possible pending aio_requests
+        //Check whether we're about to be deleted
+
+        if ( pagePtr->aio_ptr ) { //Pending aio
+            while ( pagePtr->aio_lock != 0 ) {};
+        }
+
+
+
+
         //Check if we have free space before us to merge with:
         if ( pagePtr->offset != 0 && it != all_space.begin() )
             if ( ( --it )->second->status == PAGE_FREE ) {
@@ -373,6 +384,7 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
     membrain_atomic_fetch_add ( tracker, 1 );
     membrain_atomic_fetch_add ( &totalSwapActionsQueued, 1 );
     ref.aio_ptr = new struct aiotracker;
+    ref.aio_lock = 1;
     struct aiocb *aio = & ( ref.aio_ptr->aio );
     aio->aio_buf = ramBuf;
     aio->aio_fildes = swapFiles[ref.file].fileno;
@@ -408,8 +420,8 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref )
 #ifdef DBG_AIO
         printf ( "Accounting for a swapin\n" );
 #endif
-        pffree ( ( pageFileLocation * ) chunk->swapBuf );
         pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+        pffree ( ( pageFileLocation * ) chunk->swapBuf );
         chunk->swapBuf = NULL; // Not strictly required
         chunk->status = MEM_ALLOCATED;
         claimUsageof ( chunk->size, false, false );
@@ -420,8 +432,8 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref )
 #ifdef DBG_AIO
         printf ( "Accounting for a swapout\n" );
 #endif
-        free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
         pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+        free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
         chunk->locPtr = NULL; // not strictly required.
         chunk->status = MEM_SWAPPED;
         claimUsageof ( chunk->size, true, false );
@@ -439,26 +451,34 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref )
 
 void managedFileSwap::asyncIoArrived ( sigval &signal )
 {
-
     pageFileLocation *ref = ( pageFileLocation * ) signal.sival_ptr;
 #ifdef DBG_AIO
     printf ( "aio: async io arrived, chunk of size %d\n", ref->size );
 #endif
+
+    //Check whether we're about to be deleted, if so, don't touch the element
     int *tracker = ref->aio_ptr->tracker;
     //Check if aio was completed:
+    aio_return ( & ( ref->aio_ptr->aio ) );
     int err = aio_error ( & ( ref->aio_ptr->aio ) );
     if ( err == 0 ) { //This part arrived successfully
         delete ref->aio_ptr;
+        ref->aio_ptr = NULL;
+        ref->aio_lock = 0;
         int lastval = membrain_atomic_fetch_sub ( tracker, 1 );
         if ( lastval == 1 ) {
             completeTransactionOn ( ref );
             delete tracker;
         }
+
         membrain_atomic_fetch_sub ( &totalSwapActionsQueued, 1 ); //Do this at the very last line, as completeTransactionOn() has to be done beforehands.
+
     } else {
         errmsgf ( "We have trouble in chunk %d, %d", ref->glob_off_next.chunk->id, err );
         ///@todo: find out if this may happen regularly or just in case of error.
     }
+
+
 }
 
 

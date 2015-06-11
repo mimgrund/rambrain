@@ -57,7 +57,8 @@ public:
     global_bytesize size;
     union glob_off_union glob_off_next;//This points if used to the next part, if free to the next free chunk, if PAGE_END points to memchunk.
     pageChunkStatus status;
-    struct aiotracker *aio_ptr;
+    struct aiotracker *aio_ptr = NULL;
+    char aio_lock = 0;
 };
 
 
