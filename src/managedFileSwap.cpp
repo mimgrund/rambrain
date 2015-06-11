@@ -193,14 +193,15 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
     //Hook out the block of free space:
     global_offset formerfree_off = determineGlobalOffset ( *freeChunk );
     free_space.erase ( formerfree_off );
+
     //We want to allocate a new chunk or use the chunk at hand.
+
     if ( freeChunk->size - size < sizeof ( pageFileLocation ) ) { //Memory to manage free space exceeds free space (actually more than)
         //Thus, use the free chunk for your data.
-        membrain_atomic_fetch_sub ( &swapFree, freeChunk->size - size ); //Account for not mallocable overhead
+        membrain_atomic_fetch_sub ( &swapFree, freeChunk->size - size ); //Account for not mallocable overhead, rest is done by claimUse
         freeChunk->size = size;
         return freeChunk;
     } else {
-        //membrain_atomic_fetch_sub(&swapFree,size); //Account for not mallocable overhead
         pageFileLocation *neu = new pageFileLocation ( *freeChunk );
         freeChunk->offset += size;
         freeChunk->size -= size;
@@ -224,7 +225,7 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
         endIsReached = ( pagePtr->status == PAGE_END );
         global_offset goff = determineGlobalOffset ( *pagePtr );
         auto it = all_space.find ( goff );
-        membrain_atomic_fetch_add ( &swapFree, pagePtr->size );
+        //membrain_atomic_fetch_add ( &swapFree, pagePtr->size );
 
         //Delete possible pending aio_requests
         //Check whether we're about to be deleted
@@ -276,6 +277,7 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
         pagePtr = next;
 
     } while ( !endIsReached );
+
 
 }
 
@@ -537,6 +539,12 @@ void managedFileSwap::sigStat ( int signum )
             break;
         }
     } while ( ++it != instance->all_space.end() );
+    const char *text;
+    if ( free_space == instance->swapFree ) {
+        text = "sane";
+    } else {
+        text = "insane";
+    }
 
     printf ( "%ld\t%ld\t%ld\t%e\t%e\t%s\n", free_space, partend, fractured, ( ( double ) free_space ) / ( partend + fractured + free_space ), ( ( ( double ) ( total_space ) - ( partend + fractured + free_space ) ) / ( total_space ) ), ( free_space == instance->swapFree ? "sane" : "insane" ) );
 

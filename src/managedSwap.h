@@ -49,9 +49,11 @@ public:
       * The wait is implemented non-performant as a normal user does not have to wait for this.
       * Implementing this with a _cond just destroys performance in the respective swapIn/out procedures without increasing any user space functionality. **/
     void waitForCleanExit() {
+        printf ( "\n" );
         while ( totalSwapActionsQueued != 0 ) {
-            printf ( "queued %d\r", totalSwapActionsQueued );
+            printf ( "waiting for aio to complete on %d objects\r", totalSwapActionsQueued );
         };
+        printf ( "                                                       \r" );
     };
 protected:
     global_bytesize swapSize;
