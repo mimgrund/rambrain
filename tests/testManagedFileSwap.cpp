@@ -41,7 +41,7 @@ TEST ( managedFileSwap, Unit_ManualSwapping ) //This screws default manager, as 
     delete chunk;
 }
 
-TEST ( managedFileSwap, DISABLED_Unit_ManualMultiSwapping )
+TEST ( managedFileSwap, Unit_ManualMultiSwapping )
 {
     const unsigned int dblamount = 100;
     const unsigned int dblsize = dblamount * sizeof ( double );
