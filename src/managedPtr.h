@@ -301,9 +301,13 @@ public:
     }
 
     operator  T *() {
+        pthread_mutex_lock ( &mutex );
+
         if ( membrain_atomic_bool_compare_and_swap ( &loadedWritable, false, true ) ) {
             data->setUse ( true );
         }
+
+        pthread_mutex_unlock ( &mutex );
         return data->getLocPtr();
     }
     operator  const T *() {
@@ -325,7 +329,7 @@ private:
 
     bool loadedWritable = false;
     bool loadedReadable = false;
-
+    pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
     // Test classes
     friend class ::adhereTo_Unit_LoadUnload_Test;

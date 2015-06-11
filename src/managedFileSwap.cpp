@@ -408,7 +408,7 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
 
 }
 
-void managedFileSwap::completeTransactionOn ( pageFileLocation *ref )
+void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
 {
 #ifdef DBG_AIO
     printf ( "got a call\n" );
@@ -422,26 +422,35 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref )
 #ifdef DBG_AIO
         printf ( "Accounting for a swapin\n" );
 #endif
-        pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+        if ( lock ) {
+            pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+        }
         pffree ( ( pageFileLocation * ) chunk->swapBuf );
         chunk->swapBuf = NULL; // Not strictly required
-        chunk->status = MEM_ALLOCATED;
+        //if we have a user for this object, protect it from being swapped out again
+        chunk->status = chunk->useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE_READ;
         claimUsageof ( chunk->size, false, false );
         managedMemory::signalSwappingCond();
-        pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
+        if ( lock ) {
+            pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
+        }
         break;
     case MEM_SWAPOUT:
 #ifdef DBG_AIO
         printf ( "Accounting for a swapout\n" );
 #endif
-        pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+        if ( lock ) {
+            pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+        }
         free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
         chunk->locPtr = NULL; // not strictly required.
         chunk->status = MEM_SWAPPED;
         claimUsageof ( chunk->size, true, false );
         managedMemory::defaultManager->claimTobefreed ( chunk->size, false );
         managedMemory::signalSwappingCond();
-        pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
+        if ( lock ) {
+            pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
+        }
         break;
     default:
         throw memoryException ( "AIO Synchronization broken!" );
@@ -504,7 +513,7 @@ void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf , bool reve
     unsigned int trval = membrain_atomic_fetch_sub ( tracker, 1 );
     membrain_atomic_fetch_sub ( &totalSwapActionsQueued, 1 );
     if ( trval == 1 ) {
-        completeTransactionOn ( cur );
+        completeTransactionOn ( cur , false ); //We already call having aquired the lock and know that nothing fatal happens
         delete tracker;
     }
 }

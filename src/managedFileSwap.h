@@ -129,7 +129,7 @@ private:
     //sigEvent Handler:
     struct sigevent evhandler;
     void asyncIoArrived ( union sigval &signal );
-    void completeTransactionOn ( membrain::pageFileLocation *ref );
+    void completeTransactionOn ( membrain::pageFileLocation *ref, bool lock = true );
 
 
 public:
