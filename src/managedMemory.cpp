@@ -109,16 +109,29 @@ bool managedMemory::setMemoryLimit ( global_bytesize size )
     return false;                                             //Resetting this is not implemented yet.
 }
 
+bool managedMemory::setOutOfSwapIsFatal ( bool fatal )
+{
+    bool old = outOfSwapIsFatal;
+    outOfSwapIsFatal = fatal;
+    return old;
+}
+
+
 void managedMemory::ensureEnoughSpaceAndLockTopo ( membrain::global_bytesize sizereq )
 {
     while ( sizereq + memory_used > memory_max ) {
         if ( sizereq + memory_used - memory_tobefreed > memory_max ) {
             managedMemory::swapErrorCode err = swapOut ( sizereq - ( memory_max - memory_used ) - memory_tobefreed );
             if (  err != ERR_SUCCESS ) { //Execute swapOut in protected context
-
                 //We did not manage to swap out our stuff right away.
-                pthread_mutex_unlock ( &stateChangeMutex );
-                Throw ( memoryException ( "Could not swap memory" ) );
+                if ( memory_tobefreed == 0 ) { //If other memory is to be freed, perhaps other threads may continue?
+                    if ( outOfSwapIsFatal ) { //throw if user wants us to, otherwise wait indefinitely (ram-deadlock)
+                        pthread_mutex_unlock ( &stateChangeMutex );
+                        Throw ( memoryException ( "Could not swap memory" ) );
+
+                        ///@todo: perhaps let the user tell us how many threads he has, so we can determine if there's still one running to free/unuse mem
+                    }
+                }
             }
 
         }
@@ -196,11 +209,10 @@ bool managedMemory::swapIn ( memoryID id )
 bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false )
 {
     pthread_mutex_lock ( &stateChangeMutex );
+    ++chunk.useCnt;//This protects element from being swapped out by somebody else if it was swapped in.
     switch ( chunk.status ) {
     case MEM_SWAPOUT: // Object is about to be swapped out.
-        if ( !waitForSwapout ( chunk, true ) ) {
-            return false;
-        }
+        waitForSwapout ( chunk, true );
     case MEM_SWAPPED:
         if ( !swapIn ( chunk ) ) {
             return false;
@@ -211,7 +223,9 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
 #endif
     case MEM_SWAPIN: // Wait for object to appear
         if ( !waitForSwapin ( chunk, true ) ) {
-            return false;
+            if ( ! ( chunk.status & MEM_ALLOCATED ) ) {
+                return false;
+            }
         }
     case MEM_ALLOCATED:
         chunk.status = MEM_ALLOCATED_INUSE_READ;
@@ -225,7 +239,6 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
 #ifdef SWAPSTATS
         ++swap_hits;
 #endif
-        ++chunk.useCnt;
         touch ( chunk );
         pthread_mutex_unlock ( &stateChangeMutex );
         return true;

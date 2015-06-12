@@ -349,3 +349,48 @@ TEST ( managedPtr, Unit_MultithreadingConcurrentCreateDelete )
 
     }
 }
+
+TEST ( managedPtr, DISABLED_Unit_ConcurrentUseAccess )
+{
+    managedDummySwap swap ( 800 );
+    cyclicManagedMemory managedMemory ( &swap, 400 );
+
+    managedPtr<double> a ( 40 );
+    managedPtr<double> b ( 40 );
+
+
+    #pragma omp parallel for
+    for ( int i = 0; i < 1000; ++i ) {
+        if ( i % 2 == 0 ) {
+            ADHERETOLOC ( double, a, loc );
+            loc[0] = i;
+
+        } else {
+            ADHERETOLOC ( double, b, loc );
+            loc[0] = i;
+        }
+
+    }
+}
+
+TEST ( managedPtr, Unit_ConcurrentUseAccessThree )
+{
+    managedDummySwap swap ( 1200 );
+    cyclicManagedMemory managedMemory ( &swap, 400 );
+    managedMemory.setOutOfSwapIsFatal ( false );
+    managedPtr<double> a[] = {managedPtr<double> ( 40 ), managedPtr<double> ( 40 ), managedPtr<double> ( 40 ) };
+
+
+    #pragma omp parallel for
+    for ( int i = 0; i < 1000; ++i ) {
+        if ( !managedMemory.checkCycle() ) {
+            errmsg ( "Oooink!\n" );
+        }
+        int idx = i % 3;
+        adhereTo<double> A ( a[idx] );
+        double *loc = A;
+        loc[0] = i;
+    }
+}
+
+

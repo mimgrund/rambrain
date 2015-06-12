@@ -430,6 +430,9 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
         }
 
     }
+    if ( unload_size == 0 ) {
+        return ERR_NOTENOUGHCANDIDATES;
+    }
 
     managedMemoryChunk *unloadlist[unload];
     managedMemoryChunk **unloadElem = unloadlist;

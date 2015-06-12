@@ -27,6 +27,8 @@ public:
     global_bytesize getMemoryLimit () const;
     global_bytesize getUsedMemory() const;
     global_bytesize getSwappedMemory() const;
+    ///Returns former value
+    bool setOutOfSwapIsFatal ( bool fatal = true );
 
 
     //Chunk Management
@@ -87,6 +89,7 @@ protected:
     global_bytesize memory_used = 0;
     global_bytesize memory_swapped = 0;
     global_bytesize memory_tobefreed = 0;
+    bool outOfSwapIsFatal = true;
 
     std::map<memoryID, managedMemoryChunk *> memChunks;
 
