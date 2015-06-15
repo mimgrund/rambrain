@@ -181,7 +181,11 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             global_bytesize targetSwapoutVol = actual_obj_size + ( 1. - swapOutFrac ) * memory_max - preemptiveBytes;
             swapErrorCode err = swapOut ( targetSwapoutVol );
             if ( err != ERR_SUCCESS ) {
-                ensureEnoughSpaceAndLockTopo ( actual_obj_size );
+                bool alreadyThere = ensureEnoughSpaceAndLockTopo ( actual_obj_size, &chunk );
+                if ( alreadyThere ) {
+                    waitForSwapin ( chunk, true );
+                    return true;
+                }
                 targetReadinVol = actual_obj_size;
             }
 
@@ -243,7 +247,11 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             return true;
         }
     } else {
-        ensureEnoughSpaceAndLockTopo ( actual_obj_size );
+        bool alreadyThere = ensureEnoughSpaceAndLockTopo ( actual_obj_size, &chunk );
+        if ( alreadyThere ) {
+            waitForSwapin ( chunk, true );
+            return true;
+        }
         //We have to check wether the block is still swapped or not
         if ( swap->swapIn ( &chunk ) == chunk.size ) {
             //Wait for object to be swapped in:

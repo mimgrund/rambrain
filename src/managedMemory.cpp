@@ -117,9 +117,13 @@ bool managedMemory::setOutOfSwapIsFatal ( bool fatal )
 }
 
 
-void managedMemory::ensureEnoughSpaceAndLockTopo ( membrain::global_bytesize sizereq )
+bool managedMemory::ensureEnoughSpaceAndLockTopo ( global_bytesize sizereq, managedMemoryChunk *orisSwappedin )
 {
     while ( sizereq + memory_used > memory_max ) {
+        if ( orisSwappedin && ( orisSwappedin->status & MEM_ALLOCATED || orisSwappedin->status == MEM_SWAPIN ) ) {
+            return true;
+        }
+
         if ( sizereq + memory_used - memory_tobefreed > memory_max ) {
             managedMemory::swapErrorCode err = swapOut ( sizereq - ( memory_max - memory_used ) - memory_tobefreed );
             if (  err != ERR_SUCCESS ) { //Execute swapOut in protected context
@@ -139,6 +143,10 @@ void managedMemory::ensureEnoughSpaceAndLockTopo ( membrain::global_bytesize siz
             pthread_cond_wait ( &swappingCond, &stateChangeMutex );
         }
     }
+    if ( orisSwappedin && ( orisSwappedin->status & MEM_ALLOCATED || orisSwappedin->status == MEM_SWAPIN ) ) {
+        return true;
+    }
+    return false;
 }
 
 

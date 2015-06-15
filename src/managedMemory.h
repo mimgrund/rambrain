@@ -80,7 +80,8 @@ protected:
     virtual void schedulerDelete ( managedMemoryChunk &chunk ) = 0;
 
     ///This function ensures that there is sizereq space left in RAM and locks the topoLock
-    void ensureEnoughSpaceAndLockTopo ( global_bytesize sizereq );
+    ///If orisSwappedin is set, return value tells whether the chunk orisSwappedin is pointing to has been swapped in
+    bool ensureEnoughSpaceAndLockTopo ( global_bytesize sizereq, managedMemoryChunk *orIsSwappedin = NULL );
 
     //Swap Storage manager iface:
     managedSwap *swap = 0;
