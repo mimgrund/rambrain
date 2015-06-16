@@ -280,6 +280,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 
 bool cyclicManagedMemory::checkCycle()
 {
+    pthread_mutex_lock ( &stateChangeMutex );
     pthread_mutex_lock ( &cyclicTopoLock );
 #ifdef PARENTAL_CONTROL
     unsigned int no_reg = memChunks.size() - 1;
@@ -292,6 +293,7 @@ bool cyclicManagedMemory::checkCycle()
 
     if ( !cur ) {
         pthread_mutex_unlock ( &cyclicTopoLock );
+        pthread_mutex_unlock ( &stateChangeMutex );
         if ( no_reg == 0 && counterActive == NULL ) {
             return true;
         } else {
@@ -308,6 +310,8 @@ bool cyclicManagedMemory::checkCycle()
         if ( oldcur != cur->prev ) {
             errmsg ( "Mutual connecion failure" );
             pthread_mutex_unlock ( &cyclicTopoLock );
+            pthread_mutex_unlock ( &stateChangeMutex );
+
             return false;
         }
 
@@ -315,12 +319,14 @@ bool cyclicManagedMemory::checkCycle()
             if ( oldcur->chunk->status == MEM_SWAPPED || oldcur->chunk->status == MEM_SWAPOUT ) {
                 errmsg ( "Swapped elements in active section!" );
                 pthread_mutex_unlock ( &cyclicTopoLock );
+                pthread_mutex_unlock ( &stateChangeMutex );
                 return false;
             }
         } else {
             if ( oldcur->chunk->status == MEM_SWAPPED && !inSwapsection ) {
                 errmsg ( "Isolated swapped element block not tracked by counterActive found!" );
                 pthread_mutex_unlock ( &cyclicTopoLock );
+                pthread_mutex_unlock ( &stateChangeMutex );
                 return false;
             }
             if ( oldcur->chunk->status != MEM_SWAPPED && oldcur->chunk->status != MEM_SWAPOUT ) {
@@ -334,6 +340,7 @@ bool cyclicManagedMemory::checkCycle()
 
     } while ( cur != active );
     pthread_mutex_unlock ( &cyclicTopoLock );
+    pthread_mutex_unlock ( &stateChangeMutex );
     if ( encountered != no_reg ) {
         errmsgf ( "Not all elements accessed. %d expected,  %d encountered", no_reg, encountered );
         return false;

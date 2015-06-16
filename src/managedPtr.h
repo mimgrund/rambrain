@@ -136,11 +136,20 @@ public:
         }
     }
 
-    bool setUse ( bool writable = true ) const {
-        return managedMemory::defaultManager->setUse ( *chunk , writable );
+    //Atomically sets use if tracker is not already set to true. returns whether we set use or not.
+    bool setUse ( bool writable = true, bool *tracker = false ) {
+        pthread_mutex_lock ( &mutex );
+        if ( tracker )
+            if ( !membrain_atomic_bool_compare_and_swap ( tracker, false, true ) ) {
+                pthread_mutex_unlock ( &mutex );
+                return false;
+            }
+        bool result = managedMemory::defaultManager->setUse ( *chunk , writable );
+        pthread_mutex_unlock ( &mutex );
+        return result;
     }
 
-    bool unsetUse ( unsigned int loaded = 1 ) const {
+    bool unsetUse ( unsigned int loaded = 1 ) {
         return managedMemory::defaultManager->unsetUse ( *chunk , loaded );
     }
 
@@ -190,7 +199,7 @@ private:
     managedMemoryChunk *chunk;
     unsigned int *tracker;
     unsigned int n_elem;
-
+    pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
     template <class G>
     typename std::enable_if<std::is_class<G>::value>::type
@@ -301,18 +310,15 @@ public:
     }
 
     operator  T *() {
-        pthread_mutex_lock ( &mutex );
-
-        if ( membrain_atomic_bool_compare_and_swap ( &loadedWritable, false, true ) ) {
-            data->setUse ( true );
+        if ( !loadedWritable ) {
+            data->setUse ( true, &loadedWritable );
         }
-
-        pthread_mutex_unlock ( &mutex );
-        return data->getLocPtr();
+        T *mdata = data->getLocPtr();
+        return mdata;
     }
     operator  const T *() {
-        if ( membrain_atomic_bool_compare_and_swap ( &loadedReadable, false, true ) ) {
-            data->setUse ( false );
+        if ( !loadedReadable ) {
+            data->setUse ( false, &loadedReadable );
         }
         return data->getConstLocPtr();
     }
@@ -372,8 +378,8 @@ public:
 
 
     operator  const T *() {
-        if ( membrain_atomic_bool_compare_and_swap ( &loadedReadable, false, true ) ) {
-            data->setUse ( false );
+        if ( !loadedReadable ) {
+            data->setUse ( false, &loadedReadable );
         }
         return data->getConstLocPtr();
     }

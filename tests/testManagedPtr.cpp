@@ -382,10 +382,11 @@ TEST ( managedPtr, Unit_ConcurrentUseAccessThree )
 
 
     #pragma omp parallel for
-    for ( int i = 0; i < 1000; ++i ) {
-        if ( !managedMemory.checkCycle() ) {
-            errmsg ( "Oooink!\n" );
-        }
+    for ( int i = 0; i < 10000; ++i ) {
+        if ( i % 500 == 0 ) //Don't do this all the time as parallelism is blocked by this and this is what we want to test...
+            if ( !managedMemory.checkCycle() ) {
+                errmsg ( "Cycle got wounded.\n" );
+            }
         int idx = i % 3;
         adhereTo<double> A ( a[idx] );
         double *loc = A;
