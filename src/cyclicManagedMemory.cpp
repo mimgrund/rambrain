@@ -159,7 +159,6 @@ void cyclicManagedMemory::printMemUsage()
 bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 {
     VERBOSEPRINT ( "swapInEntry" );
-
     if ( chunk.status & MEM_ALLOCATED || chunk.status == MEM_SWAPIN ) {
         return true;
     }
@@ -196,7 +195,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         cyclicAtime *endSwapin = readEl;
         global_bytesize selectedReadinVol = 0;
         unsigned int numberSelected = 0;
-
+        pthread_mutex_lock ( &cyclicTopoLock );
         do {
             if ( selectedReadinVol + cur->chunk->size > targetReadinVol ) {
                 break;
@@ -218,7 +217,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             return Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
 
         } else {
-            pthread_mutex_lock ( &cyclicTopoLock );
             cyclicAtime *beginSwapin = readEl->next;
             cyclicAtime *oldafter = endSwapin->next;
             if ( endSwapin != active ) { //swapped in element is already 'active' when all others have been swapped.
@@ -252,11 +250,12 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             waitForSwapin ( chunk, true );
             return true;
         }
+
+
         //We have to check wether the block is still swapped or not
         if ( swap->swapIn ( &chunk ) == chunk.size ) {
             //Wait for object to be swapped in:
             waitForSwapin ( chunk, true );
-            chunk.status = MEM_ALLOCATED;
             touch ( chunk );
             pthread_mutex_lock ( &cyclicTopoLock );
             if ( counterActive->chunk->status == MEM_SWAPPED ) {
@@ -267,7 +266,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             swap_in_bytes += chunk.size;
             n_swap_in += 1;
 #endif
-
             return true;
         } else {
             //Unlock mutex under which we were called, as we'll be throwing...
@@ -400,16 +398,20 @@ void cyclicManagedMemory::printCycle()
 
 cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
 {
+    pthread_mutex_lock ( &cyclicTopoLock );
     if ( counterActive == 0 ) {
         pthread_mutex_unlock ( &stateChangeMutex );
+        pthread_mutex_unlock ( &cyclicTopoLock );
         Throw ( memoryException ( "I can't swap out anything if there's nothing to swap out." ) );
     }
     VERBOSEPRINT ( "swapOutEntry" );
     if ( min_size > memory_max ) {
+        pthread_mutex_unlock ( &cyclicTopoLock );
         return ERR_MORETHANTOTALRAM;
     }
     global_bytesize swap_free = swap->getFreeSwap();
     if ( min_size > swap_free ) {
+        pthread_mutex_unlock ( &cyclicTopoLock );
         return ERR_SWAPFULL;
     }
 
@@ -439,6 +441,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
 
     }
     if ( unload_size == 0 ) {
+        pthread_mutex_unlock ( &cyclicTopoLock );
         return ERR_NOTENOUGHCANDIDATES;
     }
 
@@ -462,15 +465,19 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
     bool swapSuccess = ( real_unloaded == unload_size2 ) ;
     if ( !swapSuccess ) {
         if ( real_unloaded == 0 ) {
+            pthread_mutex_unlock ( &cyclicTopoLock );
             return ERR_NOTENOUGHCANDIDATES;
         }
     }
     fromPos = counterActive;
     cyclicAtime *moveEnd, *cleanFrom;
     moveEnd = NULL;
-    cleanFrom = counterActive->next;
+
     bool inSwappedSection = ( fromPos->chunk->status == MEM_SWAPPED | fromPos->chunk->status == MEM_SWAPOUT );
     bool doRoundtrip = fromPos == countPos;
+
+
+    cleanFrom = counterActive->next;
 
     ///\todo Implement this for less than 3 elements!
     while ( fromPos != countPos || doRoundtrip ) {
@@ -529,8 +536,8 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
         moveEnd = NULL;
     }
     counterActive = cleanFrom->prev;
+    pthread_mutex_unlock ( &cyclicTopoLock );
     VERBOSEPRINT ( "swapOutReturn" );
-
     if ( swapSuccess ) {
 #ifdef SWAPSTATS
         swap_out_bytes += unload_size;
