@@ -12,6 +12,7 @@ TEST ( managedDummySwap, Unit_ManualSwapping )
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
     managedDummySwap swap ( swapmem );
+    cyclicManagedMemory mem ( &swap, 10 * kib ); //Need this as default memory manager will get corrupted without (memory claims...);
 
     ASSERT_EQ ( swapmem, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
@@ -44,6 +45,7 @@ TEST ( managedDummySwap, Unit_ManualMultiSwapping )
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
     managedDummySwap swap ( swapmem );
+    cyclicManagedMemory mem ( &swap, 10 * kib ); //Need this as default memory manager will get corrupted without (memory claims...);
 
     ASSERT_EQ ( swapmem, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
@@ -87,7 +89,7 @@ TEST ( managedDummySwap, Unit_ManualSwappingDelete )
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
     managedDummySwap swap ( swapmem );
-
+    cyclicManagedMemory mem ( &swap, 10 * kib ); //Need this as default memory manager will get corrupted without (memory claims...);
     ASSERT_EQ ( swapmem, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 #ifdef PARENTAL_CONTROL
