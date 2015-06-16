@@ -6,6 +6,7 @@
 #include "membrainconfig.h"
 #include "membrain_atomics.h"
 #include "git_info.h"
+#include <time.h>
 
 namespace membrain
 {
@@ -502,8 +503,8 @@ void managedMemory::resetSwapstats()
 managedMemory *managedMemory::instance = NULL;
 void managedMemory::sigswapstats ( int signum )
 {
-    printf ( "%ld\t%ld\t%ld\t%ld\t%e\n", instance->swap_out_bytes,
-             instance->swap_out_bytes - instance->swap_out_bytes_last,
+    printf ( "%d\t%lu\t%lu\t%lu\t%lu\t%lu\t%lu\t%e\n", time ( NULL ), instance->swap_out_scheduled_bytes, instance->swap_out_bytes,
+             instance->swap_out_bytes - instance->swap_out_bytes_last, instance->swap_in_scheduled_bytes,
              instance->swap_in_bytes,
              instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );
     instance->swap_out_bytes_last = instance->swap_out_bytes;

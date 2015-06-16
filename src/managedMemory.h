@@ -117,6 +117,8 @@ protected:
     global_bytesize n_swap_in = 0;
 
 
+    global_bytesize swap_out_scheduled_bytes = 0;
+    global_bytesize swap_in_scheduled_bytes = 0;
     global_bytesize swap_out_bytes = 0;
     global_bytesize swap_in_bytes = 0;
 

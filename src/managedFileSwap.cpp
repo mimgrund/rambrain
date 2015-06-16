@@ -10,7 +10,6 @@
 #include <aio.h>
 #include <signal.h>
 
-//#define DBG_AIO
 namespace membrain
 {
 
@@ -431,6 +430,9 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         chunk->status = chunk->useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE_READ;
         claimUsageof ( chunk->size, false, false );
         managedMemory::signalSwappingCond();
+#ifdef SWAPSTATS
+        membrain_atomic_fetch_add ( & ( managedMemory::defaultManager->swap_in_bytes ), chunk->size );
+#endif
         if ( lock ) {
             pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
         }
@@ -446,6 +448,9 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         chunk->locPtr = NULL; // not strictly required.
         chunk->status = MEM_SWAPPED;
         claimUsageof ( chunk->size, true, false );
+#ifdef SWAPSTATS
+        membrain_atomic_fetch_add ( & ( managedMemory::defaultManager->swap_out_bytes ), chunk->size );
+#endif
         managedMemory::defaultManager->claimTobefreed ( chunk->size, false );
         managedMemory::signalSwappingCond();
         if ( lock ) {
@@ -476,6 +481,7 @@ void managedFileSwap::asyncIoArrived ( sigval &signal )
         delete ref->aio_ptr;
         ref->aio_ptr = NULL;
         ref->aio_lock = 0;
+
         int lastval = membrain_atomic_fetch_sub ( tracker, 1 );
         if ( lastval == 1 ) {
             completeTransactionOn ( ref );

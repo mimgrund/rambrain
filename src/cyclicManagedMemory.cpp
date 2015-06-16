@@ -237,17 +237,15 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             preemptiveBytes += selectedReadinVol - actual_obj_size;
 
 #ifdef SWAPSTATS
-            swap_in_bytes += selectedReadinVol;
+            membrain_atomic_add_fetch ( &swap_in_scheduled_bytes, selectedReadinVol );
             n_swap_in += 1;
 #endif
             VERBOSEPRINT ( "swapInBeforeReturn" );
-            waitForSwapin ( chunk, true );
             return true;
         }
     } else {
         bool alreadyThere = ensureEnoughSpaceAndLockTopo ( actual_obj_size, &chunk );
         if ( alreadyThere ) {
-            waitForSwapin ( chunk, true );
             return true;
         }
 
@@ -255,7 +253,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         //We have to check wether the block is still swapped or not
         if ( swap->swapIn ( &chunk ) == chunk.size ) {
             //Wait for object to be swapped in:
-            waitForSwapin ( chunk, true );
             touch ( chunk );
             pthread_mutex_lock ( &cyclicTopoLock );
             if ( counterActive->chunk->status == MEM_SWAPPED ) {
@@ -263,7 +260,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             }
             pthread_mutex_unlock ( &cyclicTopoLock );
 #ifdef SWAPSTATS
-            swap_in_bytes += chunk.size;
+            membrain_atomic_add_fetch ( &swap_in_scheduled_bytes, chunk.size );
             n_swap_in += 1;
 #endif
             return true;
@@ -547,7 +544,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
     VERBOSEPRINT ( "swapOutReturn" );
     if ( swapSuccess ) {
 #ifdef SWAPSTATS
-        swap_out_bytes += unload_size;
+        membrain_atomic_add_fetch ( &swap_out_scheduled_bytes, unload_size );
         n_swap_out += 1;
 #endif
         return ERR_SUCCESS;
