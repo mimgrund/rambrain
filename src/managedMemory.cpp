@@ -384,16 +384,25 @@ void managedMemory::printTree ( managedMemoryChunk *current, unsigned int nspace
         for ( unsigned int n = 0; n < nspaces; n++ ) {
             printf ( "  " );
         }
-        printf ( "(%d : size %d Bytes, atime %d, ", current->id, current->size, current->atime );
+        printf ( "(%d : size %lu Bytes, atime %d, ", current->id, current->size, current->atime );
         switch ( current->status ) {
         case MEM_ROOT:
             printf ( "Root Element" );
+            break;
+        case MEM_SWAPIN:
+            printf ( "Swapping in" );
+            break;
+        case MEM_SWAPOUT:
+            printf ( "Swapping out" );
             break;
         case MEM_SWAPPED:
             printf ( "Swapped out" );
             break;
         case MEM_ALLOCATED:
             printf ( "Allocated" );
+            break;
+        case MEM_ALLOCATED_INUSE:
+            printf ( "Allocated&inUse" );
             break;
         case MEM_ALLOCATED_INUSE_WRITE:
             printf ( "Allocated&inUse (writable)" );
