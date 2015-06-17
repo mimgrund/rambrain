@@ -136,6 +136,10 @@ public:
         }
     }
 
+    bool prepareUse() {
+        managedMemory::defaultManager->prepareUse ( *chunk, true );
+    };
+
     //Atomically sets use if tracker is not already set to true. returns whether we set use or not.
     bool setUse ( bool writable = true, bool *tracker = false ) {
         pthread_mutex_lock ( &mutex );
@@ -284,8 +288,8 @@ public:
     adhereTo ( managedPtr<T> &data, bool loadImidiately = false ) {
         this->data = &data;
         if ( loadImidiately ) {
-            loadedWritable = true;
-            data.setUse ( true );
+            loadedReadable = true;
+            data.prepareUse();
         }
 
     }
@@ -316,7 +320,7 @@ public:
         T *mdata = data->getLocPtr();
         return mdata;
     }
-    operator  const T *() {
+    operator const T *() {
         if ( !loadedReadable ) {
             data->setUse ( false, &loadedReadable );
         }
@@ -359,7 +363,7 @@ public:
         this->data = &data;
         if ( loadImidiately ) {
             loadedReadable = true;
-            data.setUse ( false );
+            data.prepareUse();
         }
 
     }
@@ -377,7 +381,7 @@ public:
     }
 
 
-    operator  const T *() {
+    operator const T *() {
         if ( !loadedReadable ) {
             data->setUse ( false, &loadedReadable );
         }

@@ -32,6 +32,7 @@ public:
 
 
     //Chunk Management
+    bool prepareUse ( membrain::managedMemoryChunk &chunk, bool acquireLock = true );
     bool setUse ( memoryID id );
     bool unsetUse ( memoryID id );
     bool setUse ( managedMemoryChunk &chunk, bool writeAccess );

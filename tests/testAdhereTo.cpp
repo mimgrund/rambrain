@@ -17,8 +17,10 @@ TEST ( adhereTo, Unit_LoadUnload )
 
     ASSERT_FALSE ( global1->loadedReadable );
     ASSERT_FALSE ( global1->loadedWritable );
-    ASSERT_FALSE ( global2->loadedReadable );
-    ASSERT_TRUE ( global2->loadedWritable );
+
+    ASSERT_TRUE ( global2->loadedReadable );
+    ASSERT_FALSE ( global2->loadedWritable );
+
     ASSERT_FALSE ( global3->loadedReadable );
     ASSERT_FALSE ( global3->loadedWritable );
 
@@ -35,8 +37,10 @@ TEST ( adhereTo, Unit_LoadUnload )
 
     ASSERT_FALSE ( global1->loadedReadable );
     ASSERT_TRUE ( global1->loadedWritable );
-    ASSERT_FALSE ( global2->loadedReadable );
+
+    ASSERT_TRUE ( global2->loadedReadable );
     ASSERT_TRUE ( global2->loadedWritable );
+
     ASSERT_FALSE ( global3->loadedReadable );
     ASSERT_TRUE ( global3->loadedWritable );
 
@@ -57,8 +61,10 @@ TEST ( adhereTo, Unit_LoadUnloadConst )
 
     ASSERT_FALSE ( global1->loadedReadable );
     ASSERT_FALSE ( global1->loadedWritable );
-    ASSERT_FALSE ( global2->loadedReadable );
-    ASSERT_TRUE ( global2->loadedWritable );
+
+    ASSERT_TRUE ( global2->loadedReadable );
+    ASSERT_FALSE ( global2->loadedWritable );
+
     ASSERT_FALSE ( global3->loadedReadable );
     ASSERT_FALSE ( global3->loadedWritable );
 
@@ -76,7 +82,7 @@ TEST ( adhereTo, Unit_LoadUnloadConst )
     ASSERT_TRUE ( global1->loadedReadable );
     ASSERT_FALSE ( global1->loadedWritable );
     ASSERT_TRUE ( global2->loadedReadable );
-    ASSERT_TRUE ( global2->loadedWritable );
+    ASSERT_FALSE ( global2->loadedWritable );
     ASSERT_TRUE ( global3->loadedReadable );
     ASSERT_FALSE ( global3->loadedWritable );
 
@@ -161,7 +167,7 @@ TEST ( adhereTo, Unit_TwiceAdhered )
 
 
     ASSERT_NO_THROW ( global2 = new adhereTo<double> ( ptr , true ) );
-    ASSERT_TRUE ( global2->loadedWritable );
+    ASSERT_TRUE ( global2->loadedReadable );
     ASSERT_NO_THROW ( loc2 = *global2 );
     ASSERT_EQ ( loc1, loc2 );
 

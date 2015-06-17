@@ -215,21 +215,46 @@ bool managedMemory::swapIn ( memoryID id )
     return swapIn ( chunk );
 }
 
-bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false )
+bool managedMemory::prepareUse ( managedMemoryChunk &chunk, bool acquireLock )
 {
-    pthread_mutex_lock ( &stateChangeMutex );
+    if ( acquireLock ) {
+        pthread_mutex_lock ( &stateChangeMutex );
+    }
     ++chunk.useCnt;//This protects element from being swapped out by somebody else if it was swapped in.
     switch ( chunk.status ) {
     case MEM_SWAPOUT: // Object is about to be swapped out.
         waitForSwapout ( chunk, true );
     case MEM_SWAPPED:
         if ( !swapIn ( chunk ) ) {
+            if ( acquireLock ) {
+                pthread_mutex_unlock ( &stateChangeMutex );
+            }
             return false;
         }
 #ifdef SWAPSTATS
         ++swap_misses;
         --swap_hits;
 #endif
+    default:
+        ;
+    }
+    if ( acquireLock ) {
+        pthread_mutex_unlock ( &stateChangeMutex );
+    }
+    return true;
+
+}
+
+
+bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false )
+{
+    pthread_mutex_lock ( &stateChangeMutex );
+    ++chunk.useCnt;//This protects element from being swapped out by somebody else if it was swapped in.
+    switch ( chunk.status ) {
+    case MEM_SWAPOUT: // Object is about to be swapped out.
+    case MEM_SWAPPED:
+        prepareUse ( chunk, false );
+        --chunk.useCnt;
     case MEM_SWAPIN: // Wait for object to appear
         if ( !waitForSwapin ( chunk, true ) ) {
             if ( ! ( chunk.status & MEM_ALLOCATED ) ) {
