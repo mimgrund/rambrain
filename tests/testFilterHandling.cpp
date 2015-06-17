@@ -2,8 +2,10 @@
 
 string combineFilter ( const string &generalFilter, const string &customFilter )
 {
-    bool general = false;
-    if ( customFilter != "*" ) {
+    if ( customFilter == "*" ) {
+        return generalFilter;
+    } else {
+        bool general = false;
         istringstream f ( customFilter );
         string s;
         while ( getline ( f, s, ':' ) ) {
@@ -11,11 +13,11 @@ string combineFilter ( const string &generalFilter, const string &customFilter )
                 general = true;
             }
         }
-    }
 
-    if ( general ) {
-        return customFilter;
-    } else {
-        return generalFilter + ":" + customFilter;
+        if ( general ) {
+            return customFilter;
+        } else {
+            return generalFilter + ":" + customFilter;
+        }
     }
 }
