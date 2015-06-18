@@ -9,6 +9,8 @@
 #include <sstream>
 #include <cstdlib>
 #include <map>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "tester.h"
 
@@ -102,6 +104,7 @@ protected:
     virtual string getTestOutfile ( int varryParam, unsigned int step );
     virtual void resultToTempFile ( int varryParam, unsigned int step, ofstream &file );
     virtual string generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn );
+    virtual void handleTimingInfos ( int varryParam, unsigned int step );
 
     virtual string generateMyGnuplotPlotPart ( const string &file, int paramColumn ) = 0;
 

@@ -23,6 +23,8 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
 
             resultToTempFile ( param, step, temp );
             temp << endl;
+
+            handleTimingInfos ( param, step );
         }
 
         temp.close();
@@ -42,14 +44,36 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
 
 void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const string &path )
 {
-    for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
-        performanceTest<> *test = it->second;
-        if ( test->enabled ) {
-            test->runTests ( repetitions, path );
-        } else {
-            cout << "Skipping test " << test->name << " because it is disabled." << endl;
+    //! \todo run watch killall in background
+    pid_t pId = fork();
+    if ( pId == 0 ) {
+        // child
+
+        //! \todo correct function?
+        execl ( ( path + "../scripts/print-swap-stats.sh" ).c_str(), "membrain-performancetests", ( char * ) 0 );
+        exit ( 0 );
+    } else if ( pId < 0 ) {
+        // error
+
+        cerr << "Failed to fork process " << pId << endl;
+        return;
+    } else {
+        // parent
+
+        for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
+            performanceTest<> *test = it->second;
+            if ( test->enabled ) {
+                test->runTests ( repetitions, path );
+            } else {
+                cout << "Skipping test " << test->name << " because it is disabled." << endl;
+            }
         }
+
+        // kill child
+        system ( "killall print-swap-stats.sh" );
     }
+
+    //! \todo close watch killall process
 }
 
 void performanceTest<>::enableTest ( const string &name, bool enabled )
@@ -184,6 +208,11 @@ string performanceTest<>::generateGnuplotScript ( const string &name, const stri
     }
     ss << generateMyGnuplotPlotPart ( "temp.dat", paramColumn );
     return ss.str();
+}
+
+void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
+{
+    //! \todo implement
 }
 
 
