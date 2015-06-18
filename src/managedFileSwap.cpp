@@ -7,8 +7,10 @@
 #include "exceptions.h"
 #include "managedMemory.h"
 #include "membrain_atomics.h"
-#include <aio.h>
+#include <libaio.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <fcntl.h>
 
 namespace membrain
 {
@@ -92,7 +94,7 @@ void managedFileSwap::closeSwapFiles()
 {
     if ( swapFiles ) {
         for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
-            fclose ( swapFiles[n].descriptor );
+            close ( swapFiles[n].fileno );
         }
         free ( swapFiles );
     }
@@ -111,13 +113,14 @@ bool managedFileSwap::openSwapFiles()
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
         snprintf ( fname, 1024, filemask, n );
-        swapFiles[n].descriptor = fopen ( fname, "w+" );
-        if ( !swapFiles[n].descriptor ) {
+        swapFiles[n].fileno = open ( fname, O_RDWR | O_TRUNC | O_CREAT | O_DIRECT, S_IRUSR | S_IWUSR );
+        if ( swapFiles[n].fileno == -1 ) {
+
+            printf ( "Toerooooe   %d    eeh\n", errno );
             throw memoryException ( "Could not open swap file." );
             return false;
         }
         swapFiles[n].currentSize = 0;
-        swapFiles[n].fileno = fileno ( swapFiles[n].descriptor );
     }
     return true;
 }

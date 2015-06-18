@@ -28,7 +28,7 @@ typedef uint64_t global_offset;
 class pageFileLocation;
 
 struct swapFileDesc {
-    FILE *descriptor;
+    //FILE *descriptor;
     int fileno;
     global_bytesize currentSize;
 };
