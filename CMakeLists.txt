@@ -42,3 +42,5 @@ if (BUILD_TESTS)
 endif ()
 
 add_custom_target(doc doxygen ${CMAKE_SOURCE_DIR}/doc/doxyfile ${CMAKE_SOURCE_DIR} COMMENT "Generating API documentation with Doxygen" VERBATIM)
+
+execute_process(COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
