@@ -67,14 +67,11 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     instance = this;
     signal ( SIGUSR2, managedFileSwap::sigStat );
 
-    //Event handler for aio:
-    evhandler.sigev_notify = SIGEV_THREAD;
-    evhandler.sigev_signo = 0;
-    evhandler.sigev_value.sival_ptr = NULL;
-    evhandler.sigev_notify_function = managedFileSwap::staticAsyncIoArrived;
-    evhandler.sigev_notify_attributes = 0;
-
-
+    if ( 0 != io_setup ( aio_max_transactions, &aio_context ) ) {
+        throw ( memoryException ( "Could not initialize aio!" ) );
+    }
+    memset ( &aio_template, 0, sizeof ( aio_template ) );
+    aio_template.aio_reqprio = 0;
 }
 
 managedFileSwap::~managedFileSwap()
@@ -388,22 +385,24 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
     membrain_atomic_fetch_add ( tracker, 1 );
     membrain_atomic_fetch_add ( &totalSwapActionsQueued, 1 );
     ref.aio_ptr = new struct aiotracker;
+
     ref.aio_lock = 1;
-    struct aiocb *aio = & ( ref.aio_ptr->aio );
-    aio->aio_buf = ramBuf;
+
+    struct iocb *aio = & ( ref.aio_ptr->aio );
+    *aio = aio_template;
+
     aio->aio_fildes = swapFiles[ref.file].fileno;
-    aio->aio_nbytes = ref.size;
-    aio->aio_offset = ref.offset;
-    aio->aio_reqprio = 0;///@todo: make this configurable
-    aio->aio_sigevent = evhandler;
-    aio->aio_sigevent.sigev_value.sival_ptr = &ref;
+    aio->u.c.nbytes = ref.size;
+    aio->u.c.offset = ref.offset;
+    aio->u.c.buf = ramBuf;
     ref.aio_ptr->tracker = tracker;
 #ifdef DBG_AIO
     reverse ? printf ( "scheduling read\n" ) : printf ( "scheduling write\n" );
 #endif
 
-    int res;
-    res = reverse ? aio_read ( aio ) : aio_write ( aio );
+    aio->aio_lio_opcode = reverse ? IO_CMD_PREAD : IO_CMD_PWRITE; ///@todo: a potential vector read/write may be superior
+    int res = io_submit ( aio_context, 1, & ( aio ) );
+
     if ( res != 0 ) {
         throw memoryException ( "Could not enqueue request" );
     }

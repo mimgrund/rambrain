@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <map>
-#include <aio.h>
+#include <libaio.h>
 #include <signal.h>
 
 //Test classes
@@ -34,7 +34,7 @@ struct swapFileDesc {
 };
 
 struct aiotracker {
-    struct aiocb aio;
+    struct iocb aio;
     int *tracker;
 };
 
@@ -127,9 +127,12 @@ private:
 
 
     //sigEvent Handler:
-    struct sigevent evhandler;
     void asyncIoArrived ( union sigval &signal );
     void completeTransactionOn ( membrain::pageFileLocation *ref, bool lock = true );
+
+    struct iocb aio_template;
+    io_context_t aio_context;
+    unsigned int aio_max_transactions = 1024;
 
 
 public:
