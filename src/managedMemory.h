@@ -124,7 +124,8 @@ protected:
     bool waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock = false );
 
 #ifdef LOGSTATS
-    static FILE* logFile;
+    static FILE *logFile;
+    static bool firstLog;
 #endif
 
 public:

@@ -19,7 +19,8 @@ managedMemory *managedMemory::defaultManager;
 #ifdef SWAPSTATS
 managedMemory *managedMemory::instance = NULL;
 #ifdef LOGSTATS
-FILE* managedMemory::logFile = fopen("membrain-swapstats.log", "w");
+FILE *managedMemory::logFile = fopen ( "membrain-swapstats.log", "w" );
+bool managedMemory::firstLog = true;
 #endif
 #endif
 
@@ -479,11 +480,15 @@ void managedMemory::resetSwapstats()
 void managedMemory::sigswapstats ( int signum )
 {
 #ifdef LOGSTATS
-    fprintf (logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\n", time(NULL), instance->swap_out_bytes,
-             instance->swap_out_bytes - instance->swap_out_bytes_last,
-             instance->swap_in_bytes,
-             instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );
-    fflush(logFile);
+    if ( firstLog ) {
+        fprintf ( managedMemory::logFile, "#Time [s]\tSwapped out [B]\tSwapped out last [B]\tSwapped in [B]\tSwapped in last [B]\tHits / Miss\n" );
+        firstLog = false;
+    }
+    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\n", time ( NULL ), instance->swap_out_bytes,
+              instance->swap_out_bytes - instance->swap_out_bytes_last,
+              instance->swap_in_bytes,
+              instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );
+    fflush ( logFile );
 #else
     printf ( "%lu\t%lu\t%lu\t%lu\t%e\n", instance->swap_out_bytes,
              instance->swap_out_bytes - instance->swap_out_bytes_last,
