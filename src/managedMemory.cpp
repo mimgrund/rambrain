@@ -16,6 +16,13 @@ membrainConfig config;
 
 managedMemory *managedMemory::defaultManager;
 
+#ifdef SWAPSTATS
+managedMemory *managedMemory::instance = NULL;
+#ifdef LOGSTATS
+FILE* managedMemory::logFile = fopen("membrain-swapstats.log", "w");
+#endif
+#endif
+
 #ifdef PARENTAL_CONTROL
 memoryID const managedMemory::root = 1;
 memoryID managedMemory::parent = managedMemory::root;
@@ -26,8 +33,6 @@ pthread_t managedMemory::creatingThread ;
 bool managedMemory::haveCreatingThread = false;
 #endif
 memoryID const managedMemory::invalid = 0;
-
-
 
 
 pthread_mutex_t managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER;
@@ -471,13 +476,20 @@ void managedMemory::resetSwapstats()
     swap_hits = swap_misses = swap_in_bytes = swap_out_bytes = n_swap_in = n_swap_out = 0;
 }
 
-managedMemory *managedMemory::instance = NULL;
 void managedMemory::sigswapstats ( int signum )
 {
-    printf ( "%ld\t%ld\t%ld\t%ld\t%e\n", instance->swap_out_bytes,
+#ifdef LOGSTATS
+    fprintf (logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\n", time(NULL), instance->swap_out_bytes,
              instance->swap_out_bytes - instance->swap_out_bytes_last,
              instance->swap_in_bytes,
              instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );
+    fflush(logFile);
+#else
+    printf ( "%lu\t%lu\t%lu\t%lu\t%e\n", instance->swap_out_bytes,
+             instance->swap_out_bytes - instance->swap_out_bytes_last,
+             instance->swap_in_bytes,
+             instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );
+#endif
     instance->swap_out_bytes_last = instance->swap_out_bytes;
     instance->swap_in_bytes_last = instance->swap_in_bytes;
 }
@@ -491,6 +503,11 @@ void managedMemory::versionInfo()
 #else
     const char *swapstats = "without swapstats";
 #endif
+#ifdef LOGSTATS
+    const char *logstats = "with logstats";
+#else
+    const char *logstats = "Without logstats";
+#endif
 #ifdef PARENTAL_CONTROL
     const char *parentalcontrol = "with parental control";
 #else
@@ -498,8 +515,8 @@ void managedMemory::versionInfo()
 #endif
 
     infomsgf ( "compiled from %s\n\ton %s at %s\n\
-                \t%s , %s\n\
-    \n \t git diff\n%s\n", gitCommit, __DATE__, __TIME__, swapstats, parentalcontrol, gitDiff );
+                \t%s , %s , %s\n\
+    \n \t git diff\n%s\n", gitCommit, __DATE__, __TIME__, swapstats, logstats, parentalcontrol, gitDiff );
 
 
 }

@@ -5,6 +5,11 @@
 #include <map>
 #include <pthread.h>
 
+#ifdef LOGSTATS
+#include <stdio.h>
+#include <ctime>
+#endif
+
 #include "managedMemoryChunk.h"
 #include "managedSwap.h"
 #include "exceptions.h"
@@ -117,13 +122,17 @@ protected:
 
     bool waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock = false );
     bool waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock = false );
+
+#ifdef LOGSTATS
+    static FILE* logFile;
+#endif
+
 public:
     void printSwapstats();
     void resetSwapstats();
 
     static void sigswapstats ( int signum );
     static managedMemory *instance;
-
 #endif
     static void versionInfo();
 };
