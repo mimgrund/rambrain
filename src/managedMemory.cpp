@@ -481,10 +481,11 @@ void managedMemory::sigswapstats ( int signum )
 {
 #ifdef LOGSTATS
     if ( firstLog ) {
-        fprintf ( managedMemory::logFile, "#Time [s]\tSwapped out [B]\tSwapped out last [B]\tSwapped in [B]\tSwapped in last [B]\tHits / Miss\n" );
+        fprintf ( managedMemory::logFile, "#Time [ms]\tSwapped out [B]\tSwapped out last [B]\tSwapped in [B]\tSwapped in last [B]\tHits / Miss\n" );
         firstLog = false;
     }
-    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\n", time ( NULL ), instance->swap_out_bytes,
+    int64_t now = std::chrono::duration_cast<std::chrono::milliseconds> ( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
+    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\n", now, instance->swap_out_bytes,
               instance->swap_out_bytes - instance->swap_out_bytes_last,
               instance->swap_in_bytes,
               instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );

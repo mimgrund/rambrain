@@ -7,7 +7,7 @@
 
 #ifdef LOGSTATS
 #include <stdio.h>
-#include <ctime>
+#include <chrono>
 #endif
 
 #include "managedMemoryChunk.h"
