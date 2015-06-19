@@ -93,7 +93,7 @@ void performanceTest<>::dumpTestInfo()
         cout << "Test class " << test->name << " is currently " << ( test->enabled ? "enabled" : "disabled" ) << ". ";
         cout << "It has " << test->parameters.size() << " parameters:" << endl;
 
-        for ( auto jt = test->parameters.begin(); jt != test->parameters.end(); ++jt ) {
+        for ( auto jt = test->parameters.rbegin(); jt != test->parameters.rend(); ++jt ) {
             testParameterBase *param = *jt;
 
             if ( param->enabled ) {
