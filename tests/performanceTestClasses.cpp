@@ -46,7 +46,7 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
 void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const string &path )
 {
     const int read = 0, write = 1, err = 2;
-    cout << "Forking watcher process: watch -p -n 1E-1 killall -s SIGUSR1" << endl;
+    cout << "Forking watcher process: watch -p -n 1E-1 killall membrain-performancetests -s SIGUSR1" << endl;
 
     pid_t pId = fork();
     if ( pId == 0 ) {
@@ -56,12 +56,9 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
         close ( write );
         close ( err );
 
-        //! \todo which to use?
-        //execl ( ( path + "../scripts/print-swap-stats.sh" ).c_str(), "membrain-performancetests", NULL );
-        /*execl("/usr/bin/watch", "-p", "-n", "1E-1", "killall", "-s", "SIGUSR1", NULL);
+        execl("/usr/bin/watch", "watch", "-p", "-n", "1E-1", "killall", "membrain-performancetests", "-s", "SIGUSR1", (char*) 0);
         perror ( "excecl" );
-        exit ( 1 );*/
-        system ( "watch -p -n 1E-1 killall -s SIGUSR1" );
+        exit ( 1 );
     } else if ( pId < 0 ) {
         // error
 
