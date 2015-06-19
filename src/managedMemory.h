@@ -5,6 +5,14 @@
 #include <map>
 #include <pthread.h>
 
+#ifdef SWAPSTATS
+#include <signal.h>
+#ifdef LOGSTATS
+#include <stdio.h>
+#include <chrono>
+#endif
+#endif
+
 #include "managedMemoryChunk.h"
 #include "managedSwap.h"
 #include "exceptions.h"
@@ -115,15 +123,28 @@ protected:
     global_bytesize swap_hits = 0;
     global_bytesize swap_misses = 0;
 
+    struct sigaction sigact;
+
     bool waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock = false );
     bool waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock = false );
+
+#ifdef LOGSTATS
+    //! @todo This will induce a serious issue in combination with MPI and a shared disk. How to handle that case?
+    timer_t timerid;
+    struct sigevent sev;
+    struct itimerspec its;
+
+    //! @todo This will induce a serious issue in combination with MPI and a shared disk. How to handle that case?
+    static FILE *logFile;
+    static bool firstLog;
+#endif
+
 public:
     void printSwapstats();
     void resetSwapstats();
 
-    static void sigswapstats ( int signum );
+    static void sigswapstats ( int sig );
     static managedMemory *instance;
-
 #endif
     static void versionInfo();
 };

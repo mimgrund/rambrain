@@ -3,11 +3,20 @@ cmake_minimum_required (VERSION 2.8)
 project (membrain)
 
 option (BUILD_TESTS "Build tests" ON)
-option (SWAPSTATS "Swap stats" ON)
+option (SWAPSTATS "Output swap stats on signal SIGUSR1" ON)
+option (LOGSTATS "Log stats instead of outputting them to stdout" OFF)
 option (PARENTAL_CONTROL "Hook up chunks in a tree" OFF)
 
 if(SWAPSTATS)
     add_definitions(-DSWAPSTATS)
+endif()
+
+if(LOGSTATS)
+    if(SWAPSTATS)
+        add_definitions(-DLOGSTATS)
+    else(SWAPSTATS)
+        message(FATAL_ERROR "If you want to log stats you also have to enable SWAPSTATS. Exiting cmake.")
+    endif(SWAPSTATS)
 endif()
 
 if(PARENTAL_CONTROL)
@@ -25,7 +34,7 @@ set (LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 
 set (CMAKE_BUILD_TYPE DEBUG)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fopenmp -O0 -Wall") # -fPIC -fopenmp -g
-#set (CMAKE_EXE_LINKER_FLAGS -Wl  )
+set (CMAKE_EXE_LINKER_FLAGS -lrt )
 if (CMAKE_CXX_COMPILER_ID MATCHES Clang)
 	add_definitions (-fcolor-diagnostics -fansi-escape-codes)
 endif()
@@ -42,3 +51,5 @@ if (BUILD_TESTS)
 endif ()
 
 add_custom_target(doc doxygen ${CMAKE_SOURCE_DIR}/doc/doxyfile ${CMAKE_SOURCE_DIR} COMMENT "Generating API documentation with Doxygen" VERBATIM)
+
+execute_process(COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

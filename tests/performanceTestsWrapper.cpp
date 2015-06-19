@@ -95,8 +95,6 @@ int main ( int argc, char **argv )
 
     // Eventually make changes to test parameters of allocated test classes if desired
 
-
-
     // Run tests
     performanceTest<>::dumpTestInfo();
     performanceTest<>::runRegisteredTests ( repetitions, "../" );

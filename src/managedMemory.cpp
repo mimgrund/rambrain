@@ -16,6 +16,14 @@ membrainConfig config;
 
 managedMemory *managedMemory::defaultManager;
 
+#ifdef SWAPSTATS
+managedMemory *managedMemory::instance = NULL;
+#ifdef LOGSTATS
+FILE *managedMemory::logFile = fopen ( "membrain-swapstats.log", "w" );
+bool managedMemory::firstLog = true;
+#endif
+#endif
+
 #ifdef PARENTAL_CONTROL
 memoryID const managedMemory::root = 1;
 memoryID managedMemory::parent = managedMemory::root;
@@ -26,8 +34,6 @@ pthread_t managedMemory::creatingThread ;
 bool managedMemory::haveCreatingThread = false;
 #endif
 memoryID const managedMemory::invalid = 0;
-
-
 
 
 pthread_mutex_t managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER;
@@ -51,7 +57,28 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
     }
 #ifdef SWAPSTATS
     instance = this;
-    signal ( SIGUSR1, sigswapstats );
+
+    sigact.sa_handler = sigswapstats;
+    sigemptyset(&sigact.sa_mask);
+
+    if (sigaction(SIGUSR1, &sigact, NULL) < 0) {
+        perror ("sigaction");
+    }
+
+#ifdef LOGSTATS
+    sev.sigev_notify = SIGEV_SIGNAL;
+    sev.sigev_signo = SIGUSR1;
+    sev.sigev_value.sival_ptr = &timerid;
+    timer_create(CLOCK_REALTIME, &sev, &timerid);
+
+    /* Start the timer */
+    its.it_value.tv_sec = 0;
+    its.it_value.tv_nsec = 100000000L;
+    its.it_interval.tv_sec = its.it_value.tv_sec;
+    its.it_interval.tv_nsec = its.it_value.tv_nsec;
+
+    timer_settime(timerid, 0, &its, NULL);
+#endif
 #endif
 }
 
@@ -480,13 +507,25 @@ void managedMemory::resetSwapstats()
     swap_hits = swap_misses = swap_in_bytes = swap_out_bytes = n_swap_in = n_swap_out = 0;
 }
 
-managedMemory *managedMemory::instance = NULL;
-void managedMemory::sigswapstats ( int signum )
+void managedMemory::sigswapstats ( int sig )
 {
-    printf ( "%ld\t%ld\t%ld\t%ld\t%e\n", instance->swap_out_bytes,
+#ifdef LOGSTATS
+    if ( firstLog ) {
+        fprintf ( managedMemory::logFile, "#Time [ms]\tSwapped out [B]\tSwapped out last [B]\tSwapped in [B]\tSwapped in last [B]\tHits / Miss\n" );
+        firstLog = false;
+    }
+    int64_t now = std::chrono::duration_cast<std::chrono::milliseconds> ( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
+    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\n", now, instance->swap_out_bytes,
+              instance->swap_out_bytes - instance->swap_out_bytes_last,
+              instance->swap_in_bytes,
+              instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );
+    fflush ( logFile );
+#else
+    printf ( "%lu\t%lu\t%lu\t%lu\t%e\n", instance->swap_out_bytes,
              instance->swap_out_bytes - instance->swap_out_bytes_last,
              instance->swap_in_bytes,
              instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );
+#endif
     instance->swap_out_bytes_last = instance->swap_out_bytes;
     instance->swap_in_bytes_last = instance->swap_in_bytes;
 }
@@ -500,6 +539,11 @@ void managedMemory::versionInfo()
 #else
     const char *swapstats = "without swapstats";
 #endif
+#ifdef LOGSTATS
+    const char *logstats = "with logstats";
+#else
+    const char *logstats = "Without logstats";
+#endif
 #ifdef PARENTAL_CONTROL
     const char *parentalcontrol = "with parental control";
 #else
@@ -507,8 +551,8 @@ void managedMemory::versionInfo()
 #endif
 
     infomsgf ( "compiled from %s\n\ton %s at %s\n\
-                \t%s , %s\n\
-    \n \t git diff\n%s\n", gitCommit, __DATE__, __TIME__, swapstats, parentalcontrol, gitDiff );
+                \t%s , %s , %s\n\
+    \n \t git diff\n%s\n", gitCommit, __DATE__, __TIME__, swapstats, logstats, parentalcontrol, gitDiff );
 
 
 }

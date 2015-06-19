@@ -102,12 +102,14 @@ void tester::writeToFile()
         out << std::endl;
     }
 
+    out << "# Columns: (Time [ms], Start [ms], End [ms], Percentage) per repetition run and afterwards for average (without Start, End)" << std::endl;
+
     if ( ! comment.empty() ) {
         out << "# " << comment << std::endl;
     }
 
     const int timesCount = timeMeasures.front().size() - 1;
-    int64_t times[timesCount][cyclesCount];
+    int64_t durations[timesCount][cyclesCount], starts[timesCount][cyclesCount], ends[timesCount][cyclesCount];
     double percentages[timesCount][cyclesCount];
 
     int cycle = 0, time;
@@ -116,9 +118,10 @@ void tester::writeToFile()
 
         time = 0;
         for ( auto it = repIt->begin(), jt = repIt->begin() + 1; it != repIt->end() && jt != repIt->end(); ++it, ++jt, ++time ) {
-            int64_t ms = std::chrono::duration_cast<std::chrono::milliseconds> ( ( *jt ) - ( *it ) ).count();
-            times[time][cycle] = ms;
-            percentages[time][cycle] = 100.0 * ms / totms;
+            starts[time][cycle] = std::chrono::duration_cast<std::chrono::milliseconds> ( it->time_since_epoch() ).count();
+            ends[time][cycle] = std::chrono::duration_cast<std::chrono::milliseconds> ( jt->time_since_epoch() ).count();
+            durations[time][cycle] = std::chrono::duration_cast<std::chrono::milliseconds> ( ( *jt ) - ( *it ) ).count();
+            percentages[time][cycle] = 100.0 * durations[time][cycle] / totms;
         }
     }
 
@@ -130,10 +133,10 @@ void tester::writeToFile()
         avgPercentage = 0.0;
 
         for ( cycle = 0; cycle < cyclesCount; ++cycle ) {
-            avgTime += times[time][cycle];
+            avgTime += durations[time][cycle];
             avgPercentage += percentages[time][cycle];
 
-            out << times[time][cycle] << "\t" << percentages[time][cycle] << "\t";
+            out << durations[time][cycle] << "\t" << starts[time][cycle] << "\t" << ends[time][cycle] << "\t" << percentages[time][cycle] << "\t";
         }
         avgTime /= cyclesCount;
         avgPercentage /= cyclesCount;

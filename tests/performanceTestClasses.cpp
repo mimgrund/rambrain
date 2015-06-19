@@ -17,12 +17,14 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
         for ( unsigned int step = 0; step < steps; ++step ) {
             string params = getParamsString ( param, step );
             stringstream call;
-            call << path << "membrain-performancetests " << repetitions << " " << name << " " << params;
+            call << path << "membrain-performancetests " << repetitions << " " << name << " " << params << " 2> /dev/null";
             cout << "Calling: " << call.str() << endl;
             system ( call.str().c_str() );
 
             resultToTempFile ( param, step, temp );
             temp << endl;
+
+            handleTimingInfos ( param, step );
         }
 
         temp.close();
@@ -106,6 +108,8 @@ bool performanceTest<>::runRespectiveTest ( const string &name, tester &myTester
     if ( it != testClasses.end() ) {
         performanceTest<> *test = it->second;
         for ( unsigned int r = 0; r < repetitions; ++r ) {
+            cout << "Repetition " << (r+1) << " out of " << repetitions << "                                       " << '\r';
+            cout.flush();
             int myOffset = offset;
             myTester.startNewTimeCycle();
             test->actualTestMethod ( myTester, arguments, myOffset, argumentscount );
@@ -114,6 +118,8 @@ bool performanceTest<>::runRespectiveTest ( const string &name, tester &myTester
                 offset = myOffset;
             }
         }
+        cout << "                                                                                     " << '\r';
+        cout.flush();
 
         return true;
     } else {
@@ -184,6 +190,11 @@ string performanceTest<>::generateGnuplotScript ( const string &name, const stri
     }
     ss << generateMyGnuplotPlotPart ( "temp.dat", paramColumn );
     return ss.str();
+}
+
+void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
+{
+    //! \todo implement
 }
 
 
