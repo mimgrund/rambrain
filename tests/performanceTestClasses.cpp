@@ -46,7 +46,7 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
 void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const string &path )
 {
     const int read = 0, write = 1, err = 2;
-    cout << "Forking watcher process: " << path << "../scripts/print-swap-stats.sh membrain-performancetests" << endl;
+    cout << "Forking watcher process: watch -p -n 1E-1 killall -s SIGUSR1" << endl;
 
     pid_t pId = fork();
     if ( pId == 0 ) {
@@ -56,9 +56,12 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
         close ( write );
         close ( err );
 
-        execl ( ( path + "../scripts/print-swap-stats.sh" ).c_str(), "membrain-performancetests", NULL );
+        //! \todo which to use?
+        //execl ( ( path + "../scripts/print-swap-stats.sh" ).c_str(), "membrain-performancetests", NULL );
+        /*execl("/usr/bin/watch", "-p", "-n", "1E-1", "killall", "-s", "SIGUSR1", NULL);
         perror ( "excecl" );
-        exit ( 1 );
+        exit ( 1 );*/
+        system ( "watch -p -n 1E-1 killall -s SIGUSR1" );
     } else if ( pId < 0 ) {
         // error
 
@@ -75,6 +78,9 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
                 cout << "Skipping test " << test->name << " because it is disabled." << endl;
             }
         }
+
+        // sleep to give time to finish watching and writing
+        sleep ( 1 );
 
         // kill child
         stringstream killcmd;
