@@ -11,34 +11,36 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
 {
     cout << "Running test case " << name << std::endl;
     for ( int param = parameters.size() - 1; param >= 0; --param ) {
-        unsigned int steps = getStepsForParam ( param );
-        ofstream temp ( "temp.dat" );
+        if ( parameters[param]->enabled ) {
+            unsigned int steps = getStepsForParam ( param );
+            ofstream temp ( "temp.dat" );
 
-        for ( unsigned int step = 0; step < steps; ++step ) {
-            string params = getParamsString ( param, step );
-            stringstream call;
-            call << path << "membrain-performancetests " << repetitions << " " << name << " " << params << " 2> /dev/null";
-            cout << "Calling: " << call.str() << endl;
-            system ( call.str().c_str() );
+            for ( unsigned int step = 0; step < steps; ++step ) {
+                string params = getParamsString ( param, step );
+                stringstream call;
+                call << path << "membrain-performancetests " << repetitions << " " << name << " " << params << " 2> /dev/null";
+                cout << "Calling: " << call.str() << endl;
+                system ( call.str().c_str() );
 
-            resultToTempFile ( param, step, temp );
-            temp << endl;
+                resultToTempFile ( param, step, temp );
+                temp << endl;
 
-            handleTimingInfos ( param, step );
+                handleTimingInfos ( param, step );
+            }
+
+            temp.close();
+            ofstream gnutemp ( "temp.gnuplot" );
+            stringstream outname;
+            outname << name << param;
+            cout << "Generating output file " << outname.str() << endl;
+            gnutemp << generateGnuplotScript ( outname.str(), parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog, parameters.size() - param );
+            gnutemp.close();
+
+            cout << "Calling gnuplot and displaying result" << endl;
+            system ( "gnuplot temp.gnuplot" );
+            system ( ( "convert -density 300 -resize 1920x " + outname.str() + ".eps -flatten " + outname.str() + ".png" ).c_str() );
+            system ( ( "display " + outname.str() + ".png &" ).c_str() );
         }
-
-        temp.close();
-        ofstream gnutemp ( "temp.gnuplot" );
-        stringstream outname;
-        outname << name << param;
-        cout << "Generating output file " << outname.str() << endl;
-        gnutemp << generateGnuplotScript ( outname.str(), parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog, parameters.size() - param );
-        gnutemp.close();
-
-        cout << "Calling gnuplot and displaying result" << endl;
-        system ( "gnuplot temp.gnuplot" );
-        system ( ( "convert -density 300 -resize 1920x " + outname.str() + ".eps -flatten " + outname.str() + ".png" ).c_str() );
-        system ( ( "display " + outname.str() + ".png &" ).c_str() );
     }
 }
 
@@ -94,8 +96,12 @@ void performanceTest<>::dumpTestInfo()
         for ( auto jt = test->parameters.begin(); jt != test->parameters.end(); ++jt ) {
             testParameterBase *param = *jt;
 
-            cout << "\tFrom\t" << param->valueAsString ( 0 ) << "\tover\t"  << param->valueAsString() << "\tto\t" << param->valueAsString ( param->steps - 1 ) << "\tin ";
-            cout << param->steps << ( param->deltaLog ? " logarithmic" : " linear" ) << " steps" << endl;
+            if ( param->enabled ) {
+                cout << "\tFrom\t" << param->valueAsString ( 0 ) << "\tover\t"  << param->valueAsString() << "\tto\t" << param->valueAsString ( param->steps - 1 ) << "\tin ";
+                cout << param->steps << ( param->deltaLog ? " logarithmic" : " linear" ) << " steps" << endl;
+            } else {
+                cout << "\tParameter variation is currently disabled" << endl;
+            }
         }
 
         cout << endl;

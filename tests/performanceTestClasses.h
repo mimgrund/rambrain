@@ -31,6 +31,7 @@ public:
     unsigned int steps;
     bool deltaLog;
     string name;
+    bool enabled = true;
 };
 
 
