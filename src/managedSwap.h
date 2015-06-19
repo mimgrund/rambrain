@@ -51,18 +51,29 @@ public:
     void waitForCleanExit() {
         printf ( "\n" );
         while ( totalSwapActionsQueued != 0 ) {
+            checkForAIO();
             printf ( "waiting for aio to complete on %d objects\r", totalSwapActionsQueued );
         };
         printf ( "                                                       \r" );
     };
+
+    virtual bool checkForAIO() {
+        return false;
+    };
+
 protected:
+
+
     global_bytesize swapSize;
     global_bytesize swapUsed;
     global_bytesize swapFree;
     unsigned int totalSwapActionsQueued = 0;
 };
 
+
 }
+
+
 
 
 #endif

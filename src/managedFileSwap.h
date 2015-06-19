@@ -7,6 +7,7 @@
 #include <map>
 #include <libaio.h>
 #include <signal.h>
+#include <unordered_map>
 
 //Test classes
 class managedFileSwap_Unit_SwapAllocation_Test;
@@ -126,20 +127,21 @@ private:
     std::map<global_offset, pageFileLocation *> all_space;
 
 
-    //sigEvent Handler:
-    void asyncIoArrived ( union sigval &signal );
-    void completeTransactionOn ( membrain::pageFileLocation *ref, bool lock = true );
-
-    struct iocb aio_template;
-    io_context_t aio_context;
-    unsigned int aio_max_transactions = 1024;
-
-
-public:
-    static void	staticAsyncIoArrived ( union sigval signal ) {
-        instance->asyncIoArrived ( signal );
-    };
 protected:
+    bool deleteFilesOnExit = true;
+
+    //sigEvent Handler:
+    void asyncIoArrived ( membrain::pageFileLocation *ref, struct io_event *aio );
+    void completeTransactionOn ( membrain::pageFileLocation *ref, bool lock = true );
+    virtual bool checkForAIO();
+    struct iocb aio_template;
+    io_context_t aio_context = 0;
+    unsigned int aio_max_transactions = 1024;
+    struct io_event *aio_eventarr;
+    pthread_mutex_t aioWaiterLock = PTHREAD_MUTEX_INITIALIZER;
+
+    std::unordered_map<struct iocb *, pageFileLocation *> pendingAios;
+
     //Test classes
     friend class ::managedFileSwap_Unit_SwapAllocation_Test;
     friend class ::managedFileSwap_Integration_RandomAccess_Test;

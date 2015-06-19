@@ -133,6 +133,7 @@ protected:
     bool waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock = false );
     void claimUsageof ( global_bytesize bytes, bool rambytes, bool used );
     void claimTobefreed ( global_bytesize bytes, bool tobefreed );
+    inline void waitForAIO();
 public:
     void printSwapstats();
     void resetSwapstats();

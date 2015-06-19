@@ -141,7 +141,7 @@ bool managedMemory::ensureEnoughSpaceAndLockTopo ( global_bytesize sizereq, mana
 
         }
         if ( sizereq + memory_used > memory_max ) {
-            pthread_cond_wait ( &swappingCond, &stateChangeMutex );
+            waitForAIO();
         }
     }
     if ( orisSwappedin && ( orisSwappedin->status & MEM_ALLOCATED || orisSwappedin->status == MEM_SWAPIN ) ) {
@@ -563,6 +563,15 @@ void managedMemory::signalSwappingCond()
     pthread_cond_broadcast ( &swappingCond );
 }
 
+void managedMemory::waitForAIO()
+{
+    if ( swap->checkForAIO() ) { //Some AIO has arrived...
+        return;
+    }
+    pthread_cond_wait ( &swappingCond, &stateChangeMutex );
+}
+
+
 bool managedMemory::waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock )
 {
     if ( chunk.status == MEM_SWAPOUT ) { //Chunk is about to be swapped out...
@@ -572,7 +581,7 @@ bool managedMemory::waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock
         return false;
     }
     while ( ! ( chunk.status & MEM_ALLOCATED ) ) {
-        pthread_cond_wait ( &swappingCond, &stateChangeMutex );
+        waitForAIO();
     }
     if ( !keepSwapLock ) {
         pthread_mutex_unlock ( &stateChangeMutex );
@@ -590,7 +599,7 @@ bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLoc
         return false;
     }
     while ( ! ( chunk.status == MEM_SWAPPED ) ) {
-        pthread_cond_wait ( &swappingCond, &stateChangeMutex );
+        waitForAIO();
     }
     if ( !keepSwapLock ) {
         pthread_mutex_unlock ( &stateChangeMutex );

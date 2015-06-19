@@ -15,6 +15,7 @@
 namespace membrain
 {
 
+//#define DBG_AIO
 managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile ) : managedSwap ( size ), pageSize ( sysconf ( _SC_PAGE_SIZE ) )
 {
 
@@ -67,7 +68,10 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     instance = this;
     signal ( SIGUSR2, managedFileSwap::sigStat );
 
-    if ( 0 != io_setup ( aio_max_transactions, &aio_context ) ) {
+    aio_eventarr = ( struct io_event * ) malloc ( sizeof ( struct io_event ) * aio_max_transactions );
+    memset ( aio_eventarr, 0, sizeof ( struct io_event ) *aio_max_transactions );
+    int ioSetupErr = io_setup ( aio_max_transactions, &aio_context );
+    if ( 0 != ioSetupErr ) {
         throw ( memoryException ( "Could not initialize aio!" ) );
     }
     memset ( &aio_template, 0, sizeof ( aio_template ) );
@@ -76,6 +80,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
 
 managedFileSwap::~managedFileSwap()
 {
+    free ( aio_eventarr );
     closeSwapFiles();
     free ( ( void * ) filemask );
     if ( all_space.size() > 0 ) {
@@ -96,6 +101,13 @@ void managedFileSwap::closeSwapFiles()
         free ( swapFiles );
     }
 
+
+    for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
+        char fname[1024];
+        snprintf ( fname, 1024, filemask, n );
+        unlink ( fname );
+    }
+
 }
 
 
@@ -110,7 +122,7 @@ bool managedFileSwap::openSwapFiles()
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
         snprintf ( fname, 1024, filemask, n );
-        swapFiles[n].fileno = open ( fname, O_RDWR | O_TRUNC | O_CREAT | O_DIRECT, S_IRUSR | S_IWUSR );
+        swapFiles[n].fileno = open ( fname, O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR );
         if ( swapFiles[n].fileno == -1 ) {
 
             printf ( "Toerooooe   %d    eeh\n", errno );
@@ -390,7 +402,6 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
 
     struct iocb *aio = & ( ref.aio_ptr->aio );
     *aio = aio_template;
-
     aio->aio_fildes = swapFiles[ref.file].fileno;
     aio->u.c.nbytes = ref.size;
     aio->u.c.offset = ref.offset;
@@ -402,8 +413,9 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
 
     aio->aio_lio_opcode = reverse ? IO_CMD_PREAD : IO_CMD_PWRITE; ///@todo: a potential vector read/write may be superior
     int res = io_submit ( aio_context, 1, & ( aio ) );
+    pendingAios[aio] = &ref;
 
-    if ( res != 0 ) {
+    if ( res != 1 ) {
         throw memoryException ( "Could not enqueue request" );
     }
 
@@ -467,9 +479,60 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
 }
 
 
-void managedFileSwap::asyncIoArrived ( sigval &signal )
+bool managedFileSwap::checkForAIO()
 {
-    pageFileLocation *ref = ( pageFileLocation * ) signal.sival_ptr;
+
+    bool ret = false;
+    //This may be called by different threads. We only want one waiting for aio-arrivals, the others may continue.
+    if ( 0 != pthread_mutex_trylock ( &aioWaiterLock ) ) {
+        return false;
+    }
+
+    //We're the only thread here. Check if there's still pending requests to wait for:
+    if ( totalSwapActionsQueued == 0 ) { //We do not need to wait as nothing is coming.
+        return true;    //Do not wait in caller for something to arrive.
+    }
+
+#ifdef DBG_AIO
+    printf ( "checkForAIO called, we'll wait for an event, got %d in queue\n", totalSwapActionsQueued );
+#endif
+    //As there's at least one pending transaction, we may wait blocking indefinitely:
+    pthread_mutex_unlock ( & ( managedMemory::defaultManager->stateChangeMutex ) );
+    int no_arrived = io_getevents ( aio_context, 1, aio_max_transactions, aio_eventarr, NULL );
+    pthread_mutex_lock ( & ( managedMemory::defaultManager->stateChangeMutex ) );
+    if ( no_arrived < 0 ) {
+        pthread_mutex_unlock ( &aioWaiterLock );
+        printf ( "We got an error back: %d\n", -no_arrived );
+        throw memoryException ( "AIO Error" );
+
+    }
+#ifdef DBG_AIO
+    printf ( "we got %d events\n", no_arrived );
+#endif
+    for ( int n = 0; n < no_arrived; ++n ) {
+        //Try to find mapping:
+#ifdef DBG_AIO
+        printf ( "Processing event %d \n", n );
+#endif
+        auto found = pendingAios.find ( aio_eventarr[n].obj );
+        if ( found != pendingAios.end() ) {
+            pageFileLocation *ref = found->second;
+            pendingAios.erase ( found );
+            //Deal with element:
+            asyncIoArrived ( ref, aio_eventarr + n );
+        }
+
+    }
+
+
+    pthread_mutex_unlock ( &aioWaiterLock );
+    return true;
+
+};
+
+void managedFileSwap::asyncIoArrived ( membrain::pageFileLocation *ref, io_event *event )
+{
+
 #ifdef DBG_AIO
     printf ( "aio: async io arrived, chunk of size %d\n", ref->size );
 #endif
@@ -477,23 +540,24 @@ void managedFileSwap::asyncIoArrived ( sigval &signal )
     //Check whether we're about to be deleted, if so, don't touch the element
     int *tracker = ref->aio_ptr->tracker;
     //Check if aio was completed:
-    aio_return ( & ( ref->aio_ptr->aio ) );
-    int err = aio_error ( & ( ref->aio_ptr->aio ) );
-    if ( err == 0 ) { //This part arrived successfully
+
+
+    int err = event->res2; //Seems to be that a value of zero here indicates success.
+    if ( err == 0 && event->res == ref->size ) { //This part arrived successfully
         delete ref->aio_ptr;
         ref->aio_ptr = NULL;
         ref->aio_lock = 0;
 
         int lastval = membrain_atomic_fetch_sub ( tracker, 1 );
         if ( lastval == 1 ) {
-            completeTransactionOn ( ref );
+            completeTransactionOn ( ref , false );
             delete tracker;
         }
 
         membrain_atomic_fetch_sub ( &totalSwapActionsQueued, 1 ); //Do this at the very last line, as completeTransactionOn() has to be done beforehands.
 
     } else {
-        errmsgf ( "We have trouble in chunk %d, %d", ref->glob_off_next.chunk->id, err );
+        errmsgf ( "We have trouble in chunk %d, %d ; aio_size %d, size %d", ref->glob_off_next.chunk->id, err, event->res, ref->size );
         ///@todo: find out if this may happen regularly or just in case of error.
     }
 
