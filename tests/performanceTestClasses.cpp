@@ -216,6 +216,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
     // Go through test output and get first pair of times
     //! \todo this can be largely refactored
     string testLine, timingLine;
+    unsigned long long starttime = 0;
     while ( getline ( test, testLine ) ) {
         if ( testLine.find ( '#' ) == string::npos ) {
             stringstream ss ( testLine );
@@ -255,16 +256,18 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
             }
 
             // We have all stats for the current run segment, output this data to the temp file
+            if ( starttime == 0Lu ) {
+                starttime = strtoull ( relevantTimingParts.front() [0].c_str(), &buf, 10 );
+            }
             for ( auto it = relevantTimingParts.begin(); it != relevantTimingParts.end(); ++it ) {
-                unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - strtoull ( relevantTimingParts.front() [0].c_str(), &buf, 10 );
+                unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttime;
                 unsigned long long mbOut = strtoul ( ( *it ) [1].c_str(), &buf, 10 ) / mib;
                 unsigned long long mbIn = strtoul ( ( *it ) [3].c_str(), &buf, 10 ) / mib;
 
                 out << relTime << " " << mbOut << " " << mbIn << " " << ( *it ) [5] << endl;
             }
 
-            //! \todo as long as we dont accumulate we just look at the first time measurement, remove this break then
-            break;
+            out << endl;
         }
     }
 
@@ -289,8 +292,13 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
     gnutemp << "set title \"" << name << "\"" << endl;
     gnutemp << "set style data linespoints" << endl;
     //! \todo actually the legend comes from the definition of the test class like in the normal plot, make this a general gather
-    gnutemp << "plot '" << tempFile << "' using 1:2 lt -1 pt 4 lc 1 title \"Swapped out\", \\" << endl;
-    gnutemp << "'" << tempFile << "' using 1:3 lt -1 pt 4 lc 2 title \"Swapped in\"" << endl;
+    //! \todo every :3 means every third block because we have 3 time measurements. this has to be done programmatically
+    gnutemp << "plot '" << tempFile << "' every :3::0 using 1:2 lt -1 pt 2 lc 1 title \"Swapped out\", \\" << endl;
+    gnutemp << "'" << tempFile << "' every :3::1 using 1:2 lt -1 pt 3 lc 1 title \"Swapped out\", \\" << endl;
+    gnutemp << "'" << tempFile << "' every :3::2 using 1:2 lt -1 pt 4 lc 1 title \"Swapped out\", \\" << endl;
+    gnutemp << "'" << tempFile << "' every :3::0 using 1:3 lt -1 pt 2 lc 2 title \"Swapped in\", \\" << endl;
+    gnutemp << "'" << tempFile << "' every :3::1 using 1:3 lt -1 pt 3 lc 2 title \"Swapped in\", \\" << endl;
+    gnutemp << "'" << tempFile << "' every :3::2 using 1:3 lt -1 pt 4 lc 2 title \"Swapped in\"" << endl;
     //! \todo what about hit/miss plot?
     gnutemp.close();
 
