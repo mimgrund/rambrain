@@ -57,7 +57,13 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
     }
 #ifdef SWAPSTATS
     instance = this;
-    signal ( SIGUSR1, sigswapstats );
+
+    sigact.sa_handler = sigswapstats;
+    sigemptyset(&sigact.sa_mask);
+
+    if (sigaction(SIGUSR1, &sigact, NULL) < 0) {
+        perror ("sigaction");
+    }
 #endif
 }
 
@@ -477,7 +483,7 @@ void managedMemory::resetSwapstats()
     swap_hits = swap_misses = swap_in_bytes = swap_out_bytes = n_swap_in = n_swap_out = 0;
 }
 
-void managedMemory::sigswapstats ( int signum )
+void managedMemory::sigswapstats ( int sig )
 {
 #ifdef LOGSTATS
     if ( firstLog ) {

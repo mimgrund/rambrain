@@ -3,6 +3,10 @@
 #include <cstring>
 #include <cmath>
 
+#ifdef SWAPSTATS
+#include <signal.h>
+#endif
+
 #include "tester.h"
 #include "performanceTestClasses.h"
 
@@ -10,6 +14,17 @@ using namespace std;
 
 int main ( int argc, char **argv )
 {
+#ifdef SWAPSTATS
+    struct sigaction sigact;
+
+    sigact.sa_handler = SIG_IGN;
+    sigemptyset(&sigact.sa_mask);
+
+    if (sigaction(SIGUSR1, &sigact, NULL) < 0) {
+        perror ("sigaction");
+    }
+#endif
+
     cout << "Starting performance tests" << endl;
     cout << "Called with: ";
     for ( int i = 0; i < argc; ++i ) {
