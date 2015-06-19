@@ -45,6 +45,7 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
 // Search for popen2 to understand this
 void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const string &path )
 {
+#ifdef LOGSTATS
     const int read = 0, write = 1, err = 2;
     cout << "Forking watcher process: watch -p -n 1E-1 killall membrain-performancetests -s SIGUSR1" << endl;
 
@@ -64,6 +65,8 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
     } else {
         // parent
 
+#endif
+
         for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
             performanceTest<> *test = it->second;
             if ( test->enabled ) {
@@ -73,8 +76,11 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
             }
         }
 
+#ifdef LOGSTATS
+
         // sleep to give time to finish watching and writing
-        sleep ( 1 );
+        cout << "Waiting to finish up loose ends." << endl;
+        sleep ( 5 );
 
         // kill child
         stringstream killcmd;
@@ -82,6 +88,7 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
         cout << "Killing watcher process: " << killcmd.str() << endl;
         system ( killcmd.str().c_str() );
     }
+#endif
 }
 
 void performanceTest<>::enableTest ( const string &name, bool enabled )

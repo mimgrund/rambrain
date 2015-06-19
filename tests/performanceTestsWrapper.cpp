@@ -95,12 +95,6 @@ int main ( int argc, char **argv )
 
     // Eventually make changes to test parameters of allocated test classes if desired
 
-    matrixMultiplyOpenMPTestInstance.parameter1.min = 100;
-    matrixMultiplyOpenMPTestInstance.parameter1.max = 1000;
-    matrixMultiplyOpenMPTestInstance.parameter1.mean = 1000;
-    matrixMultiplyOpenMPTestInstance.parameter1.steps = 2;
-    matrixMultiplyOpenMPTestInstance.parameter2.steps = 2;
-
     // Run tests
     performanceTest<>::dumpTestInfo();
     performanceTest<>::runRegisteredTests ( repetitions, "../" );
