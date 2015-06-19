@@ -17,7 +17,7 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
         for ( unsigned int step = 0; step < steps; ++step ) {
             string params = getParamsString ( param, step );
             stringstream call;
-            call << path << "membrain-performancetests " << repetitions << " " << name << " " << params;
+            call << path << "membrain-performancetests " << repetitions << " " << name << " " << params << " 2> /dev/null";
             cout << "Calling: " << call.str() << endl;
             system ( call.str().c_str() );
 
