@@ -284,9 +284,10 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
     gnutemp << "set xlabel \"Time [ms]\"" << endl;
     gnutemp << "set ylabel \"Swap Movement [MB]\"" << endl;
     gnutemp << "set title \"" << name << "\"" << endl;
+    gnutemp << "set style data linespoints" << endl;
     //! \todo actually the legend comes from the definition of the test class like in the normal plot, make this a general gather
-    gnutemp << "plot '" << tempFile << "' using 1:2 with lines title \"Swapped out\", \\" << endl;
-    gnutemp << "'" << tempFile << "' using 1:3 with lines title \"Swapped in\"" << endl;
+    gnutemp << "plot '" << tempFile << "' using 1:2 lt -1 pt 4 lc 1 title \"Swapped out\", \\" << endl;
+    gnutemp << "'" << tempFile << "' using 1:3 lt -1 pt 4 lc 2 title \"Swapped in\"" << endl;
     //! \todo what about hit/miss plot?
     gnutemp.close();
 
