@@ -59,17 +59,17 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
     instance = this;
 
     sigact.sa_handler = sigswapstats;
-    sigemptyset(&sigact.sa_mask);
+    sigemptyset ( &sigact.sa_mask );
 
-    if (sigaction(SIGUSR1, &sigact, NULL) < 0) {
-        perror ("sigaction");
+    if ( sigaction ( SIGUSR1, &sigact, NULL ) < 0 ) {
+        perror ( "sigaction" );
     }
 
 #ifdef LOGSTATS
     sev.sigev_notify = SIGEV_SIGNAL;
     sev.sigev_signo = SIGUSR1;
     sev.sigev_value.sival_ptr = &timerid;
-    timer_create(CLOCK_REALTIME, &sev, &timerid);
+    timer_create ( CLOCK_REALTIME, &sev, &timerid );
 
     /* Start the timer */
     its.it_value.tv_sec = 0;
@@ -77,7 +77,7 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
     its.it_interval.tv_sec = its.it_value.tv_sec;
     its.it_interval.tv_nsec = its.it_value.tv_nsec;
 
-    timer_settime(timerid, 0, &its, NULL);
+    timer_settime ( timerid, 0, &its, NULL );
 #endif
 #endif
 }
