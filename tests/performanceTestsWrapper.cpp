@@ -101,6 +101,12 @@ int main ( int argc, char **argv )
     performanceTest<>::dumpTestInfo();
     performanceTest<>::runRegisteredTests ( repetitions, "../" );
 
+    matrixMultiplyOpenMPTestInstance.parameter1.min = 100;
+    matrixMultiplyOpenMPTestInstance.parameter1.max = 1000;
+    matrixMultiplyOpenMPTestInstance.parameter1.mean = 1000;
+    matrixMultiplyOpenMPTestInstance.parameter1.steps = 2;
+    matrixMultiplyOpenMPTestInstance.parameter2.steps = 2;
+
     cout << endl << endl << "All tests done, exiting..." << endl;
     return 0;
 }

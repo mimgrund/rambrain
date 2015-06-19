@@ -42,16 +42,27 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
     }
 }
 
+// Search for popen2 to understand this
 void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const string &path )
 {
-    //! \todo run watch killall in background
+    int pStdIn[2], pStdOut[2];
+    const int read = 0, write = 1;
+    if ( pipe ( pStdIn ) || pipe ( pStdOut ) ) {
+        cerr << "Failed to pipe standard in/err" << endl;
+    }
+
     pid_t pId = fork();
     if ( pId == 0 ) {
         // child
 
-        //! \todo correct function?
-        execl ( ( path + "../scripts/print-swap-stats.sh" ).c_str(), "membrain-performancetests", ( char * ) 0 );
-        exit ( 0 );
+        close ( pStdIn[write] );
+        dup2 ( pStdIn[read], read );
+        close ( pStdOut[read] );
+        dup2 ( pStdOut[write], write );
+
+        execl ( ( path + "../scripts/print-swap-stats.sh" ).c_str(), "membrain-performancetests", NULL );
+        perror ( "excecl" );
+        exit ( 1 );
     } else if ( pId < 0 ) {
         // error
 
@@ -59,6 +70,19 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
         return;
     } else {
         // parent
+
+        //! \todo have to use infp and outfp instead of stdin/out? How?
+        int *infp = NULL, * outfp = NULL;
+        if ( infp == NULL ) {
+            close ( pStdIn[write] );
+        } else {
+            *infp = pStdIn[write];
+        }
+        if ( outfp == NULL ) {
+            close ( pStdOut[read] );
+        } else {
+            *outfp = pStdOut[read];
+        }
 
         for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
             performanceTest<> *test = it->second;
@@ -70,10 +94,9 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
         }
 
         // kill child
-        system ( "killall print-swap-stats.sh" );
+        string killcmd = "kill " + pId;
+        system ( killcmd.c_str() );
     }
-
-    //! \todo close watch killall process
 }
 
 void performanceTest<>::enableTest ( const string &name, bool enabled )
