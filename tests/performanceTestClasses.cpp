@@ -152,7 +152,7 @@ string performanceTest<>::getParamsString ( int varryParam, unsigned int step, c
 string performanceTest<>::getTestOutfile ( int varryParam, unsigned int step )
 {
     stringstream ss;
-    ss << "perftest_" << name;
+    ss << name;
     for ( int i = parameters.size() - 1; i >= 0; --i ) {
         if ( i == varryParam ) {
             ss << "#" << parameters[i]->valueAsString ( step );
@@ -282,11 +282,9 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
 
     //! \todo again - this is code duplication -> refactor
     ofstream gnutemp ( "temp.gnuplot" );
-    stringstream outname;
-    outname << name << varryParam << "_stats";
-    cout << "Generating output file " << outname.str() << endl;
+    cout << "Generating output file " << timingFile << endl;
     gnutemp << "set terminal postscript eps enhanced color 'Helvetica,10'" << endl;
-    gnutemp << "set output \"" << outname.str() << ".eps\"" << endl;
+    gnutemp << "set output \"" << timingFile << ".eps\"" << endl;
     gnutemp << "set xlabel \"Time [ms]\"" << endl;
     gnutemp << "set ylabel \"Swap Movement [MB]\"" << endl;
     gnutemp << "set title \"" << name << "\"" << endl;
@@ -300,15 +298,13 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
     gnutemp << "'" << tempFile << "' every :3::1 using 1:3 lt -1 pt 3 lc 2 title \"Swapped in\", \\" << endl;
     gnutemp << "'" << tempFile << "' every :3::2 using 1:3 lt -1 pt 4 lc 2 title \"Swapped in\"" << endl;
     //! \todo what about hit/miss plot?
+    //! \todo mark regions where measurements break
     gnutemp.close();
 
     cout << "Calling gnuplot and displaying result" << endl;
     system ( "gnuplot temp.gnuplot" );
-    system ( ( "convert -density 300 -resize 1920x " + outname.str() + ".eps -flatten " + outname.str() + ".png" ).c_str() );
-    system ( ( "display " + outname.str() + ".png &" ).c_str() );
-
-    //! \todo just for debug
-    exit ( 2 );
+    system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
+    system ( ( "display " + timingFile + ".png &" ).c_str() );
 }
 
 

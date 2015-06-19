@@ -69,7 +69,7 @@ void tester::writeToFile()
     }
 
     std::stringstream fileName;
-    fileName << "perftest_" << name;
+    fileName << name;
     for ( auto it = parameters.begin(); it != parameters.end(); ++it ) {
         fileName << "#" << *it;
     }
