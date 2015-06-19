@@ -9,8 +9,6 @@
 #include <sstream>
 #include <cstdlib>
 #include <map>
-#include <sys/types.h>
-#include <unistd.h>
 
 #include "tester.h"
 

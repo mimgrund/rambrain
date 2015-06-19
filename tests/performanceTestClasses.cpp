@@ -42,53 +42,16 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
     }
 }
 
-// Search for popen2 to understand this
 void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const string &path )
 {
-#ifdef LOGSTATS
-    const int read = 0, write = 1, err = 2;
-    cout << "Forking watcher process: watch -p -n 1E-1 killall membrain-performancetests -s SIGUSR1" << endl;
-
-    pid_t pId = fork();
-    if ( pId == 0 ) {
-        // child
-
-        close ( write );
-        close ( err );
-
-        execl("/usr/bin/watch", "watch", "-p", "-n", "1E-1", "killall", "membrain-performancetests", "-s", "SIGUSR1", (char*) 0);
-    } else if ( pId < 0 ) {
-        // error
-
-        cerr << "Failed to fork process " << pId << endl;
-        return;
-    } else {
-        // parent
-
-#endif
-
-        for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
-            performanceTest<> *test = it->second;
-            if ( test->enabled ) {
-                test->runTests ( repetitions, path );
-            } else {
-                cout << "Skipping test " << test->name << " because it is disabled." << endl;
-            }
+    for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
+        performanceTest<> *test = it->second;
+        if ( test->enabled ) {
+            test->runTests ( repetitions, path );
+        } else {
+            cout << "Skipping test " << test->name << " because it is disabled." << endl;
         }
-
-#ifdef LOGSTATS
-
-        // sleep to give time to finish watching and writing
-        cout << "Waiting to finish up loose ends." << endl;
-        sleep ( 5 );
-
-        // kill child
-        stringstream killcmd;
-        killcmd << "kill " << pId;
-        cout << "Killing watcher process: " << killcmd.str() << endl;
-        system ( killcmd.str().c_str() );
     }
-#endif
 }
 
 void performanceTest<>::enableTest ( const string &name, bool enabled )

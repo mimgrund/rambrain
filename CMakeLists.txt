@@ -34,7 +34,7 @@ set (LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 
 set (CMAKE_BUILD_TYPE DEBUG)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fopenmp -O0 -Wall") # -fPIC -fopenmp -g
-#set (CMAKE_EXE_LINKER_FLAGS -Wl  )
+set (CMAKE_EXE_LINKER_FLAGS -lrt )
 if (CMAKE_CXX_COMPILER_ID MATCHES Clang)
 	add_definitions (-fcolor-diagnostics -fansi-escape-codes)
 endif()

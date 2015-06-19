@@ -129,6 +129,12 @@ protected:
     bool waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock = false );
 
 #ifdef LOGSTATS
+    //! @todo This will induce a serious issue in combination with MPI and a shared disk. How to handle that case?
+    timer_t timerid;
+    struct sigevent sev;
+    struct itimerspec its;
+
+    //! @todo This will induce a serious issue in combination with MPI and a shared disk. How to handle that case?
     static FILE *logFile;
     static bool firstLog;
 #endif
