@@ -108,6 +108,8 @@ bool performanceTest<>::runRespectiveTest ( const string &name, tester &myTester
     if ( it != testClasses.end() ) {
         performanceTest<> *test = it->second;
         for ( unsigned int r = 0; r < repetitions; ++r ) {
+            cout << "Repetition " << (r+1) << " out of " << repetitions << "                                       " << '\r';
+            cout.flush();
             int myOffset = offset;
             myTester.startNewTimeCycle();
             test->actualTestMethod ( myTester, arguments, myOffset, argumentscount );
@@ -116,6 +118,8 @@ bool performanceTest<>::runRespectiveTest ( const string &name, tester &myTester
                 offset = myOffset;
             }
         }
+        cout << "                                                                                     " << '\r';
+        cout.flush();
 
         return true;
     } else {
