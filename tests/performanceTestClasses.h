@@ -97,7 +97,7 @@ public:
 
 protected:
     virtual inline unsigned int getStepsForParam ( unsigned int varryParam ) {
-        return parameters[parameters.size() - varryParam - 1]->steps;
+        return parameters[varryParam]->steps;
     }
 
     virtual string getParamsString ( int varryParam, unsigned int step, const string &delimiter = " " );
