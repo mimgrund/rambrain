@@ -200,7 +200,103 @@ string performanceTest<>::generateGnuplotScript ( const string &name, const stri
 
 void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
 {
-    //! \todo implement
+    // Move stats file for permanent storage
+    string outFile = getTestOutfile ( varryParam, step );
+    string timingFile = outFile + "_stats";
+    string tempFile = "timingTemp.dat";
+    system ( ( "mv membrain-swapstats.log " + timingFile ).c_str() );
+
+    //! \todo can the last line be corrupted? evtl check for this and remove it
+
+    //! \todo handle multiple repetitions
+    ifstream test ( outFile );
+    ifstream timing ( timingFile );
+    ofstream out ( tempFile );
+
+    // Go through test output and get first pair of times
+    //! \todo this can be largely refactored
+    string testLine, timingLine;
+    while ( getline ( test, testLine ) ) {
+        if ( testLine.find ( '#' ) == string::npos ) {
+            stringstream ss ( testLine );
+            vector<string> testParts;
+            string testPart;
+            while ( getline ( ss, testPart, '\t' ) ) {
+                testParts.push_back ( testPart );
+            }
+
+            char *buf;
+            unsigned long long start = strtoull ( testParts[1].c_str(), &buf, 10 );
+            unsigned long long end = strtoull ( testParts[2].c_str(), &buf, 10 );
+
+            // No go through timing file and look for the matching lines there
+            vector<vector<string>> relevantTimingParts;
+            while ( getline ( timing, timingLine ) ) {
+                if ( timingLine.find ( '#' ) == string::npos ) {
+                    stringstream ss ( timingLine );
+                    vector<string> timingParts;
+                    string timingPart;
+                    while ( getline ( ss, timingPart, '\t' ) ) {
+                        timingParts.push_back ( timingPart );
+                    }
+
+                    unsigned long long current = strtoull ( timingParts[0].c_str(), &buf, 10 );
+                    if ( current >= start && current <= end ) {
+                        relevantTimingParts.push_back ( timingParts );
+                    }
+                    if ( current > end ) {
+                        //! \todo actually this is just one to far for the next round
+                        break;
+                    }
+                }
+            }
+
+            // We have all stats for the current run segment, output this data to the temp file
+            for ( auto it = relevantTimingParts.begin(); it != relevantTimingParts.end(); ++it ) {
+                unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - strtoull ( relevantTimingParts.front() [0].c_str(), &buf, 10 );
+                unsigned long long mbOut = strtoul ( ( *it ) [1].c_str(), &buf, 10 ) / mib;
+                unsigned long long mbIn = strtoul ( ( *it ) [3].c_str(), &buf, 10 ) / mib;
+
+                out << relTime << " " << mbOut << " " << mbIn << " " << ( *it ) [5] << endl;
+            }
+
+            //! \todo as long as we dont accumulate we just look at the first time measurement, remove this break then
+            break;
+        }
+    }
+
+    //! \todo This data has acutally to be accumulated, instead at the moment we just plot it as single line
+
+    test.close();
+    timing.close();
+    out.close();
+
+    //! \todo refactor that, see above
+    // Plot that thing
+
+    //! \todo again - this is code duplication -> refactor
+    ofstream gnutemp ( "temp.gnuplot" );
+    stringstream outname;
+    outname << name << varryParam << "_stats";
+    cout << "Generating output file " << outname.str() << endl;
+    gnutemp << "set terminal postscript eps enhanced color 'Helvetica,10'" << endl;
+    gnutemp << "set output \"" << outname.str() << ".eps\"" << endl;
+    gnutemp << "set xlabel \"Time [ms]\"" << endl;
+    gnutemp << "set ylabel \"Swap Movement [MB]\"" << endl;
+    gnutemp << "set title \"" << name << "\"" << endl;
+    //! \todo actually the legend comes from the definition of the test class like in the normal plot, make this a general gather
+    gnutemp << "plot '" << tempFile << "' using 1:2 with lines title \"Swapped out\", \\" << endl;
+    gnutemp << "'" << tempFile << "' using 1:3 with lines title \"Swapped in\"" << endl;
+    //! \todo what about hit/miss plot?
+    gnutemp.close();
+
+    cout << "Calling gnuplot and displaying result" << endl;
+    system ( "gnuplot temp.gnuplot" );
+    system ( ( "convert -density 300 -resize 1920x " + outname.str() + ".eps -flatten " + outname.str() + ".png" ).c_str() );
+    system ( ( "display " + outname.str() + ".png &" ).c_str() );
+
+    //! \todo just for debug
+    exit ( 2 );
 }
 
 

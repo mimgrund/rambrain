@@ -9,6 +9,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <map>
+#include <inttypes.h>
 
 #include "tester.h"
 
