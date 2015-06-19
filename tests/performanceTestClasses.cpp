@@ -45,20 +45,16 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
 // Search for popen2 to understand this
 void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const string &path )
 {
-    int pStdIn[2], pStdOut[2];
-    const int read = 0, write = 1;
-    if ( pipe ( pStdIn ) || pipe ( pStdOut ) ) {
-        cerr << "Failed to pipe standard in/err" << endl;
-    }
+    const int read = 0, write = 1, err = 2;
+    cout << "Forking watcher process: " << path << "../scripts/print-swap-stats.sh membrain-performancetests" << endl;
 
     pid_t pId = fork();
     if ( pId == 0 ) {
         // child
 
-        close ( pStdIn[write] );
-        dup2 ( pStdIn[read], read );
-        close ( pStdOut[read] );
-        dup2 ( pStdOut[write], write );
+        close ( read );
+        close ( write );
+        close ( err );
 
         execl ( ( path + "../scripts/print-swap-stats.sh" ).c_str(), "membrain-performancetests", NULL );
         perror ( "excecl" );
@@ -71,19 +67,6 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
     } else {
         // parent
 
-        //! \todo have to use infp and outfp instead of stdin/out? How?
-        int *infp = NULL, * outfp = NULL;
-        if ( infp == NULL ) {
-            close ( pStdIn[write] );
-        } else {
-            *infp = pStdIn[write];
-        }
-        if ( outfp == NULL ) {
-            close ( pStdOut[read] );
-        } else {
-            *outfp = pStdOut[read];
-        }
-
         for ( auto it = testClasses.begin(); it != testClasses.end(); ++it ) {
             performanceTest<> *test = it->second;
             if ( test->enabled ) {
@@ -94,8 +77,10 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
         }
 
         // kill child
-        string killcmd = "kill " + pId;
-        system ( killcmd.c_str() );
+        stringstream killcmd;
+        killcmd << "kill " << pId;
+        cout << "Killing watcher process: " << killcmd.str() << endl;
+        system ( killcmd.str().c_str() );
     }
 }
 
