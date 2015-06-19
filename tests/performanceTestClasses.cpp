@@ -231,6 +231,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
 
             // No go through timing file and look for the matching lines there
             vector<vector<string>> relevantTimingParts;
+            int last = 0;
             while ( getline ( timing, timingLine ) ) {
                 if ( timingLine.find ( '#' ) == string::npos ) {
                     stringstream ss ( timingLine );
@@ -245,9 +246,11 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
                         relevantTimingParts.push_back ( timingParts );
                     }
                     if ( current > end ) {
-                        //! \todo actually this is just one to far for the next round
+                        timing.seekg ( last );
                         break;
                     }
+
+                    last = timing.tellg();
                 }
             }
 
