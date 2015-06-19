@@ -52,13 +52,10 @@ void performanceTest<>::runRegisteredTests ( unsigned int repetitions, const str
     if ( pId == 0 ) {
         // child
 
-        close ( read );
         close ( write );
         close ( err );
 
         execl("/usr/bin/watch", "watch", "-p", "-n", "1E-1", "killall", "membrain-performancetests", "-s", "SIGUSR1", (char*) 0);
-        perror ( "excecl" );
-        exit ( 1 );
     } else if ( pId < 0 ) {
         // error
 
