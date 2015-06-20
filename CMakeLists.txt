@@ -3,6 +3,7 @@ cmake_minimum_required (VERSION 2.8)
 project (membrain)
 
 option (BUILD_TESTS "Build tests" ON)
+option (PTEST_CHECKS "Include correctness checks in performance tests" OFF)
 option (SWAPSTATS "Output swap stats on signal SIGUSR1" ON)
 option (LOGSTATS "Log stats instead of outputting them to stdout" OFF)
 option (PARENTAL_CONTROL "Hook up chunks in a tree" OFF)
