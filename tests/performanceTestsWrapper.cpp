@@ -10,7 +10,7 @@ using namespace std;
 /*!
  * Usage:
  * * Zero parameters: Execute all test classes, varry all parameters
- * * One parameter:  Overwrite amount of repetitions
+ * * One parameter:  Overwrite amount of repetitions or "help" / "list" just to list the available tests and the current config
  * * More parameters: Overwrite amount of repetitions followed by a + or - sign and the list of test classes to be run or to leave out.
  */
 int main ( int argc, char **argv )
@@ -20,7 +20,12 @@ int main ( int argc, char **argv )
     // Repetitions overwritten by first parameter (optional)
     unsigned int repetitions = 10;
     if ( argc > 1 ) {
-        repetitions = atoi ( argv[1] );
+        if (! strcmp(argv[1], "help") || ! strcmp(argv[1], "list")) {
+            performanceTest<>::dumpTestInfo();
+            return 0;
+        } else {
+            repetitions = atoi ( argv[1] );
+        }
     }
 
     // Specialize which test cases to run
