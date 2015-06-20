@@ -24,8 +24,9 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
 
                 resultToTempFile ( param, step, temp );
                 temp << endl;
-
+#ifdef LOGSTATS
                 handleTimingInfos ( param, step );
+#endif
             }
 
             temp.close();
