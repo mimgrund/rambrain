@@ -930,3 +930,162 @@ string matrixMultiplyOpenMPTest::generateMyGnuplotPlotPart ( const string &file 
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
+
+
+TESTSTATICS ( matrixCopyTest, "Copy one matrix onto another" );
+
+matrixCopyTest::matrixCopyTest() : performanceTest<int, int> ( "MatrixCopy" )
+{
+    TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 100, 10000, 20, true, 5000, "Matrix rows in main memory" );
+}
+
+void matrixCopyTest::actualTestMethod ( tester &test, int param1, int param2 )
+{
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
+
+    membrainglobals::config.resizeMemory ( mem );
+    membrainglobals::config.resizeSwap ( swapmem );
+
+
+    test.addTimeMeasurement();
+
+    // Allocate and set matrixes A, B
+    managedPtr<double> *A[size];
+    managedPtr<double> *B[size];
+
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        A[i] = new managedPtr<double> ( size );
+        B[i] = new managedPtr<double> ( size );
+
+        adhereTo<double> adhA ( *A[i] );
+
+        double *a = adhA;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            a[j] = j;
+        }
+    }
+
+    test.addTimeMeasurement();
+
+    // Copy B = A
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        A[i] = new managedPtr<double> ( size );
+        B[i] = new managedPtr<double> ( size );
+
+        adhereTo<double> adhA ( *A[i] );
+        adhereTo<double> adhB ( *B[i] );
+
+        double *a = adhA;
+        double *b = adhB;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            b[j] = a[j];
+        }
+    }
+
+    test.addTimeMeasurement();
+
+    // Delete
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        delete A[i];
+        delete B[i];
+    }
+
+    test.addTimeMeasurement();
+}
+
+string matrixCopyTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
+}
+
+
+TESTSTATICS ( matrixCopyOpenMPTest, "Copy one matrix onto another" );
+
+matrixCopyTest::matrixCopyOpenMPTest() : performanceTest<int, int> ( "MatrixCopy" )
+{
+    TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 100, 10000, 20, true, 5000, "Matrix rows in main memory" );
+}
+
+void matrixCopyOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
+{
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
+
+    membrainglobals::config.resizeMemory ( mem );
+    membrainglobals::config.resizeSwap ( swapmem );
+
+
+    test.addTimeMeasurement();
+
+    // Allocate and set matrixes A, B
+    managedPtr<double> *A[size];
+    managedPtr<double> *B[size];
+
+    #pragma omp parallel for
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        A[i] = new managedPtr<double> ( size );
+        B[i] = new managedPtr<double> ( size );
+
+        adhereTo<double> adhA ( *A[i] );
+
+        double *a = adhA;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            a[j] = j;
+        }
+    }
+
+    test.addTimeMeasurement();
+
+    // Copy B = A
+    #pragma omp parallel for
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        A[i] = new managedPtr<double> ( size );
+        B[i] = new managedPtr<double> ( size );
+
+        adhereTo<double> adhA ( *A[i] );
+        adhereTo<double> adhB ( *B[i] );
+
+        double *a = adhA;
+        double *b = adhB;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            b[j] = a[j];
+        }
+    }
+
+    test.addTimeMeasurement();
+
+    // Delete
+    #pragma omp parallel for
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        delete A[i];
+        delete B[i];
+    }
+
+    test.addTimeMeasurement();
+}
+
+string matrixCopyOpenMPTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
+}
