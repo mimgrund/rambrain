@@ -2,6 +2,7 @@
 #include <memory.h>
 #include "managedDummySwap.h"
 #include "managedMemory.h"
+#include <mm_malloc.h>
 
 namespace membrain
 {
@@ -10,6 +11,7 @@ managedDummySwap::managedDummySwap ( global_bytesize size ) : managedSwap ( size
 {
     swapFree = swapSize = size;
     swapUsed = 0;
+    memoryAlignment = 1;
 }
 
 global_bytesize managedDummySwap::swapOut ( managedMemoryChunk *chunk )
@@ -17,11 +19,11 @@ global_bytesize managedDummySwap::swapOut ( managedMemoryChunk *chunk )
     if ( chunk->size + swapUsed > swapSize ) {
         return 0;
     }
-    void *buf = malloc ( chunk->size );
+    void *buf = _mm_malloc ( chunk->size, memoryAlignment );
     if ( buf ) {
         chunk->swapBuf = buf;
         memcpy ( chunk->swapBuf, chunk->locPtr, chunk->size );
-        free ( chunk->locPtr );
+        _mm_free ( chunk->locPtr );
         chunk->locPtr = NULL; // not strictly required.
         chunk->status = MEM_SWAPPED;
         claimUsageof ( chunk->size, false, true );
@@ -51,11 +53,11 @@ global_bytesize managedDummySwap::swapOut ( managedMemoryChunk **chunklist, unsi
 
 global_bytesize managedDummySwap::swapIn ( managedMemoryChunk *chunk )
 {
-    void *buf = malloc ( chunk->size );
+    void *buf = _mm_malloc ( chunk->size,  memoryAlignment );
     if ( buf ) {
         chunk->locPtr = buf;
         memcpy ( chunk->locPtr, chunk->swapBuf, chunk->size );
-        free ( chunk->swapBuf );
+        _mm_free ( chunk->swapBuf );
         chunk->swapBuf = NULL; // Not strictly required
         chunk->status = MEM_ALLOCATED;
         claimUsageof ( chunk->size, false, false );
@@ -86,7 +88,7 @@ void managedDummySwap::swapDelete ( managedMemoryChunk *chunk )
 {
     if ( chunk->status == MEM_SWAPPED ) {
         claimUsageof ( chunk->size, false, false );
-        free ( chunk->swapBuf );
+        _mm_free ( chunk->swapBuf );
     }
 }
 

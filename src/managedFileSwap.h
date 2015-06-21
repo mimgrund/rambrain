@@ -71,7 +71,7 @@ class managedFileSwap : public managedSwap
 {
 public:
 
-    managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile = 0 );
+    managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile = 0, bool enableDMA = true );
     ~managedFileSwap();
 
     virtual void swapDelete ( managedMemoryChunk *chunk );
@@ -79,8 +79,10 @@ public:
     virtual global_bytesize swapIn ( managedMemoryChunk *chunk );
     virtual global_bytesize swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks );
     virtual global_bytesize swapOut ( managedMemoryChunk *chunk );
+    void setDMA ( bool arg1 );
 
     const unsigned int pageSize;
+
 
 private:
     pageFileLocation determinePFLoc ( global_offset g_offset, global_bytesize length );
@@ -92,10 +94,6 @@ private:
 
     unsigned int pageFileNumber;
     global_bytesize pageFileSize;
-
-    unsigned int windowSize;
-    unsigned int windowNumber;
-    unsigned int lastCreatedWindow = 0;
 
 
 
@@ -129,10 +127,10 @@ private:
     std::map<global_offset, pageFileLocation *> all_space;
 
 
+    bool enableDMA = true;
 protected:
     bool deleteFilesOnExit = true;
 
-    size_t memoryAlignment = 512;
     //sigEvent Handler:
     void asyncIoArrived ( membrain::pageFileLocation *ref, struct io_event *aio );
     void completeTransactionOn ( membrain::pageFileLocation *ref, bool lock = true );

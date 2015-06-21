@@ -18,10 +18,9 @@ namespace membrain
 {
 
 //#define DBG_AIO
-managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile ) : managedSwap ( size ), pageSize ( sysconf ( _SC_PAGE_SIZE ) )
+managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile, bool enableDMA ) : managedSwap ( size ), pageSize ( sysconf ( _SC_PAGE_SIZE ) )
 {
-
-
+    setDMA ( enableDMA );
     if ( oneFile == 0 ) { // Layout this on your own:
 
         global_bytesize myg = size / 16;
@@ -29,7 +28,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
         oneFile = max ( mib, oneFile );
     }
 
-    oneFile += ( memoryAlignment - oneFile & memoryAlignment );
+    oneFile += oneFile % memoryAlignment == 0 ? 0 : memoryAlignment - ( oneFile % memoryAlignment );
     pageFileSize = oneFile;
     if ( size % oneFile != 0 ) {
         pageFileNumber = size / oneFile + 1;
@@ -61,12 +60,6 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     //Initialize Windows:
     global_bytesize ws_ratio = pageFileSize / 16; ///\todo unhardcode that buddy
     global_bytesize ws_max = 128 * mib; ///\todo  unhardcode that buddy
-    windowNumber = 10;
-    windowSize = min ( ws_max, ws_ratio );
-    windowSize += ( windowSize % pageSize ) > 0 ? ( pageSize - ( windowSize % pageSize ) ) : 0;
-    if ( pageFileSize % windowSize != 0 ) {
-        warnmsg ( "requested single swap filesize is not a multiple of pageSize*16 or 128MiB" );
-    }
 
     instance = this;
     signal ( SIGUSR2, managedFileSwap::sigStat );
@@ -113,6 +106,11 @@ void managedFileSwap::closeSwapFiles()
 
 }
 
+void managedFileSwap::setDMA ( bool arg1 )
+{
+    enableDMA = arg1;
+    memoryAlignment = arg1 ? 512 : 1; ///@todo: Perhaps dynamically detect block size of underlying fs
+}
 
 bool managedFileSwap::openSwapFiles()
 {
@@ -122,13 +120,18 @@ bool managedFileSwap::openSwapFiles()
     }
     ///\todo Limit number of open swap file descriptors to something reasonable (<100?)
     swapFiles = ( struct swapFileDesc * ) malloc ( sizeof ( struct swapFileDesc ) * pageFileNumber );
+badjump:
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
         snprintf ( fname, 1024, filemask, n );
-        swapFiles[n].fileno = open ( fname, O_RDWR | O_TRUNC | O_CREAT | O_DIRECT, S_IRUSR | S_IWUSR );
+        swapFiles[n].fileno = open ( fname, O_RDWR | O_TRUNC | O_CREAT | ( enableDMA ? O_DIRECT : 0 << 0 ), S_IRUSR | S_IWUSR );
         if ( swapFiles[n].fileno == -1 ) {
-
-            printf ( "Toerooooe   %d    eeh\n", errno );
+            if ( errno == EINVAL && n == 0 && enableDMA ) { //Probably happens because we have O_DIRECT set even though file system does not support this...
+                warnmsg ( "Could not open first swapfile. Probably DMA is not supported on underlying filesystem. Trying again without dma" )
+                setDMA ( false );
+                goto badjump;
+            }
+            printf ( "Encountered error code %d when opening file %s\n", errno, fname );
             throw memoryException ( "Could not open swap file." );
             return false;
         }

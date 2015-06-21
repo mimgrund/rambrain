@@ -32,8 +32,8 @@ public:
     virtual global_bytesize getFreeSwap() {
         return swapFree;
     }
-    virtual inline size_t getMemoryAlignment() {
-        return 512;
+    inline size_t getMemoryAlignment() {
+        return memoryAlignment;
     };
     void claimUsageof ( global_bytesize bytes, bool rambytes, bool used ) {
         managedMemory::defaultManager->claimUsageof ( bytes, rambytes, used );
@@ -70,6 +70,8 @@ protected:
     global_bytesize swapUsed;
     global_bytesize swapFree;
     unsigned int totalSwapActionsQueued = 0;
+
+    size_t memoryAlignment = 1;
 };
 
 
