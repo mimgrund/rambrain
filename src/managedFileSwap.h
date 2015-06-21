@@ -113,7 +113,9 @@ private:
     inline void scheduleCopy ( void *ramBuf, pageFileLocation &ref, int *parttracker ) {
         scheduleCopy ( ref, ramBuf, parttracker, true );
     };
-
+    inline size_t getMemoryAlignment() {
+        return memoryAlignment;
+    };
 
     bool filesOpen = false;
 
@@ -130,6 +132,7 @@ private:
 protected:
     bool deleteFilesOnExit = true;
 
+    size_t memoryAlignment = 512;
     //sigEvent Handler:
     void asyncIoArrived ( membrain::pageFileLocation *ref, struct io_event *aio );
     void completeTransactionOn ( membrain::pageFileLocation *ref, bool lock = true );

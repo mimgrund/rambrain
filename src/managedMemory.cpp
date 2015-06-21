@@ -7,6 +7,7 @@
 #include "membrain_atomics.h"
 #include "git_info.h"
 #include <time.h>
+#include <mm_malloc.h>
 
 namespace membrain
 {
@@ -36,7 +37,10 @@ pthread_cond_t managedMemory::swappingCond = PTHREAD_COND_INITIALIZER;
 
 managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
 {
+
     memory_max = size;
+    memoryAlignment = swap->getMemoryAlignment();
+
     previousManager = defaultManager;
     defaultManager = this;
 #ifdef PARENTAL_CONTROL
@@ -198,7 +202,7 @@ managedMemoryChunk *managedMemory::mmalloc ( global_bytesize sizereq )
 
     memChunks.insert ( {chunk->id, chunk} );
     if ( sizereq != 0 ) {
-        chunk->locPtr = malloc ( sizereq );
+        chunk->locPtr = _mm_malloc ( sizereq , memoryAlignment );
         if ( !chunk->locPtr ) {
             Throw ( memoryException ( "Malloc failed" ) );
             pthread_mutex_unlock ( &stateChangeMutex );
@@ -369,7 +373,7 @@ void managedMemory::mfree ( memoryID id )
     if ( chunk->id != root ) {
         schedulerDelete ( *chunk );
         if ( chunk->status == MEM_ALLOCATED ) {
-            free ( chunk->locPtr );
+            _mm_free ( chunk->locPtr );
             membrain_atomic_fetch_sub ( &memory_used, chunk->size );
         } else {
             swap->swapDelete ( chunk );

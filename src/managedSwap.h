@@ -32,7 +32,9 @@ public:
     virtual global_bytesize getFreeSwap() {
         return swapFree;
     }
-
+    virtual inline size_t getMemoryAlignment() {
+        return 512;
+    };
     void claimUsageof ( global_bytesize bytes, bool rambytes, bool used ) {
         managedMemory::defaultManager->claimUsageof ( bytes, rambytes, used );
         if ( !rambytes ) {

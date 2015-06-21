@@ -134,6 +134,7 @@ protected:
     void claimUsageof ( global_bytesize bytes, bool rambytes, bool used );
     void claimTobefreed ( global_bytesize bytes, bool tobefreed );
     inline void waitForAIO();
+    size_t memoryAlignment;
 public:
     void printSwapstats();
     void resetSwapstats();

@@ -11,6 +11,8 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <fcntl.h>
+#include <sys/ioctl.h>
+#include <mm_malloc.h>
 
 namespace membrain
 {
@@ -27,6 +29,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
         oneFile = max ( mib, oneFile );
     }
 
+    oneFile += ( memoryAlignment - oneFile & memoryAlignment );
     pageFileSize = oneFile;
     if ( size % oneFile != 0 ) {
         pageFileNumber = size / oneFile + 1;
@@ -122,13 +125,14 @@ bool managedFileSwap::openSwapFiles()
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
         snprintf ( fname, 1024, filemask, n );
-        swapFiles[n].fileno = open ( fname, O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR );
+        swapFiles[n].fileno = open ( fname, O_RDWR | O_TRUNC | O_CREAT | O_DIRECT, S_IRUSR | S_IWUSR );
         if ( swapFiles[n].fileno == -1 ) {
 
             printf ( "Toerooooe   %d    eeh\n", errno );
             throw memoryException ( "Could not open swap file." );
             return false;
         }
+        ///@todo; find out how we can dynamically query block size for dma: size_t locali = ioctl(swapFiles[n].fileno,BLKSZGET);
         swapFiles[n].currentSize = 0;
     }
     return true;
@@ -162,6 +166,7 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemor
         global_bytesize total_space = 0;
         it = free_space.begin();
         do {
+            total_space -= total_space % memoryAlignment; // We have to padd splitted chunks.
             total_space += it->second->size;
         } while ( total_space < size && ++it != free_space.end() );
 
@@ -170,10 +175,14 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemor
             while ( true ) {
                 global_bytesize avail_space = it->second->size;
                 global_bytesize alloc_here = min ( avail_space, size );
+                if ( size > alloc_here ) {
+                    alloc_here -= alloc_here % memoryAlignment;
+                }
                 auto it2 = it;
                 ++it2;
                 global_offset nextFreeOffset = it2->first;
                 pageFileLocation *neu = allocInFree ( it->second, alloc_here );
+
                 size -= alloc_here;
                 neu->status = ( size == 0 ? PAGE_END : PAGE_PART );
 
@@ -206,16 +215,24 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
     free_space.erase ( formerfree_off );
 
     //We want to allocate a new chunk or use the chunk at hand.
+    global_bytesize padded_size = ( size / memoryAlignment + ( size % memoryAlignment == 0 ? 0 : 1 ) ) * memoryAlignment;
+    if ( padded_size != size ) {
+        if ( padded_size > freeChunk->size ) {
+            return NULL;
+        }
+        printf ( "oink!\n" );
+        membrain_atomic_fetch_sub ( &swapFree, padded_size - size );
+    }
 
-    if ( freeChunk->size - size < sizeof ( pageFileLocation ) ) { //Memory to manage free space exceeds free space (actually more than)
+    if ( freeChunk->size - padded_size < sizeof ( pageFileLocation ) ) { //Memory to manage free space exceeds free space (actually more than)
         //Thus, use the free chunk for your data.
-        membrain_atomic_fetch_sub ( &swapFree, freeChunk->size - size ); //Account for not mallocable overhead, rest is done by claimUse
+        membrain_atomic_fetch_sub ( &swapFree, freeChunk->size - padded_size ); //Account for not mallocable overhead, rest is done by claimUse
         freeChunk->size = size;
         return freeChunk;
     } else {
         pageFileLocation *neu = new pageFileLocation ( *freeChunk );
-        freeChunk->offset += size;
-        freeChunk->size -= size;
+        freeChunk->offset += padded_size;
+        freeChunk->size -= padded_size;
         freeChunk->glob_off_next.glob_off_next = NULL;
         global_offset newfreeloc = determineGlobalOffset ( *freeChunk );
         free_space[newfreeloc] = freeChunk;
@@ -305,7 +322,7 @@ void managedFileSwap::swapDelete ( managedMemoryChunk *chunk )
 
 global_bytesize managedFileSwap::swapIn ( managedMemoryChunk *chunk )
 {
-    void *buf = malloc ( chunk->size );
+    void *buf = _mm_malloc ( chunk->size, memoryAlignment );
     if ( !chunk->swapBuf ) {
         return 0;
     }
@@ -458,7 +475,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         if ( lock ) {
             pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
         }
-        free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
+        _mm_free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
         chunk->locPtr = NULL; // not strictly required.
         chunk->status = MEM_SWAPPED;
         claimUsageof ( chunk->size, true, false );
@@ -557,7 +574,10 @@ void managedFileSwap::asyncIoArrived ( membrain::pageFileLocation *ref, io_event
         membrain_atomic_fetch_sub ( &totalSwapActionsQueued, 1 ); //Do this at the very last line, as completeTransactionOn() has to be done beforehands.
 
     } else {
+
         errmsgf ( "We have trouble in chunk %d, %d ; aio_size %d, size %d", ref->glob_off_next.chunk->id, err, event->res, ref->size );
+        errmsgf ( "file-align %d, buf-align %d", ref->offset % memoryAlignment );
+
         ///@todo: find out if this may happen regularly or just in case of error.
     }
 
