@@ -205,7 +205,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     string outFile = getTestOutfile ( varryParam, step );
     string timingFile = outFile + "_stats";
     string tempFile = "timingTemp.dat";
-    if ( 0 != rename ( "membrain-swapstats.log", timingFile.c_str() ) ) {
+    if ( rename ( "membrain-swapstats.log", timingFile.c_str() ) ) {
         errmsgf ( "Could not rename swapstats log to %s", timingFile.c_str() );
     }
 
@@ -221,7 +221,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     // Go through test output and get first pair of times
     //! \todo this can be largely refactored
     string testLine, timingLine;
-    int measurements = 0;
+    int measurements = 0, dataPoints = 0;
     unsigned long long starttimes[repetitions];
     for ( unsigned int r = 0; r < repetitions; ++r ) {
         starttimes[r] = 0LLu;
@@ -277,6 +277,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
                         unsigned long long mbIn = strtoul ( ( *it ) [3].c_str(), &buf, 10 ) / mib;
 
                         out << relTime << " " << mbOut << " " << mbIn << " " << ( *it ) [5] << endl;
+                        ++ dataPoints;
                     }
                 } else {
                     out << 0 << " " << 0 << " " << 0 << " " << 0 << endl;
@@ -303,28 +304,24 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     gnutemp << "set xlabel \"Time [ms]\"" << endl;
     gnutemp << "set ylabel \"Swap Movement [MB]\"" << endl;
     gnutemp << "set title \"" << name << "\"" << endl;
-    gnutemp << "set style data linespoints" << endl;
+
+    const int maxDataPoints = 50 * repetitions;
+    if ( dataPoints <= maxDataPoints ) {
+        gnutemp << "set style data linespoints" << endl;
+    } else {
+        gnutemp << "set style data lines" << endl;
+    }
     //! \todo actually the legend comes from the definition of the test class like in the normal plot, make this a general gather
 
     gnutemp << "plot ";
-    for ( int m = 0, s = 2; m < measurements; ++m, ++s ) {
+    int c = 1;
+    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt -1 pt " << s << " lc 1";
-        if ( m == 0 ) {
-            gnutemp << " title \"Swapped out\"";
-        } else {
-            gnutemp << " notitle";
-        }
-        gnutemp << ", \\" << endl;
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt -1 pt " << s << " lc " << c << " title \"Swapped out " << ( m + 1 ) << "\", \\" << endl;
     }
-    for ( int m = 0, s = 2; m < measurements; ++m, ++s ) {
+    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt -1 pt " << s << " lc 2";
-        if ( m == 0 ) {
-            gnutemp << " title \"Swapped in\"";
-        } else {
-            gnutemp << " notitle";
-        }
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt -1 pt " << s << " lc " << c << " title \"Swapped in " << ( m + 1 ) << "\"";
         if ( m != measurements - 1 ) {
             gnutemp << ", \\";
         }
