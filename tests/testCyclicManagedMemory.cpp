@@ -443,3 +443,92 @@ TEST ( cyclicManagedMemory, Unit_WorkingWithSSE )
         }
     }
 }
+
+TEST ( cyclicManagedMemory, Unit_HandleNestedObjects )
+{
+    class A
+    {
+    public:
+        double d;
+        int i;
+    };
+
+    class B
+    {
+    public:
+        B() : a1 ( 2 ), a2 ( new managedPtr<A> ( 2 ) ) {
+        }
+        ~B() {
+            delete a2;
+        }
+
+        void set ( int i ) {
+            d1 = 10.0 * i;
+            ADHERETOLOC ( A, a1, loca1 );
+            for ( int j = 0; j < 2; ++j ) {
+                loca1[j].d = 100.0 * i * j;
+                loca1[j].i = i * j;
+            }
+            d2 = 20.0 * i;
+            adhereTo<A> a2_glue ( *a2 );
+            A *loca2 = a2_glue;
+            for ( int j = 0; j < 2; ++j ) {
+                loca2[j].d = 1000.0 * i * j;
+                loca2[j].i = 10 * i * j;
+            }
+            d3 = 30.0 * i;
+        }
+
+        double d1;
+        managedPtr<A> a1;
+        double d2;
+        managedPtr<A> *a2;
+        double d3;
+    };
+
+
+    const unsigned int memsize = ( sizeof ( B ) + sizeof ( A ) * 4 ) * 2;
+    const unsigned int swapmem = memsize * 2;
+
+    managedDummySwap swap ( swapmem );
+    cyclicManagedMemory manager ( &swap, memsize );
+
+    managedPtr<B> b ( 2 );
+    {
+        ADHERETOLOC ( B, b, locb );
+        ASSERT_NO_THROW ( locb[0].set ( 1 ) );
+        ASSERT_NO_THROW ( locb[1].set ( 2 ) );
+    }
+
+    ASSERT_NO_THROW (
+        managedPtr<int> i ( 5 );
+        ADHERETOLOC ( int, i, loci );
+    for ( int j = 0; j < 5; ++j ) {
+    loci[j] = j;
+    }
+    );
+
+    ASSERT_NO_THROW (
+        ADHERETOLOCCONST ( B, b, locb );
+    for ( int i = 0, k = 1; i < 2; ++i, ++k ) {
+    ASSERT_EQ ( 10.0 * k, locb[i].d1 );
+
+        adhereToConst<A> a1 ( locb[i].a1 );
+        const A *loca1 = a1;
+        for ( int j = 0; j < 2; ++j ) {
+            ASSERT_EQ ( 100.0 * k * j, loca1[j].d );
+            ASSERT_EQ ( k * j, loca1[j].i );
+        }
+
+        ASSERT_EQ ( 20.0 * k, locb[i].d2 );
+        ASSERT_EQ ( 30.0 * k, locb[i].d3 );
+
+        adhereToConst<A> a2 ( *locb[i].a2 );
+        const A *loca2 = a2;
+        for ( int j = 0; j < 2; ++j ) {
+            ASSERT_EQ ( 1000.0 * k * j, loca2[j].d );
+            ASSERT_EQ ( 10 * k * j, loca2[j].i );
+        }
+    }
+    );
+}
