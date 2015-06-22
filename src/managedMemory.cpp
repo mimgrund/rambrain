@@ -507,6 +507,8 @@ void managedMemory::resetSwapstats()
     swap_hits = swap_misses = swap_in_bytes = swap_out_bytes = n_swap_in = n_swap_out = 0;
 }
 
+#define SAFESWAP(func) (instance->swap != NULL ? instance->swap->func : 0lu)
+
 void managedMemory::sigswapstats ( int sig )
 {
 #ifdef LOGSTATS
@@ -521,7 +523,7 @@ void managedMemory::sigswapstats ( int sig )
               instance->swap_in_bytes,
               instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses,
               instance->memory_used, ( double ) instance->memory_used / instance->memory_max,
-              instance->swap->getUsedSwap(), ( double ) instance->swap->getUsedSwap() / instance->swap->getSwapSize() );
+              SAFESWAP ( getUsedSwap() ), ( double ) SAFESWAP ( getUsedSwap() ) / SAFESWAP ( getSwapSize() ) );
     fflush ( logFile );
 #else
     printf ( "%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", instance->swap_out_bytes,
@@ -529,7 +531,7 @@ void managedMemory::sigswapstats ( int sig )
              instance->swap_in_bytes,
              instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses,
              instance->memory_used, ( double ) instance->memory_used / instance->memory_max,
-             instance->swap->getUsedSwap(), ( double ) instance->swap->getUsedSwap() / instance->swap->getSwapSize() );
+             SAFESWAP ( getUsedSwap() ), ( double ) SAFESWAP ( getUsedSwap() ) / SAFESWAP ( getSwapSize() ) );
 #endif
     instance->swap_out_bytes_last = instance->swap_out_bytes;
     instance->swap_in_bytes_last = instance->swap_in_bytes;
