@@ -268,11 +268,13 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
                         starttimes[r] = strtoull ( relevantTimingParts.front() [0].c_str(), &buf, 10 );
                     }
                     for ( auto it = relevantTimingParts.begin(); it != relevantTimingParts.end(); ++it ) {
-                        unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttimes[r];
-                        unsigned long long mbOut = strtoul ( ( *it ) [1].c_str(), &buf, 10 ) / mib;
-                        unsigned long long mbIn = strtoul ( ( *it ) [3].c_str(), &buf, 10 ) / mib;
+                        const unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttimes[r];
+                        const unsigned long long mbOut = strtoul ( ( *it ) [1].c_str(), &buf, 10 ) / mib;
+                        const unsigned long long mbIn = strtoul ( ( *it ) [3].c_str(), &buf, 10 ) / mib;
+                        const unsigned long long mbUsed = strtoul ( ( *it ) [6].c_str(), &buf, 10 ) / mib;
+                        const unsigned long long mbSwapped = strtoul ( ( *it ) [8].c_str(), &buf, 10 ) / mib;
 
-                        out << relTime << " " << mbOut << " " << mbIn << " " << ( *it ) [5] << endl;
+                        out << relTime << " " << mbOut << " " << mbIn << " " << mbUsed << " " << mbSwapped << endl;
                         ++ dataPoints;
                     }
                 } else {
@@ -322,7 +324,23 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
         if ( dataPoints < maxDataPoints ) {
             gnutemp << " pt " << s;
         }
-        gnutemp << " lc " << c << " title \"Swapped in " << ( m + 1 ) << "\"";
+        gnutemp << " lc " << c << " title \"Swapped in " << ( m + 1 ) << "\", \\" << endl;
+    }
+    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+        int mrep = m * repetitions;
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:4 lt -1";
+        if ( dataPoints < maxDataPoints ) {
+            gnutemp << " pt " << s;
+        }
+        gnutemp << " lc " << c << " title \"Main Memory " << ( m + 1 ) << "\", \\" << endl;
+    }
+    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+        int mrep = m * repetitions;
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:5 lt -1";
+        if ( dataPoints < maxDataPoints ) {
+            gnutemp << " pt " << s;
+        }
+        gnutemp << " lc " << c << " title \"Swap Memory " << ( m + 1 ) << "\"";
         if ( m != measurements - 1 ) {
             gnutemp << ", \\";
         }
@@ -336,6 +354,8 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     system ( "gnuplot temp.gnuplot" );
     system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
     system ( ( "display " + timingFile + ".png &" ).c_str() );
+
+    exit ( 4 );
 }
 
 

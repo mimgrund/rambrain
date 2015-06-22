@@ -511,20 +511,25 @@ void managedMemory::sigswapstats ( int sig )
 {
 #ifdef LOGSTATS
     if ( firstLog ) {
-        fprintf ( managedMemory::logFile, "#Time [ms]\tSwapped out [B]\tSwapped out last [B]\tSwapped in [B]\tSwapped in last [B]\tHits / Miss\n" );
+        fprintf ( managedMemory::logFile, "#Time [ms]\tSwapped out [B]\tSwapped out last [B]\tSwapped in [B]\tSwapped in last [B]\tHits / Miss\tMemory Used [B]\t\
+                  Memory Used\tSwap Used [B]\tSwap Used\n" );
         firstLog = false;
     }
     int64_t now = std::chrono::duration_cast<std::chrono::milliseconds> ( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
-    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\n", now, instance->swap_out_bytes,
+    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", now, instance->swap_out_bytes,
               instance->swap_out_bytes - instance->swap_out_bytes_last,
               instance->swap_in_bytes,
-              instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );
+              instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses,
+              instance->memory_used, ( double ) instance->memory_used / instance->memory_max,
+              instance->swap->getUsedSwap(), ( double ) instance->swap->getUsedSwap() / instance->swap->getSwapSize() );
     fflush ( logFile );
 #else
-    printf ( "%lu\t%lu\t%lu\t%lu\t%e\n", instance->swap_out_bytes,
+    printf ( "%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", instance->swap_out_bytes,
              instance->swap_out_bytes - instance->swap_out_bytes_last,
              instance->swap_in_bytes,
-             instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );
+             instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses,
+             instance->memory_used, ( double ) instance->memory_used / instance->memory_max,
+             instance->swap->getUsedSwap(), ( double ) instance->swap->getUsedSwap() / instance->swap->getSwapSize() );
 #endif
     instance->swap_out_bytes_last = instance->swap_out_bytes;
     instance->swap_in_bytes_last = instance->swap_in_bytes;
