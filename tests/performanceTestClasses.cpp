@@ -25,7 +25,7 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
                 resultToTempFile ( param, step, temp );
                 temp << endl;
 #ifdef LOGSTATS
-                handleTimingInfos ( param, step );
+                handleTimingInfos ( param, step, repetitions );
 #endif
             }
 
@@ -199,7 +199,7 @@ string performanceTest<>::generateGnuplotScript ( const string &name, const stri
     return ss.str();
 }
 
-void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
+void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, unsigned int repetitions )
 {
     // Move stats file for permanent storage
     string outFile = getTestOutfile ( varryParam, step );
@@ -217,8 +217,12 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
     // Go through test output and get first pair of times
     //! \todo this can be largely refactored
     string testLine, timingLine;
-    unsigned long long starttime = 0;
     int measurements = 0;
+    unsigned long long starttimes[repetitions];
+    for ( unsigned int r = 0; r < repetitions; ++r ) {
+        starttimes[r] = 0LLu;
+    }
+
     while ( getline ( test, testLine ) ) {
         if ( testLine.find ( '#' ) == string::npos ) {
             stringstream ss ( testLine );
@@ -228,49 +232,56 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
                 testParts.push_back ( testPart );
             }
 
-            char *buf;
-            unsigned long long start = strtoull ( testParts[1].c_str(), &buf, 10 );
-            unsigned long long end = strtoull ( testParts[2].c_str(), &buf, 10 );
             ++ measurements;
+            const unsigned int runCols = 4;
+            char *buf;
 
-            // No go through timing file and look for the matching lines there
-            vector<vector<string>> relevantTimingParts;
-            int last = 0;
-            while ( getline ( timing, timingLine ) ) {
-                if ( timingLine.find ( '#' ) == string::npos ) {
-                    stringstream ss ( timingLine );
-                    vector<string> timingParts;
-                    string timingPart;
-                    while ( getline ( ss, timingPart, '\t' ) ) {
-                        timingParts.push_back ( timingPart );
-                    }
+            for ( unsigned int r = 0; r < repetitions; ++r ) {
+                unsigned long long start = strtoull ( testParts[r * runCols + 1].c_str(), &buf, 10 );
+                unsigned long long end = strtoull ( testParts[r * runCols + 2].c_str(), &buf, 10 );
 
-                    unsigned long long current = strtoull ( timingParts[0].c_str(), &buf, 10 );
-                    if ( current >= start && current <= end ) {
-                        relevantTimingParts.push_back ( timingParts );
-                    }
-                    if ( current > end ) {
-                        timing.seekg ( last );
-                        break;
-                    }
+                // No go through timing file and look for the matching lines there
+                vector<vector<string>> relevantTimingParts;
+                int last = 0;
+                while ( getline ( timing, timingLine ) ) {
+                    if ( timingLine.find ( '#' ) == string::npos ) {
+                        stringstream ss ( timingLine );
+                        vector<string> timingParts;
+                        string timingPart;
+                        while ( getline ( ss, timingPart, '\t' ) ) {
+                            timingParts.push_back ( timingPart );
+                        }
 
-                    last = timing.tellg();
+                        unsigned long long current = strtoull ( timingParts[0].c_str(), &buf, 10 );
+                        if ( current >= start && current <= end ) {
+                            relevantTimingParts.push_back ( timingParts );
+                        }
+                        if ( current > end ) {
+                            timing.seekg ( last );
+                            break;
+                        }
+
+                        last = timing.tellg();
+                    }
                 }
-            }
 
-            // We have all stats for the current run segment, output this data to the temp file
-            if ( starttime == 0Lu ) {
-                starttime = strtoull ( relevantTimingParts.front() [0].c_str(), &buf, 10 );
-            }
-            for ( auto it = relevantTimingParts.begin(); it != relevantTimingParts.end(); ++it ) {
-                unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttime;
-                unsigned long long mbOut = strtoul ( ( *it ) [1].c_str(), &buf, 10 ) / mib;
-                unsigned long long mbIn = strtoul ( ( *it ) [3].c_str(), &buf, 10 ) / mib;
+                // We have all stats for the current run segment, output this data to the temp file
+                if ( relevantTimingParts.size() > 0 ) {
+                    if ( starttimes[r] == 0LLu ) {
+                        starttimes[r] = strtoull ( relevantTimingParts.front() [0].c_str(), &buf, 10 );
+                    }
+                    for ( auto it = relevantTimingParts.begin(); it != relevantTimingParts.end(); ++it ) {
+                        unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttimes[r];
+                        unsigned long long mbOut = strtoul ( ( *it ) [1].c_str(), &buf, 10 ) / mib;
+                        unsigned long long mbIn = strtoul ( ( *it ) [3].c_str(), &buf, 10 ) / mib;
 
-                out << relTime << " " << mbOut << " " << mbIn << " " << ( *it ) [5] << endl;
+                        out << relTime << " " << mbOut << " " << mbIn << " " << ( *it ) [5] << endl;
+                    }
+                } else {
+                    out << 0 << " " << 0 << " " << 0 << " " << 0 << endl;
+                }
+                out << endl;
             }
-
-            out << endl;
         }
     }
 
@@ -296,7 +307,8 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
 
     gnutemp << "plot ";
     for ( int m = 0, s = 2; m < measurements; ++m, ++s ) {
-        gnutemp << "'" << tempFile << "' every :" << measurements << "::" << m << " using 1:2 lt -1 pt " << s << " lc 1";
+        int mrep = m * repetitions;
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt -1 pt " << s << " lc 1";
         if ( m == 0 ) {
             gnutemp << " title \"Swapped out\"";
         } else {
@@ -305,7 +317,8 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
         gnutemp << ", \\" << endl;
     }
     for ( int m = 0, s = 2; m < measurements; ++m, ++s ) {
-        gnutemp << "'" << tempFile << "' every :" << measurements << "::" << m << " using 1:3 lt -1 pt " << s << " lc 2";
+        int mrep = m * repetitions;
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt -1 pt " << s << " lc 2";
         if ( m == 0 ) {
             gnutemp << " title \"Swapped in\"";
         } else {

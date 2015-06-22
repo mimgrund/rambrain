@@ -104,7 +104,7 @@ protected:
     virtual string getTestOutfile ( int varryParam, unsigned int step );
     virtual void resultToTempFile ( int varryParam, unsigned int step, ofstream &file );
     virtual string generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn );
-    virtual void handleTimingInfos ( int varryParam, unsigned int step );
+    virtual void handleTimingInfos ( int varryParam, unsigned int step, unsigned int repetitions );
 
     virtual string generateMyGnuplotPlotPart ( const string &file, int paramColumn ) = 0;
 
