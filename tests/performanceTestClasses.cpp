@@ -206,7 +206,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     string timingFile = outFile + "_stats";
     string tempFile = "timingTemp.dat";
     if ( 0 != rename ( "membrain-swapstats.log", timingFile.c_str() ) ) {
-        errmsgf ( "Could not rename swapstats log to %s", timingFile );
+        errmsgf ( "Could not rename swapstats log to %s", timingFile.c_str() );
     }
 
 
