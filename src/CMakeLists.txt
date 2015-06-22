@@ -3,6 +3,9 @@ file (GLOB SOURCES
 )
 
 add_library (membrain ${SOURCES})
+if(LOGSTATS)
+    target_link_libraries(membrain -lrt)
+endif()
 
 get_directory_property(defs COMPILE_DEFINITIONS)
 message("Compiler definitions: ${defs}")
