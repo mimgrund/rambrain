@@ -317,11 +317,19 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     int c = 1;
     for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt -1 pt " << s << " lc " << c << " title \"Swapped out " << ( m + 1 ) << "\", \\" << endl;
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt -1";
+        if ( dataPoints < maxDataPoints ) {
+            gnutemp << " pt " << s;
+        }
+        gnutemp << " lc " << c << " title \"Swapped out " << ( m + 1 ) << "\", \\" << endl;
     }
     for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt -1 pt " << s << " lc " << c << " title \"Swapped in " << ( m + 1 ) << "\"";
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt -1";
+        if ( dataPoints < maxDataPoints ) {
+            gnutemp << " pt " << s;
+        }
+        gnutemp << " lc " << c << " title \"Swapped in " << ( m + 1 ) << "\"";
         if ( m != measurements - 1 ) {
             gnutemp << ", \\";
         }
