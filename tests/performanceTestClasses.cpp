@@ -205,7 +205,10 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     string outFile = getTestOutfile ( varryParam, step );
     string timingFile = outFile + "_stats";
     string tempFile = "timingTemp.dat";
-    system ( ( "mv membrain-swapstats.log " + timingFile ).c_str() );
+    if ( 0 != rename ( "membrain-swapstats.log", timingFile.c_str() ) ) {
+        errmsgf ( "Could not rename swapstats log to %s", timingFile );
+    }
+
 
     //! \todo can the last line be corrupted? evtl check for this and remove it
 
@@ -214,6 +217,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     ifstream timing ( timingFile );
     ofstream out ( tempFile );
 
+    int initpos = timing.tellg();
     // Go through test output and get first pair of times
     //! \todo this can be largely refactored
     string testLine, timingLine;
@@ -235,14 +239,13 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
             ++ measurements;
             const unsigned int runCols = 4;
             char *buf;
-
+            timing.seekg ( initpos );
             for ( unsigned int r = 0; r < repetitions; ++r ) {
                 unsigned long long start = strtoull ( testParts[r * runCols + 1].c_str(), &buf, 10 );
                 unsigned long long end = strtoull ( testParts[r * runCols + 2].c_str(), &buf, 10 );
 
                 // No go through timing file and look for the matching lines there
                 vector<vector<string>> relevantTimingParts;
-                int last = 0;
                 while ( getline ( timing, timingLine ) ) {
                     if ( timingLine.find ( '#' ) == string::npos ) {
                         stringstream ss ( timingLine );
@@ -253,15 +256,13 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
                         }
 
                         unsigned long long current = strtoull ( timingParts[0].c_str(), &buf, 10 );
+
                         if ( current >= start && current <= end ) {
                             relevantTimingParts.push_back ( timingParts );
                         }
                         if ( current > end ) {
-                            timing.seekg ( last );
                             break;
                         }
-
-                        last = timing.tellg();
                     }
                 }
 

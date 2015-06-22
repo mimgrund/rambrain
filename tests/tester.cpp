@@ -1,5 +1,5 @@
 #include "tester.h"
-
+#include "managedMemory.h"
 tester::tester ( const char *name ) : name ( name )
 {
     startNewRNGCycle();
@@ -16,6 +16,9 @@ void tester::addParameter ( char *param )
 
 void tester::addTimeMeasurement()
 {
+#ifdef LOGSTATS
+    membrain::managedMemory::sigswapstats ( SIGUSR1 );
+#endif
     std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now();
     timeMeasures.back().push_back ( t );
 }
