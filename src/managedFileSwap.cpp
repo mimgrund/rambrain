@@ -169,7 +169,7 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemor
         global_bytesize total_space = 0;
         it = free_space.begin();
         do {
-            total_space -= total_space % memoryAlignment; // We have to padd splitted chunks.
+            total_space -= total_space % memoryAlignment; // We have to pad splitted chunks.
             total_space += it->second->size;
         } while ( total_space < size && ++it != free_space.end() );
 
@@ -223,7 +223,6 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
         if ( padded_size > freeChunk->size ) {
             return NULL;
         }
-        printf ( "oink!\n" );
         membrain_atomic_fetch_sub ( &swapFree, padded_size - size );
     }
 
@@ -243,7 +242,6 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
         all_space[newfreeloc] = freeChunk; //inserts.
         all_space[formerfree_off] = neu;//overwrites.
         return neu;
-
     }
 
 }
@@ -423,7 +421,7 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
     struct iocb *aio = & ( ref.aio_ptr->aio );
     *aio = aio_template;
     aio->aio_fildes = swapFiles[ref.file].fileno;
-    aio->u.c.nbytes = ref.size + ( ref.size % memoryAlignment != 0 ? memoryAlignment - ref.size % memoryAlignment : 0 );
+    aio->u.c.nbytes = ref.size + ( ref.size % memoryAlignment == 0 ? 0 : memoryAlignment - ref.size % memoryAlignment );
     aio->u.c.offset = ref.offset;
     aio->u.c.buf = ramBuf;
     ref.aio_ptr->tracker = tracker;
@@ -563,7 +561,7 @@ void managedFileSwap::asyncIoArrived ( membrain::pageFileLocation *ref, io_event
 
 
     int err = event->res2; //Seems to be that a value of zero here indicates success.
-    if ( err == 0 && event->res == ref->size ) { //This part arrived successfully
+    if ( err == 0 && event->res == ref->size + ( ref->size % memoryAlignment == 0 ? 0 : memoryAlignment - ref->size % memoryAlignment ) ) { //This part arrived successfully
         delete ref->aio_ptr;
         ref->aio_ptr = NULL;
         ref->aio_lock = 0;
@@ -579,7 +577,7 @@ void managedFileSwap::asyncIoArrived ( membrain::pageFileLocation *ref, io_event
     } else {
 
         errmsgf ( "We have trouble in chunk %d, %d ; aio_size %d, size %d, transfer size %d", ref->glob_off_next.chunk->id, err, event->res, ref->size, event->obj->u.c.nbytes );
-        errmsgf ( "file-align %d, buf-align %d", ref->offset % memoryAlignment );
+        errmsgf ( "file-align %d, err %d, sizeWritten = %d", ref->offset % memoryAlignment, err, event->res );
 
         ///@todo: find out if this may happen regularly or just in case of error.
     }
