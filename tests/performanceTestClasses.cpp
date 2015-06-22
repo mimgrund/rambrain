@@ -354,8 +354,6 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     system ( "gnuplot temp.gnuplot" );
     system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
     system ( ( "display " + timingFile + ".png &" ).c_str() );
-
-    exit ( 4 );
 }
 
 
