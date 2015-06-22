@@ -218,6 +218,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
     //! \todo this can be largely refactored
     string testLine, timingLine;
     unsigned long long starttime = 0;
+    int measurements = 0;
     while ( getline ( test, testLine ) ) {
         if ( testLine.find ( '#' ) == string::npos ) {
             stringstream ss ( testLine );
@@ -230,6 +231,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
             char *buf;
             unsigned long long start = strtoull ( testParts[1].c_str(), &buf, 10 );
             unsigned long long end = strtoull ( testParts[2].c_str(), &buf, 10 );
+            ++ measurements;
 
             // No go through timing file and look for the matching lines there
             vector<vector<string>> relevantTimingParts;
@@ -291,13 +293,19 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
     gnutemp << "set title \"" << name << "\"" << endl;
     gnutemp << "set style data linespoints" << endl;
     //! \todo actually the legend comes from the definition of the test class like in the normal plot, make this a general gather
-    //! \todo every :3 means every third block because we have 3 time measurements. this has to be done programmatically
-    gnutemp << "plot '" << tempFile << "' every :3::0 using 1:2 lt -1 pt 2 lc 1 title \"Swapped out\", \\" << endl;
-    gnutemp << "'" << tempFile << "' every :3::1 using 1:2 lt -1 pt 3 lc 1 title \"Swapped out\", \\" << endl;
-    gnutemp << "'" << tempFile << "' every :3::2 using 1:2 lt -1 pt 4 lc 1 title \"Swapped out\", \\" << endl;
-    gnutemp << "'" << tempFile << "' every :3::0 using 1:3 lt -1 pt 2 lc 2 title \"Swapped in\", \\" << endl;
-    gnutemp << "'" << tempFile << "' every :3::1 using 1:3 lt -1 pt 3 lc 2 title \"Swapped in\", \\" << endl;
-    gnutemp << "'" << tempFile << "' every :3::2 using 1:3 lt -1 pt 4 lc 2 title \"Swapped in\"" << endl;
+
+    gnutemp << "plot ";
+    for ( int m = 0, s = 2; m < measurements; ++m, ++s ) {
+        gnutemp << "'" << tempFile << "' every :" << measurements << "::" << m << " using 1:2 lt -1 pt " << s << " lc 1 title \"Swapped out\", \\" << endl;
+    }
+    for ( int m = 0, s = 2; m < measurements; ++m, ++s ) {
+        gnutemp << "'" << tempFile << "' every :" << measurements << "::" << m << " using 1:3 lt -1 pt " << s << " lc 2 title \"Swapped in\"";
+        if ( m != measurements - 1 ) {
+            gnutemp << ", \\";
+        }
+        gnutemp << endl;
+    }
+
     //! \todo what about hit/miss plot?
     //! \todo mark regions where measurements break
     gnutemp.close();
