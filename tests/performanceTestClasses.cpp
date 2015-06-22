@@ -296,10 +296,21 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step )
 
     gnutemp << "plot ";
     for ( int m = 0, s = 2; m < measurements; ++m, ++s ) {
-        gnutemp << "'" << tempFile << "' every :" << measurements << "::" << m << " using 1:2 lt -1 pt " << s << " lc 1 title \"Swapped out\", \\" << endl;
+        gnutemp << "'" << tempFile << "' every :" << measurements << "::" << m << " using 1:2 lt -1 pt " << s << " lc 1";
+        if ( m == 0 ) {
+            gnutemp << " title \"Swapped out\"";
+        } else {
+            gnutemp << " notitle";
+        }
+        gnutemp << ", \\" << endl;
     }
     for ( int m = 0, s = 2; m < measurements; ++m, ++s ) {
-        gnutemp << "'" << tempFile << "' every :" << measurements << "::" << m << " using 1:3 lt -1 pt " << s << " lc 2 title \"Swapped in\"";
+        gnutemp << "'" << tempFile << "' every :" << measurements << "::" << m << " using 1:3 lt -1 pt " << s << " lc 2";
+        if ( m == 0 ) {
+            gnutemp << " title \"Swapped in\"";
+        } else {
+            gnutemp << " notitle";
+        }
         if ( m != measurements - 1 ) {
             gnutemp << ", \\";
         }
