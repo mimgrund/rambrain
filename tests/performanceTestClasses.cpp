@@ -209,10 +209,6 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
         errmsgf ( "Could not rename swapstats log to %s", timingFile.c_str() );
     }
 
-
-    //! \todo can the last line be corrupted? evtl check for this and remove it
-
-    //! \todo handle multiple repetitions
     ifstream test ( outFile );
     ifstream timing ( timingFile );
     ofstream out ( tempFile );
@@ -287,13 +283,10 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
         }
     }
 
-    //! \todo This data has acutally to be accumulated, instead at the moment we just plot it as single line
-
     test.close();
     timing.close();
     out.close();
 
-    //! \todo refactor that, see above
     // Plot that thing
 
     //! \todo again - this is code duplication -> refactor
@@ -337,7 +330,6 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     }
 
     //! \todo what about hit/miss plot?
-    //! \todo mark regions where measurements break
     gnutemp.close();
 
     cout << "Calling gnuplot and displaying result" << endl;
