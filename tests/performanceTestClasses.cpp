@@ -373,14 +373,15 @@ void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param
     test.addTimeMeasurement();
 
 #ifdef PTEST_CHECKS
-     for ( unsigned int i = 0; i < size; ++i ) {
-         adhereTo<double> rowloc ( *rows[i] );
-         double *rowdbl =  rowloc;
-         for ( unsigned int j = 0; j < size; ++j ) {
-              if(rowdbl[j] != j * size + i)
-                  printf("Failed check!\n");
-         }
-     }
+    for ( unsigned int i = 0; i < size; ++i ) {
+        adhereTo<double> rowloc ( *rows[i] );
+        double *rowdbl =  rowloc;
+        for ( unsigned int j = 0; j < size; ++j ) {
+            if ( rowdbl[j] != j * size + i ) {
+                printf ( "Failed check!\n" );
+            }
+        }
+    }
 #endif
 
     // Delete
@@ -484,14 +485,15 @@ void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int
     test.addTimeMeasurement();
 
 #ifdef PTEST_CHECKS
-     for ( unsigned int i = 0; i < size; ++i ) {
-         adhereTo<double> rowloc ( *rows[i] );
-         double *rowdbl =  rowloc;
-         for ( unsigned int j = 0; j < size; ++j ) {
-              if(rowdbl[j] != j * size + i)
-                  printf("Failed check!\n");
-         }
-     }
+    for ( unsigned int i = 0; i < size; ++i ) {
+        adhereTo<double> rowloc ( *rows[i] );
+        double *rowdbl =  rowloc;
+        for ( unsigned int j = 0; j < size; ++j ) {
+            if ( rowdbl[j] != j * size + i ) {
+                printf ( "Failed check!\n" );
+            }
+        }
+    }
 #endif
 
     // Delete
@@ -601,14 +603,15 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
     test.addTimeMeasurement();
 
 #ifdef PTEST_CHECKS
-     for ( unsigned int i = 0; i < size; ++i ) {
-         adhereTo<double> rowloc ( *rows[i] );
-         double *rowdbl =  rowloc;
-         for ( unsigned int j = 0; j < size; ++j ) {
-              if(rowdbl[j] != j * size + i)
-                  printf("Failed check!\n");
-         }
-     }
+    for ( unsigned int i = 0; i < size; ++i ) {
+        adhereTo<double> rowloc ( *rows[i] );
+        double *rowdbl =  rowloc;
+        for ( unsigned int j = 0; j < size; ++j ) {
+            if ( rowdbl[j] != j * size + i ) {
+                printf ( "Failed check!\n" );
+            }
+        }
+    }
 #endif
 
     // Delete
@@ -713,16 +716,17 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
     test.addTimeMeasurement();
 
 #ifdef PTEST_CHECKS
-     for ( unsigned int i = 0; i < size; ++i ) {
-         for ( unsigned int j = 0; j < size; ++j ) {
-             unsigned int blckidx = blockIdx(i,j);
-             unsigned int inblck = inBlockIdx(i,j);
-             adhereTo<double> adh(*rows[blckidx]);
-             double * loc = adh;
-             if(loc[inblck] != j * size + i)
-                 printf("Failed check!\n");
-         }
-     }
+    for ( unsigned int i = 0; i < size; ++i ) {
+        for ( unsigned int j = 0; j < size; ++j ) {
+            unsigned int blckidx = blockIdx ( i, j );
+            unsigned int inblck = inBlockIdx ( i, j );
+            adhereTo<double> adh ( *rows[blckidx] );
+            double *loc = adh;
+            if ( loc[inblck] != j * size + i ) {
+                printf ( "Failed check!\n" );
+            }
+        }
+    }
 #endif
 
     // Delete
@@ -815,8 +819,8 @@ void matrixMultiplyTest::actualTestMethod ( tester &test, int param1, int param2
 
 #ifdef PTEST_CHECKS
     double val = 0.0;
-    for (global_bytesize i = 1; i <= size; ++i) {
-        val += i*i;
+    for ( global_bytesize i = 1; i <= size; ++i ) {
+        val += i * i;
     }
     for ( global_bytesize i = 0; i < size; ++i ) {
         adhereTo<double> adhRowC ( *rowsC[i] );
@@ -824,8 +828,9 @@ void matrixMultiplyTest::actualTestMethod ( tester &test, int param1, int param2
         double *rowC = adhRowC;
 
         for ( global_bytesize j = 0; j < size; ++j ) {
-            if (rowC[j] != val)
-                printf("Failed check!\n");
+            if ( rowC[j] != val ) {
+                printf ( "Failed check!\n" );
+            }
         }
     }
 #endif
@@ -923,8 +928,8 @@ void matrixMultiplyOpenMPTest::actualTestMethod ( tester &test, int param1, int 
 
 #ifdef PTEST_CHECKS
     double val = 0.0;
-    for (global_bytesize i = 1; i <= size; ++i) {
-        val += i*i;
+    for ( global_bytesize i = 1; i <= size; ++i ) {
+        val += i * i;
     }
     for ( global_bytesize i = 0; i < size; ++i ) {
         adhereTo<double> adhRowC ( *rowsC[i] );
@@ -932,8 +937,9 @@ void matrixMultiplyOpenMPTest::actualTestMethod ( tester &test, int param1, int 
         double *rowC = adhRowC;
 
         for ( global_bytesize j = 0; j < size; ++j ) {
-            if (rowC[j] != val)
-                printf("Failed check!\n");
+            if ( rowC[j] != val ) {
+                printf ( "Failed check!\n" );
+            }
         }
     }
 #endif
@@ -1025,8 +1031,9 @@ void matrixCopyTest::actualTestMethod ( tester &test, int param1, int param2 )
         double *b = adhB;
 
         for ( global_bytesize j = 0; j < size; ++j ) {
-            if (b[j] != j)
-                printf("Failed check!\n");
+            if ( b[j] != j ) {
+                printf ( "Failed check!\n" );
+            }
         }
     }
 #endif
@@ -1053,7 +1060,7 @@ string matrixCopyTest::generateMyGnuplotPlotPart ( const string &file , int para
 
 TESTSTATICS ( matrixCopyOpenMPTest, "Copy one matrix onto another" );
 
-matrixCopyTest::matrixCopyOpenMPTest() : performanceTest<int, int> ( "MatrixCopy" )
+matrixCopyOpenMPTest::matrixCopyOpenMPTest() : performanceTest<int, int> ( "MatrixCopy" )
 {
     TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Matrix size per dimension" );
     TESTPARAM ( 2, 100, 10000, 20, true, 5000, "Matrix rows in main memory" );
