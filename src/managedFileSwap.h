@@ -71,7 +71,7 @@ class managedFileSwap : public managedSwap
 {
 public:
 
-    managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile = 0, bool enableDMA = true );
+    managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile = 0, bool enableDMA = false );
     ~managedFileSwap();
 
     virtual void swapDelete ( managedMemoryChunk *chunk );
@@ -127,7 +127,7 @@ private:
     std::map<global_offset, pageFileLocation *> all_space;
 
 
-    bool enableDMA = true;
+    bool enableDMA = false;
 protected:
     bool deleteFilesOnExit = true;
 

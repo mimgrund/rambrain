@@ -423,7 +423,7 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
     struct iocb *aio = & ( ref.aio_ptr->aio );
     *aio = aio_template;
     aio->aio_fildes = swapFiles[ref.file].fileno;
-    aio->u.c.nbytes = ref.size;
+    aio->u.c.nbytes = ref.size + ( ref.size % memoryAlignment != 0 ? memoryAlignment - ref.size % memoryAlignment : 0 );
     aio->u.c.offset = ref.offset;
     aio->u.c.buf = ramBuf;
     ref.aio_ptr->tracker = tracker;
@@ -578,7 +578,7 @@ void managedFileSwap::asyncIoArrived ( membrain::pageFileLocation *ref, io_event
 
     } else {
 
-        errmsgf ( "We have trouble in chunk %d, %d ; aio_size %d, size %d", ref->glob_off_next.chunk->id, err, event->res, ref->size );
+        errmsgf ( "We have trouble in chunk %d, %d ; aio_size %d, size %d, transfer size %d", ref->glob_off_next.chunk->id, err, event->res, ref->size, event->obj->u.c.nbytes );
         errmsgf ( "file-align %d, buf-align %d", ref->offset % memoryAlignment );
 
         ///@todo: find out if this may happen regularly or just in case of error.

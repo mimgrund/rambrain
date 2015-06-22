@@ -122,7 +122,7 @@ TEST ( managedFileSwap, Unit_SimpleSwapping )
     const unsigned int swapsize = 10 * memsize;
 
     ASSERT_NO_THROW (
-        managedFileSwap swap ( swapsize, "/tmp/membrainswap-%d" );
+        managedFileSwap swap ( swapsize, "membrainswap-%d" );
         cyclicManagedMemory manager ( &swap, memsize );
 
         managedPtr<double> ptr1 ( 10 );
