@@ -312,7 +312,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     int c = 1;
     for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt -1";
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt 1";
         if ( dataPoints < maxDataPoints ) {
             gnutemp << " pt " << s;
         }
@@ -320,7 +320,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     }
     for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt -1";
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt 1";
         if ( dataPoints < maxDataPoints ) {
             gnutemp << " pt " << s;
         }
@@ -328,7 +328,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     }
     for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:4 lt -1";
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:4 lt 2";
         if ( dataPoints < maxDataPoints ) {
             gnutemp << " pt " << s;
         }
@@ -336,7 +336,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     }
     for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:5 lt -1";
+        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:5 lt 2";
         if ( dataPoints < maxDataPoints ) {
             gnutemp << " pt " << s;
         }
