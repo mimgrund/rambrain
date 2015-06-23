@@ -123,8 +123,6 @@ protected:
     global_bytesize swap_hits = 0;
     global_bytesize swap_misses = 0;
 
-    struct sigaction sigact;
-
     bool waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock = false );
     bool waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock = false );
 

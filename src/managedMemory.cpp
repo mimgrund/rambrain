@@ -55,12 +55,7 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
         throw incompleteSetupException ( "no swap manager defined" );
     }
 #ifdef SWAPSTATS
-    sigact.sa_handler = sigswapstats;
-    sigemptyset ( &sigact.sa_mask );
-
-    if ( sigaction ( SIGUSR1, &sigact, NULL ) < 0 ) {
-        perror ( "sigaction" );
-    }
+    signal ( SIGUSR1, sigswapstats );
 
 #ifdef LOGSTATS
     if ( ! Timer::isRunning() ) {
@@ -76,6 +71,8 @@ managedMemory::~managedMemory()
 #ifdef LOGSTATS
     if ( previousManager == NULL ) {
         Timer::stopTimer();
+
+        signal ( SIGUSR1, SIG_IGN );
     }
 
 #endif
@@ -92,7 +89,6 @@ managedMemory::~managedMemory()
 #else
     linearMfree();
 #endif
-
 }
 
 
