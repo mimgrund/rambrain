@@ -34,7 +34,7 @@ public:
     }
     inline size_t getMemoryAlignment() {
         return memoryAlignment;
-    };
+    }
     void claimUsageof ( global_bytesize bytes, bool rambytes, bool used ) {
         managedMemory::defaultManager->claimUsageof ( bytes, rambytes, used );
         if ( !rambytes ) {

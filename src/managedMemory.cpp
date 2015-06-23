@@ -40,7 +40,6 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
 
     memory_max = size;
     memoryAlignment = swap->getMemoryAlignment();
-
     previousManager = defaultManager;
     defaultManager = this;
 #ifdef PARENTAL_CONTROL
@@ -158,6 +157,7 @@ bool managedMemory::ensureEnoughSpaceAndLockTopo ( global_bytesize sizereq, mana
 managedMemoryChunk *managedMemory::mmalloc ( global_bytesize sizereq )
 {
     pthread_mutex_lock ( &stateChangeMutex );
+    sizereq += sizereq % memoryAlignment == 0 ? 0 : memoryAlignment - sizereq % memoryAlignment; //f**k memoryAlignment
     ensureEnoughSpaceAndLockTopo ( sizereq );
 
     membrain_atomic_fetch_add ( &memory_used, sizereq );
@@ -399,7 +399,7 @@ void managedMemory::mfree ( memoryID id )
 #else
     schedulerDelete ( *chunk );
     if ( chunk->status == MEM_ALLOCATED ) {
-        free ( chunk->locPtr );
+        _mm_free ( chunk->locPtr );
         membrain_atomic_fetch_sub ( &memory_used, chunk->size );
     } else {
         swap->swapDelete ( chunk );

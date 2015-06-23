@@ -419,19 +419,18 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
     ref.aio_lock = 1;
 
     struct iocb *aio = & ( ref.aio_ptr->aio );
-    *aio = aio_template;
-    aio->aio_fildes = swapFiles[ref.file].fileno;
-    aio->u.c.nbytes = ref.size + ( ref.size % memoryAlignment == 0 ? 0 : memoryAlignment - ref.size % memoryAlignment );
-    aio->u.c.offset = ref.offset;
-    aio->u.c.buf = ramBuf;
+
     ref.aio_ptr->tracker = tracker;
 #ifdef DBG_AIO
     reverse ? printf ( "scheduling read\n" ) : printf ( "scheduling write\n" );
 #endif
 
-    aio->aio_lio_opcode = reverse ? IO_CMD_PREAD : IO_CMD_PWRITE; ///@todo: a potential vector read/write may be superior
-    int res = io_submit ( aio_context, 1, & ( aio ) );
+    global_bytesize length = ref.size + ( ref.size % memoryAlignment == 0 ? 0 : memoryAlignment - ref.size % memoryAlignment );
+    int fd = swapFiles[ref.file].fileno;
+    reverse ? io_prep_pread ( aio, fd, ramBuf, length, ref.offset ) : io_prep_pwrite ( aio, fd, ramBuf, length, ref.offset ); ///@todo: a potential vector read/write may be superior
+
     pendingAios[aio] = &ref;
+    int res = io_submit ( aio_context, 1, & ( aio ) );
 
     if ( res != 1 ) {
         throw memoryException ( "Could not enqueue request" );

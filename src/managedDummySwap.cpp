@@ -11,7 +11,6 @@ managedDummySwap::managedDummySwap ( global_bytesize size ) : managedSwap ( size
 {
     swapFree = swapSize = size;
     swapUsed = 0;
-    memoryAlignment = 1;
 }
 
 global_bytesize managedDummySwap::swapOut ( managedMemoryChunk *chunk )

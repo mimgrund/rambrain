@@ -11,8 +11,10 @@ namespace membrain
 class dummyManagedMemory : public managedMemory
 {
 public:
-    dummyManagedMemory() : managedMemory ( &mswap, 0 ) {}
-    virtual ~dummyManagedMemory() {}
+    dummyManagedMemory() : managedMemory ( new managedDummySwap ( 0 ), 0 ) {}
+    virtual ~dummyManagedMemory() {
+        delete swap;
+    }
 
 protected:
     inline virtual swapErrorCode swapOut ( global_bytesize ) {
@@ -35,9 +37,6 @@ protected:
         pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
         throw memoryException ( "No memory manager in place." );
     }
-
-private:
-    managedDummySwap mswap = managedDummySwap ( 0 );
 
 };
 
