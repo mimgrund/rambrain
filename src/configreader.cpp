@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <sys/statvfs.h>
+#include <cstring>
 
 namespace membrain
 {
@@ -137,6 +138,8 @@ bool configReader::parseConfigBlock()
             config.memory = atoll ( line.c_str() );
         } else if ( ! ( value = parseConfigLine ( line, "swapMemory" ) ).empty() ) {
             config.swapMemory = atoll ( line.c_str() );
+        } else if ( ! ( value = parseConfigLine ( line, "enableDMA" ) ).empty() ) {
+            config.enableDMA = strcmp ( line.c_str(), "true" ) == 0;
         }
     }
 

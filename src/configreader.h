@@ -24,6 +24,7 @@ struct configuration {
     string swap = "managedFileSwap";
     string swapfiles = "membrainswap-%d";
     global_bytesize swapMemory;
+    bool enableDMA = false;
 };
 
 class configReader

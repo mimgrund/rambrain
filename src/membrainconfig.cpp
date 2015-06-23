@@ -55,7 +55,7 @@ void membrainConfig::init ()
     if ( c.swap == "managedDummySwap" ) {
         swap = new managedDummySwap ( c.swapMemory );
     } else if ( c.swap == "managedFileSwap" ) {
-        swap = new managedFileSwap ( c.swapMemory, c.swapfiles.c_str() );
+        swap = new managedFileSwap ( c.swapMemory, c.swapfiles.c_str(), 0, c.enableDMA );
     }
 
     if ( c.memoryManager == "cyclicManagedMemory" ) {
