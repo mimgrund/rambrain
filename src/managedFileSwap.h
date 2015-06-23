@@ -67,7 +67,7 @@ class managedFileSwap : public managedSwap
 public:
 
     managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile = 0 );
-    ~managedFileSwap();
+    virtual ~managedFileSwap();
 
     virtual void swapDelete ( managedMemoryChunk *chunk );
     virtual unsigned int swapIn ( managedMemoryChunk **chunklist, unsigned int nchunks );

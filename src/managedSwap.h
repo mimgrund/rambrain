@@ -10,8 +10,8 @@ namespace membrain
 class managedSwap
 {
 public:
-    managedSwap ( global_bytesize size ) : swapSize ( size ), swapUsed ( 0 ) {}
-    virtual ~managedSwap() {}
+    managedSwap ( global_bytesize size );
+    virtual ~managedSwap();
 
     //Returns number of sucessfully swapped chunks
     virtual unsigned int swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks ) = 0;
@@ -20,13 +20,13 @@ public:
     virtual bool swapIn ( managedMemoryChunk *chunk ) = 0;
     virtual void swapDelete ( managedMemoryChunk *chunk ) = 0;
 
-    virtual global_bytesize getSwapSize() {
+    virtual inline global_bytesize getSwapSize() {
         return swapSize;
     }
-    virtual global_bytesize getUsedSwap() {
+    virtual inline global_bytesize getUsedSwap() {
         return swapUsed;
     }
-    virtual global_bytesize getFreeSwap() {
+    virtual inline global_bytesize getFreeSwap() {
         return swapFree;
     }
 

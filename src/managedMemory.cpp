@@ -509,8 +509,11 @@ void managedMemory::resetSwapstats()
 
 #define SAFESWAP(func) (instance->swap != NULL ? instance->swap->func : 0lu)
 
+//! \todo do we still have race conditions with swap? and what about the byte counting...?
 void managedMemory::sigswapstats ( int sig )
 {
+    global_bytesize usedSwap = SAFESWAP ( getUsedSwap() );
+    global_bytesize totalSwap = SAFESWAP ( getSwapSize() );
 #ifdef LOGSTATS
     if ( firstLog ) {
         fprintf ( managedMemory::logFile, "#Time [ms]\tSwapped out [B]\tSwapped out last [B]\tSwapped in [B]\tSwapped in last [B]\tHits / Miss\tMemory Used [B]\t\
@@ -523,7 +526,7 @@ void managedMemory::sigswapstats ( int sig )
               instance->swap_in_bytes,
               instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses,
               instance->memory_used, ( double ) instance->memory_used / instance->memory_max,
-              SAFESWAP ( getUsedSwap() ), ( double ) SAFESWAP ( getUsedSwap() ) / SAFESWAP ( getSwapSize() ) );
+              usedSwap, ( double ) usedSwap / totalSwap );
     fflush ( logFile );
 #else
     printf ( "%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", instance->swap_out_bytes,
@@ -531,7 +534,7 @@ void managedMemory::sigswapstats ( int sig )
              instance->swap_in_bytes,
              instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses,
              instance->memory_used, ( double ) instance->memory_used / instance->memory_max,
-             SAFESWAP ( getUsedSwap() ), ( double ) SAFESWAP ( getUsedSwap() ) / SAFESWAP ( getSwapSize() ) );
+             usedSwap, ( double ) usedSwap / totalSwap );
 #endif
     instance->swap_out_bytes_last = instance->swap_out_bytes;
     instance->swap_in_bytes_last = instance->swap_in_bytes;
