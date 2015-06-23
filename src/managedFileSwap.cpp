@@ -453,7 +453,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         printf ( "Accounting for a swapin\n" );
 #endif
         if ( lock ) {
-            pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+            pthread_mutex_lock ( &managedMemory::stateChangeMutex );
         }
         pffree ( ( pageFileLocation * ) chunk->swapBuf );
         chunk->swapBuf = NULL; // Not strictly required
@@ -465,7 +465,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         membrain_atomic_fetch_add ( & ( managedMemory::defaultManager->swap_in_bytes ), chunk->size );
 #endif
         if ( lock ) {
-            pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
+            pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
         }
         break;
     case MEM_SWAPOUT:
@@ -473,7 +473,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         printf ( "Accounting for a swapout\n" );
 #endif
         if ( lock ) {
-            pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+            pthread_mutex_lock ( &managedMemory::stateChangeMutex );
         }
         _mm_free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
         chunk->locPtr = NULL; // not strictly required.
@@ -485,7 +485,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         managedMemory::defaultManager->claimTobefreed ( chunk->size, false );
         managedMemory::signalSwappingCond();
         if ( lock ) {
-            pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
+            pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
         }
         break;
     default:
@@ -514,9 +514,9 @@ bool managedFileSwap::checkForAIO()
     printf ( "checkForAIO called, we'll wait for an event, got %d in queue\n", totalSwapActionsQueued );
 #endif
     //As there's at least one pending transaction, we may wait blocking indefinitely:
-    pthread_mutex_unlock ( & ( managedMemory::defaultManager->stateChangeMutex ) );
+    pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
     int no_arrived = io_getevents ( aio_context, 1, aio_max_transactions, aio_eventarr, NULL );
-    pthread_mutex_lock ( & ( managedMemory::defaultManager->stateChangeMutex ) );
+    pthread_mutex_lock ( & ( managedMemory::stateChangeMutex ) );
     if ( no_arrived < 0 ) {
         pthread_mutex_unlock ( &aioWaiterLock );
         printf ( "We got an error back: %d\n", -no_arrived );

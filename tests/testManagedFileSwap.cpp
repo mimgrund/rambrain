@@ -27,7 +27,9 @@ TEST ( managedFileSwap, Unit_ManualSwapping ) //This screws default manager, as 
     chunk->locPtr = malloc ( dblsize );
     chunk->size = dblsize;
 
+    pthread_mutex_lock ( & ( managedMemory::stateChangeMutex ) );
     EXPECT_TRUE ( swap.swapOut ( chunk ) );
+
     swap.waitForCleanExit();
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( dblsize, swap.getUsedSwap() );
@@ -37,6 +39,7 @@ TEST ( managedFileSwap, Unit_ManualSwapping ) //This screws default manager, as 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
+    pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
     free ( chunk->locPtr );
     delete chunk;
 }
@@ -51,6 +54,7 @@ TEST ( managedFileSwap, Unit_ManualMultiSwapping )
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
+    pthread_mutex_lock ( & ( managedMemory::stateChangeMutex ) );
     managedMemoryChunk *chunks[2];
     for ( int i = 0; i < 2; ++i ) {
 #ifdef PARENTAL_CONTROL
@@ -81,6 +85,7 @@ TEST ( managedFileSwap, Unit_ManualMultiSwapping )
         }
         delete chunks[i];
     }
+    pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
 }
 
 TEST ( managedFileSwap, Unit_ManualSwappingDelete )
@@ -92,6 +97,7 @@ TEST ( managedFileSwap, Unit_ManualSwappingDelete )
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
+    pthread_mutex_lock ( & ( managedMemory::stateChangeMutex ) );
 #ifdef PARENTAL_CONTROL
     managedMemoryChunk *chunk = new managedMemoryChunk ( 0, 1 );
 #else
@@ -114,6 +120,7 @@ TEST ( managedFileSwap, Unit_ManualSwappingDelete )
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
 
     delete chunk;
+    pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
 }
 
 TEST ( managedFileSwap, Unit_SimpleSwapping )

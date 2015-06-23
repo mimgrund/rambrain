@@ -8,13 +8,17 @@
 #include "managedMemoryChunk.h"
 #include "exceptions.h"
 
+
+class managedFileSwap_Unit_ManualSwapping_Test;
+class managedFileSwap_Unit_ManualSwappingDelete_Test;
+class managedFileSwap_Unit_ManualMultiSwapping_Test;
+
 namespace membrain
 {
 class managedFileSwap;
 class managedSwap;
 template<class T>
 class managedPtr;
-
 
 class managedMemory
 {
@@ -111,6 +115,9 @@ protected:
     friend class managedPtr;
     friend class managedSwap;
     friend class managedFileSwap;
+    friend class ::managedFileSwap_Unit_ManualSwapping_Test;
+    friend class ::managedFileSwap_Unit_ManualMultiSwapping_Test;
+    friend class ::managedFileSwap_Unit_ManualSwappingDelete_Test;
 
 #ifdef SWAPSTATS
 protected:
@@ -149,3 +156,4 @@ public:
 }
 
 #endif
+
