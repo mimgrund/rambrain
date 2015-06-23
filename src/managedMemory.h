@@ -139,8 +139,6 @@ public:
     void resetSwapstats();
 
     static void sigswapstats ( int sig );
-
-    static pthread_mutex_t deletionMutex;
 #endif
     static void versionInfo();
 };

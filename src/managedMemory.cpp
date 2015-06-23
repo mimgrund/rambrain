@@ -17,7 +17,6 @@ membrainConfig config;
 managedMemory *managedMemory::defaultManager;
 
 #ifdef SWAPSTATS
-pthread_mutex_t managedMemory::deletionMutex = PTHREAD_MUTEX_INITIALIZER;
 #ifdef LOGSTATS
 FILE *managedMemory::logFile = fopen ( "membrain-swapstats.log", "w" );
 bool managedMemory::firstLog = true;
@@ -64,18 +63,9 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
     }
 
 #ifdef LOGSTATS
-    sev.sigev_notify = SIGEV_SIGNAL;
-    sev.sigev_signo = SIGUSR1;
-    sev.sigev_value.sival_ptr = &timerid;
-    timer_create ( CLOCK_REALTIME, &sev, &timerid );
-
-    /* Start the timer */
-    its.it_value.tv_sec = 0;
-    its.it_value.tv_nsec = 100000000L;
-    its.it_interval.tv_sec = its.it_value.tv_sec;
-    its.it_interval.tv_nsec = its.it_value.tv_nsec;
-
-    timer_settime ( timerid, 0, &its, NULL );
+    if ( ! Timer::isRunning() ) {
+        Timer::startTimer ( 0L, 100000000L );
+    }
 #endif
 #endif
 }
@@ -83,16 +73,18 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
 managedMemory::~managedMemory()
 {
 #ifdef SWAPSTATS
-    pthread_mutex_lock ( &deletionMutex );
+#ifdef LOGSTATS
+    if ( previousManager == NULL ) {
+        Timer::stopTimer();
+    }
+
+#endif
 #endif
 
     if ( defaultManager == this ) {
 
         defaultManager = previousManager;
     }
-#ifdef SWAPSTATS
-    pthread_mutex_unlock ( &deletionMutex );
-#endif
 
 #ifdef PARENTAL_CONTROL
     //Clean up objects:
@@ -514,11 +506,10 @@ void managedMemory::resetSwapstats()
 
 #define SAFESWAP(func) (defaultManager->swap != NULL ? defaultManager->swap->func : 0lu)
 
+//! @todo This does not work with MPI code since we need different outfiles then. Fix!
 void managedMemory::sigswapstats ( int )
 {
-    pthread_mutex_lock ( &deletionMutex );
     if ( defaultManager == NULL ) {
-        pthread_mutex_unlock ( &deletionMutex );
         return;
     }
 
@@ -549,8 +540,6 @@ void managedMemory::sigswapstats ( int )
 #endif
     defaultManager->swap_out_bytes_last = defaultManager->swap_out_bytes;
     defaultManager->swap_in_bytes_last = defaultManager->swap_in_bytes;
-
-    pthread_mutex_unlock ( &deletionMutex );
 }
 #endif
 
