@@ -18,6 +18,7 @@ managedMemory *managedMemory::defaultManager;
 
 #ifdef SWAPSTATS
 managedMemory *managedMemory::instance = NULL;
+pthread_mutex_t managedMemory::swapDeletionMutex = PTHREAD_MUTEX_INITIALIZER;
 #ifdef LOGSTATS
 FILE *managedMemory::logFile = fopen ( "membrain-swapstats.log", "w" );
 bool managedMemory::firstLog = true;
@@ -84,11 +85,18 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
 
 managedMemory::~managedMemory()
 {
+#ifdef SWAPSTATS
+    pthread_mutex_lock ( &swapDeletionMutex );
+#endif
 
     if ( defaultManager == this ) {
 
         defaultManager = previousManager;
     }
+#ifdef SWAPSTATS
+    pthread_mutex_unlock ( &swapDeletionMutex );
+#endif
+
 #ifdef PARENTAL_CONTROL
     //Clean up objects:
     recursiveMfree ( root );
@@ -512,8 +520,11 @@ void managedMemory::resetSwapstats()
 //! \todo do we still have race conditions with swap? and what about the byte counting...?
 void managedMemory::sigswapstats ( int sig )
 {
+    pthread_mutex_lock ( &swapDeletionMutex );
     global_bytesize usedSwap = SAFESWAP ( getUsedSwap() );
     global_bytesize totalSwap = SAFESWAP ( getSwapSize() );
+    pthread_mutex_unlock ( &swapDeletionMutex );
+
 #ifdef LOGSTATS
     if ( firstLog ) {
         fprintf ( managedMemory::logFile, "#Time [ms]\tSwapped out [B]\tSwapped out last [B]\tSwapped in [B]\tSwapped in last [B]\tHits / Miss\tMemory Used [B]\t\
