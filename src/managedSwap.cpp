@@ -11,7 +11,7 @@ managedSwap::managedSwap ( global_bytesize size ) : swapSize ( size ), swapUsed 
 managedSwap::~managedSwap()
 {
 #ifdef SWAPSTATS
-    pthread_mutex_lock ( &managedMemory::swapDeletionMutex );
+    pthread_mutex_lock ( &managedMemory::deletionMutex );
 #endif
 
     if ( managedMemory::defaultManager != NULL ) {
@@ -23,7 +23,7 @@ managedSwap::~managedSwap()
     }
 
 #ifdef SWAPSTATS
-    pthread_mutex_unlock ( &managedMemory::swapDeletionMutex );
+    pthread_mutex_unlock ( &managedMemory::deletionMutex );
 #endif
 
 }

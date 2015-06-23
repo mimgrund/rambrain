@@ -66,8 +66,10 @@ void membrainConfig::init ()
 
 void membrainConfig::clean()
 {
-    delete manager;
     delete swap;
+    swap = NULL;
+    delete manager;
+    manager = NULL;
 }
 
 }

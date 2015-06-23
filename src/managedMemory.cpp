@@ -17,8 +17,7 @@ membrainConfig config;
 managedMemory *managedMemory::defaultManager;
 
 #ifdef SWAPSTATS
-managedMemory *managedMemory::instance = NULL;
-pthread_mutex_t managedMemory::swapDeletionMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t managedMemory::deletionMutex = PTHREAD_MUTEX_INITIALIZER;
 #ifdef LOGSTATS
 FILE *managedMemory::logFile = fopen ( "membrain-swapstats.log", "w" );
 bool managedMemory::firstLog = true;
@@ -57,8 +56,6 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
         throw incompleteSetupException ( "no swap manager defined" );
     }
 #ifdef SWAPSTATS
-    instance = this;
-
     sigact.sa_handler = sigswapstats;
     sigemptyset ( &sigact.sa_mask );
 
@@ -86,7 +83,7 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
 managedMemory::~managedMemory()
 {
 #ifdef SWAPSTATS
-    pthread_mutex_lock ( &swapDeletionMutex );
+    pthread_mutex_lock ( &deletionMutex );
 #endif
 
     if ( defaultManager == this ) {
@@ -94,7 +91,7 @@ managedMemory::~managedMemory()
         defaultManager = previousManager;
     }
 #ifdef SWAPSTATS
-    pthread_mutex_unlock ( &swapDeletionMutex );
+    pthread_mutex_unlock ( &deletionMutex );
 #endif
 
 #ifdef PARENTAL_CONTROL
@@ -515,15 +512,18 @@ void managedMemory::resetSwapstats()
     swap_hits = swap_misses = swap_in_bytes = swap_out_bytes = n_swap_in = n_swap_out = 0;
 }
 
-#define SAFESWAP(func) (instance->swap != NULL ? instance->swap->func : 0lu)
+#define SAFESWAP(func) (defaultManager->swap != NULL ? defaultManager->swap->func : 0lu)
 
-//! \todo do we still have race conditions with swap? and what about the byte counting...?
-void managedMemory::sigswapstats ( int sig )
+void managedMemory::sigswapstats ( int )
 {
-    pthread_mutex_lock ( &swapDeletionMutex );
+    pthread_mutex_lock ( &deletionMutex );
+    if ( defaultManager == NULL ) {
+        pthread_mutex_unlock ( &deletionMutex );
+        return;
+    }
+
     global_bytesize usedSwap = SAFESWAP ( getUsedSwap() );
     global_bytesize totalSwap = SAFESWAP ( getSwapSize() );
-    pthread_mutex_unlock ( &swapDeletionMutex );
 
 #ifdef LOGSTATS
     if ( firstLog ) {
@@ -532,23 +532,25 @@ void managedMemory::sigswapstats ( int sig )
         firstLog = false;
     }
     int64_t now = std::chrono::duration_cast<std::chrono::milliseconds> ( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
-    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", now, instance->swap_out_bytes,
-              instance->swap_out_bytes - instance->swap_out_bytes_last,
-              instance->swap_in_bytes,
-              instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses,
-              instance->memory_used, ( double ) instance->memory_used / instance->memory_max,
+    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", now, defaultManager->swap_out_bytes,
+              defaultManager->swap_out_bytes - defaultManager->swap_out_bytes_last,
+              defaultManager->swap_in_bytes,
+              defaultManager->swap_in_bytes - defaultManager->swap_in_bytes_last, ( double ) defaultManager->swap_hits / defaultManager->swap_misses,
+              defaultManager->memory_used, ( double ) defaultManager->memory_used / defaultManager->memory_max,
               usedSwap, ( double ) usedSwap / totalSwap );
     fflush ( logFile );
 #else
-    printf ( "%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", instance->swap_out_bytes,
-             instance->swap_out_bytes - instance->swap_out_bytes_last,
-             instance->swap_in_bytes,
-             instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses,
-             instance->memory_used, ( double ) instance->memory_used / instance->memory_max,
+    printf ( "%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", defaultManager->swap_out_bytes,
+             defaultManager->swap_out_bytes - defaultManager->swap_out_bytes_last,
+             defaultManager->swap_in_bytes,
+             defaultManager->swap_in_bytes - defaultManager->swap_in_bytes_last, ( double ) defaultManager->swap_hits / defaultManager->swap_misses,
+             defaultManager->memory_used, ( double ) defaultManager->memory_used / defaultManager->memory_max,
              usedSwap, ( double ) usedSwap / totalSwap );
 #endif
-    instance->swap_out_bytes_last = instance->swap_out_bytes;
-    instance->swap_in_bytes_last = instance->swap_in_bytes;
+    defaultManager->swap_out_bytes_last = defaultManager->swap_out_bytes;
+    defaultManager->swap_in_bytes_last = defaultManager->swap_in_bytes;
+
+    pthread_mutex_unlock ( &deletionMutex );
 }
 #endif
 

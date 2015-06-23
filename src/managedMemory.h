@@ -144,9 +144,8 @@ public:
     void resetSwapstats();
 
     static void sigswapstats ( int sig );
-    static managedMemory *instance;
 
-    static pthread_mutex_t swapDeletionMutex;
+    static pthread_mutex_t deletionMutex;
 #endif
     static void versionInfo();
 };
