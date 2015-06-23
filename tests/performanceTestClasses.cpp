@@ -801,7 +801,7 @@ TESTSTATICS ( matrixMultiplyTest, "Matrix multiplication with matrices being sto
 
 matrixMultiplyTest::matrixMultiplyTest() : performanceTest<int, int> ( "MatrixMultiply" )
 {
-    TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
+    TESTPARAM ( 1, 10, 6000, 20, true, 4000, "Matrix size per dimension" );
     TESTPARAM ( 2, 4000, 15000, 20, true, 6000, "Matrix rows in main memory" );
 }
 
@@ -908,7 +908,7 @@ TESTSTATICS ( matrixMultiplyOpenMPTest, "Matrix multiplication with matrices bei
 
 matrixMultiplyOpenMPTest::matrixMultiplyOpenMPTest() : performanceTest<int, int> ( "MatrixMultiplyOpenMP" )
 {
-    TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
+    TESTPARAM ( 1, 10, 6000, 20, true, 4000, "Matrix size per dimension" );
     TESTPARAM ( 2, 4000, 15000, 20, true, 6000, "Matrix rows in main memory" );
 }
 
