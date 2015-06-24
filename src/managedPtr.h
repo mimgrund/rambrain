@@ -35,7 +35,7 @@ class adhereToConst;
                  const class* instance = instance##_glue;
 #define ADHERETOLOC(class,instance,locinstance) adhereTo<class> instance##_glue(instance);\
                  class* locinstance = instance##_glue;
-#define ADHERETOLOCCONST(class,instance,locinstance) adhereTo<class> instance##_glue(instance);\
+#define ADHERETOLOCCONST(class,instance,locinstance) adhereToConst<class> instance##_glue(instance);\
                  const class* locinstance = instance##_glue;
 
 
@@ -136,12 +136,12 @@ public:
         }
     }
 
-    bool prepareUse() {
+    bool prepareUse() const {
         managedMemory::defaultManager->prepareUse ( *chunk, true );
     };
 
     //Atomically sets use if tracker is not already set to true. returns whether we set use or not.
-    bool setUse ( bool writable = true, bool *tracker = false ) {
+    bool setUse ( bool writable = true, bool *tracker = false ) const {
         pthread_mutex_lock ( &mutex );
         if ( tracker )
             if ( !membrain_atomic_bool_compare_and_swap ( tracker, false, true ) ) {
@@ -153,7 +153,7 @@ public:
         return result;
     }
 
-    bool unsetUse ( unsigned int loaded = 1 ) {
+    bool unsetUse ( unsigned int loaded = 1 ) const {
         return managedMemory::defaultManager->unsetUse ( *chunk , loaded );
     }
 
@@ -203,7 +203,7 @@ private:
     managedMemoryChunk *chunk;
     unsigned int *tracker;
     unsigned int n_elem;
-    pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+    mutable pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
     template <class G>
     typename std::enable_if<std::is_class<G>::value>::type

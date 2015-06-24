@@ -18,6 +18,13 @@ membrainConfig config;
 
 managedMemory *managedMemory::defaultManager;
 
+#ifdef SWAPSTATS
+#ifdef LOGSTATS
+FILE *managedMemory::logFile = fopen ( "membrain-swapstats.log", "w" );
+bool managedMemory::firstLog = true;
+#endif
+#endif
+
 #ifdef PARENTAL_CONTROL
 memoryID const managedMemory::root = 1;
 memoryID managedMemory::parent = managedMemory::root;
@@ -28,8 +35,6 @@ pthread_t managedMemory::creatingThread ;
 bool managedMemory::haveCreatingThread = false;
 #endif
 memoryID const managedMemory::invalid = 0;
-
-
 
 
 pthread_mutex_t managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER;
@@ -53,25 +58,40 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
         throw incompleteSetupException ( "no swap manager defined" );
     }
 #ifdef SWAPSTATS
-    instance = this;
     signal ( SIGUSR1, sigswapstats );
+
+#ifdef LOGSTATS
+    if ( ! Timer::isRunning() ) {
+        Timer::startTimer ( 0L, 100000000L );
+    }
+#endif
 #endif
 }
 
 managedMemory::~managedMemory()
 {
+#ifdef SWAPSTATS
+#ifdef LOGSTATS
+    if ( previousManager == NULL ) {
+        Timer::stopTimer();
+
+        signal ( SIGUSR1, SIG_IGN );
+    }
+
+#endif
+#endif
 
     if ( defaultManager == this ) {
 
         defaultManager = previousManager;
     }
+
 #ifdef PARENTAL_CONTROL
     //Clean up objects:
     recursiveMfree ( root );
 #else
     linearMfree();
 #endif
-
 }
 
 
@@ -442,16 +462,25 @@ void managedMemory::printTree ( managedMemoryChunk *current, unsigned int nspace
         for ( unsigned int n = 0; n < nspaces; n++ ) {
             printf ( "  " );
         }
-        printf ( "(%d : size %d Bytes, atime %d, ", current->id, current->size, current->atime );
+        printf ( "(%d : size %lu Bytes, atime %d, ", current->id, current->size, current->atime );
         switch ( current->status ) {
         case MEM_ROOT:
             printf ( "Root Element" );
+            break;
+        case MEM_SWAPIN:
+            printf ( "Swapping in" );
+            break;
+        case MEM_SWAPOUT:
+            printf ( "Swapping out" );
             break;
         case MEM_SWAPPED:
             printf ( "Swapped out" );
             break;
         case MEM_ALLOCATED:
             printf ( "Allocated" );
+            break;
+        case MEM_ALLOCATED_INUSE:
+            printf ( "Allocated&inUse" );
             break;
         case MEM_ALLOCATED_INUSE_WRITE:
             printf ( "Allocated&inUse (writable)" );
@@ -529,15 +558,42 @@ void managedMemory::resetSwapstats()
     swap_hits = swap_misses = swap_in_bytes = swap_out_bytes = n_swap_in = n_swap_out = 0;
 }
 
-managedMemory *managedMemory::instance = NULL;
-void managedMemory::sigswapstats ( int signum )
+#define SAFESWAP(func) (defaultManager->swap != NULL ? defaultManager->swap->func : 0lu)
+
+//! @todo This does not work with MPI code since we need different outfiles then. Fix!
+void managedMemory::sigswapstats ( int )
 {
-    printf ( "%d\t%lu\t%lu\t%lu\t%lu\t%lu\t%lu\t%e\n", time ( NULL ), instance->swap_out_scheduled_bytes, instance->swap_out_bytes,
-             instance->swap_out_bytes - instance->swap_out_bytes_last, instance->swap_in_scheduled_bytes,
-             instance->swap_in_bytes,
-             instance->swap_in_bytes - instance->swap_in_bytes_last, ( double ) instance->swap_hits / instance->swap_misses );
-    instance->swap_out_bytes_last = instance->swap_out_bytes;
-    instance->swap_in_bytes_last = instance->swap_in_bytes;
+    if ( defaultManager == NULL ) {
+        return;
+    }
+
+    global_bytesize usedSwap = SAFESWAP ( getUsedSwap() );
+    global_bytesize totalSwap = SAFESWAP ( getSwapSize() );
+
+#ifdef LOGSTATS
+    if ( firstLog ) {
+        fprintf ( managedMemory::logFile, "#Time [ms]\tSwapped out [B]\tSwapped out last [B]\tSwapped in [B]\tSwapped in last [B]\tHits / Miss\tMemory Used [B]\t\
+                  Memory Used\tSwap Used [B]\tSwap Used\n" );
+        firstLog = false;
+    }
+    int64_t now = std::chrono::duration_cast<std::chrono::milliseconds> ( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
+    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", now, defaultManager->swap_out_bytes,
+              defaultManager->swap_out_bytes - defaultManager->swap_out_bytes_last,
+              defaultManager->swap_in_bytes,
+              defaultManager->swap_in_bytes - defaultManager->swap_in_bytes_last, ( double ) defaultManager->swap_hits / defaultManager->swap_misses,
+              defaultManager->memory_used, ( double ) defaultManager->memory_used / defaultManager->memory_max,
+              usedSwap, ( double ) usedSwap / totalSwap );
+    fflush ( logFile );
+#else
+    printf ( "%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", defaultManager->swap_out_bytes,
+             defaultManager->swap_out_bytes - defaultManager->swap_out_bytes_last,
+             defaultManager->swap_in_bytes,
+             defaultManager->swap_in_bytes - defaultManager->swap_in_bytes_last, ( double ) defaultManager->swap_hits / defaultManager->swap_misses,
+             defaultManager->memory_used, ( double ) defaultManager->memory_used / defaultManager->memory_max,
+             usedSwap, ( double ) usedSwap / totalSwap );
+#endif
+    defaultManager->swap_out_bytes_last = defaultManager->swap_out_bytes;
+    defaultManager->swap_in_bytes_last = defaultManager->swap_in_bytes;
 }
 #endif
 
@@ -549,6 +605,11 @@ void managedMemory::versionInfo()
 #else
     const char *swapstats = "without swapstats";
 #endif
+#ifdef LOGSTATS
+    const char *logstats = "with logstats";
+#else
+    const char *logstats = "Without logstats";
+#endif
 #ifdef PARENTAL_CONTROL
     const char *parentalcontrol = "with parental control";
 #else
@@ -556,8 +617,8 @@ void managedMemory::versionInfo()
 #endif
 
     infomsgf ( "compiled from %s\n\ton %s at %s\n\
-                \t%s , %s\n\
-    \n \t git diff\n%s\n", gitCommit, __DATE__, __TIME__, swapstats, parentalcontrol, gitDiff );
+                \t%s , %s , %s\n\
+    \n \t git diff\n%s\n", gitCommit, __DATE__, __TIME__, swapstats, logstats, parentalcontrol, gitDiff );
 
 
 }

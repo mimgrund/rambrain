@@ -9,6 +9,7 @@
 #include <sstream>
 #include <cstdlib>
 #include <map>
+#include <inttypes.h>
 
 #include "tester.h"
 
@@ -31,6 +32,7 @@ public:
     unsigned int steps;
     bool deltaLog;
     string name;
+    bool enabled = true;
 };
 
 
@@ -95,13 +97,14 @@ public:
 
 protected:
     virtual inline unsigned int getStepsForParam ( unsigned int varryParam ) {
-        return parameters[parameters.size() - varryParam - 1]->steps;
+        return parameters[varryParam]->steps;
     }
 
     virtual string getParamsString ( int varryParam, unsigned int step, const string &delimiter = " " );
     virtual string getTestOutfile ( int varryParam, unsigned int step );
     virtual void resultToTempFile ( int varryParam, unsigned int step, ofstream &file );
     virtual string generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn );
+    virtual void handleTimingInfos ( int varryParam, unsigned int step, unsigned int repetitions );
 
     virtual string generateMyGnuplotPlotPart ( const string &file, int paramColumn ) = 0;
 
@@ -193,5 +196,7 @@ TWOPARAMTEST ( matrixCleverTransposeOpenMPTest, int, int );
 TWOPARAMTEST ( matrixCleverBlockTransposeOpenMPTest, int, int );
 TWOPARAMTEST ( matrixMultiplyTest, int, int );
 TWOPARAMTEST ( matrixMultiplyOpenMPTest, int, int );
+TWOPARAMTEST ( matrixCopyTest, int, int );
+TWOPARAMTEST ( matrixCopyOpenMPTest, int, int );
 
 #endif // PERFORMANCETESTCLASSES_H

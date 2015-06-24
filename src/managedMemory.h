@@ -5,6 +5,14 @@
 #include <map>
 #include <pthread.h>
 
+#ifdef SWAPSTATS
+#include <signal.h>
+#ifdef LOGSTATS
+#include <chrono>
+#include "timer.h"
+#endif
+#endif
+
 #include "managedMemoryChunk.h"
 #include "exceptions.h"
 
@@ -142,13 +150,17 @@ protected:
     void claimTobefreed ( global_bytesize bytes, bool tobefreed );
     inline void waitForAIO();
     size_t memoryAlignment = 1;
+#ifdef LOGSTATS
+    //! @todo This will induce a serious issue in combination with MPI and a shared disk. How to handle that case?
+    static FILE *logFile;
+    static bool firstLog;
+#endif
+
 public:
     void printSwapstats();
     void resetSwapstats();
 
-    static void sigswapstats ( int signum );
-    static managedMemory *instance;
-
+    static void sigswapstats ( int sig );
 #endif
     static void versionInfo();
 };
