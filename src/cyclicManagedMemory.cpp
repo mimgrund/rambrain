@@ -53,14 +53,15 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
 {
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
     //Memory counting for what we account for:
+    pthread_mutex_lock ( &cyclicTopoLock );
     if ( chunk.status == MEM_SWAPPED || chunk.status == MEM_SWAPOUT ) {
 
     } else if ( chunk.preemptiveLoaded ) {
-        membrain_atomic_sub_fetch ( &preemptiveBytes, chunk.size );
+        preemptiveBytes -= chunk.size;
         chunk.preemptiveLoaded = false;
     }
 
-    pthread_mutex_lock ( &cyclicTopoLock );
+
     //Hook out element:
     if ( element->next == element ) {
         active = NULL;
@@ -95,7 +96,7 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
 {
     pthread_mutex_lock ( &cyclicTopoLock );
     if ( chunk.preemptiveLoaded ) { //This chunk was preemptively loaded
-        membrain_atomic_sub_fetch ( &preemptiveBytes, chunk.size );
+        preemptiveBytes -= chunk.size ;
         chunk.preemptiveLoaded = false;
     }
 
@@ -233,14 +234,15 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
                 }
                 active = endSwapin;
             }
-            pthread_mutex_unlock ( &cyclicTopoLock );
+
             preemptiveBytes += selectedReadinVol - actual_obj_size;
 
 #ifdef SWAPSTATS
-            membrain_atomic_add_fetch ( &swap_in_scheduled_bytes, selectedReadinVol );
+            swap_in_scheduled_bytes += selectedReadinVol;
             n_swap_in += 1;
 #endif
             VERBOSEPRINT ( "swapInBeforeReturn" );
+            pthread_mutex_unlock ( &cyclicTopoLock );
             return true;
         }
     } else {
@@ -258,11 +260,12 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             if ( counterActive->chunk->status == MEM_SWAPPED ) {
                 counterActive = active;
             }
-            pthread_mutex_unlock ( &cyclicTopoLock );
+
 #ifdef SWAPSTATS
-            membrain_atomic_add_fetch ( &swap_in_scheduled_bytes, chunk.size );
+            swap_in_scheduled_bytes += chunk.size;
             n_swap_in += 1;
 #endif
+            pthread_mutex_unlock ( &cyclicTopoLock );
             return true;
         } else {
             //Unlock mutex under which we were called, as we'll be throwing...
@@ -544,7 +547,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
     VERBOSEPRINT ( "swapOutReturn" );
     if ( swapSuccess ) {
 #ifdef SWAPSTATS
-        membrain_atomic_add_fetch ( &swap_out_scheduled_bytes, unload_size );
+        swap_out_scheduled_bytes += unload_size;
         n_swap_out += 1;
 #endif
         return ERR_SUCCESS;

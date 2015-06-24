@@ -5,6 +5,7 @@
 #include "common.h"
 #include "managedMemory.h"
 #include "membrain_atomics.h"
+
 namespace membrain
 {
 
@@ -38,13 +39,8 @@ public:
     void claimUsageof ( global_bytesize bytes, bool rambytes, bool used ) {
         managedMemory::defaultManager->claimUsageof ( bytes, rambytes, used );
         if ( !rambytes ) {
-            if ( used ) {
-                membrain_atomic_fetch_sub ( &swapFree, bytes );
-                membrain_atomic_fetch_add ( &swapUsed, bytes );
-            } else {
-                membrain_atomic_fetch_add ( &swapFree, bytes );
-                membrain_atomic_fetch_sub ( &swapUsed, bytes );
-            }
+            swapFree += ( used ? -bytes : bytes );
+            swapUsed += ( used ? bytes : -bytes );
         }
     };
     /** Function waits for all asynchronous IO to complete.

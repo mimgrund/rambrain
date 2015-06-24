@@ -616,21 +616,17 @@ bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLoc
 
 void membrain::managedMemory::claimUsageof ( membrain::global_bytesize bytes, bool rambytes, bool used )
 {
-    if ( used ) {
-        membrain_atomic_fetch_add ( rambytes ? &memory_used : &memory_swapped, bytes );
+    if ( rambytes ) {
+        memory_used += used ? bytes : - bytes ;
     } else {
-        membrain_atomic_fetch_sub ( rambytes ? &memory_used : &memory_swapped, bytes );
+        memory_swapped += used ? bytes : -bytes ;
     }
 
 }
 
 void membrain::managedMemory::claimTobefreed ( membrain::global_bytesize bytes, bool tobefreed )
 {
-    if ( tobefreed ) {
-        membrain_atomic_fetch_add ( &memory_tobefreed, bytes );
-    } else {
-        membrain_atomic_fetch_sub ( &memory_tobefreed, bytes );
-    }
+    memory_tobefreed += tobefreed ? bytes : -bytes;
 }
 
 

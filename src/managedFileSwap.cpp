@@ -6,7 +6,6 @@
 #include <sys/stat.h>
 #include "exceptions.h"
 #include "managedMemory.h"
-#include "membrain_atomics.h"
 #include <libaio.h>
 #include <signal.h>
 #include <sys/types.h>
@@ -223,12 +222,12 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
         if ( padded_size > freeChunk->size ) {
             return NULL;
         }
-        membrain_atomic_fetch_sub ( &swapFree, padded_size - size );
+        swapFree -= padded_size - size;
     }
 
     if ( freeChunk->size - padded_size < sizeof ( pageFileLocation ) ) { //Memory to manage free space exceeds free space (actually more than)
         //Thus, use the free chunk for your data.
-        membrain_atomic_fetch_sub ( &swapFree, freeChunk->size - padded_size ); //Account for not mallocable overhead, rest is done by claimUse
+        swapFree -= freeChunk->size - padded_size; //Account for not mallocable overhead, rest is done by claimUse
         freeChunk->size = size;
         return freeChunk;
     } else {
@@ -254,7 +253,7 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
         endIsReached = ( pagePtr->status == PAGE_END );
         global_offset goff = determineGlobalOffset ( *pagePtr );
         auto it = all_space.find ( goff );
-        //membrain_atomic_fetch_add ( &swapFree, pagePtr->size );
+
 
         //Delete possible pending aio_requests
         //Check whether we're about to be deleted
@@ -283,7 +282,7 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
         global_offset nextoff = ( it == all_space.end() ? swapSize : determineGlobalOffset ( * ( it->second ) ) );
         global_bytesize size = nextoff - goff;
         if ( pagePtr->size != size ) {
-            membrain_atomic_fetch_add ( &swapFree, size - pagePtr->size );
+            swapFree += size - pagePtr->size;
             pagePtr->size = size;
         };
 
@@ -412,8 +411,8 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
         ftruncate ( swapFiles[ref.file].fileno, neededSize );
         swapFiles[ref.file].currentSize = neededSize;
     }
-    membrain_atomic_fetch_add ( tracker, 1 );
-    membrain_atomic_fetch_add ( &totalSwapActionsQueued, 1 );
+    ++ ( *tracker );
+    ++totalSwapActionsQueued;
     ref.aio_ptr = new struct aiotracker;
 
     ref.aio_lock = 1;
@@ -462,7 +461,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         claimUsageof ( chunk->size, false, false );
         managedMemory::signalSwappingCond();
 #ifdef SWAPSTATS
-        membrain_atomic_fetch_add ( & ( managedMemory::defaultManager->swap_in_bytes ), chunk->size );
+        managedMemory::defaultManager->swap_in_bytes += chunk->size;
 #endif
         if ( lock ) {
             pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
@@ -480,7 +479,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         chunk->status = MEM_SWAPPED;
         claimUsageof ( chunk->size, true, false );
 #ifdef SWAPSTATS
-        membrain_atomic_fetch_add ( & ( managedMemory::defaultManager->swap_out_bytes ), chunk->size );
+        managedMemory::defaultManager->swap_out_bytes += chunk->size;
 #endif
         managedMemory::defaultManager->claimTobefreed ( chunk->size, false );
         managedMemory::signalSwappingCond();
@@ -565,13 +564,13 @@ void managedFileSwap::asyncIoArrived ( membrain::pageFileLocation *ref, io_event
         ref->aio_ptr = NULL;
         ref->aio_lock = 0;
 
-        int lastval = membrain_atomic_fetch_sub ( tracker, 1 );
+        int lastval = ( *tracker )--;
         if ( lastval == 1 ) {
             completeTransactionOn ( ref , false );
             delete tracker;
         }
 
-        membrain_atomic_fetch_sub ( &totalSwapActionsQueued, 1 ); //Do this at the very last line, as completeTransactionOn() has to be done beforehands.
+        --totalSwapActionsQueued; //Do this at the very last line, as completeTransactionOn() has to be done beforehands.
 
     } else {
 
@@ -593,7 +592,7 @@ void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf , bool reve
     global_bytesize offset = 0;
     int *tracker = new int;
     *tracker = 1;
-    membrain_atomic_fetch_add ( &totalSwapActionsQueued, 1 );
+    ++totalSwapActionsQueued;
     while ( true ) { //Sift through all pageChunks that have to be read
         scheduleCopy ( *cur, ( void * ) ( cramBuf + offset ), tracker, reverse );
         if ( cur->status == PAGE_END ) {//I have completely written this pageChunk.
@@ -602,8 +601,8 @@ void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf , bool reve
         offset += cur->size;
         cur = cur->glob_off_next.glob_off_next;
     };
-    unsigned int trval = membrain_atomic_fetch_sub ( tracker, 1 );
-    membrain_atomic_fetch_sub ( &totalSwapActionsQueued, 1 );
+    unsigned int trval = ( *tracker )--;
+    --totalSwapActionsQueued;
     if ( trval == 1 ) {
         completeTransactionOn ( cur , false ); //We already call having aquired the lock and know that nothing fatal happens
         delete tracker;
