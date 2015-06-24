@@ -513,9 +513,14 @@ bool managedFileSwap::checkForAIO()
     printf ( "checkForAIO called, we'll wait for an event, got %d in queue\n", totalSwapActionsQueued );
 #endif
     //As there's at least one pending transaction, we may wait blocking indefinitely:
-    pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
-    int no_arrived = io_getevents ( aio_context, 1, aio_max_transactions, aio_eventarr, NULL );
-    pthread_mutex_lock ( & ( managedMemory::stateChangeMutex ) );
+
+    int no_arrived = io_getevents ( aio_context, 0, aio_max_transactions, aio_eventarr, NULL );
+    if ( no_arrived == 0 ) {
+        pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
+        io_getevents ( aio_context, 0, aio_max_transactions, aio_eventarr, NULL );
+        pthread_mutex_lock ( & ( managedMemory::stateChangeMutex ) );
+    }
+
     if ( no_arrived < 0 ) {
         pthread_mutex_unlock ( &aioWaiterLock );
         printf ( "We got an error back: %d\n", -no_arrived );
