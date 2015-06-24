@@ -180,7 +180,7 @@ managedMemoryChunk *managedMemory::mmalloc ( global_bytesize sizereq )
     sizereq += sizereq % memoryAlignment == 0 ? 0 : memoryAlignment - sizereq % memoryAlignment; //f**k memoryAlignment
     ensureEnoughSpaceAndLockTopo ( sizereq );
 
-    membrain_atomic_fetch_add ( &memory_used, sizereq );
+    memory_used += sizereq;
 
     //We are left with enough free space to malloc.
 #ifdef PARENTAL_CONTROL
@@ -310,6 +310,8 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
 
 bool managedMemory::mrealloc ( memoryID id, global_bytesize sizereq )
 {
+
+    throw unfinishedCodeException ( "TODO: Locking, synchronizing, and everything" );
     managedMemoryChunk &chunk = resolveMemChunk ( id );
     if ( !setUse ( chunk ) ) {
         return false;
@@ -317,7 +319,7 @@ bool managedMemory::mrealloc ( memoryID id, global_bytesize sizereq )
     pthread_mutex_lock ( &stateChangeMutex );
     void *realloced = realloc ( chunk.locPtr, sizereq );
     if ( realloced ) {
-        membrain_atomic_fetch_sub ( &memory_used, chunk.size - sizereq );
+        memory_used -= chunk.size - sizereq;
         chunk.size = sizereq;
         chunk.locPtr = realloced;
         pthread_mutex_unlock ( &stateChangeMutex );
@@ -394,7 +396,7 @@ void managedMemory::mfree ( memoryID id )
         schedulerDelete ( *chunk );
         if ( chunk->status == MEM_ALLOCATED ) {
             _mm_free ( chunk->locPtr );
-            membrain_atomic_fetch_sub ( &memory_used, chunk->size );
+            memory_used -= chunk->size ;
         } else {
             swap->swapDelete ( chunk );
         }
@@ -420,7 +422,7 @@ void managedMemory::mfree ( memoryID id )
     schedulerDelete ( *chunk );
     if ( chunk->status == MEM_ALLOCATED ) {
         _mm_free ( chunk->locPtr );
-        membrain_atomic_fetch_sub ( &memory_used, chunk->size );
+        memory_used -= chunk->size ;
     } else {
         swap->swapDelete ( chunk );
     }
