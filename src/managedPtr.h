@@ -25,17 +25,16 @@ namespace membrain
 template <class T>
 class adhereTo;
 template <class T>
-class adhereToConst;
-
+using adhereToConst =   adhereTo<T> const;
 
 //Convenience macros
 #define ADHERETO(class,instance) adhereTo<class> instance##_glue(instance);\
                  class* instance = instance##_glue;
-#define ADHERETOCONST(class,instance) adhereToConst<class> instance##_glue(instance);\
+#define ADHERETOCONST(class,instance) const adhereTo<class> instance##_glue(instance);\
                  const class* instance = instance##_glue;
 #define ADHERETOLOC(class,instance,locinstance) adhereTo<class> instance##_glue(instance);\
                  class* locinstance = instance##_glue;
-#define ADHERETOLOCCONST(class,instance,locinstance) adhereToConst<class> instance##_glue(instance);\
+#define ADHERETOLOCCONST(class,instance,locinstance) const adhereTo<class> instance##_glue(instance);\
                  const class* locinstance = instance##_glue;
 
 
@@ -182,7 +181,7 @@ public:
         return loc[i];
     }
 
-    T *getLocPtr() {
+    T *getLocPtr() const {
         if ( chunk->status == MEM_ALLOCATED_INUSE_WRITE ) {
             return ( T * ) chunk->locPtr;
         } else {
@@ -272,8 +271,7 @@ template <class T>
 class adhereTo
 {
 public:
-    adhereTo ( const adhereTo<T> &ref ) {
-        this->data = ref.data;
+    adhereTo ( const adhereTo<T> &ref ) : data ( ref.data ) {
         loadedReadable = ref.loadedReadable;
         loadedWritable = ref.loadedWritable;
         if ( loadedWritable ) {
@@ -285,8 +283,7 @@ public:
 
     };
 
-    adhereTo ( managedPtr<T> &data, bool loadImidiately = false ) {
-        this->data = &data;
+    adhereTo ( const managedPtr<T> &data, bool loadImidiately = false ) : data ( &data ) {
         if ( loadImidiately ) {
             loadedReadable = true;
             data.prepareUse();
@@ -313,19 +310,22 @@ public:
         return *this;
     }
 
-    operator  T *() {
-        if ( !loadedWritable ) {
-            data->setUse ( true, &loadedWritable );
-        }
-        T *mdata = data->getLocPtr();
-        return mdata;
+    operator const T *() { //This one is needed as c++ refuses to pick operator const T *() const as a default in this case
+        return * ( ( const adhereTo * ) this );
     }
-    operator const T *() {
+    operator const T *() const {
         if ( !loadedReadable ) {
             data->setUse ( false, &loadedReadable );
         }
         return data->getConstLocPtr();
     }
+    operator  T *() {
+        if ( !loadedWritable ) {
+            data->setUse ( true, &loadedWritable );
+        }
+        return data->getLocPtr();
+    }
+
     ~adhereTo() {
         if ( loadedReadable ) {
             data->unsetUse();
@@ -335,67 +335,10 @@ public:
         }
     }
 private:
-    managedPtr<T> *data;
-
-    bool loadedWritable = false;
-    bool loadedReadable = false;
-
-    // Test classes
-    friend class ::adhereTo_Unit_LoadUnload_Test;
-    friend class ::adhereTo_Unit_LoadUnloadConst_Test;
-    friend class ::adhereTo_Unit_TwiceAdhered_Test;
-};
-template <class T>
-class adhereToConst
-{
-public:
-    adhereToConst ( const adhereTo<T> &ref ) {
-        this->data = ref.data;
-        loadedReadable = ref.loadedReadble;
-        if ( loadedReadable ) {
-            data->setUse ( false );
-        }
-
-    };
-
-    adhereToConst ( const managedPtr<T> &data, bool loadImidiately = false ) {
-        this->data = &data;
-        if ( loadImidiately ) {
-            loadedReadable = true;
-            data.prepareUse();
-        }
-
-    }
-
-    adhereToConst<T> &operator= ( const adhereTo<T> &ref ) {
-        if ( loadedReadable ) {
-            data->unsetUse();
-        }
-        this->data = ref.data;
-        loadedReadable = ref.loadedReadble;
-        if ( loadedReadable ) {
-            data->setUse ( loadedReadable );
-        }
-        return *this;
-    }
-
-
-    operator const T *() {
-        if ( !loadedReadable ) {
-            data->setUse ( false, &loadedReadable );
-        }
-        return data->getConstLocPtr();
-    }
-    ~adhereToConst() {
-        if ( loadedReadable ) {
-            data->unsetUse();
-        }
-
-    }
-private:
     const managedPtr<T> *data;
-    bool loadedReadable = false;
 
+    mutable bool loadedWritable = false;
+    mutable bool loadedReadable = false;
 
     // Test classes
     friend class ::adhereTo_Unit_LoadUnload_Test;
