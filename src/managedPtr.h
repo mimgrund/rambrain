@@ -339,7 +339,6 @@ private:
 
     bool loadedWritable = false;
     bool loadedReadable = false;
-    pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
     // Test classes
     friend class ::adhereTo_Unit_LoadUnload_Test;
