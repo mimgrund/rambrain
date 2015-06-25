@@ -574,25 +574,38 @@ void managedMemory::sigswapstats ( int )
 
 #ifdef LOGSTATS
     if ( firstLog ) {
-        fprintf ( managedMemory::logFile, "#Time [ms]\tSwapped out [B]\tSwapped out last [B]\tSwapped in [B]\tSwapped in last [B]\tHits / Miss\tMemory Used [B]\t\
+        fprintf ( managedMemory::logFile, "#Time [ms]\tPrep for swap out [B] \tSwapped out [B]\tSwapped out last [B]\tPrep for swap in [B] \tSwapped in [B]\tSwapped in last [B]\tHits / Miss\tMemory Used [B]\t\
                   Memory Used\tSwap Used [B]\tSwap Used\n" );
         firstLog = false;
     }
     int64_t now = std::chrono::duration_cast<std::chrono::milliseconds> ( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
-    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", now, defaultManager->swap_out_bytes,
+    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%lu\t%e\t%lu\t%e\n",
+              now,
+              defaultManager->swap_out_scheduled_bytes,
+              defaultManager->swap_out_bytes,
               defaultManager->swap_out_bytes - defaultManager->swap_out_bytes_last,
+              defaultManager->swap_in_scheduled_bytes,
               defaultManager->swap_in_bytes,
-              defaultManager->swap_in_bytes - defaultManager->swap_in_bytes_last, ( double ) defaultManager->swap_hits / defaultManager->swap_misses,
-              defaultManager->memory_used, ( double ) defaultManager->memory_used / defaultManager->memory_max,
-              usedSwap, ( double ) usedSwap / totalSwap );
+              defaultManager->swap_in_bytes - defaultManager->swap_in_bytes_last,
+              ( double ) defaultManager->swap_hits / defaultManager->swap_misses,
+              defaultManager->memory_used,
+              ( double ) defaultManager->memory_used / defaultManager->memory_max,
+              usedSwap,
+              ( double ) usedSwap / totalSwap );
     fflush ( logFile );
 #else
-    printf ( "%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n", defaultManager->swap_out_bytes,
+    printf ( "%lu\t%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%lu\t%e\t%lu\t%e\n",
+             defaultManager->swap_out_scheduled_bytes,
+             defaultManager->swap_out_bytes,
              defaultManager->swap_out_bytes - defaultManager->swap_out_bytes_last,
+             defaultManager->swap_in_scheduled_bytes,
              defaultManager->swap_in_bytes,
-             defaultManager->swap_in_bytes - defaultManager->swap_in_bytes_last, ( double ) defaultManager->swap_hits / defaultManager->swap_misses,
-             defaultManager->memory_used, ( double ) defaultManager->memory_used / defaultManager->memory_max,
-             usedSwap, ( double ) usedSwap / totalSwap );
+             defaultManager->swap_in_bytes - defaultManager->swap_in_bytes_last,
+             ( double ) defaultManager->swap_hits / defaultManager->swap_misses,
+             defaultManager->memory_used,
+             ( double ) defaultManager->memory_used / defaultManager->memory_max,
+             usedSwap,
+             ( double ) usedSwap / totalSwap );
 #endif
     defaultManager->swap_out_bytes_last = defaultManager->swap_out_bytes;
     defaultManager->swap_in_bytes_last = defaultManager->swap_in_bytes;
