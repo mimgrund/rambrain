@@ -197,6 +197,7 @@ protected:
 TWOPARAMTEST ( matrixTransposeTest, int, int );
 TWOPARAMTEST ( matrixCleverTransposeTest, int, int );
 TWOPARAMTEST ( matrixCleverTransposeOpenMPTest, int, int );
+TWOPARAMTEST ( matrixCleverBlockTransposeTest, int, int );
 TWOPARAMTEST ( matrixCleverBlockTransposeOpenMPTest, int, int );
 TWOPARAMTEST ( matrixMultiplyTest, int, int );
 TWOPARAMTEST ( matrixMultiplyOpenMPTest, int, int );

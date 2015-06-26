@@ -695,6 +695,122 @@ string matrixCleverTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string
 }
 
 
+TESTSTATICS ( matrixCleverBlockTransposeTest, "Same as cleverTranspose, but with blockwise multiplication" );
+
+matrixCleverBlockTransposeTest::matrixCleverBlockTransposeTest() : performanceTest<int, int> ( "MatrixCleverBlockTranspose" )
+{
+    TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
+}
+
+void matrixCleverBlockTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
+{
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
+
+    membrainglobals::config.resizeMemory ( mem );
+    membrainglobals::config.resizeSwap ( swapmem );
+
+
+    test.addTimeMeasurement();
+
+    // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
+
+    unsigned int rows_fetch = sqrt ( memlines * size / 2 );
+    unsigned int blocksize = rows_fetch * rows_fetch;
+
+    unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
+
+    //Blocks are rows_fetch² matrices stored in n_blocks² blocks.
+
+#define blockIdx(x,y) ((x/rows_fetch)*n_blocks+y/rows_fetch)
+#define inBlockX(x,y) (x%rows_fetch)
+#define inBlockY(x,y) (y%rows_fetch)
+#define inBlockIdx(x,y) (inBlockX(x,y)*rows_fetch+inBlockY(x,y))
+    // Allocate and set
+    managedPtr<double> *rows[n_blocks * n_blocks];
+    for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
+        for ( unsigned int ii = 0; ii < n_blocks; ii++ ) {
+            rows[ii * n_blocks + jj] = new managedPtr<double> ( blocksize );
+            adhereTo<double> adh ( *rows[ii * n_blocks + jj] );
+            double *locPtr = adh;
+            unsigned int i_lim = ( ii + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, vertical limit
+            unsigned int j_lim = rows_fetch;//( jj + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, horizontal limit
+            #pragma omp parallel for
+            for ( unsigned int i = 0; i < i_lim; i++ ) {
+                for ( unsigned int j = 0; j < j_lim; j++ ) {
+                    locPtr[i * rows_fetch + j] = ( ii * rows_fetch + i ) * size + ( j + rows_fetch * jj );
+                }
+            }
+        }
+    }
+    test.addTimeMeasurement();
+
+    for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
+        for ( unsigned int ii = 0; ii <= jj; ii++ ) {
+            //A_iijj <-> B_jjii
+
+            //Reserve rows ii and jj
+            unsigned int i_lim = ( ii + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, vertical limit
+            unsigned int j_lim = ( jj + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, horizontal limit
+
+            //Get rows A_ii** and B_jj** into memory:
+            adhereTo<double> aBlock ( *rows[ii * n_blocks + jj] );
+            adhereTo<double> bBlock ( *rows[jj * n_blocks + ii] );
+
+            double *aLoc = aBlock;
+            double *bLoc = bBlock;
+
+            #pragma omp parallel for
+            for ( unsigned int j = 0; j < j_lim; j++ ) {
+                for ( unsigned int i = 0; i < ( jj == ii ? j : i_lim ); i++ ) { //Inner block matrix transpose, vertical index in A
+                    //Inner block matrxi transpose, horizontal index in A
+                    double inter = aLoc[i * rows_fetch + j]; //Store inner element A_ij
+                    aLoc[i * rows_fetch + j] = bLoc[j * rows_fetch + i]; //Override with element of B_ji
+                    bLoc[j * rows_fetch + i] = inter; //set B_ji to former val of A_ij
+                }
+            }
+        }
+    }
+
+    test.addTimeMeasurement();
+
+#ifdef PTEST_CHECKS
+    for ( unsigned int i = 0; i < size; ++i ) {
+        for ( unsigned int j = 0; j < size; ++j ) {
+            unsigned int blckidx = blockIdx ( i, j );
+            unsigned int inblck = inBlockIdx ( i, j );
+            adhereTo<double> adh ( *rows[blckidx] );
+            double *loc = adh;
+            if ( loc[inblck] != j * size + i ) {
+                printf ( "Failed check!\n" );
+            }
+        }
+    }
+#endif
+
+    // Delete
+    #pragma omp parallel for
+    for ( unsigned int i = 0; i < n_blocks * n_blocks; ++i ) {
+        delete rows[i];
+    }
+
+    test.addTimeMeasurement();
+}
+
+string matrixCleverBlockTransposeTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
+}
+
+
 TESTSTATICS ( matrixCleverBlockTransposeOpenMPTest, "Same as cleverTranspose, but with OpenMP and blockwise multiplication" );
 
 matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverBlockTransposeOpenMP" )
