@@ -6,9 +6,8 @@
 using namespace membrain;
 
 TEST ( dummyManagedMemory, Unit_ThrowsExceptions )
-
 {
     dummyManagedMemory mgr;
 
-    EXPECT_THROW ( managedPtr<double> ichbinnichtexistent ( 1 ), memoryException );
+    EXPECT_THROW ( managedPtr<double> notexistant ( 1 ), memoryException );
 }

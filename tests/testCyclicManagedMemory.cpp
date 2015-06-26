@@ -532,3 +532,37 @@ TEST ( cyclicManagedMemory, Unit_HandleNestedObjects )
     }
     );
 }
+
+TEST ( cyclicManagedMemory, Unit_CleanupOfForgottenPointers )
+{
+    const unsigned int memsize = 10 * sizeof ( double );
+    const unsigned int swapmem = memsize * 10;
+
+    managedDummySwap *swap = new managedDummySwap ( swapmem );
+    cyclicManagedMemory *manager = new cyclicManagedMemory ( swap, memsize );
+
+    managedPtr<double> *A = new managedPtr<double> ( 10 );
+    {
+        adhereTo<double> loca ( *A );
+        double *a = loca;
+        for ( int i = 0; i < 10; ++i ) {
+            a[i] = 1.0 * i;
+        }
+    }
+
+    managedPtr<double> *B = new managedPtr<double> ( 10 );
+    {
+        adhereTo<double> locb ( *B );
+        double *b = locb;
+        for ( int i = 0; i < 10; ++i ) {
+            b[i] = 2.0 * i;
+        }
+    }
+
+    A = NULL;
+    B = NULL;
+
+    //! @todo if this is desired to crash do ASSERT_DEATH(..., "pure virtual method called")
+    ASSERT_NO_FATAL_FAILURE ( delete manager );
+    ASSERT_NO_FATAL_FAILURE ( delete swap );
+}

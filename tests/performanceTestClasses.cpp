@@ -1070,9 +1070,6 @@ void matrixCopyTest::actualTestMethod ( tester &test, int param1, int param2 )
 
     // Copy B = A
     for ( global_bytesize i = 0; i < size; ++i ) {
-        A[i] = new managedPtr<double> ( size );
-        B[i] = new managedPtr<double> ( size );
-
         adhereTo<double> adhA ( *A[i] );
         adhereTo<double> adhB ( *B[i] );
 
@@ -1164,9 +1161,6 @@ void matrixCopyOpenMPTest::actualTestMethod ( tester &test, int param1, int para
     // Copy B = A
     #pragma omp parallel for
     for ( global_bytesize i = 0; i < size; ++i ) {
-        A[i] = new managedPtr<double> ( size );
-        B[i] = new managedPtr<double> ( size );
-
         adhereTo<double> adhA ( *A[i] );
         adhereTo<double> adhB ( *B[i] );
 
@@ -1258,9 +1252,6 @@ void matrixDoubleCopyTest::actualTestMethod ( tester &test, int param1, int para
 
     // Copy B = A
     for ( global_bytesize i = 0; i < size; ++i ) {
-        A[i] = new managedPtr<double> ( size );
-        B[i] = new managedPtr<double> ( size );
-
         adhereTo<double> adhA ( *A[i] );
         adhereTo<double> adhB ( *B[i] );
 
@@ -1274,9 +1265,6 @@ void matrixDoubleCopyTest::actualTestMethod ( tester &test, int param1, int para
 
     // Copy A = B
     for ( global_bytesize i = 0; i < size; ++i ) {
-        A[i] = new managedPtr<double> ( size );
-        B[i] = new managedPtr<double> ( size );
-
         adhereTo<double> adhA ( *A[i] );
         adhereTo<double> adhB ( *B[i] );
 
@@ -1368,9 +1356,6 @@ void matrixDoubleCopyOpenMPTest::actualTestMethod ( tester &test, int param1, in
     // Copy B = A
     #pragma omp parallel for
     for ( global_bytesize i = 0; i < size; ++i ) {
-        A[i] = new managedPtr<double> ( size );
-        B[i] = new managedPtr<double> ( size );
-
         adhereTo<double> adhA ( *A[i] );
         adhereTo<double> adhB ( *B[i] );
 
@@ -1385,9 +1370,6 @@ void matrixDoubleCopyOpenMPTest::actualTestMethod ( tester &test, int param1, in
     // Copy A = B
     #pragma omp parallel for
     for ( global_bytesize i = 0; i < size; ++i ) {
-        A[i] = new managedPtr<double> ( size );
-        B[i] = new managedPtr<double> ( size );
-
         adhereTo<double> adhA ( *A[i] );
         adhereTo<double> adhB ( *B[i] );
 
