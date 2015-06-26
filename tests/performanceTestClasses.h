@@ -198,5 +198,7 @@ TWOPARAMTEST ( matrixMultiplyTest, int, int );
 TWOPARAMTEST ( matrixMultiplyOpenMPTest, int, int );
 TWOPARAMTEST ( matrixCopyTest, int, int );
 TWOPARAMTEST ( matrixCopyOpenMPTest, int, int );
+TWOPARAMTEST ( matrixDoubleCopyTest, int, int );
+TWOPARAMTEST ( matrixDoubleCopyOpenMPTest, int, int );
 
 #endif // PERFORMANCETESTCLASSES_H
