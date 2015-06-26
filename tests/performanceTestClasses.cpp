@@ -171,15 +171,21 @@ void performanceTest<>::resultToTempFile ( int varryParam, unsigned int step, of
     string line;
     while ( getline ( test, line ) ) {
         if ( line.find ( '#' ) == string::npos ) {
-            stringstream ss ( line );
-            vector<string> parts;
-            string part;
-            while ( getline ( ss, part, '\t' ) ) {
-                parts.push_back ( part );
-            }
+            vector<string> parts = splitString ( line, '\t' );
             file << parts[parts.size() - 2] << '\t';
         }
     }
+}
+
+vector<string> performanceTest<>::splitString ( const string &in, char delimiter )
+{
+    stringstream ss ( in );
+    vector<string> parts;
+    string part;
+    while ( getline ( ss, part, delimiter ) ) {
+        parts.push_back ( part );
+    }
+    return parts;
 }
 
 string performanceTest<>::generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn )
@@ -215,8 +221,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
 
     int initpos = timing.tellg();
     // Go through test output and get first pair of times
-    //! \todo this can be largely refactored
-    string testLine, timingLine;
+    string testLine;
     int measurements = 0, dataPoints = 0;
     unsigned long long starttimes[repetitions];
     for ( unsigned int r = 0; r < repetitions; ++r ) {
@@ -225,12 +230,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
 
     while ( getline ( test, testLine ) ) {
         if ( testLine.find ( '#' ) == string::npos ) {
-            stringstream ss ( testLine );
-            vector<string> testParts;
-            string testPart;
-            while ( getline ( ss, testPart, '\t' ) ) {
-                testParts.push_back ( testPart );
-            }
+            vector<string> testParts = splitString ( testLine, '\t' );
 
             ++ measurements;
             const unsigned int runCols = 4;
@@ -241,46 +241,11 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
                 unsigned long long end = strtoull ( testParts[r * runCols + 2].c_str(), &buf, 10 );
 
                 // No go through timing file and look for the matching lines there
-                vector<vector<string>> relevantTimingParts;
-                while ( getline ( timing, timingLine ) ) {
-                    if ( timingLine.find ( '#' ) == string::npos ) {
-                        stringstream ss ( timingLine );
-                        vector<string> timingParts;
-                        string timingPart;
-                        while ( getline ( ss, timingPart, '\t' ) ) {
-                            timingParts.push_back ( timingPart );
-                        }
-
-                        unsigned long long current = strtoull ( timingParts[0].c_str(), &buf, 10 );
-
-                        if ( current >= start && current <= end ) {
-                            relevantTimingParts.push_back ( timingParts );
-                        }
-                        if ( current > end ) {
-                            break;
-                        }
-                    }
-                }
+                vector<vector<string>> relevantTimingParts = getRelevantTimingParts ( timing, start, end );
 
                 // We have all stats for the current run segment, output this data to the temp file
-                if ( relevantTimingParts.size() > 0 ) {
-                    if ( starttimes[r] == 0LLu ) {
-                        starttimes[r] = strtoull ( relevantTimingParts.front() [0].c_str(), &buf, 10 );
-                    }
-                    for ( auto it = relevantTimingParts.begin(); it != relevantTimingParts.end(); ++it ) {
-                        const unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttimes[r];
-                        const unsigned long long mbOut = strtoul ( ( *it ) [1].c_str(), &buf, 10 ) / mib;
-                        const unsigned long long mbIn = strtoul ( ( *it ) [3].c_str(), &buf, 10 ) / mib;
-                        const unsigned long long mbUsed = strtoul ( ( *it ) [6].c_str(), &buf, 10 ) / mib;
-                        const unsigned long long mbSwapped = strtoul ( ( *it ) [8].c_str(), &buf, 10 ) / mib;
-
-                        out << relTime << " " << mbOut << " " << mbIn << " " << mbUsed << " " << mbSwapped << endl;
-                        ++ dataPoints;
-                    }
-                } else {
-                    out << 0 << " " << 0 << " " << 0 << " " << 0 << endl;
-                }
-                out << endl;
+                timingInfosToFile ( out, relevantTimingParts, starttimes[r] );
+                dataPoints += relevantTimingParts.size();
             }
         }
     }
@@ -290,18 +255,75 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     out.close();
 
     // Plot that thing
-
-    //! \todo again - this is code duplication -> refactor
     ofstream gnutemp ( "temp.gnuplot" );
     cout << "Generating output file " << timingFile << endl;
+
+    const int maxDataPoints = 50 * repetitions;
+    plotTimingInfos ( gnutemp, timingFile, tempFile, measurements, repetitions, dataPoints <= maxDataPoints );
+
+    gnutemp.close();
+
+    cout << "Calling gnuplot and displaying result" << endl;
+    system ( "gnuplot temp.gnuplot" );
+    system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
+    system ( ( "display " + timingFile + ".png &" ).c_str() );
+}
+
+vector<vector<string>> performanceTest<>::getRelevantTimingParts ( ifstream &in, unsigned long long start, unsigned long long end )
+{
+    vector<vector<string>> relevantTimingParts;
+    string timingLine;
+    char *buf;
+
+    while ( getline ( in, timingLine ) ) {
+        if ( timingLine.find ( '#' ) == string::npos ) {
+            vector<string> timingParts = splitString ( timingLine, '\t' );
+
+            unsigned long long current = strtoull ( timingParts[0].c_str(), &buf, 10 );
+
+            if ( current >= start && current <= end ) {
+                relevantTimingParts.push_back ( timingParts );
+            }
+            if ( current > end ) {
+                break;
+            }
+        }
+    }
+    return relevantTimingParts;
+}
+
+void performanceTest<>::timingInfosToFile ( ofstream &out, const vector<vector<string>> &relevantTimingParts, unsigned long long &starttime )
+{
+    if ( relevantTimingParts.size() > 0 ) {
+        char *buf;
+        if ( starttime == 0LLu ) {
+            starttime = strtoull ( relevantTimingParts.front() [0].c_str(), &buf, 10 );
+        }
+        for ( auto it = relevantTimingParts.begin(); it != relevantTimingParts.end(); ++it ) {
+            const unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttime;
+            const unsigned long long mbOut = strtoul ( ( *it ) [1].c_str(), &buf, 10 ) / mib;
+            const unsigned long long mbIn = strtoul ( ( *it ) [3].c_str(), &buf, 10 ) / mib;
+            const unsigned long long mbUsed = strtoul ( ( *it ) [6].c_str(), &buf, 10 ) / mib;
+            const unsigned long long mbSwapped = strtoul ( ( *it ) [8].c_str(), &buf, 10 ) / mib;
+
+            out << relTime << " " << mbOut << " " << mbIn << " " << mbUsed << " " << mbSwapped << endl;
+        }
+    } else {
+        out << 0 << " " << 0 << " " << 0 << " " << 0 << endl;
+    }
+    out << endl;
+}
+
+//! \todo what about hit/miss plot?
+void performanceTest<>::plotTimingInfos ( ofstream &gnutemp, const string &outname, const string &dataFile, unsigned int measurements, unsigned int repetitions, bool linesPoints )
+{
     gnutemp << "set terminal postscript eps enhanced color 'Helvetica,10'" << endl;
-    gnutemp << "set output \"" << timingFile << ".eps\"" << endl;
+    gnutemp << "set output \"" << outname << ".eps\"" << endl;
     gnutemp << "set xlabel \"Time [ms]\"" << endl;
     gnutemp << "set ylabel \"Swap Movement [MB]\"" << endl;
     gnutemp << "set title \"" << name << "\"" << endl;
 
-    const int maxDataPoints = 50 * repetitions;
-    if ( dataPoints <= maxDataPoints ) {
+    if ( linesPoints ) {
         gnutemp << "set style data linespoints" << endl;
     } else {
         gnutemp << "set style data lines" << endl;
@@ -310,34 +332,34 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
 
     gnutemp << "plot ";
     int c = 1;
-    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt 1";
-        if ( dataPoints < maxDataPoints ) {
+        gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt 1";
+        if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
         gnutemp << " lc " << c << " title \"Swapped out " << ( m + 1 ) << "\", \\" << endl;
     }
-    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt 1";
-        if ( dataPoints < maxDataPoints ) {
+        gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt 1";
+        if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
         gnutemp << " lc " << c << " title \"Swapped in " << ( m + 1 ) << "\", \\" << endl;
     }
-    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:4 lt 2";
-        if ( dataPoints < maxDataPoints ) {
+        gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:4 lt 2";
+        if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
         gnutemp << " lc " << c << " title \"Main Memory " << ( m + 1 ) << "\", \\" << endl;
     }
-    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:5 lt 2";
-        if ( dataPoints < maxDataPoints ) {
+        gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:5 lt 2";
+        if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
         gnutemp << " lc " << c << " title \"Swap Memory " << ( m + 1 ) << "\"";
@@ -346,14 +368,6 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
         }
         gnutemp << endl;
     }
-
-    //! \todo what about hit/miss plot?
-    gnutemp.close();
-
-    cout << "Calling gnuplot and displaying result" << endl;
-    system ( "gnuplot temp.gnuplot" );
-    system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
-    system ( ( "display " + timingFile + ".png &" ).c_str() );
 }
 
 
