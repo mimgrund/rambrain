@@ -215,10 +215,12 @@ private:
             //                 pthread_mutex_lock ( &managedMemory::parentalMutex );
             //             }
             // #endif
-
+            setUse();
             for ( unsigned int n = 0; n < n_elem; n++ ) {
                 ( ( ( G * ) chunk->locPtr ) + n )->~G();
             }
+            unsetUse();
+
             managedMemory::defaultManager->mfree ( chunk->id );
             // #ifdef PARENTAL_CONTROL
             //             if(iamSyncer){

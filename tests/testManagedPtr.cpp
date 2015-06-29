@@ -394,3 +394,45 @@ TEST ( managedPtr, Unit_ConcurrentUseAccessThree )
 }
 
 
+class destructorTracker
+{
+public:
+    destructorTracker() {
+        ++num_instances;    // Also do something in local memory to provoke SEGV if not correctly inited
+        arr[9] = 9;
+    }
+
+    ~destructorTracker() {
+        --num_instances;    // Also do something in local memory to provoke SEGV if not correctly loaded
+        arr[9] = 0;
+    }
+
+    static int num_instances;
+private:
+    double arr[10];
+
+};
+int destructorTracker::num_instances = 0;
+
+
+TEST ( managedPtr, Unit_CallDestructorIfSwapped )
+{
+    managedDummySwap swap ( sizeof ( destructorTracker ) * 2 );
+    cyclicManagedMemory managedMemory ( & swap, sizeof ( destructorTracker ) * 1.5 ) ;
+
+    managedPtr<destructorTracker> *ptr1 = new managedPtr<destructorTracker> ( 1 );
+    ASSERT_EQ ( 1, destructorTracker::num_instances );
+
+    //Swap out first one:
+    managedPtr<destructorTracker> *ptr2 = new managedPtr<destructorTracker> ( 1 );
+    ASSERT_EQ ( 2, destructorTracker::num_instances );
+
+    delete ptr2;
+    ASSERT_EQ ( 1, destructorTracker::num_instances );
+
+    delete ptr1;
+    ASSERT_EQ ( 0, destructorTracker::num_instances );
+
+}
+
+
