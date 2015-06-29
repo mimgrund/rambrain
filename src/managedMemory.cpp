@@ -374,7 +374,7 @@ bool managedMemory::Throw ( memoryException e )
 
 
 
-void managedMemory::mfree ( memoryID id )
+void managedMemory::mfree ( memoryID id, bool inCleanup )
 {
     pthread_mutex_lock ( &stateChangeMutex );
     managedMemoryChunk *chunk = memChunks[id];
@@ -393,7 +393,9 @@ void managedMemory::mfree ( memoryID id )
         return;
     }
     if ( chunk->id != root ) {
-        schedulerDelete ( *chunk );
+        if ( !inCleanup ) {
+            schedulerDelete ( *chunk );
+        }
         if ( chunk->status == MEM_ALLOCATED ) {
             _mm_free ( chunk->locPtr );
             memory_used -= chunk->size ;
@@ -419,7 +421,9 @@ void managedMemory::mfree ( memoryID id )
         }
     }
 #else
-    schedulerDelete ( *chunk );
+    if ( !inCleanup ) {
+        schedulerDelete ( *chunk );
+    }
     if ( chunk->status == MEM_ALLOCATED ) {
         _mm_free ( chunk->locPtr );
         memory_used -= chunk->size ;
@@ -511,7 +515,7 @@ void managedMemory::recursiveMfree ( memoryID id )
     managedMemoryChunk *next;
     do {
         if ( oldchunk->child != invalid ) {
-            recursiveMfree ( oldchunk->child );
+            recursiveMfree ( oldchunk->child , true );
         }
         if ( oldchunk->next != invalid ) {
             next = &resolveMemChunk ( oldchunk->next );
@@ -532,9 +536,12 @@ void managedMemory::linearMfree()
         return;
     }
     auto it = memChunks.begin();
-    do {
-        mfree ( it->first );
-    } while ( ++it != memChunks.end() );
+    memoryID old;
+    while ( it != memChunks.end() ) {
+        old = it->first;
+        ++it;
+        mfree ( old , true );
+    }
 }
 
 #endif

@@ -6,7 +6,9 @@
 #include "managedPtr.h"
 #include "managedDummySwap.h"
 #include "exceptions.h"
+#include <configreader.h>
 #include "tester.h"
+#include "membrainconfig.h"
 
 using namespace membrain;
 
@@ -328,15 +330,6 @@ TEST ( cyclicManagedMemory, Unit_RandomAllocation )
 }
 
 
-TEST ( cyclicManagedMemory, Unit_MissingPointerDeallocation )
-{
-    ASSERT_DEATH (
-        managedDummySwap swap ( 100 );
-        cyclicManagedMemory manager ( &swap, 100 );
-        managedPtr<double> *ptr = new managedPtr<double> ( 1 );
-        , "pure virtual method called" );
-}
-
 TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceForOneElement )
 {
     const unsigned int memsize = sizeof ( double ) / 2;
@@ -557,7 +550,9 @@ TEST ( cyclicManagedMemory, Unit_CleanupOfForgottenPointers )
     A = NULL;
     B = NULL;
 
-    //! @todo if this is desired to crash do ASSERT_DEATH(..., "pure virtual method called")
     ASSERT_NO_FATAL_FAILURE ( delete manager );
     ASSERT_NO_FATAL_FAILURE ( delete swap );
+
+    //This test breaks default manager.
+    membrain::membrainglobals::config.reinit();
 }

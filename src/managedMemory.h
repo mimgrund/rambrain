@@ -74,7 +74,7 @@ public:
 protected:
     managedMemoryChunk *mmalloc ( global_bytesize sizereq );
     bool mrealloc ( memoryID id, global_bytesize sizereq );
-    void mfree ( memoryID id );
+    void mfree ( membrain::memoryID id, bool inCleanup = false );
     managedMemoryChunk &resolveMemChunk ( const memoryID &id );
 
 
