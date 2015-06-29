@@ -508,7 +508,7 @@ TEST ( cyclicManagedMemory, Unit_HandleNestedObjects )
     for ( int i = 0, k = 1; i < 2; ++i, ++k ) {
     ASSERT_EQ ( 10.0 * k, locb[i].d1 );
 
-        adhereToConst<A> a1 ( locb[i].a1 );
+        const adhereTo<A> a1 ( locb[i].a1 );
         const A *loca1 = a1;
         for ( int j = 0; j < 2; ++j ) {
             ASSERT_EQ ( 100.0 * k * j, loca1[j].d );
@@ -518,7 +518,7 @@ TEST ( cyclicManagedMemory, Unit_HandleNestedObjects )
         ASSERT_EQ ( 20.0 * k, locb[i].d2 );
         ASSERT_EQ ( 30.0 * k, locb[i].d3 );
 
-        adhereToConst<A> a2 ( *locb[i].a2 );
+        const adhereTo<A> a2 ( *locb[i].a2 );
         const A *loca2 = a2;
         for ( int j = 0; j < 2; ++j ) {
             ASSERT_EQ ( 1000.0 * k * j, loca2[j].d );

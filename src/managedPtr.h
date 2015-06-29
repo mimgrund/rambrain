@@ -24,8 +24,7 @@ namespace membrain
 
 template <class T>
 class adhereTo;
-template <class T>
-using adhereToConst =   adhereTo<T> const;
+
 
 //Convenience macros
 #define ADHERETO(class,instance) adhereTo<class> instance##_glue(instance);\
@@ -206,27 +205,27 @@ private:
 
     template <class G>
     typename std::enable_if<std::is_class<G>::value>::type
-    mDelete (  ) {
+    mDelete (  ) const {
         if ( n_elem > 0 ) {
-// #ifdef PARENTAL_CONTROL
-//             //Start single threaded region:
-//             bool iamSyncer = false;
-//             if(membrain_atomic_bool_compare_and_swap(&managedMemory::threadSynced,false,true )){
-//                 iamSyncer = true;
-//                 pthread_mutex_lock ( &managedMemory::parentalMutex );
-//             }
-// #endif
+            // #ifdef PARENTAL_CONTROL
+            //             //Start single threaded region:
+            //             bool iamSyncer = false;
+            //             if(membrain_atomic_bool_compare_and_swap(&managedMemory::threadSynced,false,true )){
+            //                 iamSyncer = true;
+            //                 pthread_mutex_lock ( &managedMemory::parentalMutex );
+            //             }
+            // #endif
 
             for ( unsigned int n = 0; n < n_elem; n++ ) {
                 ( ( ( G * ) chunk->locPtr ) + n )->~G();
             }
             managedMemory::defaultManager->mfree ( chunk->id );
-// #ifdef PARENTAL_CONTROL
-//             if(iamSyncer){
-//
-//                 pthread_mutex_unlock ( &managedMemory::parentalMutex );
-//             }
-// #endif
+            // #ifdef PARENTAL_CONTROL
+            //             if(iamSyncer){
+            //
+            //                 pthread_mutex_unlock ( &managedMemory::parentalMutex );
+            //             }
+            // #endif
         }
         delete tracker;
     }
