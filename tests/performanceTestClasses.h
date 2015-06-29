@@ -103,8 +103,12 @@ protected:
     virtual string getParamsString ( int varryParam, unsigned int step, const string &delimiter = " " );
     virtual string getTestOutfile ( int varryParam, unsigned int step );
     virtual void resultToTempFile ( int varryParam, unsigned int step, ofstream &file );
+    virtual vector<string> splitString ( const string &in, char delimiter );
     virtual string generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn );
     virtual void handleTimingInfos ( int varryParam, unsigned int step, unsigned int repetitions );
+    virtual vector<vector<string>> getRelevantTimingParts ( ifstream &in, unsigned long long start, unsigned long long end );
+    virtual void timingInfosToFile ( ofstream &out, const vector<vector<string>> &relevantTimingParts, unsigned long long &starttime );
+    virtual void plotTimingInfos ( ofstream &gnutemp, const string &outname, const string &dataFile, unsigned int measurements, unsigned int repetitions, bool linesPoints );
 
     virtual string generateMyGnuplotPlotPart ( const string &file, int paramColumn ) = 0;
 
@@ -193,10 +197,13 @@ protected:
 TWOPARAMTEST ( matrixTransposeTest, int, int );
 TWOPARAMTEST ( matrixCleverTransposeTest, int, int );
 TWOPARAMTEST ( matrixCleverTransposeOpenMPTest, int, int );
+TWOPARAMTEST ( matrixCleverBlockTransposeTest, int, int );
 TWOPARAMTEST ( matrixCleverBlockTransposeOpenMPTest, int, int );
 TWOPARAMTEST ( matrixMultiplyTest, int, int );
 TWOPARAMTEST ( matrixMultiplyOpenMPTest, int, int );
 TWOPARAMTEST ( matrixCopyTest, int, int );
 TWOPARAMTEST ( matrixCopyOpenMPTest, int, int );
+TWOPARAMTEST ( matrixDoubleCopyTest, int, int );
+TWOPARAMTEST ( matrixDoubleCopyOpenMPTest, int, int );
 
 #endif // PERFORMANCETESTCLASSES_H

@@ -171,15 +171,21 @@ void performanceTest<>::resultToTempFile ( int varryParam, unsigned int step, of
     string line;
     while ( getline ( test, line ) ) {
         if ( line.find ( '#' ) == string::npos ) {
-            stringstream ss ( line );
-            vector<string> parts;
-            string part;
-            while ( getline ( ss, part, '\t' ) ) {
-                parts.push_back ( part );
-            }
+            vector<string> parts = splitString ( line, '\t' );
             file << parts[parts.size() - 2] << '\t';
         }
     }
+}
+
+vector<string> performanceTest<>::splitString ( const string &in, char delimiter )
+{
+    stringstream ss ( in );
+    vector<string> parts;
+    string part;
+    while ( getline ( ss, part, delimiter ) ) {
+        parts.push_back ( part );
+    }
+    return parts;
 }
 
 string performanceTest<>::generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn )
@@ -215,8 +221,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
 
     int initpos = timing.tellg();
     // Go through test output and get first pair of times
-    //! \todo this can be largely refactored
-    string testLine, timingLine;
+    string testLine;
     int measurements = 0, dataPoints = 0;
     unsigned long long starttimes[repetitions];
     for ( unsigned int r = 0; r < repetitions; ++r ) {
@@ -225,12 +230,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
 
     while ( getline ( test, testLine ) ) {
         if ( testLine.find ( '#' ) == string::npos ) {
-            stringstream ss ( testLine );
-            vector<string> testParts;
-            string testPart;
-            while ( getline ( ss, testPart, '\t' ) ) {
-                testParts.push_back ( testPart );
-            }
+            vector<string> testParts = splitString ( testLine, '\t' );
 
             ++ measurements;
             const unsigned int runCols = 4;
@@ -241,46 +241,11 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
                 unsigned long long end = strtoull ( testParts[r * runCols + 2].c_str(), &buf, 10 );
 
                 // No go through timing file and look for the matching lines there
-                vector<vector<string>> relevantTimingParts;
-                while ( getline ( timing, timingLine ) ) {
-                    if ( timingLine.find ( '#' ) == string::npos ) {
-                        stringstream ss ( timingLine );
-                        vector<string> timingParts;
-                        string timingPart;
-                        while ( getline ( ss, timingPart, '\t' ) ) {
-                            timingParts.push_back ( timingPart );
-                        }
-
-                        unsigned long long current = strtoull ( timingParts[0].c_str(), &buf, 10 );
-
-                        if ( current >= start && current <= end ) {
-                            relevantTimingParts.push_back ( timingParts );
-                        }
-                        if ( current > end ) {
-                            break;
-                        }
-                    }
-                }
+                vector<vector<string>> relevantTimingParts = getRelevantTimingParts ( timing, start, end );
 
                 // We have all stats for the current run segment, output this data to the temp file
-                if ( relevantTimingParts.size() > 0 ) {
-                    if ( starttimes[r] == 0LLu ) {
-                        starttimes[r] = strtoull ( relevantTimingParts.front() [0].c_str(), &buf, 10 );
-                    }
-                    for ( auto it = relevantTimingParts.begin(); it != relevantTimingParts.end(); ++it ) {
-                        const unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttimes[r];
-                        const unsigned long long mbOut = strtoul ( ( *it ) [2].c_str(), &buf, 10 ) / mib;
-                        const unsigned long long mbIn = strtoul ( ( *it ) [5].c_str(), &buf, 10 ) / mib;
-                        const unsigned long long mbUsed = strtoul ( ( *it ) [7].c_str(), &buf, 10 ) / mib;
-                        const unsigned long long mbSwapped = strtoul ( ( *it ) [10].c_str(), &buf, 10 ) / mib;
-
-                        out << relTime << " " << mbOut << " " << mbIn << " " << mbUsed << " " << mbSwapped << endl;
-                        ++ dataPoints;
-                    }
-                } else {
-                    out << 0 << " " << 0 << " " << 0 << " " << 0 << endl;
-                }
-                out << endl;
+                timingInfosToFile ( out, relevantTimingParts, starttimes[r] );
+                dataPoints += relevantTimingParts.size();
             }
         }
     }
@@ -290,18 +255,75 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     out.close();
 
     // Plot that thing
-
-    //! \todo again - this is code duplication -> refactor
     ofstream gnutemp ( "temp.gnuplot" );
     cout << "Generating output file " << timingFile << endl;
+
+    const int maxDataPoints = 50 * repetitions;
+    plotTimingInfos ( gnutemp, timingFile, tempFile, measurements, repetitions, dataPoints <= maxDataPoints );
+
+    gnutemp.close();
+
+    cout << "Calling gnuplot and displaying result" << endl;
+    system ( "gnuplot temp.gnuplot" );
+    system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
+    system ( ( "display " + timingFile + ".png &" ).c_str() );
+}
+
+vector<vector<string>> performanceTest<>::getRelevantTimingParts ( ifstream &in, unsigned long long start, unsigned long long end )
+{
+    vector<vector<string>> relevantTimingParts;
+    string timingLine;
+    char *buf;
+
+    while ( getline ( in, timingLine ) ) {
+        if ( timingLine.find ( '#' ) == string::npos ) {
+            vector<string> timingParts = splitString ( timingLine, '\t' );
+
+            unsigned long long current = strtoull ( timingParts[0].c_str(), &buf, 10 );
+
+            if ( current >= start && current <= end ) {
+                relevantTimingParts.push_back ( timingParts );
+            }
+            if ( current > end ) {
+                break;
+            }
+        }
+    }
+    return relevantTimingParts;
+}
+
+void performanceTest<>::timingInfosToFile ( ofstream &out, const vector<vector<string>> &relevantTimingParts, unsigned long long &starttime )
+{
+    if ( relevantTimingParts.size() > 0 ) {
+        char *buf;
+        if ( starttime == 0LLu ) {
+            starttime = strtoull ( relevantTimingParts.front() [0].c_str(), &buf, 10 );
+        }
+        for ( auto it = relevantTimingParts.begin(); it != relevantTimingParts.end(); ++it ) {
+            const unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttime;
+            const unsigned long long mbOut = strtoul ( ( *it ) [1].c_str(), &buf, 10 ) / mib;
+            const unsigned long long mbIn = strtoul ( ( *it ) [3].c_str(), &buf, 10 ) / mib;
+            const unsigned long long mbUsed = strtoul ( ( *it ) [6].c_str(), &buf, 10 ) / mib;
+            const unsigned long long mbSwapped = strtoul ( ( *it ) [8].c_str(), &buf, 10 ) / mib;
+
+            out << relTime << " " << mbOut << " " << mbIn << " " << mbUsed << " " << mbSwapped << endl;
+        }
+    } else {
+        out << 0 << " " << 0 << " " << 0 << " " << 0 << endl;
+    }
+    out << endl;
+}
+
+//! \todo what about hit/miss plot?
+void performanceTest<>::plotTimingInfos ( ofstream &gnutemp, const string &outname, const string &dataFile, unsigned int measurements, unsigned int repetitions, bool linesPoints )
+{
     gnutemp << "set terminal postscript eps enhanced color 'Helvetica,10'" << endl;
-    gnutemp << "set output \"" << timingFile << ".eps\"" << endl;
+    gnutemp << "set output \"" << outname << ".eps\"" << endl;
     gnutemp << "set xlabel \"Time [ms]\"" << endl;
     gnutemp << "set ylabel \"Swap Movement [MB]\"" << endl;
     gnutemp << "set title \"" << name << "\"" << endl;
 
-    const int maxDataPoints = 50 * repetitions;
-    if ( dataPoints <= maxDataPoints ) {
+    if ( linesPoints ) {
         gnutemp << "set style data linespoints" << endl;
     } else {
         gnutemp << "set style data lines" << endl;
@@ -310,34 +332,34 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
 
     gnutemp << "plot ";
     int c = 1;
-    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt 1";
-        if ( dataPoints < maxDataPoints ) {
+        gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt 1";
+        if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
         gnutemp << " lc " << c << " title \"Swapped out " << ( m + 1 ) << "\", \\" << endl;
     }
-    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt 1";
-        if ( dataPoints < maxDataPoints ) {
+        gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt 1";
+        if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
         gnutemp << " lc " << c << " title \"Swapped in " << ( m + 1 ) << "\", \\" << endl;
     }
-    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:4 lt 2";
-        if ( dataPoints < maxDataPoints ) {
+        gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:4 lt 2";
+        if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
         gnutemp << " lc " << c << " title \"Main Memory " << ( m + 1 ) << "\", \\" << endl;
     }
-    for ( int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
-        gnutemp << "'" << tempFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:5 lt 2";
-        if ( dataPoints < maxDataPoints ) {
+        gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:5 lt 2";
+        if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
         gnutemp << " lc " << c << " title \"Swap Memory " << ( m + 1 ) << "\"";
@@ -346,14 +368,6 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
         }
         gnutemp << endl;
     }
-
-    //! \todo what about hit/miss plot?
-    gnutemp.close();
-
-    cout << "Calling gnuplot and displaying result" << endl;
-    system ( "gnuplot temp.gnuplot" );
-    system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
-    system ( ( "display " + timingFile + ".png &" ).c_str() );
 }
 
 
@@ -671,6 +685,122 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
 }
 
 string matrixCleverTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
+}
+
+
+TESTSTATICS ( matrixCleverBlockTransposeTest, "Same as cleverTranspose, but with blockwise multiplication" );
+
+matrixCleverBlockTransposeTest::matrixCleverBlockTransposeTest() : performanceTest<int, int> ( "MatrixCleverBlockTranspose" )
+{
+    TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
+}
+
+void matrixCleverBlockTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
+{
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
+
+    membrainglobals::config.resizeMemory ( mem );
+    membrainglobals::config.resizeSwap ( swapmem );
+
+
+    test.addTimeMeasurement();
+
+    // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
+
+    unsigned int rows_fetch = sqrt ( memlines * size / 2 );
+    unsigned int blocksize = rows_fetch * rows_fetch;
+
+    unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
+
+    //Blocks are rows_fetch² matrices stored in n_blocks² blocks.
+
+#define blockIdx(x,y) ((x/rows_fetch)*n_blocks+y/rows_fetch)
+#define inBlockX(x,y) (x%rows_fetch)
+#define inBlockY(x,y) (y%rows_fetch)
+#define inBlockIdx(x,y) (inBlockX(x,y)*rows_fetch+inBlockY(x,y))
+    // Allocate and set
+    managedPtr<double> *rows[n_blocks * n_blocks];
+    for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
+        for ( unsigned int ii = 0; ii < n_blocks; ii++ ) {
+            rows[ii * n_blocks + jj] = new managedPtr<double> ( blocksize );
+            adhereTo<double> adh ( *rows[ii * n_blocks + jj] );
+            double *locPtr = adh;
+            unsigned int i_lim = ( ii + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, vertical limit
+            unsigned int j_lim = rows_fetch;//( jj + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, horizontal limit
+            #pragma omp parallel for
+            for ( unsigned int i = 0; i < i_lim; i++ ) {
+                for ( unsigned int j = 0; j < j_lim; j++ ) {
+                    locPtr[i * rows_fetch + j] = ( ii * rows_fetch + i ) * size + ( j + rows_fetch * jj );
+                }
+            }
+        }
+    }
+    test.addTimeMeasurement();
+
+    for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
+        for ( unsigned int ii = 0; ii <= jj; ii++ ) {
+            //A_iijj <-> B_jjii
+
+            //Reserve rows ii and jj
+            unsigned int i_lim = ( ii + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, vertical limit
+            unsigned int j_lim = ( jj + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, horizontal limit
+
+            //Get rows A_ii** and B_jj** into memory:
+            adhereTo<double> aBlock ( *rows[ii * n_blocks + jj] );
+            adhereTo<double> bBlock ( *rows[jj * n_blocks + ii] );
+
+            double *aLoc = aBlock;
+            double *bLoc = bBlock;
+
+            #pragma omp parallel for
+            for ( unsigned int j = 0; j < j_lim; j++ ) {
+                for ( unsigned int i = 0; i < ( jj == ii ? j : i_lim ); i++ ) { //Inner block matrix transpose, vertical index in A
+                    //Inner block matrxi transpose, horizontal index in A
+                    double inter = aLoc[i * rows_fetch + j]; //Store inner element A_ij
+                    aLoc[i * rows_fetch + j] = bLoc[j * rows_fetch + i]; //Override with element of B_ji
+                    bLoc[j * rows_fetch + i] = inter; //set B_ji to former val of A_ij
+                }
+            }
+        }
+    }
+
+    test.addTimeMeasurement();
+
+#ifdef PTEST_CHECKS
+    for ( unsigned int i = 0; i < size; ++i ) {
+        for ( unsigned int j = 0; j < size; ++j ) {
+            unsigned int blckidx = blockIdx ( i, j );
+            unsigned int inblck = inBlockIdx ( i, j );
+            adhereTo<double> adh ( *rows[blckidx] );
+            double *loc = adh;
+            if ( loc[inblck] != j * size + i ) {
+                printf ( "Failed check!\n" );
+            }
+        }
+    }
+#endif
+
+    // Delete
+    #pragma omp parallel for
+    for ( unsigned int i = 0; i < n_blocks * n_blocks; ++i ) {
+        delete rows[i];
+    }
+
+    test.addTimeMeasurement();
+}
+
+string matrixCleverBlockTransposeTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
     ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
@@ -1056,9 +1186,6 @@ void matrixCopyTest::actualTestMethod ( tester &test, int param1, int param2 )
 
     // Copy B = A
     for ( global_bytesize i = 0; i < size; ++i ) {
-        A[i] = new managedPtr<double> ( size );
-        B[i] = new managedPtr<double> ( size );
-
         adhereTo<double> adhA ( *A[i] );
         adhereTo<double> adhB ( *B[i] );
 
@@ -1108,7 +1235,7 @@ string matrixCopyTest::generateMyGnuplotPlotPart ( const string &file , int para
 
 TESTSTATICS ( matrixCopyOpenMPTest, "Copy one matrix onto another" );
 
-matrixCopyOpenMPTest::matrixCopyOpenMPTest() : performanceTest<int, int> ( "MatrixCopy" )
+matrixCopyOpenMPTest::matrixCopyOpenMPTest() : performanceTest<int, int> ( "MatrixCopyOpenMP" )
 {
     TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Matrix size per dimension" );
     TESTPARAM ( 2, 100, 10000, 20, true, 5000, "Matrix rows in main memory" );
@@ -1150,9 +1277,6 @@ void matrixCopyOpenMPTest::actualTestMethod ( tester &test, int param1, int para
     // Copy B = A
     #pragma omp parallel for
     for ( global_bytesize i = 0; i < size; ++i ) {
-        A[i] = new managedPtr<double> ( size );
-        B[i] = new managedPtr<double> ( size );
-
         adhereTo<double> adhA ( *A[i] );
         adhereTo<double> adhB ( *B[i] );
 
@@ -1166,6 +1290,21 @@ void matrixCopyOpenMPTest::actualTestMethod ( tester &test, int param1, int para
 
     test.addTimeMeasurement();
 
+#ifdef PTEST_CHECKS
+    #pragma omp parallel for
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        adhereTo<double> adhB ( *B[i] );
+
+        double *b = adhB;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            if ( b[j] != j ) {
+                printf ( "Failed check!\n" );
+            }
+        }
+    }
+#endif
+
     // Delete
     #pragma omp parallel for
     for ( global_bytesize i = 0; i < size; ++i ) {
@@ -1177,6 +1316,215 @@ void matrixCopyOpenMPTest::actualTestMethod ( tester &test, int param1, int para
 }
 
 string matrixCopyOpenMPTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
+}
+
+
+TESTSTATICS ( matrixDoubleCopyTest, "Copy one matrix onto another and back" );
+
+matrixDoubleCopyTest::matrixDoubleCopyTest() : performanceTest<int, int> ( "MatrixDoubleCopy" )
+{
+    TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 100, 10000, 20, true, 5000, "Matrix rows in main memory" );
+}
+
+void matrixDoubleCopyTest::actualTestMethod ( tester &test, int param1, int param2 )
+{
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
+
+    membrainglobals::config.resizeMemory ( mem );
+    membrainglobals::config.resizeSwap ( swapmem );
+
+
+    test.addTimeMeasurement();
+
+    // Allocate and set matrixes A, B
+    managedPtr<double> *A[size];
+    managedPtr<double> *B[size];
+
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        A[i] = new managedPtr<double> ( size );
+        B[i] = new managedPtr<double> ( size );
+
+        adhereTo<double> adhA ( *A[i] );
+
+        double *a = adhA;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            a[j] = j;
+        }
+    }
+
+    test.addTimeMeasurement();
+
+    // Copy B = A
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        adhereTo<double> adhA ( *A[i] );
+        adhereTo<double> adhB ( *B[i] );
+
+        double *a = adhA;
+        double *b = adhB;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            b[j] = a[j];
+        }
+    }
+
+    // Copy A = B
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        adhereTo<double> adhA ( *A[i] );
+        adhereTo<double> adhB ( *B[i] );
+
+        double *a = adhA;
+        double *b = adhB;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            a[j] = b[j];
+        }
+    }
+
+    test.addTimeMeasurement();
+
+#ifdef PTEST_CHECKS
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        adhereTo<double> adhB ( *B[i] );
+
+        double *b = adhB;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            if ( a[j] != j || b[j] != j ) {
+                printf ( "Failed check!\n" );
+            }
+        }
+    }
+#endif
+
+    // Delete
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        delete A[i];
+        delete B[i];
+    }
+
+    test.addTimeMeasurement();
+}
+
+string matrixDoubleCopyTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
+}
+
+
+TESTSTATICS ( matrixDoubleCopyOpenMPTest, "Copy one matrix onto another and back" );
+
+matrixDoubleCopyOpenMPTest::matrixDoubleCopyOpenMPTest() : performanceTest<int, int> ( "MatrixDoubleCopyOpenMP" )
+{
+    TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 100, 10000, 20, true, 5000, "Matrix rows in main memory" );
+}
+
+void matrixDoubleCopyOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
+{
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
+
+    membrainglobals::config.resizeMemory ( mem );
+    membrainglobals::config.resizeSwap ( swapmem );
+
+
+    test.addTimeMeasurement();
+
+    // Allocate and set matrixes A, B
+    managedPtr<double> *A[size];
+    managedPtr<double> *B[size];
+
+    #pragma omp parallel for
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        A[i] = new managedPtr<double> ( size );
+        B[i] = new managedPtr<double> ( size );
+
+        adhereTo<double> adhA ( *A[i] );
+
+        double *a = adhA;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            a[j] = j;
+        }
+    }
+
+    test.addTimeMeasurement();
+
+    // Copy B = A
+    #pragma omp parallel for
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        adhereTo<double> adhA ( *A[i] );
+        adhereTo<double> adhB ( *B[i] );
+
+        double *a = adhA;
+        double *b = adhB;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            b[j] = a[j];
+        }
+    }
+
+    // Copy A = B
+    #pragma omp parallel for
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        adhereTo<double> adhA ( *A[i] );
+        adhereTo<double> adhB ( *B[i] );
+
+        double *a = adhA;
+        double *b = adhB;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            a[j] = b[j];
+        }
+    }
+
+    test.addTimeMeasurement();
+
+#ifdef PTEST_CHECKS
+    #pragma omp parallel for
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        adhereTo<double> adhB ( *B[i] );
+
+        double *b = adhB;
+
+        for ( global_bytesize j = 0; j < size; ++j ) {
+            if ( a[j] != j || b[j] != j ) {
+                printf ( "Failed check!\n" );
+            }
+        }
+    }
+#endif
+
+    // Delete
+    #pragma omp parallel for
+    for ( global_bytesize i = 0; i < size; ++i ) {
+        delete A[i];
+        delete B[i];
+    }
+
+    test.addTimeMeasurement();
+}
+
+string matrixDoubleCopyOpenMPTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
     ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
