@@ -136,10 +136,11 @@ public:
 
     bool prepareUse() const {
         managedMemory::defaultManager->prepareUse ( *chunk, true );
+        return true;
     };
 
     //Atomically sets use if tracker is not already set to true. returns whether we set use or not.
-    bool setUse ( bool writable = true, bool *tracker = false ) const {
+    bool setUse ( bool writable = true, bool *tracker = NULL ) const {
         pthread_mutex_lock ( &mutex );
         if ( tracker )
             if ( !membrain_atomic_bool_compare_and_swap ( tracker, false, true ) ) {
