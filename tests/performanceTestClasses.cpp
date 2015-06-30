@@ -1549,7 +1549,7 @@ void measureThroughput::actualTestMethod ( tester &test, int bytesize , int load
     managedFileSwap swap ( bytesize * 2, "membrainswap-%d", 0, false );
     cyclicManagedMemory memory ( &swap, bytesize * 2 );
 
-    managedPtr<char> ptr[3] ( bytesize );
+    managedPtr<char> ptr[3] = {managedPtr<char> ptr ( bytesize ), managedPtr<char> ptr ( bytesize ), managedPtr<char> ptr ( bytesize ) };
     adhereTo<char> *adh[3];
 
     float rewritetimes = load < 0 ? 1 : ( float ) load / 100.;

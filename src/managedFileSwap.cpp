@@ -455,17 +455,15 @@ void *managedFileSwap::io_submit_worker ( void *ptr )
         while ( dhis->io_submit_requests.size() == 0 ) {
             pthread_cond_wait ( & ( dhis->io_submit_cond ), & ( dhis->io_submit_lock ) );
         }
-        struct iocb*&aio = dhis->io_submit_requests.front();
+        struct iocb *&aio = dhis->io_submit_requests.front();
         dhis->io_submit_requests.pop();
         pthread_mutex_unlock ( & ( dhis->io_submit_lock ) );
         if ( aio == 0 ) {
             break;
         }
-        printf ( "start\n" );
         if ( 1 != io_submit ( dhis->aio_context, 1, &aio ) ) {
             throw memoryException ( "Could not enqueue request" );
         }
-        printf ( "end\n" );
     } while ( true );
 }
 
