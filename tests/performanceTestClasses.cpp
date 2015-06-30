@@ -1552,7 +1552,7 @@ void measureThroughput::actualTestMethod ( tester &test, int bytesize , int load
     managedPtr<char> ptr[3] ( bytesize );
     adhereTo<char> *adh[3];
 
-    float rewritetimes = ( float ) load / 100.;
+    float rewritetimes = load < 0 ? 1 : ( float ) load / 100.;
     int iterations = 10000;
 
     adh[0] = new adhereTo<char> ( ptr[0] ); //Request element to prepare
@@ -1575,11 +1575,13 @@ void measureThroughput::actualTestMethod ( tester &test, int bytesize , int load
 
         high_resolution_clock::time_point t2 = high_resolution_clock::now();
         std::chrono::duration<double> compute = duration_cast<duration<double>> ( t2 - t1 );
-        std::chrono::duration<double> load = duration_cast<duration<double>> ( t1 - t0 );;
-        //rewritetimes*= load>compute?1.01:.99;
+        std::chrono::duration<double> loading = duration_cast<duration<double>> ( t1 - t0 );;
+        if ( load < 0 ) {
+            rewritetimes *= loading * 10 > compute ? 1.01 : .99;
+        }
 
         if ( i % 100 == 0 ) {
-            printf ( "%f load: %lf compute: %lf theoretically busy: %lf\% \n", rewritetimes, load, compute, compute / ( load + compute ) * 100. );
+            printf ( "%f load: %lf compute: %lf theoretically busy: %lf\% \n", rewritetimes, loading, compute, compute / ( loading + compute ) * 100. );
         }
         delete adh[use];
     }

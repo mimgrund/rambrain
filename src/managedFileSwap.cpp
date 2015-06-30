@@ -71,6 +71,11 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     }
     memset ( &aio_template, 0, sizeof ( aio_template ) );
     aio_template.aio_reqprio = 0;
+    io_submit_threads = ( pthread_t * ) malloc ( sizeof ( pthread_t ) * io_submit_num_threads );
+    for ( unsigned int n = 0; n < io_submit_num_threads; ++n )
+        if ( pthread_create ( io_submit_threads + n, NULL, &io_submit_worker, this ) ) {
+            throw memoryException ( "Could not create worker threads for aio" );
+        }
 }
 
 managedFileSwap::~managedFileSwap()
@@ -84,6 +89,14 @@ managedFileSwap::~managedFileSwap()
             delete it->second;
         } while ( ++it != all_space.end() );
     }
+    //Kill worker threads by issing suicidal command:
+    for ( unsigned int n = 0; n < io_submit_num_threads; ++n ) {
+        my_io_submit ( NULL );
+    }
+    for ( unsigned int n = 0; n < io_submit_num_threads; ++n ) {
+        pthread_join ( io_submit_threads[n], NULL );
+    }
+    free ( io_submit_threads );
 }
 
 
@@ -429,13 +442,42 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
     reverse ? io_prep_pread ( aio, fd, ramBuf, length, ref.offset ) : io_prep_pwrite ( aio, fd, ramBuf, length, ref.offset ); ///@todo: a potential vector read/write may be superior
 
     pendingAios[aio] = &ref;
-    int res = io_submit ( aio_context, 1, & ( aio ) );
-
-    if ( res != 1 ) {
-        throw memoryException ( "Could not enqueue request" );
-    }
+    my_io_submit ( aio );
+    //io_submit (aio_context,1,&(aio)) ;
 
 }
+
+void *managedFileSwap::io_submit_worker ( void *ptr )
+{
+    managedFileSwap *dhis = ( managedFileSwap * ) ptr;
+    do {
+        pthread_mutex_lock ( & ( dhis->io_submit_lock ) );
+        while ( dhis->io_submit_requests.size() == 0 ) {
+            pthread_cond_wait ( & ( dhis->io_submit_cond ), & ( dhis->io_submit_lock ) );
+        }
+        struct iocb*&aio = dhis->io_submit_requests.front();
+        dhis->io_submit_requests.pop();
+        pthread_mutex_unlock ( & ( dhis->io_submit_lock ) );
+        if ( aio == 0 ) {
+            break;
+        }
+        printf ( "start\n" );
+        if ( 1 != io_submit ( dhis->aio_context, 1, &aio ) ) {
+            throw memoryException ( "Could not enqueue request" );
+        }
+        printf ( "end\n" );
+    } while ( true );
+}
+
+
+void managedFileSwap::my_io_submit ( struct iocb *aio )
+{
+    pthread_mutex_lock ( &io_submit_lock );
+    io_submit_requests.push ( aio );
+    pthread_mutex_unlock ( &io_submit_lock );
+    pthread_cond_signal ( &io_submit_cond );
+}
+
 
 void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
 {
@@ -517,7 +559,7 @@ bool managedFileSwap::checkForAIO()
     int no_arrived = io_getevents ( aio_context, 0, aio_max_transactions, aio_eventarr, NULL );
     if ( no_arrived == 0 ) {
         pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
-        io_getevents ( aio_context, 0, aio_max_transactions, aio_eventarr, NULL );
+        no_arrived = io_getevents ( aio_context, 1, aio_max_transactions, aio_eventarr, NULL );
         pthread_mutex_lock ( & ( managedMemory::stateChangeMutex ) );
     }
 

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <map>
+#include <queue>
 #include <libaio.h>
 #include <signal.h>
 #include <unordered_map>
@@ -135,6 +136,8 @@ protected:
     void asyncIoArrived ( membrain::pageFileLocation *ref, struct io_event *aio );
     void completeTransactionOn ( membrain::pageFileLocation *ref, bool lock = true );
     virtual bool checkForAIO();
+    static void *checkForAIO ( void *ptr );
+
     struct iocb aio_template;
     io_context_t aio_context = 0;
     unsigned int aio_max_transactions = 1024;
@@ -150,6 +153,19 @@ protected:
 
     static managedFileSwap *instance;
     static void sigStat ( int signum );
+
+    //Thread pool for asynchronous io:
+    pthread_mutex_t io_submit_lock = PTHREAD_MUTEX_INITIALIZER;
+    pthread_cond_t io_submit_cond = PTHREAD_COND_INITIALIZER;
+    unsigned int io_submit_num_threads = 1;
+    pthread_t *io_submit_threads;
+    pthread_t io_waiter_thread;
+
+    std::queue<struct iocb *> io_submit_requests;
+
+    void my_io_submit ( struct iocb *aio );
+    static void *io_submit_worker ( void *ptr );
+
 };
 
 }
