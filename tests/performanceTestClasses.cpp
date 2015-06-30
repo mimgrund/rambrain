@@ -1,4 +1,5 @@
 #include "performanceTestClasses.h"
+#include <chrono>
 
 map<string, performanceTest<> *> performanceTest<>::testClasses;
 
@@ -1531,5 +1532,66 @@ string matrixDoubleCopyOpenMPTest::generateMyGnuplotPlotPart ( const string &fil
     ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
+}
+
+
+TESTSTATICS ( measureThroughput, "Measures throughput under load" );
+
+measureThroughput::measureThroughput() : performanceTest<int, int> ( "measureThroughput" )
+{
+    TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Byte size per used chunk" );
+    TESTPARAM ( 2, 1, 100, 1, true, 5000, "percentage of array that will be written to" );
+}
+
+void measureThroughput::actualTestMethod ( tester &test, int bytesize , int load )
+{
+    managedFileSwap swap ( bytesize * 2, "membrainswap-%d", 0, false );
+    cyclicManagedMemory memory ( &swap, bytesize * 2 );
+
+    managedPtr<char> ptr[3] ( bytesize );
+    adhereTo<char> *adh[3];
+
+    float rewritetimes = ( float ) load / 100.;
+    int iterations = 10000;
+
+    adh[0] = new adhereTo<char> ( ptr[0] ); //Request element to prepare
+
+    using namespace std::chrono;
+    for ( int i = 0; i < iterations; ++i ) {
+        unsigned int use = ( i % 3 );
+        unsigned int prepare = ( ( i + 1 ) % 3 );
+
+        high_resolution_clock::time_point t0 = high_resolution_clock::now();
+        adh[prepare] = new adhereTo<char> ( ptr[prepare] ); //Request element to prepare
+
+
+        char *loc = * ( adh[use] ); //Actually use the stuff.
+        high_resolution_clock::time_point t1 = high_resolution_clock::now();
+
+        for ( int r = 0; r < rewritetimes * bytesize; r++ ) {
+            loc[r % bytesize] = r * i;
+        }
+
+        high_resolution_clock::time_point t2 = high_resolution_clock::now();
+        std::chrono::duration<double> compute = duration_cast<duration<double>> ( t2 - t1 );
+        std::chrono::duration<double> load = duration_cast<duration<double>> ( t1 - t0 );;
+        //rewritetimes*= load>compute?1.01:.99;
+
+        if ( i % 100 == 0 ) {
+            printf ( "%f load: %lf compute: %lf theoretically busy: %lf\% \n", rewritetimes, load, compute, compute / ( load + compute ) * 100. );
+        }
+        delete adh[use];
+    }
+    printf ( "deleting %d\n", ( iterations ) % 3 );
+    char *loc = * ( adh[ ( iterations - 1 ) % 3] );
+    delete adh[ ( iterations - 1 ) % 3];
+    swap.waitForCleanExit();
+
+}
+string measureThroughput::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    stringstream ss;
+    ss << "plot 1" << endl;
     return ss.str();
 }
