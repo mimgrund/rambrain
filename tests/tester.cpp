@@ -23,6 +23,20 @@ void tester::addTimeMeasurement()
     timeMeasures.back().push_back ( t );
 }
 
+void tester::addExternalTime ( chrono::duration< double > mdur )
+{
+    if ( timeMeasures.back().size() == 0 ) {
+        std::chrono::high_resolution_clock::time_point t = std::chrono::high_resolution_clock::now();
+        timeMeasures.back().push_back ( t );
+    }
+
+    std::chrono::high_resolution_clock::time_point t = timeMeasures.back().back();
+    t += std::chrono::duration_cast< std::chrono::milliseconds > ( mdur );
+    timeMeasures.back().push_back ( t );
+
+}
+
+
 void tester::addComment ( const char *comment )
 {
     this->comment = std::string ( comment );

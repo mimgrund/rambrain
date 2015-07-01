@@ -16,6 +16,7 @@ public:
 
     void addParameter ( char *param );
     void addTimeMeasurement();
+    void addExternalTime ( std::chrono::duration<double> );
     void addComment ( const char *comment );
     void setSeed ( unsigned int seed = time ( NULL ) );
 
