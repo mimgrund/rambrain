@@ -1540,8 +1540,8 @@ TESTSTATICS ( measureThroughput, "Measures throughput under load" );
 
 measureThroughput::measureThroughput() : performanceTest<int, int> ( "measureThroughput" )
 {
-    TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Byte size per used chunk" );
-    TESTPARAM ( 2, 1, 100, 1, true, 5000, "percentage of array that will be written to" );
+    TESTPARAM ( 1, 1024, 1024000, 20, true, 1024000, "Byte size per used chunk" );
+    TESTPARAM ( 2, 1, 200, 20, true, 100, "percentage of array that will be written to" );
 }
 
 void measureThroughput::actualTestMethod ( tester &test, int bytesize , int load )
@@ -1549,7 +1549,7 @@ void measureThroughput::actualTestMethod ( tester &test, int bytesize , int load
     managedFileSwap swap ( bytesize * 2, "membrainswap-%d", 0, false );
     cyclicManagedMemory memory ( &swap, bytesize * 2 );
 
-    managedPtr<char> ptr[3] = {managedPtr<char> ptr ( bytesize ), managedPtr<char> ptr ( bytesize ), managedPtr<char> ptr ( bytesize ) };
+    managedPtr<char> ptr[3] = {managedPtr<char>  ( bytesize ), managedPtr<char>  ( bytesize ), managedPtr<char>  ( bytesize ) };
     adhereTo<char> *adh[3];
 
     float rewritetimes = load < 0 ? 1 : ( float ) load / 100.;
@@ -1557,43 +1557,57 @@ void measureThroughput::actualTestMethod ( tester &test, int bytesize , int load
 
     adh[0] = new adhereTo<char> ( ptr[0] ); //Request element to prepare
 
+    std::chrono::duration<double> allSetuse ( 0 );
+    std::chrono::duration<double> allPrepare ( 0 );
+    std::chrono::duration<double> allCalc ( 0 );
+
     using namespace std::chrono;
     for ( int i = 0; i < iterations; ++i ) {
         unsigned int use = ( i % 3 );
         unsigned int prepare = ( ( i + 1 ) % 3 );
 
+
+        //Important: First say what you will use, then say, what you will use next!
+
         high_resolution_clock::time_point t0 = high_resolution_clock::now();
-        adh[prepare] = new adhereTo<char> ( ptr[prepare] ); //Request element to prepare
-
-
         char *loc = * ( adh[use] ); //Actually use the stuff.
         high_resolution_clock::time_point t1 = high_resolution_clock::now();
+        if ( i != iterations - 1 ) {
+            adh[prepare] = new adhereTo<char> ( ptr[prepare] , true );    //Request element to prepare
+        }
+        high_resolution_clock::time_point t2 = high_resolution_clock::now();
 
         for ( int r = 0; r < rewritetimes * bytesize; r++ ) {
             loc[r % bytesize] = r * i;
         }
+        high_resolution_clock::time_point t3 = high_resolution_clock::now();
 
-        high_resolution_clock::time_point t2 = high_resolution_clock::now();
-        std::chrono::duration<double> compute = duration_cast<duration<double>> ( t2 - t1 );
-        std::chrono::duration<double> loading = duration_cast<duration<double>> ( t1 - t0 );;
+        std::chrono::duration<double> setuse = duration_cast<duration<double>> ( t1 - t0 );;
+        std::chrono::duration<double> preparet = duration_cast<duration<double>> ( t2 - t1 );
+        std::chrono::duration<double> calc = duration_cast<duration<double>> ( t3 - t2 );
         if ( load < 0 ) {
-            rewritetimes *= loading * 10 > compute ? 1.01 : .99;
+            rewritetimes *= ( preparet + setuse ) > calc ? 1.01 : .99;
         }
 
-        if ( i % 100 == 0 ) {
-            printf ( "%f load: %lf compute: %lf theoretically busy: %lf\% \n", rewritetimes, loading, compute, compute / ( loading + compute ) * 100. );
-        }
+        allSetuse += setuse;
+        allPrepare += preparet;
+        allCalc += calc;
         delete adh[use];
     }
-    printf ( "deleting %d\n", ( iterations ) % 3 );
-    char *loc = * ( adh[ ( iterations - 1 ) % 3] );
-    delete adh[ ( iterations - 1 ) % 3];
+    test.addExternalTime ( allSetuse );
+    test.addExternalTime ( allPrepare );
+    test.addExternalTime ( allCalc );
+
     swap.waitForCleanExit();
 
 }
 string measureThroughput::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot 1" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"SetUse\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Prepare\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Calculation\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($5*100/($3+$4+$5)) with lines title \"busy time in \%\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
