@@ -462,8 +462,12 @@ void *managedFileSwap::io_submit_worker ( void *ptr )
         if ( aio == 0 ) {
             break;
         }
-        if ( 1 != io_submit ( dhis->aio_context, 1, &aio ) ) {
-            throw memoryException ( "Could not enqueue request" );
+        int retcode = -EAGAIN;
+        while ( 1 != ( retcode = io_submit ( dhis->aio_context, 1, &aio ) ) ) {
+            if ( retcode != -EAGAIN ) {
+                throw memoryException ( "Could not enqueue request" );
+            }
+            usleep ( 10 );
         }
     } while ( true );
 }
