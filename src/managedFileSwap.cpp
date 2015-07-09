@@ -23,7 +23,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     if ( oneFile == 0 ) { // Layout this on your own:
 
         global_bytesize myg = size / 16;
-        oneFile = min ( gig, myg );
+        oneFile = min ( 4 * gig, myg );
         oneFile = max ( mib, oneFile );
     }
 
@@ -559,7 +559,9 @@ bool managedFileSwap::checkForAIO()
 #endif
     //As there's at least one pending transaction, we may wait blocking indefinitely:
 
-    int no_arrived = io_getevents ( aio_context, 0, aio_max_transactions, aio_eventarr, NULL );
+    int no_arrived;
+tryagain:
+    no_arrived = io_getevents ( aio_context, 0, aio_max_transactions, aio_eventarr, NULL );
     if ( no_arrived == 0 ) {
         pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
         no_arrived = io_getevents ( aio_context, 1, aio_max_transactions, aio_eventarr, NULL );
@@ -567,6 +569,9 @@ bool managedFileSwap::checkForAIO()
     }
 
     if ( no_arrived < 0 ) {
+        if ( no_arrived == -EINTR ) { //We've been interrupted by a system call
+            goto tryagain;
+        }
         pthread_mutex_unlock ( &aioWaiterLock );
         printf ( "We got an error back: %d\n", -no_arrived );
         throw memoryException ( "AIO Error" );
