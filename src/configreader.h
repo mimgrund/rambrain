@@ -48,6 +48,15 @@ struct configuration {
 
 /**
  * @brief Reader class to read in and properly parse config files
+ * A sample config file looks like following:\n
+ * [default]\n
+ * key1 = value1\n
+ * key2 = value2\n
+ * [binname1]\n
+ * key = value\n
+ * ...\n
+ * While keys are exactly the names of members of the configuration struct
+ * @note Comments can be inserted with leading hash
  */
 class configReader
 {
@@ -85,7 +94,7 @@ public:
     /**
      * @brief Simple getter
      */
-    inline bool readSuccessfully() {
+    inline bool readSuccessfully() const {
         return readSuccessfullyOnce;
     }
 
@@ -117,19 +126,19 @@ private:
      * @param key The key to be looked for
      * @return The value or ""
      */
-    string parseConfigLine ( const string &line, const string &key );
+    string parseConfigLine ( const string &line, const string &key ) const;
     /**
      * @brief Convert a string containing a swapPolicy to the enum value
      * @param line The source string
      * @return The enum value or autoextendable as default
      */
-    swapPolicy parseSwapPolicy ( const string &line );
+    swapPolicy parseSwapPolicy ( const string &line ) const;
 
     /**
      * @brief Extract the current binary's name out of the /proc file system
      * @return The name
      */
-    string getApplicationName();
+    string getApplicationName() const;
 
     const string globalConfigPath = "/etc/membrain.conf";
     const string localConfigPath = "~/.membrain.conf";

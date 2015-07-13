@@ -149,7 +149,7 @@ bool configReader::parseConfigBlock()
     return true;
 }
 
-string configReader::parseConfigLine ( const string &line, const string &key )
+string configReader::parseConfigLine ( const string &line, const string &key ) const
 {
     if ( line.substr ( 0, key.length() ) == key ) {
         unsigned int pos = key.length();
@@ -162,7 +162,7 @@ string configReader::parseConfigLine ( const string &line, const string &key )
     return "";
 }
 
-swapPolicy configReader::parseSwapPolicy ( const string &line )
+swapPolicy configReader::parseSwapPolicy ( const string &line ) const
 {
     if ( ! strcmp ( line.c_str(), "fixed" ) ) {
         return swapPolicy::fixed;
@@ -175,7 +175,7 @@ swapPolicy configReader::parseSwapPolicy ( const string &line )
     }
 }
 
-string configReader::getApplicationName()
+string configReader::getApplicationName() const
 {
     char exe[1024];
     int ret;
