@@ -272,7 +272,10 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
         //Check whether we're about to be deleted
 
         if ( pagePtr->aio_ptr ) { //Pending aio
-            while ( pagePtr->aio_lock != 0 ) {};
+            while ( pagePtr->aio_lock != 0 )
+                if ( !checkForAIO() ) {
+                    pthread_cond_wait ( &managedMemory::swappingCond, &managedMemory::defaultManager->stateChangeMutex );
+                };
         }
 
 
