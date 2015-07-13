@@ -68,6 +68,7 @@ bool configReader::readConfig()
         readSuccessfullyOnce = true;
         return true;
     } else {
+        readSuccessfullyOnce = false;
         return false;
     }
 }
