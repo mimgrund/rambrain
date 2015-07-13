@@ -19,7 +19,7 @@ class cyclicManagedMemory : public managedMemory
 {
 public:
     cyclicManagedMemory ( membrain::managedSwap *swap, membrain::global_bytesize size );
-    ~cyclicManagedMemory() ;
+    virtual ~cyclicManagedMemory() ;
 
     void printCycle();
     void printMemUsage();
