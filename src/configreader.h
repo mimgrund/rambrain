@@ -15,6 +15,13 @@ class configReader_Unit_ParseProgramName_Test;
 namespace membrain
 {
 
+enum class swapPolicy
+{
+    fixed,
+    autoextendable,
+    interactive
+};
+
 struct configuration {
 
     configuration();
@@ -25,6 +32,7 @@ struct configuration {
     string swapfiles = "membrainswap-%d";
     global_bytesize swapMemory;
     bool enableDMA = false;
+    swapPolicy policy = swapPolicy::autoextendable;
 };
 
 class configReader
@@ -53,6 +61,7 @@ private:
     bool parseConfigFile();
     bool parseConfigBlock();
     string parseConfigLine ( const string &line, const string &key );
+    swapPolicy parseSwapPolicy ( const string &line );
 
     string getApplicationName();
 

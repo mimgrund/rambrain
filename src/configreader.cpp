@@ -50,7 +50,7 @@ configuration::configuration()
         struct statvfs stats;
         statvfs ( exe, &stats );
 
-        swapMemory = min ( stats.f_bfree * stats.f_bsize / 2 , 100 * gig ); ///\todo overcome this limit when we've handled file handles...
+        swapMemory = stats.f_bfree * stats.f_bsize / 2;
     }
 }
 
@@ -140,6 +140,8 @@ bool configReader::parseConfigBlock()
             config.swapMemory = atoll ( line.c_str() );
         } else if ( ! ( value = parseConfigLine ( line, "enableDMA" ) ).empty() ) {
             config.enableDMA = strcmp ( line.c_str(), "true" ) == 0;
+        } else if ( ! ( value = parseConfigLine ( line, "swapPolicy" ) ).empty() ) {
+            config.policy = parseSwapPolicy ( line.c_str() );
         }
     }
 
@@ -157,6 +159,19 @@ string configReader::parseConfigLine ( const string &line, const string &key )
     }
 
     return "";
+}
+
+swapPolicy configReader::parseSwapPolicy ( const string &line )
+{
+    if ( ! strcmp ( line.c_str(), "fixed" ) ) {
+        return swapPolicy::fixed;
+    } else if ( ! strcmp ( line.c_str(), "autoextendable" ) ) {
+        return swapPolicy::autoextendable;
+    } else if ( ! strcmp ( line.c_str(), "interactive" ) ) {
+        return swapPolicy::interactive;
+    } else {
+        return swapPolicy::autoextendable;
+    }
 }
 
 string configReader::getApplicationName()
