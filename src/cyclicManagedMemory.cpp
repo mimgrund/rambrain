@@ -359,10 +359,10 @@ void cyclicManagedMemory::printCycle() const
         infomsg ( "No objects." );
         return;
     }
-    printf ( "%d (%s)<-counterActive\n", counterActive->chunk->id, ( counterActive->chunk->preemptiveLoaded ? "p" : " " ) );
-    printf ( "%d => %d => %d\n", counterActive->prev->chunk->id, counterActive->chunk->id, counterActive->next->chunk->id );
-    printf ( "%d (%s)<-active\n", active->chunk->id, ( active->chunk->preemptiveLoaded ? "p" : " " ) );
-    printf ( "%d => %d => %d\n", active->prev->chunk->id, active->chunk->id, active->next->chunk->id );
+    printf ( "%lu (%s)<-counterActive\n", counterActive->chunk->id, ( counterActive->chunk->preemptiveLoaded ? "p" : " " ) );
+    printf ( "%lu => %lu => %lu\n", counterActive->prev->chunk->id, counterActive->chunk->id, counterActive->next->chunk->id );
+    printf ( "%lu (%s)<-active\n", active->chunk->id, ( active->chunk->preemptiveLoaded ? "p" : " " ) );
+    printf ( "%lu => %lu => %lu\n", active->prev->chunk->id, active->chunk->id, active->next->chunk->id );
     printf ( "\n" );
     do {
         char  status[2];
@@ -394,9 +394,9 @@ void cyclicManagedMemory::printCycle() const
             break;
         }
         if ( atime == counterActive ) {
-            printf ( "%d (%s) %s <-counterActive\n", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
+            printf ( "%lu (%s) %s <-counterActive\n", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
         } else {
-            printf ( "%d (%s) %s \n", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
+            printf ( "%lu (%s) %s \n", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
         }
         atime = atime->next;
     } while ( atime != active );
@@ -481,7 +481,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
     cyclicAtime *moveEnd, *cleanFrom;
     moveEnd = NULL;
 
-    bool inSwappedSection = ( fromPos->chunk->status == MEM_SWAPPED | fromPos->chunk->status == MEM_SWAPOUT );
+    bool inSwappedSection = ( fromPos->chunk->status == MEM_SWAPPED || fromPos->chunk->status == MEM_SWAPOUT );
     bool doRoundtrip = fromPos == countPos;
 
 

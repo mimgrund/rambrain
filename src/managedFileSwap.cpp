@@ -56,10 +56,6 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
         all_space[n * pageFileSize] = pfloc;
     }
 
-    //Initialize Windows:
-    global_bytesize ws_ratio = pageFileSize / 16; ///\todo unhardcode that buddy
-    global_bytesize ws_max = 128 * mib; ///\todo  unhardcode that buddy
-
     instance = this;
     signal ( SIGUSR2, managedFileSwap::sigStat );
 
@@ -495,6 +491,8 @@ void *managedFileSwap::io_submit_worker ( void *ptr )
             usleep ( 10 );
         }
     } while ( true );
+
+    return NULL;
 }
 
 
@@ -650,13 +648,11 @@ void managedFileSwap::asyncIoArrived ( membrain::pageFileLocation *ref, io_event
 
     } else {
 
-        errmsgf ( "We have trouble in chunk %d, %d ; aio_size %d, size %d, transfer size %d", ref->glob_off_next.chunk->id, err, event->res, ref->size, event->obj->u.c.nbytes );
-        errmsgf ( "file-align %d, err %d, sizeWritten = %d", ref->offset % memoryAlignment, err, event->res );
+        errmsgf ( "We have trouble in chunk %lu, %d ; aio_size %lu, size %lu, transfer size %lu", ref->glob_off_next.chunk->id, err, event->res, ref->size, event->obj->u.c.nbytes );
+        errmsgf ( "file-align %lu, err %d, sizeWritten = %lu", ref->offset % memoryAlignment, err, event->res );
 
         ///@todo: find out if this may happen regularly or just in case of error.
     }
-
-
 }
 
 
@@ -715,12 +711,6 @@ void managedFileSwap::sigStat ( int signum )
             break;
         }
     } while ( ++it != instance->all_space.end() );
-    const char *text;
-    if ( free_space == instance->swapFree ) {
-        text = "sane";
-    } else {
-        text = "insane";
-    }
 
     printf ( "%ld\t%ld\t%ld\t%e\t%e\t%s\n", free_space, partend, fractured, ( ( double ) free_space ) / ( partend + fractured + free_space ), ( ( ( double ) ( total_space ) - ( partend + fractured + free_space ) ) / ( total_space ) ), ( free_space == instance->swapFree ? "sane" : "insane" ) );
 

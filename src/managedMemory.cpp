@@ -590,7 +590,7 @@ void managedMemory::sigswapstats ( int )
         firstLog = false;
     }
     int64_t now = std::chrono::duration_cast<std::chrono::milliseconds> ( std::chrono::high_resolution_clock::now().time_since_epoch() ).count();
-    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%lu\t%e\t%lu\t%e\n",
+    fprintf ( logFile, "%ld\t%lu\t%lu\t%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n",
               now,
               defaultManager->swap_out_scheduled_bytes,
               defaultManager->swap_out_bytes,
@@ -605,7 +605,7 @@ void managedMemory::sigswapstats ( int )
               ( double ) usedSwap / totalSwap );
     fflush ( logFile );
 #else
-    printf ( "%lu\t%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%lu\t%e\t%lu\t%e\n",
+    printf ( "%lu\t%lu\t%lu\t%lu\t%lu\t%lu\t%e\t%lu\t%e\t%lu\t%e\n",
              defaultManager->swap_out_scheduled_bytes,
              defaultManager->swap_out_bytes,
              defaultManager->swap_out_bytes - defaultManager->swap_out_bytes_last,

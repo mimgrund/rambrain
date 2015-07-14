@@ -20,7 +20,7 @@ int main ( int argc, char **argv )
         meminfo.getline ( line, 1024 );
     }
 
-    printf ( line );
+    printf ( "%s\n", line );
     long mbytes_avail;
 
     char *begin = NULL, *end = NULL;

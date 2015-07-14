@@ -169,7 +169,6 @@ TEST ( managedPtr, Unit_SmartPointery )
 
 TEST ( managedPtr, Unit_DeleteWhileInUse )
 {
-    ///\todo This test does not work, exception is handled by libc++ instead of gtest
     /*
      * Idea: Death test, do we want to let everything die at this point?
      * Ideally, we are not allowed to throw in a destructor. Doing it anyways terminates programm
@@ -215,7 +214,7 @@ TEST ( managedPtr, Unit_DirectAccessSwapped )
         ptr2[n] = 2 * n;
     }
 
-    for ( int n = 0; n < alloc; n++ ) {
+    for ( unsigned int n = 0; n < alloc; n++ ) {
         EXPECT_EQ ( n, ptr1[n] );
         EXPECT_EQ ( 2 * n, ptr2[n] );
     }

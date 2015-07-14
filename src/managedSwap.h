@@ -46,7 +46,9 @@ public:
     }
 
     //Caching Control.
-    virtual inline bool cleanupCachedElements ( membrain::global_bytesize minimum_size = 0 ) {}
+    virtual inline bool cleanupCachedElements ( membrain::global_bytesize minimum_size = 0 ) {
+        return true;
+    }
     virtual inline void invalidateCacheFor ( managedMemoryChunk &chunk ) {}
 
 protected:
