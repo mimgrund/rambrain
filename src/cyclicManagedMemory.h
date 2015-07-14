@@ -21,9 +21,9 @@ public:
     cyclicManagedMemory ( membrain::managedSwap *swap, membrain::global_bytesize size );
     virtual ~cyclicManagedMemory() ;
 
-    void printCycle();
-    void printMemUsage();
-    bool checkCycle();
+    void printCycle() const;
+    void printMemUsage() const;
+    bool checkCycle() const;
     ///\note not thread-safe - does not make sense to call it from different threads anyway
     ///\note returns previous value
     bool setPreemptiveLoading ( bool preemptive );
@@ -57,17 +57,6 @@ private:
 };
 
 #define MUTUAL_CONNECT(A,B) A->next = B; B->prev = A;
-
-
-/*Philosophy:
- *
- *
- *
- *
- *
- *
- *
- * */
 
 }
 

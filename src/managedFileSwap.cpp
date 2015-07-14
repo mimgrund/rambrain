@@ -403,11 +403,11 @@ global_bytesize managedFileSwap::swapOut ( managedMemoryChunk **chunklist, unsig
 }
 
 
-global_offset managedFileSwap::determineGlobalOffset ( const pageFileLocation &ref )
+global_offset managedFileSwap::determineGlobalOffset ( const pageFileLocation &ref ) const
 {
     return ref.file * pageFileSize + ref.offset;
 }
-pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, global_bytesize length )
+pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, global_bytesize length ) const
 {
     pageFileLocation pfLoc ( g_offset / pageFileSize, g_offset - pfLoc.file * pageFileSize, length, PAGE_UNKNOWN_STATE );
     return pfLoc;

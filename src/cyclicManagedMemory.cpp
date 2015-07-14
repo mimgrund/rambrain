@@ -150,7 +150,7 @@ bool cyclicManagedMemory::setPreemptiveLoading ( bool preemptive )
     preemtiveSwapIn = preemptive;
     return old;
 }
-void cyclicManagedMemory::printMemUsage()
+void cyclicManagedMemory::printMemUsage() const
 {
     global_bytesize claimed_use = swap->getUsedSwap();
     fprintf ( stderr, "%lu\t%lu=%lu\t%lu\n", memory_used, claimed_use, memory_swapped, preemptiveBytes );
@@ -278,7 +278,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 
 //Idea: swap out more than required, as the free space may be filled with premptive swap-ins
 
-bool cyclicManagedMemory::checkCycle()
+bool cyclicManagedMemory::checkCycle() const
 {
     pthread_mutex_lock ( &stateChangeMutex );
     pthread_mutex_lock ( &cyclicTopoLock );
@@ -350,7 +350,7 @@ bool cyclicManagedMemory::checkCycle()
 
 }
 
-void cyclicManagedMemory::printCycle()
+void cyclicManagedMemory::printCycle() const
 {
     cyclicAtime *atime = active;
     checkCycle();

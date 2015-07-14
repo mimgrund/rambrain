@@ -551,7 +551,7 @@ managedMemoryChunk &managedMemory::resolveMemChunk ( const memoryID &id )
 }
 
 #ifdef SWAPSTATS
-void managedMemory::printSwapstats()
+void managedMemory::printSwapstats() const
 {
     infomsgf ( "A total of %lu swapouts occured, writing out %lu bytes (%.3e Bytes/avg)\
           \n\tA total of %lu swapins occured, reading in %lu bytes (%.3e Bytes/avg)\
