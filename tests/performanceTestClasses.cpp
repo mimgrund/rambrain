@@ -1546,7 +1546,7 @@ measureThroughput::measureThroughput() : performanceTest<int, int> ( "measureThr
 
 void measureThroughput::actualTestMethod ( tester &test, int bytesize , int load )
 {
-    managedFileSwap swap ( bytesize * 2, "membrainswap-%d", 0, false );
+    managedFileSwap swap ( bytesize * 2, "membrainswap-%d-%d", 0, false );
     cyclicManagedMemory memory ( &swap, bytesize * 2 );
 
     managedPtr<char> ptr[3] = {managedPtr<char>  ( bytesize ), managedPtr<char>  ( bytesize ), managedPtr<char>  ( bytesize ) };

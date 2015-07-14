@@ -9,6 +9,8 @@
 #include <libaio.h>
 #include <signal.h>
 #include <unordered_map>
+#include <sys/types.h>
+#include <unistd.h>
 
 //Test classes
 class managedFileSwap_Unit_SwapAllocation_Test;
@@ -53,7 +55,8 @@ union glob_off_union {
 class pageFileLocation
 {
 public:
-    pageFileLocation ( unsigned int file, global_bytesize offset, global_bytesize size, pageChunkStatus status = PAGE_FREE ) : file ( file ), offset ( offset ), size ( size ), status ( status ), aio_ptr ( NULL ) {};
+    pageFileLocation ( unsigned int file, global_bytesize offset, global_bytesize size, pageChunkStatus status = PAGE_FREE ) :
+        file ( file ), offset ( offset ), size ( size ), status ( status ), aio_ptr ( NULL ) {}
     unsigned int file;
     global_bytesize offset;
     global_bytesize size;
