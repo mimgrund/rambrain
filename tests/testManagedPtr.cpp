@@ -8,6 +8,9 @@
 using namespace membrain;
 IGNORE_TEST_WARNINGS;
 
+/**
+ * @test Tests the behaviour if no memory manager is explicitely installed, ergo testing the fallback default
+ */
 TEST ( managedPtr, Unit_NoMemoryManager )
 {
     EXPECT_NO_THROW ( managedPtr<double> ptr1 ( 10 ) );
@@ -20,6 +23,9 @@ TEST ( managedPtr, Unit_NoMemoryManager )
 
 
 #ifdef PARENTAL_CONTROL
+/**
+ * @test Tests if parent is correctly assigned for the first pointer
+ */
 TEST ( managedPtr, Unit_ParentIDs )
 {
     managedDummySwap swap ( 100 );
@@ -31,6 +37,10 @@ TEST ( managedPtr, Unit_ParentIDs )
 }
 #endif
 
+
+/**
+ * @test Test manual set and unsetUse on a pointer and checks if the chunks are updated appropriately
+ */
 TEST ( managedPtr, Unit_ChunkInUse )
 {
     managedDummySwap swap ( 100 );
@@ -60,9 +70,12 @@ TEST ( managedPtr, Unit_ChunkInUse )
     ASSERT_EQ ( MEM_ALLOCATED_INUSE_READ, ptr.chunk->status );
 
     ptr.unsetUse();
-
 }
 
+
+/**
+ * @test Tests if a local pointer can be retreived or not if setUse is or is not done beforehand
+ */
 TEST ( managedPtr, Unit_GetLocPointer )
 {
     managedDummySwap swap ( 100 );
@@ -84,6 +97,9 @@ TEST ( managedPtr, Unit_GetLocPointer )
 }
 
 
+/**
+ * @test Checks if chunk stati are appropriately set when handling different types of adhereto
+ */
 TEST ( managedPtr, Unit_SmartPointery )
 {
     managedDummySwap swap ( 200 );
@@ -168,6 +184,9 @@ TEST ( managedPtr, Unit_SmartPointery )
 }
 
 
+/**
+ * @test Demonstrates how the application dies when a pointer is deleted while still in use
+ */
 TEST ( managedPtr, Unit_DeleteWhileInUse )
 {
     /*
@@ -183,6 +202,9 @@ TEST ( managedPtr, Unit_DeleteWhileInUse )
 }
 
 
+/**
+ * @test Tests direct access on a managedPtr (deprecated since not thread safe and slow!)
+ */
 TEST ( managedPtr, Unit_DirectAccess )
 {
     managedDummySwap swap ( 200 );
@@ -199,6 +221,9 @@ TEST ( managedPtr, Unit_DirectAccess )
 }
 
 
+/**
+ * @test Tests direct access in a more complex scenario (depcrecated since not thread safe and slow!)
+ */
 TEST ( managedPtr, Unit_DirectAccessSwapped )
 {
     const unsigned int alloc = 10u;
@@ -222,6 +247,9 @@ TEST ( managedPtr, Unit_DirectAccessSwapped )
 }
 
 
+/**
+ * @test Tests if classes can be managed properly
+ */
 TEST ( managedPtr, Unit_CreateAndInitialize )
 {
 
@@ -249,6 +277,9 @@ TEST ( managedPtr, Unit_CreateAndInitialize )
 }
 
 
+/**
+ * @test Tests the different constructors of managedPtr
+ */
 TEST ( managedPtr, Unit_PointerAllocation )
 {
     managedDummySwap swap ( 200 );
@@ -281,6 +312,9 @@ TEST ( managedPtr, Unit_PointerAllocation )
 }
 
 
+/**
+ * @test Tests if zero sized objects (while not usefull) can be handled
+ */
 TEST ( managedPtr, Unit_ZeroSizedObjects )
 {
     managedDummySwap swap ( 200 );
@@ -297,6 +331,9 @@ TEST ( managedPtr, Unit_ZeroSizedObjects )
 }
 
 
+/**
+ * @test Demonstrates why direct access if awfully slow in comparison to smart access via adhereto
+ */
 TEST ( managedPtr, Integration_DirectVsSmartAccess )
 {
     const unsigned int alloc = 20000u;
@@ -360,6 +397,11 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
     infomsgf ( "Direct access cost %g as much time as smart access", 1.0 * durations[1] / durations[0] );
 }
 
+
+/**
+ * @test Tests if parallel deleting of pointers work
+ * @todo Why is there no assert / expect here??
+ */
 TEST ( managedPtr, Unit_MultithreadingConcurrentCreateDelete )
 {
     managedDummySwap swap ( 2000 );
@@ -383,6 +425,11 @@ TEST ( managedPtr, Unit_MultithreadingConcurrentCreateDelete )
     }
 }
 
+
+/**
+ * @test Tests if concurrent access works properly while loading and unloading objects
+ * @todo Why is there no assert / expect here???
+ */
 TEST ( managedPtr, Unit_ConcurrentUseAccess )
 {
     managedDummySwap swap ( 800 );
@@ -392,7 +439,6 @@ TEST ( managedPtr, Unit_ConcurrentUseAccess )
 
     managedPtr<double> a ( 40 );
     managedPtr<double> b ( 40 );
-
 
     #pragma omp parallel for
     for ( int i = 0; i < 1000; ++i ) {
@@ -404,10 +450,14 @@ TEST ( managedPtr, Unit_ConcurrentUseAccess )
             ADHERETOLOC ( double, b, loc );
             loc[0] = i;
         }
-
     }
 }
 
+
+/**
+ * @test More complex scenario for concurrent access
+ * @todo There must be more to assert...
+ */
 TEST ( managedPtr, Unit_ConcurrentUseAccessThree )
 {
     managedDummySwap swap ( 1200 );
@@ -429,6 +479,9 @@ TEST ( managedPtr, Unit_ConcurrentUseAccessThree )
 }
 
 
+/**
+ * @brief Helper class to track construction and destruction
+ */
 class destructorTracker
 {
 public:
@@ -450,6 +503,9 @@ private:
 int destructorTracker::num_instances = 0;
 
 
+/**
+ * @test Tests if class constructors and destructors are called appropriately as the hierarchy dictates
+ */
 TEST ( managedPtr, Unit_CallDestructorIfSwapped )
 {
     managedDummySwap swap ( sizeof ( destructorTracker ) * 2 );
