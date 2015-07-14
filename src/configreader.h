@@ -17,6 +17,7 @@ namespace membrain
 
 /**
  * @brief An enumeration to regulate how the swap should define when it approaches it's set boundary
+ *
  * Can either keep the boundary fixed, extend it automatically as it needs or start an interactive shell to ask the user for advice
  */
 enum class swapPolicy
@@ -40,7 +41,8 @@ struct configuration {
     string memoryManager = "cyclicManagedMemory";
     global_bytesize memory;
     string swap = "managedFileSwap";
-    string swapfiles = "membrainswap-%d";
+    /** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
+    string swapfiles = "membrainswap-%d-%d";
     global_bytesize swapMemory;
     bool enableDMA = false;
     swapPolicy policy = swapPolicy::autoextendable;
@@ -48,6 +50,7 @@ struct configuration {
 
 /**
  * @brief Reader class to read in and properly parse config files
+ *
  * A sample config file looks like following:\n
  * [default]\n
  * key1 = value1\n
@@ -101,6 +104,7 @@ public:
 private:
     /**
      * @brief Open stream to config file
+     *
      * Order is Custom location > Local user space > Global config
      * @return Success
      */
@@ -108,6 +112,7 @@ private:
 
     /**
      * @brief Parse config file
+     *
      * Look for default block as well as block matching the current binary name (which has priority of course)
      * @return Success
      * @see parseConfigBlock()

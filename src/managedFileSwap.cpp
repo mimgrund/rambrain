@@ -112,7 +112,7 @@ void managedFileSwap::closeSwapFiles()
 
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
-        snprintf ( fname, 1024, filemask, n );
+        snprintf ( fname, 1024, filemask, getpid(), n );
         unlink ( fname );
     }
 
@@ -135,7 +135,7 @@ bool managedFileSwap::openSwapFiles()
 badjump:
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
         char fname[1024];
-        snprintf ( fname, 1024, filemask, n );
+        snprintf ( fname, 1024, filemask, getpid(), n );
         swapFiles[n].fileno = open ( fname, O_RDWR | O_TRUNC | O_CREAT | ( enableDMA ? O_DIRECT : 0 << 0 ), S_IRUSR | S_IWUSR );
         if ( swapFiles[n].fileno == -1 ) {
             if ( errno == EINVAL && n == 0 && enableDMA ) { //Probably happens because we have O_DIRECT set even though file system does not support this...

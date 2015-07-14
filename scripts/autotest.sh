@@ -6,8 +6,20 @@ branches=(master aio_merger)
 options=(PARENTAL_CONTROL) #what about dma? what about optimisation?
 processes=8
 
+if [ -z "$user" ]; then
+    echo "Please supply a username via command line parameter, aborting script..."
+    exit 1
+fi
+
 rm -rf cleanbrain
 git clone "$repodir" cleanbrain
+
+fail=$?
+if [ $fail -ne 0 ]; then
+    >&2 echo "Git failed to clone repository, aborting script..."
+    exit 2
+fi
+
 cd cleanbrain/build
 
 for branch in ${branches[@]}; do

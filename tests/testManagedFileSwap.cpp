@@ -14,7 +14,7 @@ TEST ( managedFileSwap, Unit_ManualSwapping ) //This screws default manager, as 
     const unsigned int dblamount = 100;
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
-    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
+    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d-%d" );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
@@ -49,7 +49,7 @@ TEST ( managedFileSwap, Unit_ManualMultiSwapping )
     const unsigned int dblamount = 100;
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
-    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
+    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d-%d" );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
@@ -93,7 +93,7 @@ TEST ( managedFileSwap, Unit_ManualSwappingDelete )
     const unsigned int dblamount = 100;
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
-    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
+    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d-%d" );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
@@ -129,7 +129,7 @@ TEST ( managedFileSwap, Unit_SimpleSwapping )
     const unsigned int swapsize = 10 * memsize;
 
     ASSERT_NO_THROW (
-        managedFileSwap swap ( swapsize, "membrainswap-%d" );
+        managedFileSwap swap ( swapsize, "membrainswap-%d-%d" );
         cyclicManagedMemory manager ( &swap, memsize );
 
         managedPtr<double> ptr1 ( 10 );
@@ -143,7 +143,7 @@ TEST ( managedFileSwap, Unit_SwapSize )
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
     const unsigned int memsize = dblsize * 1.5;
-    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
+    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d-%d" );
     cyclicManagedMemory manager ( &swap, memsize );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
@@ -192,7 +192,7 @@ TEST ( managedFileSwap, Integration_RandomAccess )
     tester test;
     test.setSeed();
 
-    managedFileSwap swap ( totalswap, "./membrainswap-%d", oneswap );
+    managedFileSwap swap ( totalswap, "./membrainswap-%d-%d", oneswap );
     cyclicManagedMemory manager ( &swap, oneswap );
 
     /*ASSERT_EQ ( 0, manager.getSwappedMemory() ); //Deallocated all pointers
@@ -251,7 +251,7 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
     tester test;
     test.setSeed();
 
-    managedFileSwap swap ( totalswap, "./membrainswap-%d", oneswap );
+    managedFileSwap swap ( totalswap, "./membrainswap-%d-%d", oneswap );
     cyclicManagedMemory manager ( &swap, oneswap );
 
     /*ASSERT_EQ ( 0, manager.getSwappedMemory() ); //Deallocated all pointers
@@ -317,10 +317,13 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
 {
     unsigned int oneswap = 1024 * 1024 * 16;
     unsigned int totalswap = 16 * oneswap;
-    managedFileSwap swap ( totalswap, "/tmp/membrainswap-%d", oneswap );
+    managedFileSwap swap ( totalswap, "/tmp/membrainswap-%d-%d", oneswap );
+    char firstname[70];
+    snprintf ( firstname, 70, "/tmp/membrainswap-%d-%d", getpid(), 0 );
+
     for ( int n = 0; n < 16; n++ ) {
         char fname[70];
-        snprintf ( fname, 70, "/tmp/membrainswap-%d", n );
+        snprintf ( fname, 70, "/tmp/membrainswap-%d-%d", getpid(), n );
         struct stat mstat;
         stat ( fname, &mstat );
         ASSERT_TRUE ( S_ISREG ( mstat.st_mode ) );
@@ -335,7 +338,7 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
         managedPtr<double> testarr ( 1024 ); //80% RAM full.
         for ( int n = 0; n < 16; n++ ) {
             char fname[70];
-            snprintf ( fname, 70, "/tmp/membrainswap-%d", n );
+            snprintf ( fname, 70, "/tmp/membrainswap-%d-%d", getpid(), n );
             struct stat mstat;
             stat ( fname, &mstat );
             ASSERT_TRUE ( S_ISREG ( mstat.st_mode ) );
@@ -344,12 +347,12 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
         }
         managedPtr<double> testarr2 ( 1024 ); //80% RAM full., swap out occurs.
         struct stat first;
-        stat ( "/tmp/membrainswap-0", &first );
+        stat ( firstname, &first );
         ASSERT_TRUE ( S_ISREG ( first.st_mode ) );
         ASSERT_EQ ( ( ( unsigned int ) ( ( 1024 * 1024 * 16 ) * swap.swapFileResizeFrac ) ), first.st_size ); // should be 1/16th pageFileSize
         for ( int n = 1; n < 16; n++ ) {
             char fname[70];
-            snprintf ( fname, 70, "/tmp/membrainswap-%d", n );
+            snprintf ( fname, 70, "/tmp/membrainswap-%d-%d", getpid(), n );
             struct stat mstat;
             stat ( fname, &mstat );
             ASSERT_TRUE ( S_ISREG ( mstat.st_mode ) );
@@ -358,12 +361,12 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
         }
         managedPtr<double> testarr3 ( 1024 );
         ASSERT_EQ ( 8 * 1024u * 2, manager.getSwappedMemory() );
-        stat ( "/tmp/membrainswap-0", &first );
+        stat ( firstname, &first );
         ASSERT_TRUE ( S_ISREG ( first.st_mode ) );
         ASSERT_EQ ( ( ( unsigned int ) ( ( 1024 * 1024 * 16 ) * swap.swapFileResizeFrac ) ), first.st_size ); //Size should not change.
         for ( int n = 1; n < 16; n++ ) {
             char fname[70];
-            snprintf ( fname, 70, "/tmp/membrainswap-%d", n );
+            snprintf ( fname, 70, "/tmp/membrainswap-%d-%d", getpid(), n );
             struct stat mstat;
             stat ( fname, &mstat );
             ASSERT_TRUE ( S_ISREG ( mstat.st_mode ) );
@@ -425,7 +428,7 @@ TEST ( managedFileSwap, Unit_SwapReadAllocatedChunk )
     const unsigned int oneswap = mib;
     const unsigned int dblamount = 10;
     const unsigned int arrsize = dblamount * sizeof ( double );
-    managedFileSwap swap ( oneswap, "/tmp/membrainswap-%d", oneswap );
+    managedFileSwap swap ( oneswap, "/tmp/membrainswap-%d-%d", oneswap );
     cyclicManagedMemory manager ( &swap, arrsize * 1.5 );
 
     managedPtr<double> ptr1 ( dblamount );
@@ -457,7 +460,7 @@ TEST ( managedFileSwap, Unit_SwapSingleIsland )
     const unsigned int dblamount = oneswap / sizeof ( double );
     const unsigned int smalldblamount = dblamount * .2;
     const unsigned int bigdblamount = dblamount - smalldblamount;
-    managedFileSwap swap ( oneswap, "/tmp/membrainswap-%d", oneswap );
+    managedFileSwap swap ( oneswap, "/tmp/membrainswap-%d-%d", oneswap );
     cyclicManagedMemory manager ( &swap, oneswap );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
@@ -498,7 +501,7 @@ TEST ( managedFileSwap, Unit_SwapNextAndSingleIsland )
     const unsigned int dblamount = oneswap / sizeof ( double );
     const unsigned int smalldblamount = dblamount * .1;
     const unsigned int bigdblamount = dblamount - 2 * smalldblamount;
-    managedFileSwap swap ( oneswap, "/tmp/membrainswap-%d", oneswap );
+    managedFileSwap swap ( oneswap, "/tmp/membrainswap-%d-%d", oneswap );
     cyclicManagedMemory manager ( &swap, oneswap );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
@@ -545,7 +548,7 @@ TEST ( managedFileSwap, Integration_MatrixTranspose )
     const unsigned int mem = size * sizeof ( double ) *  memlines;
     const unsigned int swapmem = size * size * sizeof ( double ) * 2;
 
-    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d" );
+    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d-%d" );
     cyclicManagedMemory manager ( &swap, mem );
 
     // Allocate and set
