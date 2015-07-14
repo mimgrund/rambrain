@@ -153,6 +153,7 @@ bool managedMemory::ensureEnoughSpaceAndLockTopo ( global_bytesize sizereq, mana
             if (  err != ERR_SUCCESS ) { //Execute swapOut in protected context
                 //We did not manage to swap out our stuff right away.
                 if ( memory_tobefreed == 0 ) { //If other memory is to be freed, perhaps other threads may continue?
+                    swap->cleanupCachedElements();
                     if ( outOfSwapIsFatal ) { //throw if user wants us to, otherwise wait indefinitely (ram-deadlock)
                         pthread_mutex_unlock ( &stateChangeMutex );
                         Throw ( memoryException ( "Could not swap memory" ) );
@@ -282,6 +283,7 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
     case MEM_SWAPIN: // Wait for object to appear
         if ( !waitForSwapin ( chunk, true ) ) {
             if ( ! ( chunk.status & MEM_ALLOCATED ) ) {
+                pthread_mutex_unlock ( &stateChangeMutex );
                 return false;
             }
         }
@@ -291,6 +293,7 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
     case MEM_ALLOCATED_INUSE_READ:
         if ( writeAccess ) {
             chunk.status = MEM_ALLOCATED_INUSE_WRITE;
+            swap->invalidateCacheFor ( chunk );
         }
     case MEM_ALLOCATED_INUSE_WRITE:
 
@@ -399,7 +402,8 @@ void managedMemory::mfree ( memoryID id, bool inCleanup )
         if ( chunk->status == MEM_ALLOCATED ) {
             _mm_free ( chunk->locPtr );
             memory_used -= chunk->size ;
-        } else {
+        }
+        if ( chunk->swapBuf ) {
             swap->swapDelete ( chunk );
         }
         managedMemoryChunk *pchunk = &resolveMemChunk ( chunk->parent );
@@ -427,7 +431,8 @@ void managedMemory::mfree ( memoryID id, bool inCleanup )
     if ( chunk->status == MEM_ALLOCATED ) {
         _mm_free ( chunk->locPtr );
         memory_used -= chunk->size ;
-    } else {
+    }
+    if ( chunk->swapBuf ) {
         swap->swapDelete ( chunk );
     }
 #endif
@@ -652,6 +657,7 @@ void managedMemory::signalSwappingCond()
 
 void managedMemory::waitForAIO()
 {
+
     if ( swap->checkForAIO() ) { //Some AIO has arrived...
         return;
     }

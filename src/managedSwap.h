@@ -57,6 +57,10 @@ public:
         return false;
     };
 
+    //Caching Control.
+    virtual bool cleanupCachedElements ( membrain::global_bytesize minimum_size = 0 ) {};
+    virtual void invalidateCacheFor ( managedMemoryChunk &chunk ) {};
+
 protected:
 
 

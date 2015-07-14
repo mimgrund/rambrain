@@ -159,7 +159,7 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemor
 
     /*Priority: -Use first free chunk that fits completely
      *          -Distribute over free locations
-                look for read-in memory that can be overwritten*/
+                -look for read-in memory that can be overwritten*/
     std::map<global_offset, pageFileLocation *>::iterator it = free_space.begin();
     pageFileLocation *found = NULL;
     do {
@@ -184,6 +184,14 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemor
             total_space -= total_space % memoryAlignment; // We have to pad splitted chunks.
             total_space += it->second->size;
         } while ( total_space < size && ++it != free_space.end() );
+        if ( total_space < size ) {
+            //Try to free cached elements:
+            global_bytesize bz = size - total_space;
+            if ( cleanupCachedElements ( bz ) ) {
+                total_space += bz;
+            }
+        }
+
 
         if ( total_space >= size ) { //We can concat enough free chunks to satisfy memory requirements
             it = free_space.begin();
@@ -260,6 +268,10 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
 
 void managedFileSwap::pffree ( pageFileLocation *pagePtr )
 {
+    /*if(pthread_mutex_trylock(&managedMemory::defaultManager->stateChangeMutex)==0){
+        throw memoryException("unprotected call detected");
+    }*/
+
     bool endIsReached = false;
     do { //We possibly need multiple frees.
         pageFileLocation *next = pagePtr->glob_off_next.glob_off_next;
@@ -332,8 +344,9 @@ void managedFileSwap::swapDelete ( managedMemoryChunk *chunk )
     if ( chunk->swapBuf ) { //Must not be swapped, as read-only access should lead to keeping the swapped out locs for the moment.
         pageFileLocation *loc = ( pageFileLocation * ) chunk->swapBuf;
         pffree ( loc );
+        chunk->swapBuf = NULL;
+        claimUsageof ( chunk->size, false, false );
     }
-    claimUsageof ( chunk->size, false, false );
 }
 
 global_bytesize managedFileSwap::swapIn ( managedMemoryChunk *chunk )
@@ -374,8 +387,17 @@ global_bytesize managedFileSwap::swapOut ( managedMemoryChunk *chunk )
         return chunk->size;    //chunk is or will be swapped
     }
     if ( chunk->swapBuf ) { //We already have a position to store to! (happens when read-only was triggered)
-        ///\todo implement swapOUt if we already hold a memory copy.
-        throw unfinishedCodeException ( "Swap out for read only memory chunk" );
+        //Nothing to do here, we have read the element and swapOut is trivial from our point of view
+
+        //We may just mark the chunk as swapped out.
+        _mm_free ( chunk->locPtr );
+        chunk->locPtr = NULL;
+        chunk->status = MEM_SWAPPED;
+        claimUsageof ( chunk->size, true, false );//Double booking :-)
+        claimUsageof ( chunk->size, false, true );
+        managedMemory::signalSwappingCond();
+        return chunk->size;
+
     } else {
         pageFileLocation *newAlloced = pfmalloc ( chunk->size, chunk );
         if ( newAlloced ) {
@@ -480,8 +502,8 @@ void managedFileSwap::my_io_submit ( struct iocb *aio )
 {
     pthread_mutex_lock ( &io_submit_lock );
     io_submit_requests.push ( aio );
-    pthread_mutex_unlock ( &io_submit_lock );
     pthread_cond_signal ( &io_submit_cond );
+    pthread_mutex_unlock ( &io_submit_lock );
 }
 
 
@@ -502,8 +524,6 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         if ( lock ) {
             pthread_mutex_lock ( &managedMemory::stateChangeMutex );
         }
-        pffree ( ( pageFileLocation * ) chunk->swapBuf );
-        chunk->swapBuf = NULL; // Not strictly required
         //if we have a user for this object, protect it from being swapped out again
         chunk->status = chunk->useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE_READ;
         claimUsageof ( chunk->size, false, false );
@@ -709,6 +729,36 @@ void managedFileSwap::sigStat ( int signum )
 
 }
 
+bool managedFileSwap::cleanupCachedElements ( global_bytesize minimum_size )
+{
+    //It would be way nicer to do this entirely within the knowledge of managedFileSwap,
+    //However, this is not performant. We will search for chunks that are allocated but have still cached swap space.
+
+    global_bytesize cleanedUp = 0;
+    auto it = managedMemory::defaultManager->memChunks.begin();
+    while ( ( minimum_size == 0 || cleanedUp < minimum_size ) && it != managedMemory::defaultManager->memChunks.end() ) {
+        managedMemoryChunk *chunk = it->second;
+        if ( chunk->status & MEM_ALLOCATED && chunk->swapBuf != NULL ) { // We may safely delete the pageFileLocation
+            cleanedUp += chunk->size;
+            pffree ( ( pageFileLocation * ) chunk->swapBuf );
+            chunk->swapBuf = NULL;
+        }
+        ++it;
+
+    }
+    if ( cleanedUp > minimum_size ) {
+        return true;
+    }
+    return false;
+}
+
+void managedFileSwap::invalidateCacheFor ( managedMemoryChunk &chunk )
+{
+    if ( chunk.swapBuf ) {
+        pffree ( ( pageFileLocation * ) chunk.swapBuf );
+        chunk.swapBuf = NULL;
+    }
+}
 
 
 }
