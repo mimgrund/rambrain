@@ -350,10 +350,12 @@ TEST ( managedPtr, Unit_MultithreadingConcurrentCreateDelete )
     }
 }
 
-TEST ( managedPtr, DISABLED_Unit_ConcurrentUseAccess )
+TEST ( managedPtr, Unit_ConcurrentUseAccess )
 {
     managedDummySwap swap ( 800 );
     cyclicManagedMemory managedMemory ( &swap, 400 );
+
+    managedMemory.setOutOfSwapIsFatal ( false ); //This may be needed by OMP programs
 
     managedPtr<double> a ( 40 );
     managedPtr<double> b ( 40 );
