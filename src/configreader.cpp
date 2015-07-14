@@ -50,7 +50,7 @@ configuration::configuration()
         struct statvfs stats;
         statvfs ( exe, &stats );
 
-        swapMemory = min ( stats.f_bfree * stats.f_bsize / 2 , 100 * gig ); ///\todo overcome this limit when we've handled file handles...
+        swapMemory = stats.f_bfree * stats.f_bsize / 2;
     }
 }
 
@@ -68,6 +68,7 @@ bool configReader::readConfig()
         readSuccessfullyOnce = true;
         return true;
     } else {
+        readSuccessfullyOnce = false;
         return false;
     }
 }
@@ -140,13 +141,15 @@ bool configReader::parseConfigBlock()
             config.swapMemory = atoll ( line.c_str() );
         } else if ( ! ( value = parseConfigLine ( line, "enableDMA" ) ).empty() ) {
             config.enableDMA = strcmp ( line.c_str(), "true" ) == 0;
+        } else if ( ! ( value = parseConfigLine ( line, "swapPolicy" ) ).empty() ) {
+            config.policy = parseSwapPolicy ( line.c_str() );
         }
     }
 
     return true;
 }
 
-string configReader::parseConfigLine ( const string &line, const string &key )
+string configReader::parseConfigLine ( const string &line, const string &key ) const
 {
     if ( line.substr ( 0, key.length() ) == key ) {
         unsigned int pos = key.length();
@@ -159,7 +162,20 @@ string configReader::parseConfigLine ( const string &line, const string &key )
     return "";
 }
 
-string configReader::getApplicationName()
+swapPolicy configReader::parseSwapPolicy ( const string &line ) const
+{
+    if ( ! strcmp ( line.c_str(), "fixed" ) ) {
+        return swapPolicy::fixed;
+    } else if ( ! strcmp ( line.c_str(), "autoextendable" ) ) {
+        return swapPolicy::autoextendable;
+    } else if ( ! strcmp ( line.c_str(), "interactive" ) ) {
+        return swapPolicy::interactive;
+    } else {
+        return swapPolicy::autoextendable;
+    }
+}
+
+string configReader::getApplicationName() const
 {
     char exe[1024];
     int ret;
