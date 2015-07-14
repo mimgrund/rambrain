@@ -121,7 +121,7 @@ void managedFileSwap::closeSwapFiles()
 void managedFileSwap::setDMA ( bool arg1 )
 {
     enableDMA = arg1;
-    memoryAlignment = arg1 ? 512 : 1; ///@todo: Perhaps dynamically detect block size of underlying fs
+    memoryAlignment = arg1 ? 512 : 1; //Dynamical detection is tricky if not impossible to solve in general
 }
 
 bool managedFileSwap::openSwapFiles()
