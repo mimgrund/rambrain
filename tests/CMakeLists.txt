@@ -12,7 +12,8 @@ file(GLOB TEST_SOURCES
 list(APPEND TEST_SOURCES "allTests.cpp")
 add_executable (membrain-tests ${TEST_SOURCES})
 add_custom_command(TARGET membrain-tests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries (membrain-tests gmock gtest pthread membrain)
+target_link_libraries (membrain-tests gmock gtest pthread membrain_static)
+
 
 file(GLOB TEST_SOURCES
         "test*.cpp"
@@ -20,7 +21,8 @@ file(GLOB TEST_SOURCES
 list(APPEND TEST_SOURCES "unitTests.cpp")
 add_executable (membrain-unittests ${TEST_SOURCES})
 add_custom_command(TARGET membrain-unittests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries (membrain-unittests gmock gtest pthread membrain)
+target_link_libraries (membrain-unittests gmock gtest pthread membrain_static)
+
 
 file(GLOB TEST_SOURCES
         "test*.cpp"
@@ -28,7 +30,8 @@ file(GLOB TEST_SOURCES
 list(APPEND TEST_SOURCES "integrationTests.cpp")
 add_executable (membrain-integrationtests ${TEST_SOURCES})
 add_custom_command(TARGET membrain-integrationtests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries (membrain-integrationtests gmock gtest pthread membrain)
+target_link_libraries (membrain-integrationtests gmock gtest pthread membrain_static)
+
 
 file(GLOB TEST_SOURCES
         "performanceTests.cpp"
@@ -37,7 +40,8 @@ file(GLOB TEST_SOURCES
 )
 add_executable(membrain-performancetests ${TEST_SOURCES})
 add_custom_command(TARGET membrain-performancetests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries (membrain-performancetests pthread membrain)
+target_link_libraries (membrain-performancetests pthread membrain_static)
+
 
 file(GLOB TEST_SOURCES
         "performanceTestsWrapper.cpp"
@@ -46,7 +50,8 @@ file(GLOB TEST_SOURCES
 )
 add_executable(membrain-performancetestswrapper ${TEST_SOURCES})
 add_custom_command(TARGET membrain-performancetestswrapper PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries (membrain-performancetestswrapper pthread membrain)
+target_link_libraries (membrain-performancetestswrapper pthread membrain_static)
+
 
 file(GLOB TEST_SOURCES
         "memeater.cpp"
