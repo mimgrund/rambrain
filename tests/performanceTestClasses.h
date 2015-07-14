@@ -205,6 +205,6 @@ TWOPARAMTEST ( matrixCopyTest, int, int );
 TWOPARAMTEST ( matrixCopyOpenMPTest, int, int );
 TWOPARAMTEST ( matrixDoubleCopyTest, int, int );
 TWOPARAMTEST ( matrixDoubleCopyOpenMPTest, int, int );
-TWOPARAMTEST ( measureThroughput, int, int );
+TWOPARAMTEST ( measureThroughputTest, int, int );
 
 #endif // PERFORMANCETESTCLASSES_H

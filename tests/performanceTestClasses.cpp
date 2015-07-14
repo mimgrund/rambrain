@@ -1536,18 +1536,18 @@ string matrixDoubleCopyOpenMPTest::generateMyGnuplotPlotPart ( const string &fil
 }
 
 
-TESTSTATICS ( measureThroughput, "Measures throughput under load" );
+TESTSTATICS ( measureThroughputTest, "Measures throughput under load" );
 
-measureThroughput::measureThroughput() : performanceTest<int, int> ( "measureThroughput" )
+measureThroughputTest::measureThroughputTest() : performanceTest<int, int> ( "MeasureThroughput" )
 {
     TESTPARAM ( 1, 1024, 1024000, 20, true, 1024000, "Byte size per used chunk" );
     TESTPARAM ( 2, 1, 200, 20, true, 100, "percentage of array that will be written to" );
 }
 
-void measureThroughput::actualTestMethod ( tester &test, int bytesize , int load )
+void measureThroughputTest::actualTestMethod ( tester &test, int bytesize , int load )
 {
-    managedFileSwap swap ( bytesize * 2, "membrainswap-%d-%d", 0, false );
-    cyclicManagedMemory memory ( &swap, bytesize * 2 );
+    membrainglobals::config.resizeMemory ( bytesize * 2 );
+    membrainglobals::config.resizeSwap ( bytesize * 2 );
 
     managedPtr<char> ptr[3] = {managedPtr<char>  ( bytesize ), managedPtr<char>  ( bytesize ), managedPtr<char>  ( bytesize ) };
     adhereTo<char> *adh[3];
@@ -1597,11 +1597,8 @@ void measureThroughput::actualTestMethod ( tester &test, int bytesize , int load
     test.addExternalTime ( allSetuse );
     test.addExternalTime ( allPrepare );
     test.addExternalTime ( allCalc );
-
-    swap.waitForCleanExit();
-
 }
-string measureThroughput::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+string measureThroughputTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
     ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"SetUse\", \\" << endl;
