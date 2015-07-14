@@ -655,6 +655,7 @@ void managedMemory::waitForAIO()
     if ( swap->checkForAIO() ) { //Some AIO has arrived...
         return;
     }
+    //Some other thread waits for us, we just linger around to see the result:
     pthread_cond_wait ( &swappingCond, &stateChangeMutex );
 }
 
