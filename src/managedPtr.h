@@ -81,26 +81,27 @@ public:
         an object class hierarchy. In this way, the parent argument from below is correct.
         This is synced by basically checking wether we should be a master or not based on a possibly setted threadID...
         **/
-        bool iamSyncer = false;
-        if ( managedMemory::haveCreatingThread ) {
-            //We have a 'master thread' that tries to create a class hierarchy
-            //If we are this thread, we continue without locking, as this would be a deadlock
-            if ( !pthread_equal ( pthread_self(), managedMemory::creatingThread ) ) {
+
+        bool iamSyncer;
+        if ( pthread_mutex_trylock ( &managedMemory::parentalMutex ) == 0 ) {
+            //Could lock
+            iamSyncer = true;
+        } else {
+            //Could not lock. Perhaps, I already have a lock:
+            if ( pthread_equal ( pthread_self(), managedMemory::creatingThread ) ) {
+                iamSyncer = false;//I was called by my parents!
+            } else {
+                //I need to gain the lock:
+                pthread_mutex_lock ( &managedMemory::parentalMutex );
                 iamSyncer = true;
             }
-
-        } else {
-            iamSyncer = true;
         }
+        //iamSyncer tells me whether I am the parent thread (not object!)
 
+        //Set our thread id as the one without locking:
         if ( iamSyncer ) {
-            //Wait until we gaim master thread privilege:
-            pthread_mutex_lock ( &managedMemory::parentalMutex );
-            while ( !membrain_atomic_bool_compare_and_swap ( &managedMemory::haveCreatingThread, false, true ) ) {
-                pthread_cond_wait ( &managedMemory::parentalCond, &managedMemory::parentalMutex );
-            }
-            //Set our thread id as the one without locking:
             managedMemory::creatingThread = pthread_self();
+
         }
 #endif
 
@@ -120,11 +121,9 @@ public:
 #ifdef PARENTAL_CONTROL
         managedMemory::parent = savedParent;
         if ( iamSyncer ) {
-            //drop master privilege:
-            managedMemory::haveCreatingThread = false;
-            pthread_mutex_unlock ( &managedMemory::parentalMutex );
+            managedMemory::creatingThread = 0;
             //Let others do the job:
-            pthread_cond_signal ( &managedMemory::parentalCond );
+            pthread_mutex_unlock ( &managedMemory::parentalMutex );
         }
 #endif
     }
@@ -211,27 +210,13 @@ private:
     typename std::enable_if<std::is_class<G>::value>::type
     mDelete (  ) const {
         if ( n_elem > 0 ) {
-            // #ifdef PARENTAL_CONTROL
-            //             //Start single threaded region:
-            //             bool iamSyncer = false;
-            //             if(membrain_atomic_bool_compare_and_swap(&managedMemory::threadSynced,false,true )){
-            //                 iamSyncer = true;
-            //                 pthread_mutex_lock ( &managedMemory::parentalMutex );
-            //             }
-            // #endif
+
             setUse();
             for ( unsigned int n = 0; n < n_elem; n++ ) {
                 ( ( ( G * ) chunk->locPtr ) + n )->~G();
             }
             unsetUse();
-
             managedMemory::defaultManager->mfree ( chunk->id );
-            // #ifdef PARENTAL_CONTROL
-            //             if(iamSyncer){
-            //
-            //                 pthread_mutex_unlock ( &managedMemory::parentalMutex );
-            //             }
-            // #endif
         }
         delete tracker;
     }

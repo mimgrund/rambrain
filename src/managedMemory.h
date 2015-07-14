@@ -62,7 +62,6 @@ public:
     static pthread_mutex_t parentalMutex;
     static pthread_cond_t parentalCond;
     static pthread_t creatingThread;
-    static bool haveCreatingThread;
     void recursiveMfree ( memoryID id );
 #else
     void linearMfree();

@@ -25,16 +25,16 @@ bool managedMemory::firstLog = true;
 #endif
 #endif
 
+memoryID const managedMemory::invalid = 0;
 #ifdef PARENTAL_CONTROL
 memoryID const managedMemory::root = 1;
 memoryID managedMemory::parent = managedMemory::root;
 bool managedMemory::threadSynced = false;
 pthread_mutex_t managedMemory::parentalMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t managedMemory::parentalCond = PTHREAD_COND_INITIALIZER;
-pthread_t managedMemory::creatingThread ;
-bool managedMemory::haveCreatingThread = false;
+pthread_t managedMemory::creatingThread = 0;
 #endif
-memoryID const managedMemory::invalid = 0;
+
 
 
 pthread_mutex_t managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER;
@@ -50,8 +50,6 @@ managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
 #ifdef PARENTAL_CONTROL
     managedMemoryChunk *chunk = mmalloc ( 0 );                //Create root element.
     chunk->status = MEM_ROOT;
-    haveCreatingThread = false;
-
 #endif
     this->swap = swap;
     if ( !swap ) {
@@ -365,8 +363,12 @@ bool managedMemory::Throw ( memoryException e )
 {
 
 #ifdef PARENTAL_CONTROL
-    if ( haveCreatingThread && pthread_equal ( pthread_self(), creatingThread ) ) {
+    if ( pthread_mutex_trylock ( &parentalMutex ) == 0 ) {
         pthread_mutex_unlock ( &parentalMutex );
+    } else {
+        if ( pthread_equal ( pthread_self(), creatingThread ) ) {
+            pthread_mutex_unlock ( &parentalMutex );
+        }
     }
 #endif
     throw e;
