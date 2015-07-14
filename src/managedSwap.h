@@ -22,16 +22,16 @@ public:
     virtual global_bytesize swapIn ( managedMemoryChunk *chunk ) = 0;
     virtual void swapDelete ( managedMemoryChunk *chunk ) = 0;
 
-    virtual inline global_bytesize getSwapSize() {
+    virtual inline global_bytesize getSwapSize() const {
         return swapSize;
     }
-    virtual inline global_bytesize getUsedSwap() {
+    virtual inline global_bytesize getUsedSwap() const {
         return swapUsed;
     }
-    virtual inline global_bytesize getFreeSwap() {
+    virtual inline global_bytesize getFreeSwap() const {
         return swapFree;
     }
-    inline size_t getMemoryAlignment() {
+    inline size_t getMemoryAlignment() const {
         return memoryAlignment;
     }
     void claimUsageof ( global_bytesize bytes, bool rambytes, bool used ) {

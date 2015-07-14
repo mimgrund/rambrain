@@ -23,7 +23,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     if ( oneFile == 0 ) { // Layout this on your own:
 
         global_bytesize myg = size / 16;
-        oneFile = min ( gig, myg );
+        oneFile = min ( 4 * gig, myg );
         oneFile = max ( mib, oneFile );
     }
 
@@ -272,7 +272,10 @@ void managedFileSwap::pffree ( pageFileLocation *pagePtr )
         //Check whether we're about to be deleted
 
         if ( pagePtr->aio_ptr ) { //Pending aio
-            while ( pagePtr->aio_lock != 0 ) {};
+            while ( pagePtr->aio_lock != 0 )
+                if ( !checkForAIO() ) {
+                    pthread_cond_wait ( &managedMemory::swappingCond, &managedMemory::defaultManager->stateChangeMutex );
+                };
         }
 
 
@@ -400,11 +403,11 @@ global_bytesize managedFileSwap::swapOut ( managedMemoryChunk **chunklist, unsig
 }
 
 
-global_offset managedFileSwap::determineGlobalOffset ( const pageFileLocation &ref )
+global_offset managedFileSwap::determineGlobalOffset ( const pageFileLocation &ref ) const
 {
     return ref.file * pageFileSize + ref.offset;
 }
-pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, global_bytesize length )
+pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, global_bytesize length ) const
 {
     pageFileLocation pfLoc ( g_offset / pageFileSize, g_offset - pfLoc.file * pageFileSize, length, PAGE_UNKNOWN_STATE );
     return pfLoc;
@@ -462,8 +465,12 @@ void *managedFileSwap::io_submit_worker ( void *ptr )
         if ( aio == 0 ) {
             break;
         }
-        if ( 1 != io_submit ( dhis->aio_context, 1, &aio ) ) {
-            throw memoryException ( "Could not enqueue request" );
+        int retcode = -EAGAIN;
+        while ( 1 != ( retcode = io_submit ( dhis->aio_context, 1, &aio ) ) ) {
+            if ( retcode != -EAGAIN ) {
+                throw memoryException ( "Could not enqueue request" );
+            }
+            usleep ( 10 );
         }
     } while ( true );
 }
@@ -555,7 +562,9 @@ bool managedFileSwap::checkForAIO()
 #endif
     //As there's at least one pending transaction, we may wait blocking indefinitely:
 
-    int no_arrived = io_getevents ( aio_context, 0, aio_max_transactions, aio_eventarr, NULL );
+    int no_arrived;
+tryagain:
+    no_arrived = io_getevents ( aio_context, 0, aio_max_transactions, aio_eventarr, NULL );
     if ( no_arrived == 0 ) {
         pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
         no_arrived = io_getevents ( aio_context, 1, aio_max_transactions, aio_eventarr, NULL );
@@ -563,6 +572,9 @@ bool managedFileSwap::checkForAIO()
     }
 
     if ( no_arrived < 0 ) {
+        if ( no_arrived == -EINTR ) { //We've been interrupted by a system call
+            goto tryagain;
+        }
         pthread_mutex_unlock ( &aioWaiterLock );
         printf ( "We got an error back: %d\n", -no_arrived );
         throw memoryException ( "AIO Error" );

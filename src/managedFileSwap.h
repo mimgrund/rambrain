@@ -86,8 +86,8 @@ public:
 
 
 private:
-    pageFileLocation determinePFLoc ( global_offset g_offset, global_bytesize length );
-    inline global_offset determineGlobalOffset ( const pageFileLocation &ref );
+    pageFileLocation determinePFLoc ( global_offset g_offset, global_bytesize length ) const;
+    inline global_offset determineGlobalOffset ( const pageFileLocation &ref ) const;
     bool openSwapFiles();
     void closeSwapFiles();
 
@@ -103,7 +103,7 @@ private:
     struct swapFileDesc *swapFiles = NULL;
 
     //Memory copy:
-    void scheduleCopy ( membrain::pageFileLocation &ref, void *ramBuf, int *parttracker, bool reverse = false );
+    void scheduleCopy ( membrain::pageFileLocation &ref, void *ramBuf, int *tracker, bool reverse = false ) ;
     void copyMem ( membrain::pageFileLocation &ref, void *ramBuf, bool reverse = false  )  ;
 
     inline void copyMem ( void *ramBuf, membrain::pageFileLocation &ref ) {
@@ -112,7 +112,7 @@ private:
     inline void scheduleCopy ( void *ramBuf, pageFileLocation &ref, int *parttracker ) {
         scheduleCopy ( ref, ramBuf, parttracker, true );
     };
-    inline size_t getMemoryAlignment() {
+    inline size_t getMemoryAlignment() const {
         return memoryAlignment;
     };
 

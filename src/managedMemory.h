@@ -157,7 +157,7 @@ protected:
 #endif
 
 public:
-    void printSwapstats();
+    void printSwapstats() const;
     void resetSwapstats();
 
     static void sigswapstats ( int sig );
