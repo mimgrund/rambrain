@@ -565,7 +565,9 @@ cyclicManagedMemory::~cyclicManagedMemory()
     auto it = memChunks.begin();
     while ( it != memChunks.end() ) {
         cyclicAtime *element = ( cyclicAtime * ) it->second->schedBuf;
-        delete element;
+        if ( element ) {
+            delete element;
+        }
         ++it;
     }
 }

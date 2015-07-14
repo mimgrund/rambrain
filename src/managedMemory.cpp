@@ -191,17 +191,14 @@ managedMemoryChunk *managedMemory::mmalloc ( global_bytesize sizereq )
 #endif
     chunk->status = MEM_ALLOCATED;
     chunk->size = sizereq;
+    chunk->swapBuf = NULL;
 #ifdef PARENTAL_CONTROL
     chunk->child = invalid;
     chunk->parent = parent;
-    chunk->swapBuf = NULL;
-#endif
-#ifdef PARENTAL_CONTROL
     if ( chunk->id == root ) {                                //We're inserting root elem.
 
         chunk->next = invalid;
-
-        chunk->atime = 0;
+        chunk->schedBuf = NULL;
     } else {
 #endif
         //Register this chunk in swapping logic:
@@ -473,7 +470,7 @@ void managedMemory::printTree ( managedMemoryChunk *current, unsigned int nspace
         for ( unsigned int n = 0; n < nspaces; n++ ) {
             printf ( "  " );
         }
-        printf ( "(%d : size %lu Bytes, atime %d, ", current->id, current->size, current->atime );
+        printf ( "(%d : size %lu Bytes, %s, ", current->id, current->size, current->preemptiveLoaded ? "P" : "" );
         switch ( current->status ) {
         case MEM_ROOT:
             printf ( "Root Element" );
@@ -520,17 +517,17 @@ void managedMemory::recursiveMfree ( memoryID id )
     managedMemoryChunk *next;
     do {
         if ( oldchunk->child != invalid ) {
-            recursiveMfree ( oldchunk->child , true );
+            recursiveMfree ( oldchunk->child );
         }
         if ( oldchunk->next != invalid ) {
             next = &resolveMemChunk ( oldchunk->next );
         } else {
             break;
         }
-        mfree ( oldchunk->id );
+        mfree ( oldchunk->id, true );
         oldchunk = next;
     } while ( 1 == 1 );
-    mfree ( oldchunk->id );
+    mfree ( oldchunk->id, true );
 }
 #else
 ///\note This function does not preserve correct deallocation order in class hierarchies, as such, it is not a valid garbage collector.
