@@ -248,6 +248,39 @@ TEST ( managedPtr, Unit_CreateAndInitialize )
 
 }
 
+
+TEST ( managedPtr, Unit_PointerAllocation )
+{
+    managedDummySwap swap ( 200 );
+    cyclicManagedMemory managedMemory ( &swap, 200 );
+
+    class A
+    {
+    public:
+        A ( int a = 42 ) : a ( a ) {};
+        int a;
+    };
+
+    managedPtr<A> myA1;
+    ADHERETOLOC ( A, myA1, A1 );
+    EXPECT_EQ ( 42, A1->a );
+
+    managedPtr<A> myA2 ( 1 );
+    ADHERETOLOC ( A, myA2, A2 );
+    EXPECT_EQ ( 42, A2->a );
+
+    managedPtr<A> myA3 ( 1, 43 );
+    ADHERETOLOC ( A, myA3, A3 );
+    EXPECT_EQ ( 43, A3->a );
+
+    managedPtr<A> myA4 ( 2, 43 );
+    ADHERETOLOC ( A, myA4, A4 );
+    EXPECT_EQ ( 43, A4[0].a );
+    EXPECT_EQ ( 43, A4[1].a );
+
+}
+
+
 TEST ( managedPtr, Unit_ZeroSizedObjects )
 {
     managedDummySwap swap ( 200 );

@@ -58,6 +58,9 @@ public:
 
     }
 
+
+    managedPtr() : managedPtr ( 1 ) {};
+
     template <typename... ctor_args>
     managedPtr ( unsigned int n_elem = 1, ctor_args... Args ) {
         this->n_elem = n_elem;
