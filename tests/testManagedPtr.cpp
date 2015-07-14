@@ -167,19 +167,19 @@ TEST ( managedPtr, Unit_SmartPointery )
 }
 
 
-TEST ( managedPtr, DISABLED_Unit_DeleteWhileInUse )
+TEST ( managedPtr, Unit_DeleteWhileInUse )
 {
     ///\todo This test does not work, exception is handled by libc++ instead of gtest
     /*
      * Idea: Death test, do we want to let everything die at this point?
-    managedDummySwap swap(100);
-    cyclicManagedMemory *managedMemory=new cyclicManagedMemory(&swap, 100);
-    managedPtr<double>* ptr = new managedPtr<double>(10);
+     * Ideally, we are not allowed to throw in a destructor. Doing it anyways terminates programm
+     */
+    managedDummySwap swap ( 100 );
+    cyclicManagedMemory *managedMemory = new cyclicManagedMemory ( &swap, 100 );
+    managedPtr<double> *ptr = new managedPtr<double> ( 10 );
     ptr->setUse();
 
-    EXPECT_THROW(delete ptr, memoryException);
-    EXPECT_THROW(delete managedMemory, memoryException);*/
-
+    ASSERT_DEATH ( delete ptr, "terminate called after throwing an instance of 'membrain::memoryException'" );
 }
 
 
