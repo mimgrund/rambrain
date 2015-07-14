@@ -7,6 +7,7 @@ option (PTEST_CHECKS "Include correctness checks in performance tests" OFF)
 option (SWAPSTATS "Output swap stats on signal SIGUSR1" ON)
 option (LOGSTATS "Log stats instead of outputting them to stdout" OFF)
 option (PARENTAL_CONTROL "Hook up chunks in a tree" OFF)
+option (CAN_IGNORE_WARNINGS "Enable warning ignore macros to be used to suppress unnescessary stuff" ON)
 
 if(SWAPSTATS)
     add_definitions(-DSWAPSTATS)
@@ -22,6 +23,10 @@ endif()
 
 if(PARENTAL_CONTROL)
     add_definitions(-DPARENTAL_CONTROL)
+endif()
+
+if(CAN_IGNORE_WARNINGS)
+    add_definitions(-DCAN_IGNORE_WARNINGS)
 endif()
 
 

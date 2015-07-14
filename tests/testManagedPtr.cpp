@@ -6,6 +6,7 @@
 #include "tester.h"
 
 using namespace membrain;
+IGNORE_TEST_WARNINGS();
 
 TEST ( managedPtr, Unit_NoMemoryManager )
 {
@@ -354,8 +355,8 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
     test.addTimeMeasurement();
 
     std::vector<int64_t> durations = test.getDurationsForCurrentCycle();
-    infomsgf ( "Smart access ran for %d ms", durations[0] );
-    infomsgf ( "Direct access ran for %d ms", durations[1] );
+    infomsgf ( "Smart access ran for %ld ms", durations[0] );
+    infomsgf ( "Direct access ran for %ld ms", durations[1] );
     infomsgf ( "Direct access cost %g as much time as smart access", 1.0 * durations[1] / durations[0] );
 }
 
@@ -466,7 +467,6 @@ TEST ( managedPtr, Unit_CallDestructorIfSwapped )
 
     delete ptr1;
     ASSERT_EQ ( 0, destructorTracker::num_instances );
-
 }
 
-
+RESTORE_WARNINGS();
