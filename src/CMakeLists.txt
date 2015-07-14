@@ -6,7 +6,7 @@ add_library (membrain ${SOURCES})
 if(LOGSTATS)
     target_link_libraries(membrain -lrt)
 endif()
-target_link_libraries(membrain -laio)
+target_link_libraries(membrain ${AIO_LIBRARIES})
 
 get_directory_property(defs COMPILE_DEFINITIONS)
 message("Compiler definitions: ${defs}")
