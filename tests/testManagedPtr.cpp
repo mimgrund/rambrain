@@ -6,7 +6,7 @@
 #include "tester.h"
 
 using namespace membrain;
-IGNORE_TEST_WARNINGS();
+IGNORE_TEST_WARNINGS;
 
 TEST ( managedPtr, Unit_NoMemoryManager )
 {
@@ -257,7 +257,7 @@ TEST ( managedPtr, Unit_PointerAllocation )
     class A
     {
     public:
-        A ( int a = 42 ) : a ( a ) {};
+        A ( int a = 42 ) : a ( a ) {}
         int a;
     };
 
@@ -368,16 +368,16 @@ TEST ( managedPtr, Unit_MultithreadingConcurrentCreateDelete )
     const unsigned int arrsize = 200;
 
     managedPtr<double> *arr[arrsize];
-    for ( int i = 0; i < arrsize; ++i ) {
+    for ( unsigned int i = 0; i < arrsize; ++i ) {
         arr[i] = NULL;
     }
     #pragma omp parallel for
-    for ( int i = 0; i < arrsize; ++i ) {
+    for ( unsigned int i = 0; i < arrsize; ++i ) {
         arr[i] = new managedPtr<double> ( 1 );
 
     }
     #pragma omp parallel for
-    for ( int i = 0; i < arrsize; ++i ) {
+    for ( unsigned int i = 0; i < arrsize; ++i ) {
         delete arr[i];
 
     }
@@ -469,4 +469,4 @@ TEST ( managedPtr, Unit_CallDestructorIfSwapped )
     ASSERT_EQ ( 0, destructorTracker::num_instances );
 }
 
-RESTORE_WARNINGS();
+RESTORE_WARNINGS;

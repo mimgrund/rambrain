@@ -44,14 +44,14 @@ private:
 #ifdef CAN_IGNORE_WARNINGS
 #define STRINGIFY(a) #a
 #define IGNORE_WARNING(warning) _Pragma(STRINGIFY(GCC diagnostic ignored #warning))
-#define IGNORE_TEST_WARNINGS() IGNORE_WARNING(-Wunused-variable); \
+#define IGNORE_TEST_WARNINGS IGNORE_WARNING(-Wunused-variable); \
                                    IGNORE_WARNING(-Wdeprecated-declarations); \
                                    IGNORE_WARNING(-Wsign-compare)
-#define RESTORE_WARNINGS() _Pragma("GCC diagnostic pop")
+#define RESTORE_WARNINGS _Pragma("GCC diagnostic pop")
 #else
 #define IGNORE_WARNING(warning)
-#define IGNORE_TEST_WARNINGS()
-#define RESTORE_WARNINGS()
+#define IGNORE_TEST_WARNINGS
+#define RESTORE_WARNINGS
 #endif
 
 #endif // TESTER_H
