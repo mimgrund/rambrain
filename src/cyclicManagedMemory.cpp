@@ -318,6 +318,7 @@ bool cyclicManagedMemory::checkCycle() const
         if ( inActiveOnlySection ) {
             if ( oldcur->chunk->status == MEM_SWAPPED || oldcur->chunk->status == MEM_SWAPOUT ) {
                 errmsg ( "Swapped elements in active section!" );
+
                 pthread_mutex_unlock ( &cyclicTopoLock );
                 pthread_mutex_unlock ( &stateChangeMutex );
                 return false;
@@ -487,6 +488,8 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
     cleanFrom = counterActive->next;
 
     ///\todo Implement this for less than 3 elements!
+    ///\todo: Integration_RandomAccessVariousSize test.setSeed(1436879085) failed ziemlich am Ende
+
     while ( fromPos != countPos || doRoundtrip ) {
         doRoundtrip = false;
         if ( inSwappedSection ) {
