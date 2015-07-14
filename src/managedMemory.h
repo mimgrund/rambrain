@@ -147,7 +147,8 @@ protected:
     bool waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock = false );
     void claimUsageof ( global_bytesize bytes, bool rambytes, bool used );
     void claimTobefreed ( global_bytesize bytes, bool tobefreed );
-    inline void waitForAIO();
+    void waitForAIO();
+
     size_t memoryAlignment = 1;
 #ifdef LOGSTATS
     //! @todo This will induce a serious issue in combination with MPI and a shared disk. How to handle that case?

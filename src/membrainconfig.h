@@ -20,7 +20,7 @@ public:
 
     void reinit ( bool reread = true );
 
-    inline configuration getConfig() {
+    inline const configuration &getConfig() const {
         return config.getConfig();
     }
 

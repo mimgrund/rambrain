@@ -53,13 +53,11 @@ class managedPtr
 {
 public:
     managedPtr ( const managedPtr<T> &ref ) : chunk ( ref.chunk ), tracker ( ref.tracker ), n_elem ( ref.n_elem ) {
-
         membrain_atomic_add_fetch ( tracker, 1 );
-
     }
 
 
-    managedPtr() : managedPtr ( 1 ) {};
+    managedPtr() : managedPtr ( 1 ) {}
 
     template <typename... ctor_args>
     managedPtr ( unsigned int n_elem , ctor_args... Args ) {
@@ -139,7 +137,7 @@ public:
     bool prepareUse() const {
         managedMemory::defaultManager->prepareUse ( *chunk, true );
         return true;
-    };
+    }
 
     //Atomically sets use if tracker is not already set to true. returns whether we set use or not.
     bool setUse ( bool writable = true, bool *tracker = NULL ) const {

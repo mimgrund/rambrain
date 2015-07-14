@@ -565,8 +565,6 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
 
 bool managedFileSwap::checkForAIO()
 {
-
-    bool ret = false;
     //This may be called by different threads. We only want one waiting for aio-arrivals, the others may continue.
     if ( 0 != pthread_mutex_trylock ( &aioWaiterLock ) ) {
         return false;

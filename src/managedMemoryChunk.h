@@ -1,10 +1,10 @@
 #ifndef MANAGEDMEMORYCHUNK_H
 #define MANAGEDMEMORYCHUNK_H
+
 #include "common.h"
+
 namespace membrain
 {
-
-
 
 enum memoryStatus {MEM_ROOT = 0,
                    MEM_ALLOCATED_INUSE_READ = 4 + 1,

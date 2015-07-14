@@ -57,6 +57,7 @@ class pageFileLocation
 public:
     pageFileLocation ( unsigned int file, global_bytesize offset, global_bytesize size, pageChunkStatus status = PAGE_FREE ) :
         file ( file ), offset ( offset ), size ( size ), status ( status ), aio_ptr ( NULL ) {}
+
     unsigned int file;
     global_bytesize offset;
     global_bytesize size;
@@ -100,7 +101,6 @@ private:
     global_bytesize pageFileSize;
 
 
-
     float swapFileResizeFrac = .1; ///@todo: Possibly make this configurable?
 
     struct swapFileDesc *swapFiles = NULL;
@@ -111,13 +111,15 @@ private:
 
     inline void copyMem ( void *ramBuf, membrain::pageFileLocation &ref ) {
         copyMem ( ref, ramBuf, true );
-    };
+    }
+
     inline void scheduleCopy ( void *ramBuf, pageFileLocation &ref, int *parttracker ) {
         scheduleCopy ( ref, ramBuf, parttracker, true );
-    };
+    }
+
     inline size_t getMemoryAlignment() const {
         return memoryAlignment;
-    };
+    }
 
     bool filesOpen = false;
 
@@ -138,6 +140,7 @@ protected:
     //sigEvent Handler:
     void asyncIoArrived ( membrain::pageFileLocation *ref, struct io_event *aio );
     void completeTransactionOn ( membrain::pageFileLocation *ref, bool lock = true );
+
     virtual bool checkForAIO();
     static void *checkForAIO ( void *ptr );
 

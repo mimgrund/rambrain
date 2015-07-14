@@ -34,36 +34,22 @@ public:
     inline size_t getMemoryAlignment() const {
         return memoryAlignment;
     }
-    void claimUsageof ( global_bytesize bytes, bool rambytes, bool used ) {
-        managedMemory::defaultManager->claimUsageof ( bytes, rambytes, used );
-        if ( !rambytes ) {
-            swapFree += ( used ? -bytes : bytes );
-            swapUsed += ( used ? bytes : -bytes );
-        }
-    };
+    void claimUsageof ( global_bytesize bytes, bool rambytes, bool used );
     /** Function waits for all asynchronous IO to complete.
       * The wait is implemented non-performant as a normal user does not have to wait for this.
-      * Implementing this with a _cond just destroys performance in the respective swapIn/out procedures without increasing any user space functionality. **/
-    void waitForCleanExit() {
-        printf ( "\n" );
-        while ( totalSwapActionsQueued != 0 ) {
-            checkForAIO();
-            printf ( "waiting for aio to complete on %d objects\r", totalSwapActionsQueued );
-        };
-        printf ( "                                                       \r" );
-    };
+      * Implementing this with a _cond just destroys performance in the respective swapIn/out procedures without increasing any user space functionality.
+      */
+    void waitForCleanExit();
 
-    virtual bool checkForAIO() {
+    virtual inline bool checkForAIO() {
         return false;
-    };
+    }
 
     //Caching Control.
-    virtual bool cleanupCachedElements ( membrain::global_bytesize minimum_size = 0 ) {};
-    virtual void invalidateCacheFor ( managedMemoryChunk &chunk ) {};
+    virtual inline bool cleanupCachedElements ( membrain::global_bytesize minimum_size = 0 ) {}
+    virtual inline void invalidateCacheFor ( managedMemoryChunk &chunk ) {}
 
 protected:
-
-
     global_bytesize swapSize;
     global_bytesize swapUsed;
     global_bytesize swapFree;

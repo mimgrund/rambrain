@@ -656,7 +656,6 @@ void managedMemory::signalSwappingCond()
 
 void managedMemory::waitForAIO()
 {
-
     if ( swap->checkForAIO() ) { //Some AIO has arrived...
         return;
     }

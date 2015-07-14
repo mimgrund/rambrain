@@ -51,7 +51,7 @@ void membrainConfig::resizeSwap ( global_bytesize memory )
 
 void membrainConfig::init ()
 {
-    configuration c = getConfig();
+    const configuration &c = getConfig();
     if ( c.swap == "managedDummySwap" ) {
         swap = new managedDummySwap ( c.swapMemory );
     } else if ( c.swap == "managedFileSwap" ) {
