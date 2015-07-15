@@ -394,9 +394,9 @@ void cyclicManagedMemory::printCycle() const
             break;
         }
         if ( atime == counterActive ) {
-            printf ( "%lu (%s) %s <-counterActive\n", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
+            printf ( "%lu (%s) %s <-counterActive\t", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
         } else {
-            printf ( "%lu (%s) %s \n", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
+            printf ( "%lu (%s) %s \t", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
         }
         atime = atime->next;
     } while ( atime != active );
@@ -547,8 +547,8 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
     counterActive = cleanFrom->prev;
     if ( ! ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) ) { // We may have swapped out the first allocated element
         cyclicAtime *next = active->next;
-        if ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) {
-            active = active->next;
+        if ( next->chunk->status & MEM_ALLOCATED || next->chunk->status == MEM_SWAPIN ) {
+            active = next;
         }
     }
     pthread_mutex_unlock ( &cyclicTopoLock );
