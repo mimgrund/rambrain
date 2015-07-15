@@ -53,6 +53,21 @@ add_custom_command(TARGET membrain-performancetestswrapper PRE_BUILD COMMAND ./s
 target_link_libraries (membrain-performancetestswrapper pthread membrain_static)
 
 
+find_package(MPI)
+if(NOT "${MPI_INCLUDE_PATH}" STREQUAL "")
+    message(STATUS "Including mpi specific test")
+    include_directories(SYSTEM ${MPI_INCLUDE_PATH})
+    file(GLOB TEST_SOURCES
+            "mpitest.cpp"
+    )
+    add_executable(membrain-mpitest ${TEST_SOURCES})
+    add_custom_command(TARGET membrain-mpitest PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+    target_link_libraries (membrain-mpitest pthread membrain_static ${MPI_C_LIBRARIES})
+else()
+    message(WARNING "Omitting mpi specific test")
+endif()
+
+
 file(GLOB TEST_SOURCES
         "memeater.cpp"
 )
