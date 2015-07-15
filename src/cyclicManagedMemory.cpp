@@ -488,7 +488,6 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
     cleanFrom = counterActive->next;
 
     ///\todo Implement this for less than 3 elements!
-    ///\todo: Integration_RandomAccessVariousSize test.setSeed(1436879085) failed ziemlich am Ende
 
     while ( fromPos != countPos || doRoundtrip ) {
         doRoundtrip = false;
@@ -546,6 +545,9 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
         moveEnd = NULL;
     }
     counterActive = cleanFrom->prev;
+    if ( ! ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) ) { // We may have swapped out the first allocated element
+        active = active->next;
+    }
     pthread_mutex_unlock ( &cyclicTopoLock );
     VERBOSEPRINT ( "swapOutReturn" );
     if ( swapSuccess ) {
