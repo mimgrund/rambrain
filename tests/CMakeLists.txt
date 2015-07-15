@@ -74,6 +74,14 @@ endif()
 
 
 file(GLOB TEST_SOURCES
+        "configTest.cpp"
+)
+add_executable(membrain-configtest ${TEST_SOURCES})
+add_custom_command(TARGET membrain-configtest PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+target_link_libraries (membrain-configtest pthread membrain_static)
+
+
+file(GLOB TEST_SOURCES
         "memeater.cpp"
 )
 add_executable(membrain-memeater ${TEST_SOURCES})

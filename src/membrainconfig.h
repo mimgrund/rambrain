@@ -20,6 +20,14 @@ public:
 
     void reinit ( bool reread = true );
 
+
+    /**
+     * @brief Simple setter
+     */
+    inline void setCustomConfigPath ( const string &path ) {
+        config.setCustomConfigPath ( path );
+    }
+
     inline const configuration &getConfig() const {
         return config.getConfig();
     }
