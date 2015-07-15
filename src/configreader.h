@@ -20,7 +20,8 @@ namespace membrain
  *
  * Can either keep the boundary fixed, extend it automatically as it needs or start an interactive shell to ask the user for advice
  */
-enum class swapPolicy {
+enum class swapPolicy
+{
     fixed,
     autoextendable,
     interactive
@@ -59,6 +60,7 @@ struct configuration {
  * ...\n
  * While keys are exactly the names of members of the configuration struct
  * @note Comments can be inserted with leading hash
+ * @todo Add more comfort: E.g. memory values should be insertable with unit suffix etc
  */
 class configReader
 {
