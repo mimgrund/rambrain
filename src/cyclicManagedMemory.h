@@ -15,11 +15,6 @@ struct cyclicAtime {
 };
 
 
-/**
- * @todo Following segfaults! Run all tests and enter this seed:
- * [ RUN      ] managedFileSwap.Integration_RandomAccess
- * I am running with a seed of 1436882098
- */
 class cyclicManagedMemory : public managedMemory
 {
 public:
