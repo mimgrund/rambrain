@@ -14,7 +14,6 @@ fi
 unset GIT_DIR
 cd $branch
     echo "Checking out branch $branch"
-    git stash
     git checkout $branch
     echo "This autotest is based on:"
     git show -s --pretty=oneline --format="%aD: %aN - %s" $branch
@@ -28,6 +27,7 @@ echo const unsigned char gitCommit [] = {0x00}\;>/membrain_compile/$branch/src/g
 echo const unsigned char gitDiff [] = {0x00}\;>>/membrain_compile/$branch/src/git_info.h
 EOF
 
+good=0
     cd build
 
 
@@ -71,12 +71,18 @@ EOF
                 echo "${fail} tests failed in this run, ATTENTION NEEDED!"
             else
 		echo "test succeeded."
+		((good++))
 	    fi 
         fi
 	echo -e "\n-------------------------------------------------\n\n\n\n\n\n" >>"$outname"
         
     done
 cd /membrain_compile
+if [ $good -eq $(($max+1)) ]; then
+	echo SUCESSFULL >${branch}_success.txt
+else
+	echo FAIL! $(($max+1-$good)) / $(($max+1)) need attention >${branch}_success.txt
+fi
 rm -rf $(whoami)
 mv $branch $(whoami)
 cat test_$branch* >$branch.log
