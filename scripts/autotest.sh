@@ -3,7 +3,7 @@
 user=$1
 repodir="ssh://${user}@schedar.usm.uni-muenchen.de/var/gits/membrain"
 branches=(master aio_merger)
-options=(PARENTAL_CONTROL) #what about dma? what about optimisation?
+options=(PARENTAL_CONTROL OPTMISE_COMPILATION)
 processes=8
 
 if [ -z "$user" ]; then

@@ -1544,6 +1544,7 @@ measureThroughputTest::measureThroughputTest() : performanceTest<int, int> ( "Me
     TESTPARAM ( 2, 1, 200, 20, true, 100, "percentage of array that will be written to" );
 }
 
+/// @todo PTEST_CHECKS is missing in this test
 void measureThroughputTest::actualTestMethod ( tester &test, int bytesize , int load )
 {
     membrainglobals::config.resizeMemory ( bytesize * 2 );

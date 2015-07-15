@@ -8,6 +8,7 @@ option (SWAPSTATS "Output swap stats on signal SIGUSR1" ON)
 option (LOGSTATS "Log stats instead of outputting them to stdout" OFF)
 option (PARENTAL_CONTROL "Hook up chunks in a tree" OFF)
 option (CAN_IGNORE_WARNINGS "Enable warning ignore macros to be used to suppress unnescessary stuff" ON)
+option (OPTIMISE_COMPILATION "Enable O3 optimisation instead O0" ON)
 
 if(SWAPSTATS)
     add_definitions(-DSWAPSTATS)
@@ -29,6 +30,11 @@ if(CAN_IGNORE_WARNINGS)
     add_definitions(-DCAN_IGNORE_WARNINGS)
 endif()
 
+if(OPTIMISE_COMPILATION)
+    set(OPTIMISATION -O3)
+else()
+    set(OPTIMISATION -O0)
+endif()
 
 find_package (Threads REQUIRED)
 if (NOT CMAKE_USE_PTHREADS_INIT)
@@ -43,7 +49,10 @@ find_package(AIO REQUIRED)
 include_directories(${AIO_INCLUDE_DIR})
 
 set (CMAKE_BUILD_TYPE DEBUG)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fopenmp -O0 -Wall -g")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fopenmp -Wall -g ${OPTIMISATION}")
+
+message(STATUS "Compiling with ${CMAKE_CXX_FLAGS}")
+
 if (CMAKE_CXX_COMPILER_ID MATCHES Clang)
     add_definitions (-fcolor-diagnostics -fansi-escape-codes)
 endif()
