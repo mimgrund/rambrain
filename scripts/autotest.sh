@@ -3,7 +3,7 @@
 user=$1
 repodir="ssh://${user}@schedar.usm.uni-muenchen.de/var/gits/membrain"
 branches=(master aio_merger)
-options=(PARENTAL_CONTROL OPTMISE_COMPILATION)
+options=(PARENTAL_CONTROL OPTIMISE_COMPILATION)
 processes=8
 
 if [ -z "$user" ]; then
@@ -32,7 +32,7 @@ for branch in ${branches[@]}; do
         j=1
         for option in ${options[@]}; do
             opts+=" -D$option="
-            k=$(($i / $j % 2))
+            k=$(($i >> $j % 2))
             if [ $k -eq 1 ]; then
                 opts+="ON"
             else

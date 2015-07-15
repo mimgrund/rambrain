@@ -1,0 +1,11 @@
+#!/bin/bash
+args=( $(cat -) )
+numargs=${#args[@]}
+numrevs=$((numargs/3-1))
+
+for  a in `seq 0 $numrevs`; do
+	rev=${args[3*$a+1]}
+	mail=$(git show -s --pretty=oneline --format="%aE" $rev)
+	nohup /bin/bash /membrain_compile/checkout_and_test.sh $rev $mail &
+done
+exit 0

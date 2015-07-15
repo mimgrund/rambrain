@@ -2,22 +2,34 @@
 
 repodir="/var/gits/membrain"
 branch=$1
-options=(PARENTAL_CONTROL) #what about dma? what about optimisation?
+options=(PARENTAL_CONTROL OPTIMISE_COMPILATION) #what about dma? what about optimisation?
 processes=8
-
-
-git clone "$repodir" $branch
-
+cd /membrain_compile
+git clone $repodir $branch
 fail=$?
 if [ $fail -ne 0 ]; then
     >&2 echo "Git failed to clone repository, aborting script..."
     exit 2
 fi
-
-cd $branch/build
-
+unset GIT_DIR
+cd $branch
     echo "Checking out branch $branch"
-    git checkout "$branch"
+    git stash
+    git checkout $branch
+    echo "This autotest is based on:"
+    git show -s --pretty=oneline --format="%aD: %aN - %s" $branch
+    echo -e "\n\n"
+    chmod -R 0770 .
+    chown -R $(whoami):gituser .
+
+#override gengit.sh script
+cat - >scripts/gengit.sh<<EOF
+echo const unsigned char gitCommit [] = {0x00}\;>/membrain_compile/$branch/src/git_info.h
+echo const unsigned char gitDiff [] = {0x00}\;>>/membrain_compile/$branch/src/git_info.h
+EOF
+
+    cd build
+
 
     max=$(awk "BEGIN{print 2 ** ${#options[@]}}")
     for i in `seq 1 $max`; do
@@ -25,7 +37,7 @@ cd $branch/build
         j=1
         for option in ${options[@]}; do
             opts+=" -D$option="
-            k=$(($i / $j % 2))
+            k=$(($i >> $j % 2))
             if [ $k -eq 1 ]; then
                 opts+="ON"
             else
@@ -39,14 +51,15 @@ cd $branch/build
         echo "Saving results to $outname"
         echo -e "Branch $branch; options $opts\n\n" > "$outname"
 
-        rm -rf *
+        rm -rf ../build/*
         cmake .. $opts >> "${outname}" 2>&1
         echo -e "\n\n" >> "$outname"
+
         make -j 8 >> "${outname}" 2>&1
 
         fail=$?
         if [ $fail -ne 0 ]; then
-            >&2 echo "Make exited with error code ${fail}, ATTENTION NEEDED!"
+            echo "Make exited with error code ${fail}, ATTENTION NEEDED!"
         else
             echo "Running tests..."
             echo -e "\n\n" >> "$outname"
@@ -54,7 +67,15 @@ cd $branch/build
 
             fail=$?
             if [ $fail -ne 0 ]; then
-                >&2 echo "${fail} tests failed in this run, ATTENTION NEEDED!"
-            fi
+                echo "${fail} tests failed in this run, ATTENTION NEEDED!"
+            else
+		echo "test succeeded."
+	    fi 
         fi
+	echo -e "\n-------------------------------------------------\n\n\n\n\n\n" >>"$outname"
+        
     done
+cd /membrain_compile
+rm -rf $(whoami)
+mv $branch $(whoami)
+cat test_$branch* >$branch.log
