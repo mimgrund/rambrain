@@ -354,7 +354,7 @@ bool cyclicManagedMemory::checkCycle() const
 void cyclicManagedMemory::printCycle() const
 {
     cyclicAtime *atime = active;
-    checkCycle();
+
     if ( memChunks.size() <= 0 ) {
         infomsg ( "No objects." );
         return;
@@ -546,7 +546,10 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
     }
     counterActive = cleanFrom->prev;
     if ( ! ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) ) { // We may have swapped out the first allocated element
-        active = active->next;
+        cyclicAtime *next = active->next;
+        if ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) {
+            active = active->next;
+        }
     }
     pthread_mutex_unlock ( &cyclicTopoLock );
     VERBOSEPRINT ( "swapOutReturn" );
