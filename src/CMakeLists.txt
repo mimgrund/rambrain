@@ -23,3 +23,4 @@ add_custom_command(TARGET membrain PRE_BUILD COMMAND ./scripts/gengit.sh WORKING
 install (CODE "MESSAGE(\"Installing shared library and headers (into membrain subdir)\")")
 install (TARGETS membrain DESTINATION lib)
 install (DIRECTORY ${CMAKE_SOURCE_DIR}/src/ DESTINATION include/membrain FILES_MATCHING PATTERN "*.h")
+install (FILES ${LIBRARY_OUTPUT_PATH}/membrainDefinitionsHeader.h DESTINATION include/membrain)
