@@ -1,6 +1,6 @@
 #include <iostream>
 #include "managedPtr.h"
-#include "dummyManagedMemory.h"
+#include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
 #include "membrainconfig.h"
 
@@ -18,7 +18,7 @@ int main ( int argc, char **argv )
     const configuration &config = membrainglobals::config.getConfig();
     managedMemory *man = managedMemory::defaultManager;
 
-    if ( config.memoryManager != "dummyManagedMemory" || reinterpret_cast<dummyManagedMemory *> ( man ) == NULL ) {
+    if ( config.memoryManager != "cyclicManagedMemory" || reinterpret_cast<cyclicManagedMemory *> ( man ) == NULL ) {
         cerr << "Manager is wrong!" << endl;
         ++ ret;
     }
@@ -30,7 +30,7 @@ int main ( int argc, char **argv )
     }
 
     if ( config.memory != 100 || man->getMemoryLimit() != 100ul ) {
-        cerr << "Memory limit is wrong!" << endl;
+        cerr << "Memory limit is wrong!" << config.memory << " " << man->getMemoryLimit() << endl;
         ++ ret;
     }
 

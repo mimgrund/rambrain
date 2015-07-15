@@ -136,13 +136,13 @@ bool configReader::parseConfigBlock()
         } else if ( ! ( value = parseConfigLine ( line, "swapfiles" ) ).empty() ) {
             config.swapfiles = value;
         } else if ( ! ( value = parseConfigLine ( line, "memory" ) ).empty() ) {
-            config.memory = atoll ( line.c_str() );
+            config.memory = atoll ( value.c_str() );
         } else if ( ! ( value = parseConfigLine ( line, "swapMemory" ) ).empty() ) {
-            config.swapMemory = atoll ( line.c_str() );
+            config.swapMemory = atoll ( value.c_str() );
         } else if ( ! ( value = parseConfigLine ( line, "enableDMA" ) ).empty() ) {
-            config.enableDMA = strcmp ( line.c_str(), "true" ) == 0;
+            config.enableDMA = strcmp ( value.c_str(), "true" ) == 0;
         } else if ( ! ( value = parseConfigLine ( line, "swapPolicy" ) ).empty() ) {
-            config.policy = parseSwapPolicy ( line.c_str() );
+            config.policy = parseSwapPolicy ( value.c_str() );
         }
     }
 
@@ -151,8 +151,8 @@ bool configReader::parseConfigBlock()
 
 string configReader::parseConfigLine ( const string &line, const string &key ) const
 {
-    if ( line.substr ( 0, key.length() ) == key ) {
-        unsigned int pos = key.length();
+    unsigned int pos = key.length();
+    if ( line.substr ( 0, key.length() ) == key && line.find_first_of ( "= \t", pos ) == pos ) {
         pos = line.find_first_not_of ( "= \t", pos );
         if ( pos < line.length() ) {
             return line.substr ( pos );
