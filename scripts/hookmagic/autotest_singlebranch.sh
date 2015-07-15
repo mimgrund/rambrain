@@ -78,10 +78,10 @@ good=0
         
     done
 cd /membrain_compile
-if [ $good -eq $(($max+1))]
-	echo SUCESSFULL >$branch_success.txt
+if [ $good -eq $(($max+1)) ]; then
+	echo SUCESSFULL >${branch}_success.txt
 else
-	echo FAIL! $(($max+1-$good)) / $(($max+1)) need attention >$branch_success.txt
+	echo FAIL! $(($max+1-$good)) / $(($max+1)) need attention >${branch}_success.txt
 fi
 rm -rf $(whoami)
 mv $branch $(whoami)
