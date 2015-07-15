@@ -27,7 +27,8 @@ for branch in ${branches[@]}; do
     git checkout "$branch"
 
     max=$(awk "BEGIN{print 2 ** ${#options[@]}}")
-    for i in `seq 1 $max`; do
+    max=$((max-1))
+    for i in `seq 0 $max`; do
         opts=""
         j=1
         for option in ${options[@]}; do
@@ -57,7 +58,7 @@ for branch in ${branches[@]}; do
         else
             echo "Running tests..."
             echo -e "\n\n" >> "$outname"
-            ../bin/membrain-tests >> "${outname}" 2>&1
+            timeout --kill-after=10 300 ../bin/membrain-tests >> "${outname}" 2>&1
 
             fail=$?
             if [ $fail -ne 0 ]; then
