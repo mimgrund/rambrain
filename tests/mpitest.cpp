@@ -16,8 +16,8 @@ int main ( int argc, char **argv )
 
     MPI_Init ( &argc, &argv );
 
-    unsigned int tasks = 5;
-    MPI_COMM_SIZE ( MPI_COMM_WORLD, tasks );
+    int tasks = 5;
+    MPI_Comm_size ( MPI_COMM_WORLD, &tasks );
     cout << "Starting mpi test on " << tasks << " tasks" << endl;
 
     managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d-%d" );

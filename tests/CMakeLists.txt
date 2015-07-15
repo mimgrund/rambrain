@@ -55,6 +55,11 @@ target_link_libraries (membrain-performancetestswrapper pthread membrain_static)
 
 find_package(MPI)
 if(NOT "${MPI_INCLUDE_PATH}" STREQUAL "")
+    set(oldccomp ${CMAKE_C_COMPILER})
+    set(CMAKE_C_COMPILER mpicc)
+    set(oldcxxcomp ${CMAKE_CXX_COMPILER})
+    set(CMAKE_CXX_COMPILER mpicxx)
+
     message(STATUS "Including mpi specific test")
     include_directories(SYSTEM ${MPI_INCLUDE_PATH})
     file(GLOB TEST_SOURCES
