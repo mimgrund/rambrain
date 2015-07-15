@@ -4,6 +4,7 @@
 #include "managedDummySwap.h"
 #include "managedFileSwap.h"
 #include "cyclicManagedMemory.h"
+#include "dummyManagedMemory.h"
 #include "exceptions.h"
 
 namespace membrain
@@ -52,13 +53,16 @@ void membrainConfig::resizeSwap ( global_bytesize memory )
 void membrainConfig::init ()
 {
     const configuration &c = getConfig();
+
     if ( c.swap == "managedDummySwap" ) {
         swap = new managedDummySwap ( c.swapMemory );
     } else if ( c.swap == "managedFileSwap" ) {
         swap = new managedFileSwap ( c.swapMemory, c.swapfiles.c_str(), 0, c.enableDMA );
     }
 
-    if ( c.memoryManager == "cyclicManagedMemory" ) {
+    if ( c.memoryManager == "dummyManagedMemory" ) {
+        manager = new dummyManagedMemory ( );
+    } else if ( c.memoryManager == "cyclicManagedMemory" ) {
         manager = new cyclicManagedMemory ( swap, c.memory );
     }
 }
