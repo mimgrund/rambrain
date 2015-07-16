@@ -7,6 +7,9 @@
 using namespace std;
 using namespace membrain;
 
+/**
+ * @brief Provides a test binary to check the behaviour of mpi in combination with the lib
+ */
 int main ( int argc, char **argv )
 {
     const unsigned int dblamount = 100;

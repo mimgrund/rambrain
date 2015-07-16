@@ -7,6 +7,12 @@
 
 using namespace std;
 
+/**
+ * @brief Provides a binary for a program which eats memory in order to decrease the system memory manually
+ * @param argc Expects one argument
+ * @param argv First argument: MB to leave free in memory
+ * @note Can only eat down to a certain boundary where the system desperately tries to free memory again
+ */
 int main ( int argc, char **argv )
 {
     if ( argc < 2 ) {

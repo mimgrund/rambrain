@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
 #include "testFilterHandling.h"
 
+/**
+ * @brief Main method to run all integration tests registered with google test
+ */
 int main ( int argc, char **argv )
 {
     ::testing::InitGoogleTest ( &argc, argv );
