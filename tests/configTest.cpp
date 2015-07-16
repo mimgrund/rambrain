@@ -7,6 +7,9 @@
 using namespace std;
 using namespace membrain;
 
+/**
+ * @brief A test to check if binary specific custom config files are properly read in and used.
+ */
 int main ( int argc, char **argv )
 {
     int ret = 0;

@@ -12,12 +12,28 @@ namespace membrain
 namespace membrainglobals
 {
 
+/**
+ * @brief Main class for handling configuration throughout the library and for the user.
+ */
 class membrainConfig
 {
 public:
+    /**
+     * @brief Construct a new config handling class
+     *
+     * Reads in the config and sets up the system.
+     * @note Do not do this yourself, rather use the supplied instance membrainglobals::config
+     */
     membrainConfig();
+    /**
+     * @brief Destructs the throught the config initiated swap and manager
+     */
     ~membrainConfig();
 
+    /**
+     * @brief Reinitialises the system
+     * @param reread If the / a config file should be rereaad before resetting up the main classes
+     */
     void reinit ( bool reread = true );
 
 
@@ -28,15 +44,31 @@ public:
         config.setCustomConfigPath ( path );
     }
 
+    /**
+     * @brief Simple getter
+     */
     inline const configuration &getConfig() const {
         return config.getConfig();
     }
 
+    /**
+     * @brief Simple setter
+     */
     void resizeMemory ( global_bytesize memory );
+    /**
+     * @brief Simple setter
+     * @warning Currently no swap resizing is supported, ergo this means to reinitiate the main classes and to throw away the old ones deleting all existing managed pointers
+     */
     void resizeSwap ( global_bytesize memory );
 
 private:
+    /**
+     * Initialise the system
+     */
     void init();
+    /**
+     * Clean up the system and delete instances
+     */
     void clean();
 
     configReader config;
