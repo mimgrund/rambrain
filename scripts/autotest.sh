@@ -12,7 +12,7 @@ if [ -z "$user" ]; then
 fi
 
 rm -rf cleanbrain
-git clone "$repodir" cleanbrain
+git clone $repodir cleanbrain
 
 fail=$?
 if [ $fail -ne 0 ]; then
@@ -24,7 +24,7 @@ cd cleanbrain/build
 
 for branch in ${branches[@]}; do
     echo "Checking out branch $branch"
-    git checkout "$branch"
+    git checkout $branch
 
     max=$(awk "BEGIN{print 2 ** ${#options[@]}}")
     max=$((max-1))
