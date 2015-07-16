@@ -7,7 +7,9 @@
 
 using namespace std;
 
-/*!
+/**
+ * @brief Provides a wrapper binary to run performance tests and scan through respective parameter spaces
+ *
  * Usage:
  * * Zero parameters: Execute all test classes, varry all parameters
  * * One parameter:  Overwrite amount of repetitions or "help" / "list" just to list the available tests and the current config

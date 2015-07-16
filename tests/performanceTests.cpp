@@ -8,6 +8,11 @@
 
 using namespace std;
 
+/**
+ * @brief Provides a binary to run performance tests
+ * @param argc Expects at least two arguments
+ * @param argv 1st: # of test repetitions; 2nd and forth: Names of performance tests to be carried out followed by test parameters
+ */
 int main ( int argc, char **argv )
 {
     cout << "Starting performance tests" << endl;
