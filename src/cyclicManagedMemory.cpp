@@ -406,6 +406,9 @@ void cyclicManagedMemory::printCycle() const
 
 cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
 {
+#ifdef CYCLIC_VERBOSE_DBG
+    printCycle();
+#endif
     pthread_mutex_lock ( &cyclicTopoLock );
     if ( counterActive == 0 ) {
         pthread_mutex_unlock ( &stateChangeMutex );
@@ -434,19 +437,34 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
     global_bytesize unload_size = 0;
     global_bytesize unload_size2 = 0;
     unsigned int passed = 0, unload = 0;
+    unsigned int preemptiveBytesStill = preemptiveBytes;
+    bool activeReached = false;
     while ( unload_size < mem_swap ) {
         ++passed;
         if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size <= swap_free ) ) {
             if ( countPos->chunk->size + unload_size <= swap_free ) {
                 unload_size += countPos->chunk->size;
                 ++unload;
+#ifdef CYCLIC_VERBOSE_DBG
+                printf ( "U(%d)\t", countPos->chunk->id );
+#endif
             }
         }
-        countPos = countPos->prev;
-        if ( fromPos == countPos ) {
-            break;
+
+        if ( active == countPos ) {
+            activeReached = true;
+        }
+        if ( activeReached ) {
+            preemptiveBytesStill -= countPos->chunk->preemptiveLoaded ? countPos->chunk->size : 0;
+            if ( preemptiveBytesStill == 0 ) {
+#ifdef CYCLIC_VERBOSE_DBG
+                printf ( "emergency, once round!\n" );
+#endif
+                break;
+            }
         }
 
+        countPos = countPos->prev;
     }
     if ( unload_size == 0 ) {
         pthread_mutex_unlock ( &cyclicTopoLock );
@@ -455,7 +473,9 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
 
     managedMemoryChunk *unloadlist[unload];
     managedMemoryChunk **unloadElem = unloadlist;
-
+#ifdef CYCLIC_VERBOSE_DBG
+    printf ( "active = %d\n", active->chunk->id );
+#endif
     do {
         if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) ) {
             if ( fromPos->chunk->size + unload_size2 <= swap_free ) {
@@ -477,6 +497,9 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
             return ERR_NOTENOUGHCANDIDATES;
         }
     }
+#ifdef CYCLIC_VERBOSE_DBG
+    printf ( "active = %d\n", active->chunk->id );
+#endif
     fromPos = counterActive;
     cyclicAtime *moveEnd, *cleanFrom;
     moveEnd = NULL;
@@ -486,10 +509,15 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
 
 
     cleanFrom = counterActive->next;
+#ifdef CYCLIC_VERBOSE_DBG
+    printCycle();
 
-    ///\todo Implement this for less than 3 elements!
-
+    printf ( "Begin Movement until %d\n", countPos->chunk->id );
+#endif
     while ( fromPos != countPos || doRoundtrip ) {
+#ifdef CYCLIC_VERBOSE_DBG
+        printf ( "at %d\t", fromPos->chunk->id );
+#endif
         doRoundtrip = false;
         if ( inSwappedSection ) {
             if ( fromPos->chunk->status != MEM_SWAPPED && fromPos->chunk->status != MEM_SWAPOUT ) {
@@ -505,12 +533,19 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
                     cyclicAtime *startIsoNonswap = moveEnd->next;//C
                     cyclicAtime *endIsoNonswap = cleanFrom->prev;//C
                     cyclicAtime *startClean = cleanFrom;//D
+#ifdef CYCLIC_VERBOSE_DBG
+                    printf ( "----%d><%d-%d><%d-%d><%d---\n", endNonswap->chunk->id, startIsoswap->chunk->id, endIsoswap->chunk->id,
+                             startIsoNonswap->chunk->id, endIsoNonswap->chunk->id, startClean->chunk->id );
+#endif
                     //A-C:
                     MUTUAL_CONNECT ( endNonswap, startIsoNonswap );
                     MUTUAL_CONNECT ( endIsoNonswap, startIsoswap );
                     MUTUAL_CONNECT ( endIsoswap, startClean );
                     cleanFrom = startIsoswap;
                     moveEnd = NULL;
+#ifdef CYCLIC_VERBOSE_DBG
+                    printCycle();
+#endif
                 }
             } else {
                 if ( !moveEnd ) {
@@ -527,7 +562,11 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
         }
         fromPos = fromPos->prev;
     }
+#ifdef CYCLIC_VERBOSE_DBG
+    printf ( "After loop at %d\n", fromPos->chunk->id );
+#endif
     if ( moveEnd ) {
+
         //  xxxxxxxxxxoooooooxxxxxxooooooo
         //  ------A--><--B--><-C--><--D
         // Change order from A-B-C-D to A-C-B-D
@@ -537,6 +576,10 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
         cyclicAtime *startIsoNonswap = moveEnd->next;//C
         cyclicAtime *endIsoNonswap = cleanFrom->prev;//C
         cyclicAtime *startClean = cleanFrom;//D
+#ifdef CYCLIC_VERBOSE_DBG
+        printf ( "LAST----%d><%d-%d><%d-%d><%d---\n", endNonswap->chunk->id, startIsoswap->chunk->id, endIsoswap->chunk->id,
+                 startIsoNonswap->chunk->id, endIsoNonswap->chunk->id, startClean->chunk->id );
+#endif
         //A-C:
         MUTUAL_CONNECT ( endNonswap, startIsoNonswap );
         MUTUAL_CONNECT ( endIsoNonswap, startIsoswap );
@@ -552,6 +595,9 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
         }
     }
     pthread_mutex_unlock ( &cyclicTopoLock );
+#ifdef CYCLIC_VERBOSE_DBG
+    printCycle();
+#endif
     VERBOSEPRINT ( "swapOutReturn" );
     if ( swapSuccess ) {
 #ifdef SWAPSTATS
