@@ -19,23 +19,23 @@ public:
 protected:
     inline virtual swapErrorCode swapOut ( global_bytesize ) {
         pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
-        throw memoryException ( "No memory manager in place." );
+        Throw ( memoryException ( "No memory manager in place." ) );
     }
     inline virtual bool swapIn ( managedMemoryChunk & ) {
         pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
-        throw memoryException ( "No memory manager in place." );
+        Throw ( memoryException ( "No memory manager in place." ) );
     }
     inline virtual bool touch ( managedMemoryChunk & ) {
         pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
-        throw memoryException ( "No memory manager in place." );
+        Throw ( memoryException ( "No memory manager in place." ) );
     }
     inline virtual void schedulerRegister ( managedMemoryChunk & ) {
         pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
-        throw memoryException ( "No memory manager in place." );
+        Throw ( memoryException ( "No memory manager in place." ) );
     }
     inline virtual void schedulerDelete ( managedMemoryChunk & ) {
         pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
-        throw memoryException ( "No memory manager in place." );
+        Throw ( memoryException ( "No memory manager in place." ) );
     }
 
 };
