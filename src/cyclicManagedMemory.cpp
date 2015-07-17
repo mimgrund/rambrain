@@ -12,6 +12,8 @@
 #define VERBOSEPRINT(x) ;
 #endif
 
+//#define CYCLIC_VERBOSE_DBG
+
 namespace membrain
 {
 pthread_mutex_t cyclicManagedMemory::cyclicTopoLock = PTHREAD_MUTEX_INITIALIZER;
@@ -476,19 +478,33 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
 #ifdef CYCLIC_VERBOSE_DBG
     printf ( "active = %d\n", active->chunk->id );
 #endif
-    do {
+    activeReached = false;
+    preemptiveBytesStill = preemptiveBytes;
+    while ( unload_size2 < mem_swap ) {
+        ++passed;
         if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) ) {
             if ( fromPos->chunk->size + unload_size2 <= swap_free ) {
+                unload_size2 += fromPos->chunk->size;
                 *unloadElem = fromPos->chunk;
                 ++unloadElem;
-                unload_size2 += fromPos->chunk->size;
-                if ( fromPos == active ) {
-                    active = fromPos->prev;
-                }
             }
         }
+
+        if ( active == fromPos ) {
+            activeReached = true;
+        }
+        if ( activeReached ) {
+            preemptiveBytesStill -= fromPos->chunk->preemptiveLoaded ? fromPos->chunk->size : 0;
+            if ( preemptiveBytesStill == 0 ) {
+#ifdef CYCLIC_VERBOSE_DBG
+                printf ( "emergency, once round!\n" );
+#endif
+                break;
+            }
+        }
+
         fromPos = fromPos->prev;
-    } while ( fromPos != countPos );
+    }
     global_bytesize real_unloaded = swap->swapOut ( unloadlist, unload );
     bool swapSuccess = ( real_unloaded == unload_size2 ) ;
     if ( !swapSuccess ) {
@@ -588,10 +604,16 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::glob
         moveEnd = NULL;
     }
     counterActive = cleanFrom->prev;
+    while ( ! ( counterActive->chunk->status & MEM_ALLOCATED || counterActive->chunk->status == MEM_SWAPIN || counterActive == active ) ) {
+        counterActive = counterActive->prev;
+    }
     if ( ! ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) ) { // We may have swapped out the first allocated element
         cyclicAtime *next = active->next;
         if ( next->chunk->status & MEM_ALLOCATED || next->chunk->status == MEM_SWAPIN ) {
             active = next;
+#ifdef CYCLIC_VERBOSE_DBG
+            printf ( "had to move active", fromPos->chunk->id );
+#endif
         }
     }
     pthread_mutex_unlock ( &cyclicTopoLock );
