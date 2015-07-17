@@ -21,12 +21,26 @@
 using namespace std;
 using namespace membrain;
 
+/**
+ * @brief A base class to encapsulate parameters for performance tests
+ */
 class testParameterBase
 {
 public:
+    /**
+     * @brief Cleanup
+     */
     virtual ~testParameterBase() {}
 
+    /**
+     * @brief Cast the encapsulated parameter to a string and return it's mean value
+     */
     virtual string valueAsString() = 0;
+    /**
+     * @brief Cast the encapsulated parameter to a string and return it's value at a certain step
+     * @param step The step to take
+     * @return min + (max - min) * step
+     */
     virtual string valueAsString ( unsigned int step ) = 0;
 
     unsigned int steps;
@@ -36,17 +50,31 @@ public:
 };
 
 
+/**
+ * @brief Class to encapsulate parameters given by type T
+ */
 template<typename T>
 class testParameter : public testParameterBase
 {
 
 public:
+    /**
+     * @brief Cleanup
+     */
     virtual ~testParameter() {}
 
+    /**
+     * @brief Cast the encapsulated parameter to a string and return it's mean value
+     */
     virtual inline string valueAsString() {
         return toString ( mean );
     }
 
+    /**
+     * @brief Cast the encapsulated parameter to a string and return it's value at a certain step
+     * @param step The step to take
+     * @return min + (max - min) * step
+     */
     virtual inline string valueAsString ( unsigned int step ) {
         return toString ( valueAtStep ( step ) );
     }
@@ -54,6 +82,11 @@ public:
     T min, max, mean;
 
 protected:
+    /**
+     * @brief Look up the parameter value at a certain step
+     * @param step The step
+     * @return min + (max - min) * step
+     */
     T valueAtStep ( unsigned int step ) {
         if ( deltaLog ) {
             return pow ( 10.0, ( log10 ( max ) - log10 ( min ) ) * step / ( steps - 1 ) ) * min;
@@ -62,6 +95,12 @@ protected:
         }
     }
 
+    /**
+     * @brief Convert a value of the parameter type to a string
+     * @param t The value
+     * @return The string
+     * @note If this fails to compile overloading of the stringstream operator<< is required
+     */
     string toString ( const T &t ) {
         stringstream ss;
         ss << t;
@@ -75,27 +114,89 @@ template<typename... U>
 class performanceTest;
 
 
+/**
+ * Base class for all performance tests which itself does not contain any parameters
+ */
 template<>
 class performanceTest<>
 {
 
 public:
+    /**
+     * @brief Create a new performance test
+     * @param name The test's name
+     */
     performanceTest ( const char *name );
+    /**
+     * @brief Cleanup
+     */
     virtual ~performanceTest() {}
 
+    /**
+     * @brief Run this performance test with all given parameter variations and handle data collection and plotting
+     * @param repetitions The amount of repetitions for each test
+     * @param path Where the performancetests binary is
+     */
     virtual void runTests ( unsigned int repetitions, const string &path = "./" );
+    /**
+     * @brief Run all registered (and enabled) performance tests with all given parameter variations for each test
+     * @param repetitions The amount of repetitions for each test
+     * @param path Where the performancetests binary is
+     */
     static void runRegisteredTests ( unsigned int repetitions, const string &path = "./" );
+    /**
+     * @brief Enable/Disable a specific test case
+     * @param name It's name
+     * @param enabled Enable or disable
+     */
     static void enableTest ( const string &name, bool enabled );
+    /**
+     * @brief Enable/Disable all known test cases
+     * @param enabled Enable or disable
+     */
     static void enableAllTests ( bool enabled );
+    /**
+     * @brief Completely remove a test case from the setup
+     * @param name It's name
+     */
     static void unregisterTest ( const string &name );
+    /**
+     * @brief Write infos about all registered test cases to stdout
+     */
     static void dumpTestInfo();
 
+    /**
+     * @brief Run a specific test case several times
+     * @param name It's name
+     * @param myTester The tester class for timing collection
+     * @param repetitions How often to repeat the test
+     * @param arguments The parameters to pass to the test
+     * @param offset At which index the parameters start in the arguments array; Will be incremented to point behind the parameters
+     * @param argumentscount How many parameters
+     * @return Success
+     */
     static bool runRespectiveTest ( const string &name, tester &myTester, unsigned int repetitions, char **arguments, int &offset, int argumentscount );
 
+    /**
+     * @brief Contains the actual test code
+     * @param test The tester class for timing collection
+     * @param arguments The parameters to pass to the test
+     * @param offset At which index the parameters start in the arguments array; Will be incremented to point behind the parameters
+     * @param argumentscount How many parameters
+     */
     virtual void actualTestMethod ( tester &test, char **arguments, int &offset, unsigned int argumentscount ) = 0;
+
+    /**
+     * @brief Simple getter
+     */
     virtual string getComment() = 0;
 
 protected:
+    /**
+     * @brief Get the amount of steps for parameter variation
+     * @param varryParam Which parameter is asked
+     * @return The steps
+     */
     virtual inline unsigned int getStepsForParam ( unsigned int varryParam ) {
         return parameters[varryParam]->steps;
     }
