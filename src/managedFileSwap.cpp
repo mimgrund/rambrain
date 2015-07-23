@@ -93,6 +93,8 @@ managedFileSwap::~managedFileSwap()
         pthread_join ( io_submit_threads[n], NULL );
     }
     free ( io_submit_threads );
+    io_destroy ( aio_context );
+
 }
 
 
