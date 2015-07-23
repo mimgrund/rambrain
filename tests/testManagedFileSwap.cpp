@@ -1,6 +1,8 @@
 #include "cyclicManagedMemory.h"
 #include "managedFileSwap.h"
 #include "managedPtr.h"
+#include "managedDummySwap.h"
+#include "dummyManagedMemory.h"
 #include <gtest/gtest.h>
 #include <sys/stat.h>
 #include "common.h"
@@ -15,6 +17,9 @@ TEST ( managedFileSwap, Unit_ManualSwapping ) //This screws default manager, as 
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
     managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d-%d" );
+    //Protect default manager from manipulations:
+    managedDummySwap dummyswap ( gig );
+    cyclicManagedMemory dummymanager ( &dummyswap, gig );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
@@ -50,6 +55,10 @@ TEST ( managedFileSwap, Unit_ManualMultiSwapping )
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
     managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d-%d" );
+
+    //Protect default manager from manipulations:
+    managedDummySwap dummyswap ( gig );
+    cyclicManagedMemory dummymanager ( &dummyswap, gig );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
@@ -94,6 +103,10 @@ TEST ( managedFileSwap, Unit_ManualSwappingDelete )
     const unsigned int dblsize = dblamount * sizeof ( double );
     const unsigned int swapmem = dblsize * 10;
     managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d-%d" );
+
+    //Protect default manager from manipulations:
+    managedDummySwap dummyswap ( gig );
+    cyclicManagedMemory dummymanager ( &dummyswap, gig );
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
     ASSERT_EQ ( 0u, swap.getUsedSwap() );
