@@ -194,11 +194,18 @@ TEST ( managedPtr, Unit_DeleteWhileInUse )
      * Ideally, we are not allowed to throw in a destructor. Doing it anyways terminates programm
      */
     managedDummySwap swap ( 100 );
+    //The following test will shoot its manager. To reenact the old one, lets save its pointer:
+    managedMemory *old = managedMemory::defaultManager;
+
     cyclicManagedMemory *managedMemory = new cyclicManagedMemory ( &swap, 100 );
     managedPtr<double> *ptr = new managedPtr<double> ( 10 );
     ptr->setUse();
 
     ASSERT_DEATH ( delete ptr, "terminate called after throwing an instance of 'membrain::memoryException'" );
+
+    //We would like to call the destructor of managedMemory, however this destructor will segfault because of the death test...
+    //Thus, only get the old one back again:
+    managedMemory::defaultManager = old;
 }
 
 
