@@ -19,28 +19,30 @@ class managedFileSwap_Integration_RandomAccessVariousSize_Test;
 
 namespace membrain
 {
-
-enum pageChunkStatus {PAGE_FREE = 1,
-                      PAGE_PART = 2,
-                      PAGE_END = 4,
-                      PAGE_WASREAD = 8,
-                      PAGE_UNKNOWN_STATE = 16
+///@brief the status for pageFileLocations
+enum pageChunkStatus {PAGE_FREE = 1 /** PageChunk is free space not occupied by a swapped chunk **/,
+                      PAGE_PART = 2 /** PageChunk is part of an object **/,
+                      PAGE_END = 4 /** PageChunk is last part of an object ( or whole object) **/,
+                      PAGE_WASREAD = 8 /** PageChunk has been read by user**/,
+                      PAGE_UNKNOWN_STATE = 16 /** PageChunk has unknown state ( temporary ) **/
                      };
 
 typedef uint64_t global_offset;
 
 class pageFileLocation;
 
+///@brief structure to handle swap files
 struct swapFileDesc {
-    //FILE *descriptor;
     int fileno;
     global_bytesize currentSize;
 };
 
+///@brief datastructure for handling asynchronous events
 struct aiotracker {
     struct iocb aio;
     int *tracker;
 };
+
 
 union glob_off_union {
 
@@ -51,7 +53,12 @@ union glob_off_union {
     };
 };
 
-//This will be stored in managedMemoryChunk::swapBuf :
+
+/** @brief tracks page file allocations
+ * while objects are preferably written continuous to page file, we may encounter the situation that the
+ * pagefiles are nearly full. In this case we take fragments of free space and use these to break up the
+ * consecutive memory of a chunk into parts, tracked by pageChunks.
+ * */
 class pageFileLocation
 {
 public:

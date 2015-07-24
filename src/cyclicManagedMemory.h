@@ -5,35 +5,45 @@
 
 namespace membrain
 {
-
+///@brief structure created by scheduler to track access times of memoryChunks
 struct cyclicAtime {
-    managedMemoryChunk *chunk;
-    cyclicAtime *next;
-    cyclicAtime *prev;
-    unsigned short pageFile;
-    unsigned int pageOffset;
+    managedMemoryChunk *chunk;///The chunk
+    cyclicAtime *next; ///Next chunk in cycle
+    cyclicAtime *prev;///Prev chunk in cycle
 };
 
-
+///@brief scheduler working with a double linked cycle. Details see paper.
 class cyclicManagedMemory : public managedMemory
 {
 public:
     cyclicManagedMemory ( membrain::managedSwap *swap, membrain::global_bytesize size );
     virtual ~cyclicManagedMemory();
 
+    ///@brief prints out all elements known to the scheduler with their respective status
     void printCycle() const;
+    ///@brief prints out current memory usage
     void printMemUsage() const;
+    /** @brief checks whether the scheduler believes to be sane and prints an error message if not
+     *  @return true if sane, false if not**/
     bool checkCycle() const;
+
+    ///@brief sets whether scheduler should guess next needed items
+    ///@param preemtive iff set to true, scheduler will guess (default)
     ///\note not thread-safe - does not make sense to call it from different threads anyway
     ///\note returns previous value
+    ///@return returns previous value
     bool setPreemptiveLoading ( bool preemptive );
 
 
 
 private:
+    /** @brief cyclic implementation of swapIn, see paper
     ///\note protect call to swapIn by topologicalMutex
+    **/
     virtual bool swapIn ( managedMemoryChunk &chunk );
-    ///\note protect call to swapOut by topologicalMutex
+    /** @brief cyclic implementation of swapOut, see paper
+     / //*\note protect call to swapIn by topologicalMutex
+     **/
     virtual swapErrorCode swapOut ( global_bytesize min_size );
     virtual bool touch ( managedMemoryChunk &chunk );
     virtual void schedulerRegister ( managedMemoryChunk &chunk );

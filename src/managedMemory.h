@@ -73,9 +73,9 @@ public:
     //Chunk Management
     ///Triggers swapin of chunk
     bool prepareUse ( membrain::managedMemoryChunk &chunk, bool acquireLock = true );
-    /// Convenience interface for setUse ( managedMemoryChunk &chunk, bool writeAccess );
+    /// Convenience interface for setUse( managedMemoryChunk &chunk, bool writeAccess ) @see setUse(managedMemoryChunk &chunk,bool writeAccess);
     bool setUse ( memoryID id );
-    /// Convenience interface for unsetUse ( managedMemoryChunk &chunk, bool writeAccess );
+    /// Convenience interface for unsetUse ( managedMemoryChunk &chunk, bool writeAccess ) @see unsetUse(managedMemoryChunk &chunk,bool writeAccess);
     bool unsetUse ( memoryID id );
     /** @brief Marks chunk as used and prevents swapout
      * @return success
@@ -124,7 +124,7 @@ protected:
     bool mrealloc ( memoryID id, global_bytesize sizereq );
     /// @brief this function unregisters and deallocates a chunk
     void mfree ( membrain::memoryID id, bool inCleanup = false );
-    //returns a reference to the memoryChunk indexed by id id
+    ///returns a reference to the memoryChunk indexed by id id
     managedMemoryChunk &resolveMemChunk ( const memoryID &id );
 
 
@@ -147,7 +147,7 @@ protected:
      *
      **/
     virtual swapErrorCode swapOut ( global_bytesize min_size ) = 0;
-    /// @brief Convenience function for swapIn ( managedMemoryChunk &chunk )
+    /// @brief Convenience function for swapIn ( managedMemoryChunk &chunk ) @see swapIn(managedMemoryChunk &chunk)
     virtual bool swapIn ( memoryID id );
     /** @brief Tries to swap in chunk chunk
      *  @return success
@@ -222,7 +222,6 @@ protected:
      *  @warning ensure that chunk is to be swapped in or may be present.
      *  @note this function must be called having stateChangeMutex acquired.**/
     bool waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock = false );
-    global_bytesize swap_misses = 0;
     /** @brief Waits until a certain chunk is swapped out
      *  @return success
      *  @warning ensure that chunk is to be swapped out in or may have already been swapped.
