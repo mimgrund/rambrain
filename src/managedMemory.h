@@ -27,27 +27,62 @@ class managedFileSwap;
 class managedSwap;
 template<class T>
 class managedPtr;
-
+/**
+ * @brief Backend class to handle raw memory and interaction/storage with managedSwap.
+ *
+ * @note Different strategies which elements to swap out / in can be implemented by inheriting this class
+ *
+ * This class's implementation is written to standardize most of interactions between swap and managedMemory derived classes.
+ * Implementation supports asynchronous actions. While there may be more parallelism possible we currently
+ * support only one mutex ( stateChangeMutex ) to make this thread-safe to keep things simple at the moment.
+ * @warning When writing new strategies, study the locking/unlocking of stateChangeMutex closely to prevent deadlocks. ManagedFileSwap may serve as an example.
+ *
+ * @warning Only the most recent allocated memoryManager will be used by adhereTo / managedPtr classes
+ */
 class managedMemory
 {
 public:
-    managedMemory ( managedSwap *swap, global_bytesize size = 1073741824 );
+    /**
+    * @brief Standard constructor
+    * @param swap The swap that this manager should use.
+    * @param size The net size of memory that is allowed in allocation. Be aware of leaving enough space for overhead.
+    **/
+    managedMemory ( managedSwap *swap, global_bytesize size = gig );
     virtual ~managedMemory();
 
     //Memory Management options
+    /** @brief dynamically adjusts allowed ram usage
+     *  @param size desired allowed ram size
+     *  @return returns whether the new restrictions could be fulfilled under current load
+     *  If necessary, this function will trigger writeout of objects until the new limit is reached.
+     **/
     bool setMemoryLimit ( global_bytesize size );
+    /// @brief returns current memory limit
     global_bytesize getMemoryLimit () const;
+    /// @brief returns current ram usage
     global_bytesize getUsedMemory() const;
+    /// @brief returns current swap usage
     global_bytesize getSwappedMemory() const;
-    ///Returns former value
+    /** @brief set policy what to do when out of memory in both ram and swap
+     * @return old policy
+     **/
     bool setOutOfSwapIsFatal ( bool fatal = true );
 
 
     //Chunk Management
+    ///Triggers swapin of chunk
     bool prepareUse ( membrain::managedMemoryChunk &chunk, bool acquireLock = true );
+    // Convenience interface for setUse ( managedMemoryChunk &chunk, bool writeAccess );
     bool setUse ( memoryID id );
+    // Convenience interface for unsetUse ( managedMemoryChunk &chunk, bool writeAccess );
     bool unsetUse ( memoryID id );
+    /** @brief Marks chunk as used and prevents swapout
+     * @return success
+     * @param chunk the chunk that will be used
+     *
+     **/
     bool setUse ( managedMemoryChunk &chunk, bool writeAccess );
+    /// Marks chunk as
     bool unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets = 1 );
 
 
