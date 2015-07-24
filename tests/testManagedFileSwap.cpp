@@ -11,6 +11,10 @@
 
 using namespace membrain;
 
+/**
+ * @test Tests whether managedFileSwap can take a memoryChunk and store it securely.
+ */
+
 TEST ( managedFileSwap, Unit_ManualSwapping ) //This screws default manager, as byte accounting is done asynchronously (invoked by managedFileSwap...)
 {
     const unsigned int dblamount = 100;
@@ -49,6 +53,9 @@ TEST ( managedFileSwap, Unit_ManualSwapping ) //This screws default manager, as 
     delete chunk;
 }
 
+/**
+     * @test Tests whether managedFileSwap can take a few memoryChunk and store it securely.
+     */
 TEST ( managedFileSwap, Unit_ManualMultiSwapping )
 {
     const unsigned int dblamount = 100;
@@ -97,6 +104,9 @@ TEST ( managedFileSwap, Unit_ManualMultiSwapping )
     pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
 }
 
+/**
+     * @test Tests whether deletion of swapped out elements is handled correctly.
+     */
 TEST ( managedFileSwap, Unit_ManualSwappingDelete )
 {
     const unsigned int dblamount = 100;
@@ -135,7 +145,9 @@ TEST ( managedFileSwap, Unit_ManualSwappingDelete )
     delete chunk;
     pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
 }
-
+/**
+     * @test Tests interplay between managedFileSwap and a cylicManaged Memory
+     */
 TEST ( managedFileSwap, Unit_SimpleSwapping )
 {
     const unsigned int memsize = 15 * sizeof ( double );
@@ -150,6 +162,9 @@ TEST ( managedFileSwap, Unit_SimpleSwapping )
     );
 }
 
+/**
+     * @test Tests whether the swap size is accounted for correctly.
+     */
 TEST ( managedFileSwap, Unit_SwapSize )
 {
     const unsigned int dblamount = 100;
@@ -197,7 +212,9 @@ TEST ( managedFileSwap, Unit_SwapSize )
     delete ptr2;
 }
 
-
+/**
+* @test Puts memory manager and swap under heavy load of objects of the same size by randomly allocating / deallocating them
+*/
 TEST ( managedFileSwap, Integration_RandomAccess )
 {
     global_bytesize oneswap = 1024 * 1024 * ( global_bytesize ) 16;
@@ -257,6 +274,9 @@ TEST ( managedFileSwap, Integration_RandomAccess )
 #endif
 
 }
+/**
+* @test Puts memory manager and swap under heavy load of objects of various sizes by randomly allocating / deallocating them
+*/
 TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
 {
     global_bytesize oneswap = 1024 * 1024 * ( global_bytesize ) 16;
@@ -325,7 +345,9 @@ TEST ( managedFileSwap, Integration_RandomAccessVariousSize )
 
 }
 
-
+/**
+* @test Checks correct allocation of swap files
+*/
 TEST ( managedFileSwap, Unit_SwapAllocation )
 {
     unsigned int oneswap = 1024 * 1024 * 16;
@@ -466,7 +488,9 @@ TEST ( managedFileSwap, Unit_SwapReadAllocatedChunk )
                       ASSERT_EQ ( 2 * arrsize, manager.getSwappedMemory() ); );
 }
 
-
+/**
+* @test Checks capability to cope with memory shortage in certain circumstances
+*/
 TEST ( managedFileSwap, Unit_SwapSingleIsland )
 {
     const unsigned int oneswap = mib;
@@ -508,6 +532,9 @@ TEST ( managedFileSwap, Unit_SwapSingleIsland )
 }
 
 
+/**
+* @test Checks capability to cope with memory shortage in certain circumstances
+*/
 TEST ( managedFileSwap, Unit_SwapNextAndSingleIsland )
 {
     const unsigned int oneswap = mib;
@@ -553,7 +580,9 @@ TEST ( managedFileSwap, Unit_SwapNextAndSingleIsland )
     );
 }
 
-
+/**
+* @test Implements a simple matrix transposition that has to be swapping to check for data integrity
+*/
 TEST ( managedFileSwap, Integration_MatrixTranspose )
 {
     const unsigned int size = 1000;

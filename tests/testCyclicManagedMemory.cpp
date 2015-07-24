@@ -12,6 +12,9 @@
 
 using namespace membrain;
 
+/**
+* @test Checks whether we can allocate data via memory manager
+*/
 TEST ( cyclicManagedMemory, Unit_AllocatePointers )
 {
     //Allocate Dummy swap
@@ -37,6 +40,9 @@ TEST ( cyclicManagedMemory, Unit_AllocatePointers )
 }
 
 #ifdef PARENTAL_CONTROL
+/**
+* @test Checks whether we can allocate class objects and track the object hierarchy correctly
+*/
 TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
 {
     class A
@@ -85,6 +91,9 @@ TEST ( cyclicManagedMemory, Unit_DeepAllocatePointers )
 }
 #endif
 
+/**
+* @test Checks whether we throw when there's not enough ram+swap to fullfil request
+*/
 TEST ( cyclicManagedMemory, Unit_NotEnoughMemOrSwapSpace )
 {
     managedDummySwap swap1 ( 0 ), swap2 ( 1000 );
@@ -109,6 +118,9 @@ TEST ( cyclicManagedMemory, Unit_NotEnoughMemOrSwapSpace )
     delete manager1;
 }
 
+/**
+* @test Checks integrity of data written to a large array
+*/
 TEST ( cyclicManagedMemory, Integration_ArrayAccess )
 {
     const  int memsize = 10240;
@@ -155,7 +167,9 @@ TEST ( cyclicManagedMemory, Integration_ArrayAccess )
 
 }
 
-
+/**
+* @test checks integrity and accessability of array objects in random access
+*/
 TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
 {
     const  int fac = 1000;
@@ -239,6 +253,9 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
 
 }
 
+/**
+* @test Checks capability to cope with objects of various size
+*/
 TEST ( cyclicManagedMemory, Unit_VariousSize )
 {
     const unsigned int memsize = sizeof ( double ) * 10;
@@ -280,6 +297,9 @@ TEST ( cyclicManagedMemory, Unit_VariousSize )
     }
 }
 
+/**
+* @test Checks capability to cope with objects of random size in random allocation
+*/
 TEST ( cyclicManagedMemory, Unit_RandomAllocation )
 {
     const unsigned int memsize = sizeof ( double ) * 10;
@@ -329,7 +349,9 @@ TEST ( cyclicManagedMemory, Unit_RandomAllocation )
     }
 }
 
-
+/**
+* @test Checks whether we detect if a single object does not fit into ram
+*/
 TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceForOneElement )
 {
     const unsigned int memsize = sizeof ( double ) / 2;
@@ -341,6 +363,9 @@ TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceForOneElement )
     ASSERT_THROW ( managedPtr<double> ptr ( 1 ), memoryException );
 }
 
+/**
+* @test Checks whether we detect if an array object does not fit into ram
+*/
 TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceForArray )
 {
     const unsigned int memsize = sizeof ( double ) * 2;
@@ -375,6 +400,9 @@ TEST ( cyclicManagedMemory, Unit_NotEnoughSpaceInTotal )
     delete ptr5;
 }
 
+/**
+* @test Checks whether memory alignment attributes are handled correctly
+*/
 TEST ( cyclicManagedMemory, Unit_WorkingWithSSE )
 {
     union sixteen {
@@ -432,6 +460,9 @@ TEST ( cyclicManagedMemory, Unit_WorkingWithSSE )
     }
 }
 
+/**
+* @test Checks whether nested access in class is handled correctly
+*/
 TEST ( cyclicManagedMemory, Unit_HandleNestedObjects )
 {
     class A
@@ -521,6 +552,9 @@ TEST ( cyclicManagedMemory, Unit_HandleNestedObjects )
     );
 }
 
+/**
+* @test Checks whether forgotten pointers are garbage-collected
+*/
 TEST ( cyclicManagedMemory, Unit_CleanupOfForgottenPointers )
 {
     const unsigned int memsize = 10 * sizeof ( double );

@@ -202,6 +202,7 @@ TEST ( managedPtr, Unit_DeleteWhileInUse )
     ptr->setUse();
 
     ASSERT_DEATH ( delete ptr, "terminate called after throwing an instance of 'membrain::memoryException'" );
+    printf ( "Hello from below" );
 
     //We would like to call the destructor of managedMemory, however this destructor will segfault because of the death test...
     //Thus, only get the old one back again:

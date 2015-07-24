@@ -5,6 +5,9 @@
 
 using namespace membrain;
 
+/**
+* @test Checks that dummyManager starts crying when he is asked to create an object for us
+*/
 TEST ( dummyManagedMemory, Unit_ThrowsExceptions )
 {
     dummyManagedMemory mgr;
