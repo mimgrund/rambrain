@@ -31,6 +31,7 @@ class managedPtr;
  * @brief Backend class to handle raw memory and interaction/storage with managedSwap.
  *
  * @note Different strategies which elements to swap out / in can be implemented by inheriting this class
+ * @note End users do not need to instantiate/use this class directly. This will be done by config manager
  *
  * This class's implementation is written to standardize most of interactions between swap and managedMemory derived classes.
  * Implementation supports asynchronous actions. While there may be more parallelism possible we currently
@@ -72,24 +73,30 @@ public:
     //Chunk Management
     ///Triggers swapin of chunk
     bool prepareUse ( membrain::managedMemoryChunk &chunk, bool acquireLock = true );
-    // Convenience interface for setUse ( managedMemoryChunk &chunk, bool writeAccess );
+    /// Convenience interface for setUse ( managedMemoryChunk &chunk, bool writeAccess );
     bool setUse ( memoryID id );
-    // Convenience interface for unsetUse ( managedMemoryChunk &chunk, bool writeAccess );
+    /// Convenience interface for unsetUse ( managedMemoryChunk &chunk, bool writeAccess );
     bool unsetUse ( memoryID id );
     /** @brief Marks chunk as used and prevents swapout
      * @return success
      * @param chunk the chunk that will be used
-     *
+     * @param writeAccess set this to false if the chunk will not be written to
      **/
     bool setUse ( managedMemoryChunk &chunk, bool writeAccess );
-    /// Marks chunk as
+    /** @brief Marks chunk as unused again.
+     *  @return success
+     *  @param chunk the chunk that will not be needed in near future
+     *  @param no_unsets if you set use to the chunk n times, you may set this to n instead of calling n times**/
     bool unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets = 1 );
 
 
 #ifdef PARENTAL_CONTROL
     //Tree Management
+    /// @brief conveniently returns number of children of the memoryChunk with id id
     unsigned int getNumberOfChildren ( const memoryID &id );
+    /// @brief prints the tree of managed objects for further inspection
     void printTree ( managedMemoryChunk *current = NULL, unsigned int nspaces = 0 );
+
     static const memoryID root;
     static memoryID parent;
     //We need the following two to correctly initialize class hierarchies:
@@ -97,37 +104,69 @@ public:
     static pthread_mutex_t parentalMutex;
     static pthread_cond_t parentalCond;
     static pthread_t creatingThread;
+    /// @brief recursively deletes the objects in memory, first children, then parents.
     void recursiveMfree ( memoryID id );
 #else
+    /// @brief linearly deletes all objects in memory
     void linearMfree();
 #endif
     static managedMemory *defaultManager;
     static const memoryID invalid;
+    /** @brief signals that a swapping action has completed and memory limits have changed
+     *  @note this function is used e.g. by managedSwap to give other threads waiting the possibility to check whether the condition they're waiting for is met now.
+     * **/
 
     static void signalSwappingCond();
 protected:
+    /// @brief allocates and registers a new raw memory chunk of size sizereq to be filled in by managedPtr
     managedMemoryChunk *mmalloc ( global_bytesize sizereq );
+    /// @brief this function is a stub. In the future it should be capable of resizing an existing allocation
     bool mrealloc ( memoryID id, global_bytesize sizereq );
+    /// @brief this function unregisters and deallocates a chunk
     void mfree ( membrain::memoryID id, bool inCleanup = false );
+    //returns a reference to the memoryChunk indexed by id id
     managedMemoryChunk &resolveMemChunk ( const memoryID &id );
 
 
     //Swapping strategy
     enum swapErrorCode {
+        ///Swapping action was successful
         ERR_SUCCESS,
-        ERR_SWAPFULL,
+        ///Swap space is full
+        ERR_SWAPFULL ,
+        //The element/size requested does not fit in RAM as a whole
         ERR_MORETHANTOTALRAM,
+        //We lack reasonable candidates for swapout (too much elements in use?)
         ERR_NOTENOUGHCANDIDATES
     };
+    /** @brief swaps out at least min_size bytes
+     *  @return returns whether the swap out was successful or a reason why it was note
+     *  @param min_size minimum size of swapped out elements
+     *  Sucessful return does not mean that the bytes are available at an instant. It may be necessary for swapOut to complete beforehands.
+     *  @note this function must be called having stateChangeMutex acquired.
+     *
+     **/
     virtual swapErrorCode swapOut ( global_bytesize min_size ) = 0;
+    /// @brief Convenience function for swapIn ( managedMemoryChunk &chunk )
     virtual bool swapIn ( memoryID id );
+    /** @brief Tries to swap in chunk chunk
+     *  @return success
+     *  @param chunk the chunk subject to be swapped in
+     *  Successful return does not mean that the chunk is available at an instant. It may be necessary for asynchronous swapIn to complete beforehands.
+     *  @note this function must be called having stateChangeMutex acquired.
+    **/
     virtual bool swapIn ( managedMemoryChunk &chunk ) = 0;
+    /** @brief marks chunk as recently active as a hint for scheduling **/
     virtual bool touch ( managedMemoryChunk &chunk ) = 0;
+    ///@brief gives scheduler code the opportunity to register its own datastructures associated with a chunk
     virtual void schedulerRegister ( managedMemoryChunk &chunk ) = 0;
+    ///@brief signals deletion of chunk to scheduler code
     virtual void schedulerDelete ( managedMemoryChunk &chunk ) = 0;
 
-    ///This function ensures that there is sizereq space left in RAM and locks the topoLock
-    ///If orisSwappedin is set, return value tells whether the chunk orisSwappedin is pointing to has been swapped in
+    /** @brief This function ensures that there is sizereq space left in ram
+        @param orisSwappedin if not null, this chunk will be checked for ram presence
+        @return If \p orisSwappedin is set, return value tells whether the chunk \p orisSwappedin is pointing to has been or is about to be swapped in. Otherwise false**/
+
     bool ensureEnoughSpaceAndLockTopo ( global_bytesize sizereq, managedMemoryChunk *orIsSwappedin = NULL );
 
     //Swap Storage manager iface:
@@ -146,6 +185,7 @@ protected:
 
 
     managedMemory *previousManager;
+    /// Custom throw function, as we need to prevent throwing exceptions in construtors.
     static bool Throw ( memoryException e );
 
     static pthread_mutex_t stateChangeMutex;
@@ -177,11 +217,33 @@ protected:
 
     global_bytesize swap_hits = 0;
     global_bytesize swap_misses = 0;
-
+    /** @brief Waits until a certain chunk is present
+     *  @return success
+     *  @warning ensure that chunk is to be swapped in or may be present.
+     *  @note this function must be called having stateChangeMutex acquired.**/
     bool waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock = false );
+    global_bytesize swap_misses = 0;
+    /** @brief Waits until a certain chunk is swapped out
+     *  @return success
+     *  @warning ensure that chunk is to be swapped out in or may have already been swapped.
+     *  @note this function must be called having stateChangeMutex acquired.**/
     bool waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock = false );
+    /** @brief account for memory usage change
+     *  @param bytes number of bytes under consideration
+     *  @param rambytes set this to true if you want to signal different usage for bytes residing in rambytes
+     *  @param used sum of bytes will be increased if true, else decreased.
+    @note this function must be called having stateChangeMutex acquired.**/
     void claimUsageof ( global_bytesize bytes, bool rambytes, bool used );
+    /** @brief account for future availability of bytes
+     *  @param bytes number of bytes under consideration
+     *  @param tobefreed sum of bytes will be increased if true, else decreased.
+     *  @note this function must be called having stateChangeMutex acquired.
+     *  This tells memoryManager that asynchronous actions pending will free the number of bytes given by parameter
+     *  or that these bytes have now been freed
+     **/
     void claimTobefreed ( global_bytesize bytes, bool tobefreed );
+    /** @brief wait for some asynchronous action to occur
+        @note this function must be called having stateChangeMutex acquired.**/
     void waitForAIO();
 
     size_t memoryAlignment = 1;
@@ -192,11 +254,16 @@ protected:
 #endif
 
 public:
+    ///@brief print statistic about the number, size and efficiency of swapping actions
     void printSwapstats() const;
+    ///@brief reset statistic about the number, size and efficiency of swapping actions
     void resetSwapstats();
-
+    /**@brief static binding that will print out some stats.
+    Compile with cmake -DSWAPSTATS=on and send process SIGUSR1 to call this function
+    **/
     static void sigswapstats ( int sig );
 #endif
+    ///@brief prints out a GIT version info and a diff on this version at compile time
     static void versionInfo();
 };
 
