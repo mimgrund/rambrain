@@ -110,24 +110,32 @@ global_bytesize managedMemory::getSwappedMemory() const
 
 bool managedMemory::setMemoryLimit ( global_bytesize size )
 {
+    pthread_mutex_lock ( &stateChangeMutex );
     if ( size > memory_max ) {
         memory_max = size;
+        pthread_mutex_unlock ( &stateChangeMutex );
         return true;
     } else {
         if ( size < memory_used ) {
+
             //Try to swap out as much memory as needed:
             global_bytesize tobefreed = ( memory_used - size );
             if ( swapOut ( tobefreed ) != ERR_SUCCESS ) {
+                pthread_mutex_unlock ( &stateChangeMutex );
                 return false;
             }
+
             memory_max = size;
             swapOut ( 0 ); // Swap out further to adapt to new memory limits. This must not necessarily succeed.
+            pthread_mutex_unlock ( &stateChangeMutex );
             return true;
         } else {
             memory_max = size;
+            pthread_mutex_unlock ( &stateChangeMutex );
             return true;
         }
     }
+    pthread_mutex_unlock ( &stateChangeMutex );
     return false;                                             //Resetting this is not implemented yet.
 }
 
