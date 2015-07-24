@@ -128,15 +128,15 @@ protected:
     managedMemoryChunk &resolveMemChunk ( const memoryID &id );
 
 
-    //Swapping strategy
+    ///Error codes for swapOut requests
     enum swapErrorCode {
         ///Swapping action was successful
         ERR_SUCCESS,
         ///Swap space is full
         ERR_SWAPFULL ,
-        //The element/size requested does not fit in RAM as a whole
+        ///The element/size requested does not fit in RAM as a whole
         ERR_MORETHANTOTALRAM,
-        //We lack reasonable candidates for swapout (too much elements in use?)
+        ///We lack reasonable candidates for swapout (too much elements in use?)
         ERR_NOTENOUGHCANDIDATES
     };
     /** @brief swaps out at least min_size bytes
