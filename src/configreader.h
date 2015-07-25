@@ -6,6 +6,7 @@
 #include <istream>
 
 #include "common.h"
+#include "regexmatcher.h"
 
 using namespace std;
 
@@ -156,6 +157,8 @@ private:
     const string localConfigPath = "~/.membrain.conf";
     string customConfigPath = "";
     const string defaultBlock = "[default]";
+
+    const regexMatcher regex;
 
     ifstream stream;
 

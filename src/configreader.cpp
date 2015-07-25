@@ -101,15 +101,14 @@ bool configReader::parseConfigFile()
 {
     string line;
     bool ret = false;
-    string applicationBlock = "[" + getApplicationName() + "]";
 
     while ( stream.good() ) {
         getline ( stream, line );
-        if ( line == defaultBlock ) {
+        if ( regex.matchConfigBlock ( line ) ) {
             unsigned int current = stream.tellg();
             ret = parseConfigBlock();
             stream.seekg ( current );
-        } else if ( applicationBlock.size() > 2 && line == applicationBlock ) {
+        } else if ( regex.matchConfigBlock ( line, getApplicationName() ) ) {
             ret = parseConfigBlock();
             break;
         }
