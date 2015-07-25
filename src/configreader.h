@@ -156,7 +156,6 @@ private:
     const string globalConfigPath = "/etc/membrain.conf";
     const string localConfigPath = "~/.membrain.conf";
     string customConfigPath = "";
-    const string defaultBlock = "[default]";
 
     const regexMatcher regex;
 
