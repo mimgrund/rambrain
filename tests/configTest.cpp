@@ -21,30 +21,30 @@ int main ( int argc, char **argv )
     const configuration &config = membrainglobals::config.getConfig();
     managedMemory *man = managedMemory::defaultManager;
 
-    if ( config.memoryManager != "cyclicManagedMemory" || reinterpret_cast<cyclicManagedMemory *> ( man ) == NULL ) {
+    if ( config.memoryManager.value != "cyclicManagedMemory" || reinterpret_cast<cyclicManagedMemory *> ( man ) == NULL ) {
         cerr << "Manager is wrong!" << endl;
         ++ ret;
     }
 
     /// @todo check if correct swap is in place
-    if ( config.swap != "managedDummySwap" ) {
+    if ( config.swap.value != "managedDummySwap" ) {
         cerr << "Swap is wrong!" << endl;
         ++ ret;
     }
 
-    if ( config.memory != 100 || man->getMemoryLimit() != 100ul ) {
-        cerr << "Memory limit is wrong!" << config.memory << " " << man->getMemoryLimit() << endl;
+    if ( config.memory.value != 100 || man->getMemoryLimit() != 100ul ) {
+        cerr << "Memory limit is wrong!" << config.memory.value << " " << man->getMemoryLimit() << endl;
         ++ ret;
     }
 
     /// @todo check if swap is correct size
-    if ( config.swapMemory != 1000 ) {
+    if ( config.swapMemory.value != 1000 ) {
         cerr << "Swap limit is wrong!" << endl;
         ++ ret;
     }
 
     /// @todo also check this in system
-    if ( config.swapfiles != "membrainswapconfigtest-%d-%d" ) {
+    if ( config.swapfiles.value != "membrainswapconfigtest-%d-%d" ) {
         cerr << "Swap files are named incorrectly!" << endl;
         ++ ret;
     }

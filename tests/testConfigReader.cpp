@@ -10,11 +10,11 @@ TEST ( configuration, Unit_DefaultValues )
 {
     configuration config;
 
-    ASSERT_FALSE ( config.memoryManager.empty() );
-    ASSERT_GT ( config.memory, 0.0 );
-    ASSERT_FALSE ( config.swap.empty() );
-    ASSERT_FALSE ( config.swapfiles.empty() );
-    ASSERT_GT ( config.swapMemory, 0.0 );
+    ASSERT_FALSE ( config.memoryManager.value.empty() );
+    ASSERT_GT ( config.memory.value, 0.0 );
+    ASSERT_FALSE ( config.swap.value.empty() );
+    ASSERT_FALSE ( config.swapfiles.value.empty() );
+    ASSERT_GT ( config.swapMemory.value, 0.0 );
 }
 
 TEST ( configReader, Unit_ParseCustomFile )
@@ -35,7 +35,7 @@ TEST ( configReader, Unit_ParseCustomFile )
 
     configuration config = reader.getConfig();
 
-    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager );
+    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
 }
 
 TEST ( configReader, Unit_IgnoreCommentLines )
@@ -56,7 +56,7 @@ TEST ( configReader, Unit_IgnoreCommentLines )
 
     configuration config = reader.getConfig();
 
-    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager );
+    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
 }
 
 TEST ( configReader, Unit_IgnoreMissingVariables )
@@ -74,7 +74,7 @@ TEST ( configReader, Unit_IgnoreMissingVariables )
 
     configuration config = reader.getConfig();
 
-    ASSERT_FALSE ( config.memoryManager.empty() );
+    ASSERT_FALSE ( config.memoryManager.value.empty() );
 }
 
 TEST ( configReader, Unit_ParseProgramName )
@@ -104,7 +104,7 @@ TEST ( configReader, Unit_OverwriteDefault )
 
     configuration config = reader.getConfig();
 
-    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager );
+    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
 }
 
 TEST ( configReader, Unit_OverwriteDefaultInverseOrder )
@@ -127,7 +127,7 @@ TEST ( configReader, Unit_OverwriteDefaultInverseOrder )
 
     configuration config = reader.getConfig();
 
-    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager );
+    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
 }
 
 TEST ( configReader, Unit_IgnoreNewLines )
@@ -151,5 +151,5 @@ TEST ( configReader, Unit_IgnoreNewLines )
 
     configuration config = reader.getConfig();
 
-    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager );
+    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
 }

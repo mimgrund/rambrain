@@ -89,61 +89,14 @@ public:
     T value;
 };
 
-
-/**
- * @copydoc configLine<T>
- */
 template<>
-class configLine<global_bytesize> : public configLineBase
-{
-public:
-    /**
-     * @copydoc configLine<T>::configLine
-     */
-    configLine ( const string &name, const global_bytesize &value, const int matchType ) : configLineBase ( name, matchType ), value ( value ) {}
-    /**
-     * @copydoc configLine<T>::~configLine
-     */
-    virtual ~configLine() {}
+void configLine<global_bytesize>::setValue ( const string &str );
 
-    /**
-     * @copydoc configLine<T>::setValue
-     */
-    virtual void setValue ( const string &str ) {
-        /// @todo handle units
-        value = atoll ( str.c_str() );
-    }
-
-    global_bytesize value;
-};
-
-
-/**
- * @copydoc configLine<T>
- */
 template<>
-class configLine<bool> : public configLineBase
-{
-public:
-    /**
-     * @copydoc configLine<T>::configLine
-     */
-    configLine ( const string &name, const bool &value, const int matchType ) : configLineBase ( name, matchType ), value ( value ) {}
-    /**
-     * @copydoc configLine<T>::~configLine
-     */
-    virtual ~configLine() {}
+void configLine<bool>::setValue ( const string &str );
 
-    /**
-     * @copydoc configLine<T>::setValue
-     */
-    virtual void setValue ( const string &str ) {
-        /// @todo handle properly
-        value = str == "true";
-    }
-
-    bool value;
-};
+template<>
+void configLine<swapPolicy>::setValue ( const string &str );
 
 
 /**
@@ -251,19 +204,6 @@ private:
      * @see parseConfigLine
      */
     bool parseConfigBlock();
-    /**
-     * @brief Save a read out config option
-     * @param key Which option
-     * @param value It's value
-     * @param matchType The type that the value matched against
-     */
-    void saveConfigOption ( const string &key, const string &value, int matchType );
-    /**
-     * @brief Convert a string containing a swapPolicy to the enum value
-     * @param line The source string
-     * @return The enum value or autoextendable as default
-     */
-    swapPolicy parseSwapPolicy ( const string &line ) const;
 
     /**
      * @brief Extract the current binary's name out of the /proc file system

@@ -38,14 +38,14 @@ void membrainConfig::reinit ( bool reread )
 void membrainConfig::resizeMemory ( global_bytesize memory )
 {
     configuration &c = config.getConfig();
-    c.memory = memory;
+    c.memory.value = memory;
     manager->setMemoryLimit ( memory );
 }
 
 void membrainConfig::resizeSwap ( global_bytesize memory )
 {
     configuration &c = config.getConfig();
-    c.swapMemory = memory;
+    c.swapMemory.value = memory;
     //! \todo implement a resize for the swap
     reinit ( false );
 }
@@ -54,16 +54,16 @@ void membrainConfig::init ()
 {
     const configuration &c = getConfig();
 
-    if ( c.swap == "managedDummySwap" ) {
-        swap = new managedDummySwap ( c.swapMemory );
-    } else if ( c.swap == "managedFileSwap" ) {
-        swap = new managedFileSwap ( c.swapMemory, c.swapfiles.c_str(), 0, c.enableDMA );
+    if ( c.swap.value == "managedDummySwap" ) {
+        swap = new managedDummySwap ( c.swapMemory.value );
+    } else if ( c.swap.value == "managedFileSwap" ) {
+        swap = new managedFileSwap ( c.swapMemory.value, c.swapfiles.value.c_str(), 0, c.enableDMA.value );
     }
 
-    if ( c.memoryManager == "dummyManagedMemory" ) {
+    if ( c.memoryManager.value == "dummyManagedMemory" ) {
         manager = new dummyManagedMemory ( );
-    } else if ( c.memoryManager == "cyclicManagedMemory" ) {
-        manager = new cyclicManagedMemory ( swap, c.memory );
+    } else if ( c.memoryManager.value == "cyclicManagedMemory" ) {
+        manager = new cyclicManagedMemory ( swap, c.memory.value );
     }
 }
 

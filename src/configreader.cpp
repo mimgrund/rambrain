@@ -10,6 +10,34 @@
 namespace membrain
 {
 
+template<>
+void configLine<global_bytesize>::setValue ( const string &str )
+{
+    /// @todo handle units
+    value = atoll ( str.c_str() );
+}
+
+template<>
+void configLine<bool>::setValue ( const string &str )
+{
+    /// @todo handle properly
+    value = str == "true";
+}
+
+template<>
+void configLine<swapPolicy>::setValue ( const string &str )
+{
+    if ( str == "fixed" ) {
+        value = swapPolicy::fixed;
+    } else if ( str == "autoextendable" ) {
+        value = swapPolicy::autoextendable;
+    } else if ( str == "interactive" ) {
+        value = swapPolicy::interactive;
+    } else {
+        value = swapPolicy::autoextendable;
+    }
+}
+
 configuration::configuration() : memoryManager ( "memoryManager", "cyclicManagedMemory", regexMatcher::text ),
     swap ( "swap", "managedFileSwap", regexMatcher::text ),
 /** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
@@ -145,10 +173,11 @@ bool configReader::parseConfigBlock()
         } else if ( first == "#" ) {
             continue;
         } else {
-            for ( auto it = configuration.configOptions.begin(); it != configuration.configOptions.end(); ++it ) {
-                std::pair<string, string> match = regex.matchKeyEqualsValue ( line, it->name, it->matchType );
-                if ( match.first == it->first ) {
-                    saveConfigOption ( match->first, match->second, it->second );
+            for ( auto it = config.configOptions.begin(); it != config.configOptions.end(); ++it ) {
+                configLineBase *cl = *it;
+                std::pair<string, string> match = regex.matchKeyEqualsValue ( line, cl->name, cl->matchType );
+                if ( match.first == cl->name ) {
+                    cl->setValue ( match.second );
                     break;
                 }
             }
@@ -156,24 +185,6 @@ bool configReader::parseConfigBlock()
     }
 
     return true;
-}
-
-void configReader::saveConfigOption ( const string &key, const string &value, int matchType )
-{
-    /// @todo implement
-}
-
-swapPolicy configReader::parseSwapPolicy ( const string &line ) const
-{
-    if ( ! strcmp ( line.c_str(), "fixed" ) ) {
-        return swapPolicy::fixed;
-    } else if ( ! strcmp ( line.c_str(), "autoextendable" ) ) {
-        return swapPolicy::autoextendable;
-    } else if ( ! strcmp ( line.c_str(), "interactive" ) ) {
-        return swapPolicy::interactive;
-    } else {
-        return swapPolicy::autoextendable;
-    }
 }
 
 string configReader::getApplicationName() const
