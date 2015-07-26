@@ -10,8 +10,24 @@
 namespace membrain
 {
 
-configuration::configuration()
+configuration::configuration() : memoryManager ( "memoryManager", "cyclicManagedMemory", regexMatcher::text ),
+    swap ( "swap", "managedFileSwap", regexMatcher::text ),
+/** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
+    swapfiles ( "swapfiles", "membrainswap-%d-%d", regexMatcher::text ),
+    memory ( "memory", 0, regexMatcher::floating | regexMatcher::units ),
+    swapMemory ( "swapMemory", 0, regexMatcher::floating | regexMatcher::units ),
+    enableDMA ( "enableDMA", false, regexMatcher::integer | regexMatcher::boolean ),
+    policy ( "policy", swapPolicy::autoextendable, regexMatcher::text )
 {
+    // Fill configOptions
+    configOptions.push_back ( &memoryManager );
+    configOptions.push_back ( &swap );
+    configOptions.push_back ( &swapfiles );
+    configOptions.push_back ( &memory );
+    configOptions.push_back ( &swapMemory );
+    configOptions.push_back ( &enableDMA );
+    configOptions.push_back ( &policy );
+
     // Get free main memory
     ifstream meminfo ( "/proc/meminfo", ifstream::in );
     char line[1024];
@@ -38,7 +54,7 @@ configuration::configuration()
     * ( end + 1 ) = 0x00;
     bytes_avail = atol ( begin ) * 1024;
 
-    memory = bytes_avail * 0.5;
+    memory.value = bytes_avail * 0.5;
 
     // Get free partition space
     char exe[1024];
@@ -50,20 +66,12 @@ configuration::configuration()
         struct statvfs stats;
         statvfs ( exe, &stats );
 
-        swapMemory = stats.f_bfree * stats.f_bsize / 2;
+        swapMemory.value = stats.f_bfree * stats.f_bsize / 2;
     }
 }
 
 configReader::configReader()
 {
-    // Fill config lines map
-    configLines["memoryManager"] = regexMatcher::text;
-    configLines["memory"] = regexMatcher::floating | regexMatcher::units;
-    configLines["swap"] = regexMatcher::text;
-    configLines["swapfiles"] = regexMatcher::text;
-    configLines["swapMemory"] = regexMatcher::floating | regexMatcher::units;
-    configLines["enableDMA"] = regexMatcher::integer | regexMatcher::boolean;
-    configLines["policy"] = regexMatcher::text;
 }
 
 bool configReader::readConfig()
@@ -137,8 +145,8 @@ bool configReader::parseConfigBlock()
         } else if ( first == "#" ) {
             continue;
         } else {
-            for ( auto it = configLines.begin(); it != configLines.end(); ++it ) {
-                std::pair<string, string> match = regex.matchKeyEqualsValue ( line, it->first, it->second );
+            for ( auto it = configuration.configOptions.begin(); it != configuration.configOptions.end(); ++it ) {
+                std::pair<string, string> match = regex.matchKeyEqualsValue ( line, it->name, it->matchType );
                 if ( match.first == it->first ) {
                     saveConfigOption ( match->first, match->second, it->second );
                     break;

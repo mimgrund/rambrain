@@ -4,7 +4,7 @@
 #include <string>
 #include <fstream>
 #include <istream>
-#include <map>
+#include <vector>
 
 #include "common.h"
 #include "regexmatcher.h"
@@ -29,13 +29,127 @@ enum class swapPolicy
     interactive
 };
 
+
+/**
+ * @brief Base class for config lines
+ */
+class configLineBase
+{
+
+public:
+    /**
+     * @brief Create a new config line
+     * @param name It's name
+     * @param matchType Which type is matches against in the config file
+     */
+    configLineBase ( const string &name, const int matchType ) : name ( name ), matchType ( matchType ) {}
+    /**
+     * @brief Destructor
+     */
+    virtual ~configLineBase() {}
+    /**
+     * @brief Reset the value from a string
+     * @param str The string
+     */
+    virtual void setValue ( const string &str ) = 0;
+
+    const string name;
+    const int matchType;
+
+};
+
+
+/**
+ * @brief Class for config key value pairs represented by a line in a config file
+ */
+template<typename T>
+class configLine : public configLineBase
+{
+public:
+    /**
+     * @brief Create a new config option
+     * @param name It's name
+     * @param value It's starting value
+     * @param matchType Which type is matches against in the config file
+     */
+    configLine ( const string &name, const T &value, const int matchType ) : configLineBase ( name, matchType ), value ( value ) {}
+    /**
+     * @brief Destructor
+     */
+    virtual ~configLine() {}
+
+    /**
+     * @brief Reset the value from a string
+     * @param str The string
+     */
+    virtual void setValue ( const string &str ) {
+        value = str;
+    }
+
+    T value;
+};
+
+
+/**
+ * @copydoc configLine<T>
+ */
+template<>
+class configLine<global_bytesize> : public configLineBase
+{
+public:
+    /**
+     * @copydoc configLine<T>::configLine
+     */
+    configLine ( const string &name, const global_bytesize &value, const int matchType ) : configLineBase ( name, matchType ), value ( value ) {}
+    /**
+     * @copydoc configLine<T>::~configLine
+     */
+    virtual ~configLine() {}
+
+    /**
+     * @copydoc configLine<T>::setValue
+     */
+    virtual void setValue ( const string &str ) {
+        /// @todo handle units
+        value = atoll ( str.c_str() );
+    }
+
+    global_bytesize value;
+};
+
+
+/**
+ * @copydoc configLine<T>
+ */
+template<>
+class configLine<bool> : public configLineBase
+{
+public:
+    /**
+     * @copydoc configLine<T>::configLine
+     */
+    configLine ( const string &name, const bool &value, const int matchType ) : configLineBase ( name, matchType ), value ( value ) {}
+    /**
+     * @copydoc configLine<T>::~configLine
+     */
+    virtual ~configLine() {}
+
+    /**
+     * @copydoc configLine<T>::setValue
+     */
+    virtual void setValue ( const string &str ) {
+        /// @todo handle properly
+        value = str == "true";
+    }
+
+    bool value;
+};
+
+
 /**
  * @brief Main struct to save configuration variables
  * @note Should not be instantiated by the user, this is done in membrainconfig.h and managedMemory.cpp
- * @note When extended you also have to fill the new stuff into the reader's map and the save method
- * @see configReader()
- * @see map<string, int> configReader::configLines
- * @see configReader::saveConfigOption
+ * @note When extended don't forget to add the new options to configOptions
  */
 struct configuration {
 
@@ -44,15 +158,14 @@ struct configuration {
      */
     configuration();
 
-    string memoryManager = "cyclicManagedMemory";
-    global_bytesize memory;
-    string swap = "managedFileSwap";
-    /** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
-    string swapfiles = "membrainswap-%d-%d";
-    global_bytesize swapMemory;
-    bool enableDMA = false;
-    swapPolicy policy = swapPolicy::autoextendable;
+    configLine<string> memoryManager, swap, swapfiles;
+    configLine<global_bytesize> memory, swapMemory;
+    configLine<bool> enableDMA;
+    configLine<swapPolicy> policy;
+
+    vector<configLineBase *> configOptions;
 };
+
 
 /**
  * @brief Reader class to read in and properly parse config files
@@ -162,7 +275,6 @@ private:
     const string localConfigPath = "~/.membrain.conf";
     string customConfigPath = "";
 
-    map<string, int> configLines;
     const regexMatcher regex;
 
     ifstream stream;
