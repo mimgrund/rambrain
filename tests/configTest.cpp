@@ -33,19 +33,19 @@ int main ( int argc, char **argv )
     }
 
     if ( config.memory.value != 100 || man->getMemoryLimit() != 100ul ) {
-        cerr << "Memory limit is wrong!" << config.memory.value << " != " << man->getMemoryLimit() << endl;
+        cerr << "Memory limit is wrong! " << config.memory.value << " != " << man->getMemoryLimit() << " != 100" << endl;
         ++ ret;
     }
 
     /// @todo check if swap is correct size
-    if ( config.swapMemory.value != 1000 ) {
-        cerr << "Swap limit is wrong!" << endl;
+    if ( config.swapMemory.value != 1000000000 ) {
+        cerr << "Swap limit is wrong! " << config.swapMemory.value << " != 1000000000" << endl;
         ++ ret;
     }
 
     /// @todo also check this in system
     if ( config.swapfiles.value != "membrainswapconfigtest-%d-%d" ) {
-        cerr << "Swap files are named incorrectly!" << endl;
+        cerr << "Swap files are named incorrectly! " << config.swapfiles.value << " != membrainswapconfigtest-%d-%d" << endl;
         ++ ret;
     }
 
@@ -62,7 +62,7 @@ int main ( int argc, char **argv )
         }
     }
 
-    cout << "Done, " << ret << " errors occured" << endl;
+    cout << endl << "Done, " << ret << " errors occured" << endl;
 
     return ret;
 }

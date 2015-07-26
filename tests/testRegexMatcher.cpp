@@ -66,6 +66,10 @@ TEST ( regexMatcher, Unit_KeyEqualsValue )
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "val%due", kv.second );
 
+    kv = regex.matchKeyEqualsValue ( " key = files-%d_%d " );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "files-%d_%d", kv.second );
+
     kv = regex.matchKeyEqualsValue ( " key = value ", "key" );
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "value", kv.second );

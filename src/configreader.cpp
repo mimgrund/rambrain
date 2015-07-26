@@ -193,7 +193,7 @@ bool configReader::parseConfigFile()
 
 bool configReader::parseConfigBlock()
 {
-    string line, first, value;
+    string line, first;
 
     while ( stream.good() ) {
         getline ( stream, line );
