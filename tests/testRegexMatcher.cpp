@@ -6,7 +6,7 @@ using namespace membrain;
 /**
 * @test Checks if block header matching works
 */
-TEST ( regexMatcher, Unit_TestMatchBlock )
+TEST ( regexMatcher, Unit_MatchBlock )
 {
     regexMatcher regex;
 
@@ -25,7 +25,7 @@ TEST ( regexMatcher, Unit_TestMatchBlock )
 /**
  * @brief Checks if key value pair matching works
  */
-TEST ( regexMatcher, Unit_TestKeyEqualsValue )
+TEST ( regexMatcher, Unit_KeyEqualsValue )
 {
     regexMatcher regex;
     pair<string, string> kv;
@@ -78,7 +78,7 @@ TEST ( regexMatcher, Unit_TestKeyEqualsValue )
 /**
  * @brief Checks if key value pair matching works with special value types
  */
-TEST ( regexMatcher, Unit_TestKeyEqualsSpecialValue )
+TEST ( regexMatcher, Unit_KeyEqualsSpecialValue )
 {
     regexMatcher regex;
     pair<string, string> kv;
@@ -171,7 +171,7 @@ TEST ( regexMatcher, Unit_TestKeyEqualsSpecialValue )
 /**
  * @brief Checks if double value - unit splitting works properly
  */
-TEST ( regexMatcher, Unit_TestDoubleValueUnitSplitting )
+TEST ( regexMatcher, Unit_DoubleValueUnitSplitting )
 {
     regexMatcher regex;
     pair<double, string> vu;
@@ -192,7 +192,7 @@ TEST ( regexMatcher, Unit_TestDoubleValueUnitSplitting )
 /**
  * @brief Checks if integer value - unit splitting works properly
  */
-TEST ( regexMatcher, Unit_TestIntegerValueUnitSplitting )
+TEST ( regexMatcher, Unit_IntegerValueUnitSplitting )
 {
     regexMatcher regex;
     pair<long long int, string> vu;

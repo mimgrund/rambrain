@@ -21,22 +21,22 @@ void configLine<global_bytesize>::setValue ( const string &str )
 
         if ( matchType & regexMatcher::floating ) {
             auto splitted = regex.splitDoubleValueUnit ( str );
-            intval = splitted.first;
+            dblval = splitted.first;
             unit = splitted.second;
 
         } else {
             auto splitted = regex.splitIntegerValueUnit ( str );
-            dblval = splitted.first;
+            intval = splitted.first;
             unit = splitted.second;
         }
 
         if ( unit == "b" || unit == "B" ) {
             value = 1uLL;
-        } else if ( unit == "kb" || unit == "kB" || unit == "KB" ) {
+        } else if ( unit == "kb" || unit == "kB" || unit == "Kb" || unit == "KB" ) {
             value = 1000uLL;
-        } else if ( unit == "mb" || unit == "mB" || unit == "MB" ) {
+        } else if ( unit == "mb" || unit == "Mb" || unit == "MB" ) {
             value = 1000000uLL;
-        } else if ( unit == "gb" || unit == "gB" || unit == "gB" ) {
+        } else if ( unit == "gb" || unit == "Gb" || unit == "GB" ) {
             value = 1000000000uLL;
         }
 
