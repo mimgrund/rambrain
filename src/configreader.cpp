@@ -136,37 +136,23 @@ bool configReader::parseConfigBlock()
             break;
         } else if ( first == "#" ) {
             continue;
-        } else if ( ! ( value = parseConfigLine ( line, "memoryManager" ) ).empty() ) {
-            config.memoryManager = value;
-        } else if ( ! ( value = parseConfigLine ( line, "swap" ) ).empty() ) {
-            config.swap = value;
-        } else if ( ! ( value = parseConfigLine ( line, "swapfiles" ) ).empty() ) {
-            config.swapfiles = value;
-        } else if ( ! ( value = parseConfigLine ( line, "memory" ) ).empty() ) {
-            config.memory = atoll ( value.c_str() );
-        } else if ( ! ( value = parseConfigLine ( line, "swapMemory" ) ).empty() ) {
-            config.swapMemory = atoll ( value.c_str() );
-        } else if ( ! ( value = parseConfigLine ( line, "enableDMA" ) ).empty() ) {
-            config.enableDMA = strcmp ( value.c_str(), "true" ) == 0;
-        } else if ( ! ( value = parseConfigLine ( line, "swapPolicy" ) ).empty() ) {
-            config.policy = parseSwapPolicy ( value.c_str() );
+        } else {
+            for ( auto it = configLines.begin(); it != configLines.end(); ++it ) {
+                std::pair<string, string> match = regex.matchKeyEqualsValue ( line, it->first, it->second );
+                if ( match.first == it->first ) {
+                    saveConfigOption ( match->first, match->second, it->second );
+                    break;
+                }
+            }
         }
     }
 
     return true;
 }
 
-string configReader::parseConfigLine ( const string &line, const string &key ) const
+void configReader::saveConfigOption ( const string &key, const string &value, int matchType )
 {
-    unsigned int pos = key.length();
-    if ( line.substr ( 0, key.length() ) == key && line.find_first_of ( "= \t", pos ) == pos ) {
-        pos = line.find_first_not_of ( "= \t", pos );
-        if ( pos < line.length() ) {
-            return line.substr ( pos );
-        }
-    }
-
-    return "";
+    /// @todo implement
 }
 
 swapPolicy configReader::parseSwapPolicy ( const string &line ) const

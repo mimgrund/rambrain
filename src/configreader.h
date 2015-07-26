@@ -32,9 +32,10 @@ enum class swapPolicy
 /**
  * @brief Main struct to save configuration variables
  * @note Should not be instantiated by the user, this is done in membrainconfig.h and managedMemory.cpp
- * @note When extended you also have to fill the new stuff into the reader's map
+ * @note When extended you also have to fill the new stuff into the reader's map and the save method
  * @see configReader()
  * @see map<string, int> configReader::configLines
+ * @see configReader::saveConfigOption
  */
 struct configuration {
 
@@ -138,12 +139,12 @@ private:
      */
     bool parseConfigBlock();
     /**
-     * @brief Check for a certain key in a string which supposedly contains key = value
-     * @param line The source string
-     * @param key The key to be looked for
-     * @return The value or ""
+     * @brief Save a read out config option
+     * @param key Which option
+     * @param value It's value
+     * @param matchType The type that the value matched against
      */
-    string parseConfigLine ( const string &line, const string &key ) const;
+    void saveConfigOption ( const string &key, const string &value, int matchType );
     /**
      * @brief Convert a string containing a swapPolicy to the enum value
      * @param line The source string

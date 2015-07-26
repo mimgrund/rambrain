@@ -16,9 +16,14 @@ bool regexMatcher::matchConfigBlock ( const string &str, const string &blockname
 
 pair<string, string> regexMatcher::matchKeyEqualsValue ( const string &str, int valueType ) const
 {
+    return matchKeyEqualsValue ( str, "[a-zA-Z]+", valueType );
+}
+
+pair<string, string> regexMatcher::matchKeyEqualsValue ( const string &str, const string &key, int valueType ) const
+{
     pair<string, string> res;
     smatch match;
-    const regex rgx ( "\\s*([a-zA-Z]+)\\s*=\\s*(" + createRegexMatching ( valueType ) + ")\\s*" );
+    const regex rgx ( "\\s*(" + key + ")\\s*=\\s*(" + createRegexMatching ( valueType ) + ")\\s*" );
 
     if ( regex_match ( str, match, rgx ) ) {
         res.first = match[1];

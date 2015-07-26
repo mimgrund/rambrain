@@ -65,6 +65,14 @@ TEST ( regexMatcher, Unit_KeyEqualsValue )
     kv = regex.matchKeyEqualsValue ( " key = val%due " );
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "val%due", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( " key = value ", "key" );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "value", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( " key = value ", "mykey" );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
 }
 
 /**

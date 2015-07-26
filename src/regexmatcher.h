@@ -50,6 +50,15 @@ public:
      * @todo give possibility to give constraints on value, like must be a double or so
      */
     pair<string, string> matchKeyEqualsValue ( const string &str, int valueType = text ) const;
+    /**
+     * @brief Checks if a string matches something like key = value
+     * @param str The source string
+     * @param key Which key to match
+     * @param valueType Which matchType the value should be, does not match otherwise
+     * @return Result key and value
+     * @todo give possibility to give constraints on value, like must be a double or so
+     */
+    pair<string, string> matchKeyEqualsValue ( const string &str, const string &key, int valueType = text ) const;
 
 private:
     /**
