@@ -23,6 +23,7 @@ TEST ( configReader, Unit_ParseCustomFile )
     ofstream out ( "testconfig.conf" );
     out << "[default]" << std::endl;
     out << "memoryManager = dummyManagedMemory" << std::endl;
+    out << "memory = 5 GB" << std::endl;
     out.close();
 
     // Read in the file
@@ -36,6 +37,7 @@ TEST ( configReader, Unit_ParseCustomFile )
     configuration config = reader.getConfig();
 
     ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
+    ASSERT_EQ ( 5000000000uLL, config.memory.value );
 }
 
 TEST ( configReader, Unit_IgnoreCommentLines )
@@ -130,7 +132,7 @@ TEST ( configReader, Unit_OverwriteDefaultInverseOrder )
     ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
 }
 
-TEST ( configReader, Unit_IgnoreNewLines )
+TEST ( configReader, Unit_IgnoreEmptyLines )
 {
     //Create custom config file
     ofstream out ( "testconfig.conf" );

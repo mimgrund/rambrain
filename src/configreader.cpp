@@ -38,6 +38,8 @@ void configLine<global_bytesize>::setValue ( const string &str )
             value = 1000000uLL;
         } else if ( unit == "gb" || unit == "Gb" || unit == "GB" ) {
             value = 1000000000uLL;
+        } else {
+            value = 1uLL;
         }
 
         value *= ( ( matchType & regexMatcher::floating ) ? dblval : intval );

@@ -33,7 +33,7 @@ int main ( int argc, char **argv )
     }
 
     if ( config.memory.value != 100 || man->getMemoryLimit() != 100ul ) {
-        cerr << "Memory limit is wrong!" << config.memory.value << " " << man->getMemoryLimit() << endl;
+        cerr << "Memory limit is wrong!" << config.memory.value << " != " << man->getMemoryLimit() << endl;
         ++ ret;
     }
 

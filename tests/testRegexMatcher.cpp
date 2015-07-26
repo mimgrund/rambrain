@@ -127,6 +127,10 @@ TEST ( regexMatcher, Unit_KeyEqualsSpecialValue )
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "1.2 GB", kv.second );
 
+    kv = regex.matchKeyEqualsValue ( "key = 1.2", regexMatcher::floating | regexMatcher::units );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "1.2", kv.second );
+
     kv = regex.matchKeyEqualsValue ( "key = 123.45", regexMatcher::integer | regexMatcher::floating );
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "123.45", kv.second );
