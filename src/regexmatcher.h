@@ -4,6 +4,7 @@
 #include <regex>
 #include <string>
 #include <map>
+#include "common.h"
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
 
     /**
      * @brief An enum to caracterise what shall be matched in a specific case; flaggy
+     * @warning Negative integers currently not supported!
      */
     enum matchType {
         integer = 1 << 0,
@@ -59,6 +61,19 @@ public:
      * @todo give possibility to give constraints on value, like must be a double or so
      */
     pair<string, string> matchKeyEqualsValue ( const string &str, const string &key, int valueType = text ) const;
+
+    /**
+     * @brief Split a string containing value and possibly unit into both parts
+     * @param str The string containing double and unit
+     * @return Value and unit
+     */
+    pair<double, string> splitDoubleValueUnit ( const string &str ) const;
+    /**
+     * @brief Split a string containing value and possibly unit into both parts
+     * @param str The string containing integer and unit
+     * @return Value and unit
+     */
+    pair<long long int, string> splitIntegerValueUnit ( const string &str ) const;
 
 private:
     /**

@@ -6,7 +6,7 @@ using namespace membrain;
 /**
 * @test Checks if block header matching works
 */
-TEST ( regexMatcher, Unit_MatchBlock )
+TEST ( regexMatcher, Unit_TestMatchBlock )
 {
     regexMatcher regex;
 
@@ -25,7 +25,7 @@ TEST ( regexMatcher, Unit_MatchBlock )
 /**
  * @brief Checks if key value pair matching works
  */
-TEST ( regexMatcher, Unit_KeyEqualsValue )
+TEST ( regexMatcher, Unit_TestKeyEqualsValue )
 {
     regexMatcher regex;
     pair<string, string> kv;
@@ -78,7 +78,7 @@ TEST ( regexMatcher, Unit_KeyEqualsValue )
 /**
  * @brief Checks if key value pair matching works with special value types
  */
-TEST ( regexMatcher, Unit_KeyEqualsSpecialValue )
+TEST ( regexMatcher, Unit_TestKeyEqualsSpecialValue )
 {
     regexMatcher regex;
     pair<string, string> kv;
@@ -158,4 +158,54 @@ TEST ( regexMatcher, Unit_KeyEqualsSpecialValue )
     kv = regex.matchKeyEqualsValue ( "key = 1", regexMatcher::boolean | regexMatcher::integer );
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "1", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = True", regexMatcher::boolean );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "True", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = TRUE", regexMatcher::boolean );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "TRUE", kv.second );
+}
+
+/**
+ * @brief Checks if double value - unit splitting works properly
+ */
+TEST ( regexMatcher, Unit_TestDoubleValueUnitSplitting )
+{
+    regexMatcher regex;
+    pair<double, string> vu;
+
+    vu = regex.splitDoubleValueUnit ( "1.0MB" );
+    EXPECT_EQ ( 1.0, vu.first );
+    EXPECT_EQ ( "MB", vu.second );
+
+    vu = regex.splitDoubleValueUnit ( "1.0 MB" );
+    EXPECT_EQ ( 1.0, vu.first );
+    EXPECT_EQ ( "MB", vu.second );
+
+    vu = regex.splitDoubleValueUnit ( "1.0f kb" );
+    EXPECT_EQ ( 1.0, vu.first );
+    EXPECT_EQ ( "kb", vu.second );
+}
+
+/**
+ * @brief Checks if integer value - unit splitting works properly
+ */
+TEST ( regexMatcher, Unit_TestIntegerValueUnitSplitting )
+{
+    regexMatcher regex;
+    pair<long long int, string> vu;
+
+    vu = regex.splitDoubleValueUnit ( "1MB" );
+    EXPECT_EQ ( 1LL, vu.first );
+    EXPECT_EQ ( "MB", vu.second );
+
+    vu = regex.splitDoubleValueUnit ( "1 MB" );
+    EXPECT_EQ ( 1LL, vu.first );
+    EXPECT_EQ ( "MB", vu.second );
+
+    vu = regex.splitDoubleValueUnit ( "1 kb" );
+    EXPECT_EQ ( 1LL, vu.first );
+    EXPECT_EQ ( "kb", vu.second );
 }

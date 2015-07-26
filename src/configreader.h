@@ -89,12 +89,15 @@ public:
     T value;
 };
 
+/// @copydoc configLine<T>::setValue
 template<>
 void configLine<global_bytesize>::setValue ( const string &str );
 
+/// @copydoc configLine<T>::setValue
 template<>
 void configLine<bool>::setValue ( const string &str );
 
+/// @copydoc configLine<T>::setValue
 template<>
 void configLine<swapPolicy>::setValue ( const string &str );
 

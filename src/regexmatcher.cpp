@@ -38,7 +38,7 @@ string regexMatcher::createRegexMatching ( int type ) const
     stringstream ss;
 
     if ( type & boolean ) {
-        ss  << "true|false";
+        ss  << "true|True|TRUE|false|False|FALSE";
         if ( type & integer ) {
             ss << "|\\d+";
         }
@@ -60,6 +60,34 @@ string regexMatcher::createRegexMatching ( int type ) const
     }
 
     return ss.str();
+}
+
+pair<double, string> regexMatcher::splitDoubleValueUnit ( const string &str ) const
+{
+    pair<double, string> res;
+    const regex rgx ( "([0-9]+\\.?\\d*f?)\\s*([a-zA-Z]+)" );
+    smatch match;
+
+    if ( regex_match ( str, match, rgx ) ) {
+        res.first = atof ( static_cast<string> ( match[1] ).c_str() );
+        res.second = match[2];
+    }
+
+    return res;
+}
+
+pair<long long, string> regexMatcher::splitIntegerValueUnit ( const string &str ) const
+{
+    pair<unsigned long long, string> res;
+    const regex rgx ( "([0-9]+)\\s*([a-zA-Z]+)" );
+    smatch match;
+
+    if ( regex_match ( str, match, rgx ) ) {
+        res.first = atoll ( static_cast<string> ( match[1] ).c_str() );
+        res.second = match[2];
+    }
+
+    return res;
 }
 
 }

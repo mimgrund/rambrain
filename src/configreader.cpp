@@ -13,15 +13,43 @@ namespace membrain
 template<>
 void configLine<global_bytesize>::setValue ( const string &str )
 {
-    /// @todo handle units
-    value = atoll ( str.c_str() );
+    if ( matchType & regexMatcher::units ) {
+        regexMatcher regex;
+        long long intval = 0LL;
+        double dblval = 0.0;
+        string unit;
+
+        if ( matchType & regexMatcher::floating ) {
+            auto splitted = regex.splitDoubleValueUnit ( str );
+            intval = splitted.first;
+            unit = splitted.second;
+
+        } else {
+            auto splitted = regex.splitIntegerValueUnit ( str );
+            dblval = splitted.first;
+            unit = splitted.second;
+        }
+
+        if ( unit == "b" || unit == "B" ) {
+            value = 1uLL;
+        } else if ( unit == "kb" || unit == "kB" || unit == "KB" ) {
+            value = 1000uLL;
+        } else if ( unit == "mb" || unit == "mB" || unit == "MB" ) {
+            value = 1000000uLL;
+        } else if ( unit == "gb" || unit == "gB" || unit == "gB" ) {
+            value = 1000000000uLL;
+        }
+
+        value *= ( ( matchType & regexMatcher::floating ) ? dblval : intval );
+    } else {
+        value = atoll ( str.c_str() );
+    }
 }
 
 template<>
 void configLine<bool>::setValue ( const string &str )
 {
-    /// @todo handle properly
-    value = str == "true";
+    value = ! ( str == "false" || str == "False" || str == "FALSE" || str == "0" );
 }
 
 template<>
