@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <istream>
+#include <map>
 
 #include "common.h"
 #include "regexmatcher.h"
@@ -31,6 +32,9 @@ enum class swapPolicy
 /**
  * @brief Main struct to save configuration variables
  * @note Should not be instantiated by the user, this is done in membrainconfig.h and managedMemory.cpp
+ * @note When extended you also have to fill the new stuff into the reader's map
+ * @see configReader()
+ * @see map<string, int> configReader::configLines
  */
 struct configuration {
 
@@ -157,6 +161,7 @@ private:
     const string localConfigPath = "~/.membrain.conf";
     string customConfigPath = "";
 
+    map<string, int> configLines;
     const regexMatcher regex;
 
     ifstream stream;

@@ -56,6 +56,14 @@ configuration::configuration()
 
 configReader::configReader()
 {
+    // Fill config lines map
+    configLines["memoryManager"] = regexMatcher::text;
+    configLines["memory"] = regexMatcher::floating | regexMatcher::units;
+    configLines["swap"] = regexMatcher::text;
+    configLines["swapfiles"] = regexMatcher::text;
+    configLines["swapMemory"] = regexMatcher::floating | regexMatcher::units;
+    configLines["enableDMA"] = regexMatcher::integer | regexMatcher::boolean;
+    configLines["policy"] = regexMatcher::text;
 }
 
 bool configReader::readConfig()

@@ -1,4 +1,5 @@
 #include "regexmatcher.h"
+#include <sstream>
 
 namespace membrain
 {
@@ -13,11 +14,11 @@ bool regexMatcher::matchConfigBlock ( const string &str, const string &blockname
     return regex_match ( str, rgx );
 }
 
-pair<string, string> regexMatcher::matchKeyEqualsValue ( const string &str ) const
+pair<string, string> regexMatcher::matchKeyEqualsValue ( const string &str, int valueType ) const
 {
     pair<string, string> res;
     smatch match;
-    const regex rgx ( "\\s*([a-zA-Z]+)\\s*=\\s*([a-zA-Z0-9]+)\\s*" );
+    const regex rgx ( "\\s*([a-zA-Z]+)\\s*=\\s*(" + createRegexMatching ( valueType ) + ")\\s*" );
 
     if ( regex_match ( str, match, rgx ) ) {
         res.first = match[1];
@@ -25,6 +26,35 @@ pair<string, string> regexMatcher::matchKeyEqualsValue ( const string &str ) con
     }
 
     return res;
+}
+
+string regexMatcher::createRegexMatching ( int type ) const
+{
+    stringstream ss;
+
+    if ( type & boolean ) {
+        ss  << "true|false";
+        if ( type & integer ) {
+            ss << "|\\d+";
+        }
+    } else {
+        ss << "[";
+        if ( type & integer || type & floating ) {
+            ss << "0-9";
+        }
+        if ( type & text ) {
+            ss << "a-zA-Z\\%";
+        }
+        ss << "]+";
+        if ( type & floating ) {
+            ss << "\\.?\\d*f?";
+        }
+        if ( type & units ) {
+            ss << "\\s*[a-zA-Z]+";
+        }
+    }
+
+    return ss.str();
 }
 
 }

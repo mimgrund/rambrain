@@ -27,23 +27,27 @@ public:
      *  @return true if sane, false if not**/
     bool checkCycle() const;
 
-    ///@brief sets whether scheduler should guess next needed items
-    ///@param preemtive iff set to true, scheduler will guess (default)
-    ///\note not thread-safe - does not make sense to call it from different threads anyway
-    ///\note returns previous value
-    ///@return returns previous value
+    /**
+     * @brief sets whether scheduler should guess next needed items
+     * @param preemtive iff set to true, scheduler will guess (default)
+     * \note not thread-safe - does not make sense to call it from different threads anyway
+     * \note returns previous value
+     * @return returns previous value
+     */
     bool setPreemptiveLoading ( bool preemptive );
 
 
 
 private:
-    /** @brief cyclic implementation of swapIn, see paper
-    ///\note protect call to swapIn by topologicalMutex
-    **/
+    /**
+     * @brief cyclic implementation of swapIn, see paper
+     * @note protect call to swapIn by topologicalMutex
+     */
     virtual bool swapIn ( managedMemoryChunk &chunk );
-    /** @brief cyclic implementation of swapOut, see paper
-     / //*\note protect call to swapIn by topologicalMutex
-     **/
+    /**
+     * @brief cyclic implementation of swapOut, see paper
+     * @note protect call to swapIn by topologicalMutex
+     */
     virtual swapErrorCode swapOut ( global_bytesize min_size );
     virtual bool touch ( managedMemoryChunk &chunk );
     virtual void schedulerRegister ( managedMemoryChunk &chunk );
