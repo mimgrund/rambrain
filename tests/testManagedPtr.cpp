@@ -453,22 +453,22 @@ TEST ( managedPtr, Unit_ConcurrentUseAccess )
     for ( int i = 0; i < 1000; ++i ) {
         if ( i % 2 == 0 ) {
             ADHERETOLOC ( double, a, loc );
-            loc[0] = i;
+            loc[i % 40] = i % 40;
 
         } else {
             ADHERETOLOC ( double, b, loc );
-            loc[0] = i;
+            loc[i % 40] = i % 40;
         }
     }
 
-    for ( int i = 0; i < 1000; ++i ) {
+    for ( int i = 0; i < 40; ++i ) {
         if ( i % 2 == 0 ) {
             ADHERETOLOC ( double, a, loc );
-            ASSERT_EQ ( i, loc[0] );
+            ASSERT_EQ ( i % 40, loc[i % 40] );
 
         } else {
             ADHERETOLOC ( double, b, loc );
-            ASSERT_EQ ( i, loc[0] );
+            ASSERT_EQ ( i % 40, loc[i % 40] );
         }
     }
 }
