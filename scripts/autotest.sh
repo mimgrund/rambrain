@@ -1,44 +1,39 @@
 #!/bin/bash
 
-repodir="/var/gits/rambrain"
-branch=$1
-options=(PARENTAL_CONTROL OPTIMISE_COMPILATION) #what about dma? what about optimisation?
+user=$1
+repodir="ssh://${user}@schedar.usm.uni-muenchen.de/var/gits/membrain"
+branches=(master aio_merger)
+options=(PARENTAL_CONTROL OPTIMISE_COMPILATION)
 processes=8
-cd /membrain_compile
-git clone $repodir $branch
+
+if [ -z "$user" ]; then
+    echo "Please supply a username via command line parameter, aborting script..."
+    exit 1
+fi
+
+rm -rf cleanbrain
+git clone $repodir cleanbrain
+
 fail=$?
 if [ $fail -ne 0 ]; then
     >&2 echo "Git failed to clone repository, aborting script..."
     exit 2
 fi
-unset GIT_DIR
-cd $branch
+
+cd cleanbrain/build
+
+for branch in ${branches[@]}; do
     echo "Checking out branch $branch"
     git checkout $branch
-    echo "This autotest is based on:"
-    git show -s --pretty=oneline --format="%aD: %aN - %s" $branch
-    echo -e "\n\n"
-    chmod -R 0770 .
-    chown -R $(whoami):gituser .
-
-#override gengit.sh script
-cat - >scripts/gengit.sh<<EOF
-echo const unsigned char gitCommit [] = {0x00}\;>/rambrain_compile/$branch/src/git_info.h
-echo const unsigned char gitDiff [] = {0x00}\;>>/rambrain_compile/$branch/src/git_info.h
-EOF
-
-good=0
-    cd build
-
 
     max=$(awk "BEGIN{print 2 ** ${#options[@]}}")
     max=$((max-1))
     for i in `seq 0 $max`; do
         opts=""
-        j=0
+        j=1
         for option in ${options[@]}; do
             opts+=" -D$option="
-            k=$((($i >> $j) % 2))
+            k=$(($i >> $j % 2))
             if [ $k -eq 1 ]; then
                 opts+="ON"
             else
@@ -52,15 +47,14 @@ good=0
         echo "Saving results to $outname"
         echo -e "Branch $branch; options $opts\n\n" > "$outname"
 
-        rm -rf ../build/*
+        rm -rf *
         cmake .. $opts >> "${outname}" 2>&1
         echo -e "\n\n" >> "$outname"
-
         make -j 8 >> "${outname}" 2>&1
 
         fail=$?
         if [ $fail -ne 0 ]; then
-            echo "Make exited with error code ${fail}, ATTENTION NEEDED!"
+            >&2 echo "Make exited with error code ${fail}, ATTENTION NEEDED!"
         else
             echo "Running tests..."
             echo -e "\n\n" >> "$outname"
@@ -68,21 +62,8 @@ good=0
 
             fail=$?
             if [ $fail -ne 0 ]; then
-                echo "${fail} tests failed in this run, ATTENTION NEEDED!"
-            else
-		echo "test succeeded."
-		((good++))
-	    fi 
+                >&2 echo "${fail} tests failed in this run, ATTENTION NEEDED!"
+            fi
         fi
-	echo -e "\n-------------------------------------------------\n\n\n\n\n\n" >>"$outname"
-        
     done
-cd /membrain_compile
-if [ $good -eq $(($max+1)) ]; then
-	echo SUCESSFULL >${branch}_success.txt
-else
-	echo FAIL! $(($max+1-$good)) / $(($max+1)) need attention >${branch}_success.txt
-fi
-rm -rf $(whoami)
-mv $branch $(whoami)
-cat test_$branch* >$branch.log
+done
