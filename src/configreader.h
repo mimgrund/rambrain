@@ -21,6 +21,8 @@ namespace rambrain
  * @brief An enumeration to regulate how the swap should define when it approaches it's set boundary
  *
  * Can either keep the boundary fixed, extend it automatically as it needs or start an interactive shell to ask the user for advice
+ * @warning Currently not used
+ * @todo Implement usage
  */
 enum class swapPolicy
 {
@@ -111,6 +113,7 @@ struct configuration {
 
     /**
      * @brief Init configuration with standard values using half the available memory and disk space where the binary lives
+     * @todo Check if a virtual file system is used and warn the user
      */
     configuration();
 

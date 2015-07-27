@@ -110,12 +110,15 @@ protected:
 };
 
 
+/**
+ * @brief Derived performance test classes which take parameter types as template arguments
+ */
 template<typename... U>
 class performanceTest;
 
 
 /**
- * Base class for all performance tests which itself does not contain any parameters
+ * @brief Base class for all performance tests which itself does not contain any parameters
  */
 template<>
 class performanceTest<>
@@ -386,6 +389,7 @@ TWOPARAMTEST ( matrixCopyTest, int, int );
 TWOPARAMTEST ( matrixCopyOpenMPTest, int, int );
 TWOPARAMTEST ( matrixDoubleCopyTest, int, int );
 TWOPARAMTEST ( matrixDoubleCopyOpenMPTest, int, int );
+/// @todo Write a similar test to check preemptive
 TWOPARAMTEST ( measureThroughputTest, int, int );
 
 #endif // PERFORMANCETESTCLASSES_H

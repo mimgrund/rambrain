@@ -11,6 +11,8 @@
 
 using namespace rambrain;
 
+/// @todo Write a test for const lazy allocation / deallocation
+
 /**
  * @test Tests whether managedFileSwap can take a memoryChunk and store it securely.
  */
