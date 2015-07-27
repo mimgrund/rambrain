@@ -1,12 +1,13 @@
+#include "tester.h"
+IGNORE_TEST_WARNINGS;
+
 #include <gtest/gtest.h>
 #include "managedPtr.h"
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
 #include "exceptions.h"
-#include "tester.h"
 
 using namespace rambrain;
-IGNORE_TEST_WARNINGS;
 
 /**
  * @test Tests the behaviour if no memory manager is explicitely installed, ergo testing the fallback default

@@ -107,11 +107,14 @@ private:
 #define IGNORE_WARNING(warning) _Pragma(STRINGIFY(GCC diagnostic ignored #warning))
 #define IGNORE_TEST_WARNINGS IGNORE_WARNING(-Wunused-variable); \
                                    IGNORE_WARNING(-Wdeprecated-declarations); \
-                                   IGNORE_WARNING(-Wsign-compare)
-#define RESTORE_WARNINGS _Pragma("GCC diagnostic pop")
+                                   IGNORE_WARNING(-Wsign-compare); \
+                                   IGNORE_WARNING(-Wunused-but-set-variable)
+#define RESTORE_WARNING _Pragma("GCC diagnostic pop")
+#define RESTORE_WARNINGS RESTORE_WARNING; RESTORE_WARNING; RESTORE_WARNING; RESTORE_WARNING
 #else
 #define IGNORE_WARNING(warning)
 #define IGNORE_TEST_WARNINGS
+#define RESTORE_WARNING
 #define RESTORE_WARNINGS
 #endif
 

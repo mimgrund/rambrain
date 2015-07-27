@@ -1,8 +1,12 @@
+#include "tester.h"
+IGNORE_TEST_WARNINGS;
+
 #include <gtest/gtest.h>
 #include "managedPtr.h"
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
 #include <omp.h>
+
 using namespace rambrain;
 
 /**
@@ -252,3 +256,5 @@ TEST ( adhereTo, Unit_CopyCorrectness )
         EXPECT_EQ ( i, loc3[i] );
     } );
 }
+
+RESTORE_WARNINGS;

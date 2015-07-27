@@ -11,6 +11,8 @@ performanceTest<>::performanceTest ( const char *name ) : name ( name )
 void performanceTest<>::runTests ( unsigned int repetitions, const string &path  )
 {
     cout << "Running test case " << name << std::endl;
+    int dummy = 0;
+
     for ( int param = parameters.size() - 1; param >= 0; --param ) {
         if ( parameters[param]->enabled ) {
             unsigned int steps = getStepsForParam ( param );
@@ -21,7 +23,7 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
                 stringstream call;
                 call << path << "rambrain-performancetests " << repetitions << " " << name << " " << params << " 2> /dev/null";
                 cout << "Calling: " << call.str() << endl;
-                system ( call.str().c_str() );
+                dummy |= system ( call.str().c_str() );
 
                 resultToTempFile ( param, step, temp );
                 temp << endl;
@@ -39,9 +41,13 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
             gnutemp.close();
 
             cout << "Calling gnuplot and displaying result" << endl;
-            system ( "gnuplot temp.gnuplot" );
-            system ( ( "convert -density 300 -resize 1920x " + outname.str() + ".eps -flatten " + outname.str() + ".png" ).c_str() );
-            system ( ( "display " + outname.str() + ".png &" ).c_str() );
+            dummy |= system ( "gnuplot temp.gnuplot" );
+            dummy |= system ( ( "convert -density 300 -resize 1920x " + outname.str() + ".eps -flatten " + outname.str() + ".png" ).c_str() );
+            dummy |= system ( ( "display " + outname.str() + ".png &" ).c_str() );
+
+            if ( !dummy ) {
+                cerr << "An error in system calls occured..." << endl;
+            }
         }
     }
 }
@@ -265,9 +271,14 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     gnutemp.close();
 
     cout << "Calling gnuplot and displaying result" << endl;
-    system ( "gnuplot temp.gnuplot" );
-    system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
-    system ( ( "display " + timingFile + ".png &" ).c_str() );
+    int dummy = 0;
+    dummy |= system ( "gnuplot temp.gnuplot" );
+    dummy |= system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
+    dummy |= system ( ( "display " + timingFile + ".png &" ).c_str() );
+
+    if ( !dummy ) {
+        cerr << "An error in system calls occured..." << endl;
+    }
 }
 
 vector<vector<string>> performanceTest<>::getRelevantTimingParts ( ifstream &in, unsigned long long start, unsigned long long end )

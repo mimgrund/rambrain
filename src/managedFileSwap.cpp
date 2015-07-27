@@ -444,6 +444,7 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
         global_bytesize resizeStep = pageFileSize * swapFileResizeFrac;
         neededSize = neededSize % ( resizeStep ) == 0 ? neededSize : resizeStep * ( neededSize / resizeStep + 1 );
 
+        /// @todo what about return of this? -> get rid of warning
         ftruncate ( swapFiles[ref.file].fileno, neededSize );
         swapFiles[ref.file].currentSize = neededSize;
     }

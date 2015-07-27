@@ -1,3 +1,6 @@
+#include "tester.h"
+IGNORE_TEST_WARNINGS;
+
 #include "cyclicManagedMemory.h"
 #include "managedFileSwap.h"
 #include "managedPtr.h"
@@ -7,7 +10,6 @@
 #include <sys/stat.h>
 #include "common.h"
 #include <chrono>
-#include "tester.h"
 
 using namespace rambrain;
 
@@ -634,3 +636,5 @@ TEST ( managedFileSwap, Integration_MatrixTranspose )
         delete rows[i];
     }
 }
+
+RESTORE_WARNINGS;
