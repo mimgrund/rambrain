@@ -128,7 +128,6 @@ bool managedFileSwap::openSwapFiles()
         throw memoryException ( "Swap files already opened. Close first" );
         return false;
     }
-    ///\todo Limit number of open swap file descriptors to something reasonable (<100?)
     swapFiles = ( struct swapFileDesc * ) malloc ( sizeof ( struct swapFileDesc ) * pageFileNumber );
 badjump:
     for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
@@ -141,11 +140,10 @@ badjump:
                 setDMA ( false );
                 goto badjump;
             }
-            printf ( "Encountered error code %d when opening file %s\n", errno, fname );
+            errmsgf ( "Encountered error code %d when opening file %s\n", errno, fname );
             throw memoryException ( "Could not open swap file." );
             return false;
         }
-        ///@todo; find out how we can dynamically query block size for dma: size_t locali = ioctl(swapFiles[n].fileno,BLKSZGET);
         swapFiles[n].currentSize = 0;
     }
     return true;
@@ -153,11 +151,11 @@ badjump:
 
 pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemoryChunk *chunk )
 {
-    ///\todo This may be rather stupid at the moment
-
-    /*Priority: -Use first free chunk that fits completely
+    /**Priority: -Use first free chunk that fits completely
      *          -Distribute over free locations
-                -look for read-in memory that can be overwritten*/
+     *          -look for read-in memory that can be overwritten
+     *          -delete cached files and look again
+     **/
     std::map<global_offset, pageFileLocation *>::iterator it = free_space.begin();
     pageFileLocation *found = NULL;
     do {
@@ -444,8 +442,11 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
         global_bytesize resizeStep = pageFileSize * swapFileResizeFrac;
         neededSize = neededSize % ( resizeStep ) == 0 ? neededSize : resizeStep * ( neededSize / resizeStep + 1 );
 
-        /// @todo what about return of this? -> get rid of warning
-        ftruncate ( swapFiles[ref.file].fileno, neededSize );
+        int errcode;
+        if ( 0 != ( errcode = ftruncate ( swapFiles[ref.file].fileno, neededSize ) ) ) {
+            errmsgf ( "Could not resize swap file with error code %d", errcode );
+            throw memoryException ( "Could not resize swap file" );
+        };
         swapFiles[ref.file].currentSize = neededSize;
     }
     ++ ( *tracker );
@@ -463,11 +464,10 @@ void managedFileSwap::scheduleCopy ( pageFileLocation &ref, void *ramBuf, int *t
 
     global_bytesize length = ref.size + ( ref.size % memoryAlignment == 0 ? 0 : memoryAlignment - ref.size % memoryAlignment );
     int fd = swapFiles[ref.file].fileno;
-    reverse ? io_prep_pread ( aio, fd, ramBuf, length, ref.offset ) : io_prep_pwrite ( aio, fd, ramBuf, length, ref.offset ); ///@todo: a potential vector read/write may be superior
+    reverse ? io_prep_pread ( aio, fd, ramBuf, length, ref.offset ) : io_prep_pwrite ( aio, fd, ramBuf, length, ref.offset );
 
     pendingAios[aio] = &ref;
     my_io_submit ( aio );
-    //io_submit (aio_context,1,&(aio)) ;
 
 }
 
@@ -543,7 +543,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         if ( lock ) {
             pthread_mutex_lock ( &managedMemory::stateChangeMutex );
         }
-        _mm_free ( chunk->locPtr );///\todo move allocation and free to managedMemory...
+        _mm_free ( chunk->locPtr );
         chunk->locPtr = NULL; // not strictly required.
         chunk->status = MEM_SWAPPED;
         claimUsageof ( chunk->size, true, false );
@@ -654,7 +654,7 @@ void managedFileSwap::asyncIoArrived ( rambrain::pageFileLocation *ref, io_event
         errmsgf ( "We have trouble in chunk %lu, %d ; aio_size %lu, size %lu, transfer size %lu", ref->glob_off_next.chunk->id, err, event->res, ref->size, event->obj->u.c.nbytes );
         errmsgf ( "file-align %lu, err %d, sizeWritten = %lu", ref->offset % memoryAlignment, err, event->res );
 
-        ///@todo: find out if this may happen regularly or just in case of error.
+        throw ( memoryException ( "unknown aio error" ) );
     }
 }
 

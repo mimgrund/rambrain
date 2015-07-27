@@ -107,7 +107,7 @@ private:
     global_bytesize pageFileSize;
 
 
-    float swapFileResizeFrac = .1; ///@todo: Possibly make this configurable?
+    float swapFileResizeFrac = .1;
 
     struct swapFileDesc *swapFiles = NULL;
 

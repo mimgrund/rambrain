@@ -24,8 +24,7 @@ namespace rambrain
  * @warning Currently not used
  * @todo Implement usage
  */
-enum class swapPolicy
-{
+enum class swapPolicy {
     fixed,
     autoextendable,
     interactive
@@ -138,7 +137,6 @@ struct configuration {
  * ...\n
  * While keys are exactly the names of members of the configuration struct
  * @note Comments can be inserted with leading hash
- * @todo Add more comfort: E.g. memory values should be insertable with unit suffix etc
  */
 class configReader
 {

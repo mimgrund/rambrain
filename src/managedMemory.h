@@ -167,7 +167,7 @@ protected:
         @param orisSwappedin if not null, this chunk will be checked for ram presence
         @return If \p orisSwappedin is set, return value tells whether the chunk \p orisSwappedin is pointing to has been or is about to be swapped in. Otherwise false**/
 
-    bool ensureEnoughSpaceAndLockTopo ( global_bytesize sizereq, managedMemoryChunk *orIsSwappedin = NULL );
+    bool ensureEnoughSpace ( global_bytesize sizereq, managedMemoryChunk *orIsSwappedin = NULL );
 
     //Swap Storage manager iface:
     managedSwap *swap = 0;
@@ -247,7 +247,7 @@ protected:
 
     size_t memoryAlignment = 1;
 #ifdef LOGSTATS
-    //! @todo This will induce a serious issue in combination with MPI and a shared disk. How to handle that case?
+    //! @warning This will induce a serious issue in combination with MPI and a shared disk. How to handle that case?
     static FILE *logFile;
     static bool firstLog;
 #endif

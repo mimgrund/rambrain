@@ -183,7 +183,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             global_bytesize targetSwapoutVol = actual_obj_size + ( 1. - swapOutFrac ) * memory_max - preemptiveBytes;
             swapErrorCode err = swapOut ( targetSwapoutVol );
             if ( err != ERR_SUCCESS ) {
-                bool alreadyThere = ensureEnoughSpaceAndLockTopo ( actual_obj_size, &chunk );
+                bool alreadyThere = ensureEnoughSpace ( actual_obj_size, &chunk );
                 if ( alreadyThere ) {
                     waitForSwapin ( chunk, true );
                     return true;
@@ -224,7 +224,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             cyclicAtime *oldafter = endSwapin->next;
             if ( endSwapin != active ) { //swapped in element is already 'active' when all others have been swapped.
                 if ( oldafter != active && beginSwapin != active ) {
-                    ///\todo  Implement this for <3 elements
                     cyclicAtime *oldbefore = readEl;
                     cyclicAtime *before = active->prev;
                     MUTUAL_CONNECT ( oldbefore, oldafter );
@@ -248,7 +247,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             return true;
         }
     } else {
-        bool alreadyThere = ensureEnoughSpaceAndLockTopo ( actual_obj_size, &chunk );
+        bool alreadyThere = ensureEnoughSpace ( actual_obj_size, &chunk );
         if ( alreadyThere ) {
             return true;
         }

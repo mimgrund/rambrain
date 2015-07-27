@@ -43,6 +43,10 @@ TEST ( managedDummySwap, Unit_ManualSwapping )
     delete chunk;
 }
 
+/**
+ * @brief Extended manual swapping test
+ * @note Again testing internals, not for use like this
+ * **/
 TEST ( managedDummySwap, Unit_ManualMultiSwapping )
 {
     const unsigned int dblamount = 100;
@@ -89,7 +93,7 @@ TEST ( managedDummySwap, Unit_ManualMultiSwapping )
 
 /**
  * @test Checks if swap delete works manually
- * @todo Again testing internals, not for use like this
+ * @note Again testing internals, not for use like this
  */
 TEST ( managedDummySwap, Unit_ManualSwappingDelete )
 {

@@ -409,7 +409,7 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
 
 /**
  * @test Tests if parallel deleting of pointers work
- * @todo Why is there no assert / expect here??
+ * @note would like to assert no throw, but pragma omp is not allowd
  */
 TEST ( managedPtr, Unit_MultithreadingConcurrentCreateDelete )
 {
@@ -417,7 +417,6 @@ TEST ( managedPtr, Unit_MultithreadingConcurrentCreateDelete )
     cyclicManagedMemory managedMemory ( &swap, 2000 );
 
     const unsigned int arrsize = 200;
-
     managedPtr<double> *arr[arrsize];
     for ( unsigned int i = 0; i < arrsize; ++i ) {
         arr[i] = NULL;
@@ -432,12 +431,13 @@ TEST ( managedPtr, Unit_MultithreadingConcurrentCreateDelete )
         delete arr[i];
 
     }
+
 }
 
 
 /**
  * @test Tests if concurrent access works properly while loading and unloading objects
- * @todo Why is there no assert / expect here???
+ * @note would like to assert no throw, but pragma omp is not allowd
  */
 TEST ( managedPtr, Unit_ConcurrentUseAccess )
 {
@@ -460,12 +460,23 @@ TEST ( managedPtr, Unit_ConcurrentUseAccess )
             loc[0] = i;
         }
     }
+
+    for ( int i = 0; i < 1000; ++i ) {
+        if ( i % 2 == 0 ) {
+            ADHERETOLOC ( double, a, loc );
+            ASSERT_EQ ( i, loc[0] );
+
+        } else {
+            ADHERETOLOC ( double, b, loc );
+            ASSERT_EQ ( i, loc[0] );
+        }
+    }
 }
 
 
 /**
  * @test More complex scenario for concurrent access
- * @todo There must be more to assert...
+ * @note would like to assert no throw, but pragma omp is not allowd
  */
 TEST ( managedPtr, Unit_ConcurrentUseAccessThree )
 {

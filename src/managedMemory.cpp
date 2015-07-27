@@ -147,7 +147,7 @@ bool managedMemory::setOutOfSwapIsFatal ( bool fatal )
 }
 
 
-bool managedMemory::ensureEnoughSpaceAndLockTopo ( global_bytesize sizereq, managedMemoryChunk *orisSwappedin )
+bool managedMemory::ensureEnoughSpace ( global_bytesize sizereq, managedMemoryChunk *orisSwappedin )
 {
     while ( sizereq + memory_used > memory_max ) {
         if ( orisSwappedin && ( orisSwappedin->status & MEM_ALLOCATED || orisSwappedin->status == MEM_SWAPIN ) ) {
@@ -164,7 +164,8 @@ bool managedMemory::ensureEnoughSpaceAndLockTopo ( global_bytesize sizereq, mana
                         pthread_mutex_unlock ( &stateChangeMutex );
                         Throw ( memoryException ( "Could not swap memory" ) );
 
-                        ///@todo: perhaps let the user tell us how many threads he has, so we can determine if there's still one running to free/unuse mem
+                        ///@todo: implement swapping policy
+                        ///@todo: check whether we have other threads still working on data (and possibly free it)
                     }
                 }
             }
@@ -185,7 +186,7 @@ managedMemoryChunk *managedMemory::mmalloc ( global_bytesize sizereq )
 {
     pthread_mutex_lock ( &stateChangeMutex );
     sizereq += sizereq % memoryAlignment == 0 ? 0 : memoryAlignment - sizereq % memoryAlignment; //f**k memoryAlignment
-    ensureEnoughSpaceAndLockTopo ( sizereq );
+    ensureEnoughSpace ( sizereq );
 
     memory_used += sizereq;
 
@@ -581,7 +582,6 @@ void managedMemory::resetSwapstats()
 
 #define SAFESWAP(func) (defaultManager->swap != NULL ? defaultManager->swap->func : 0lu)
 
-//! @todo This does not work with MPI code since we need different outfiles then. Fix!
 void managedMemory::sigswapstats ( int )
 {
     if ( defaultManager == NULL ) {

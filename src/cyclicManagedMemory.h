@@ -60,7 +60,7 @@ private:
     float swapOutFrac = .8;
     float swapInFrac = .9;
 
-    bool preemtiveSwapIn = true; ///\todo Change strategy dynamically.
+    bool preemtiveSwapIn = true;
     global_bytesize preemptiveBytes = 0;
 
     static pthread_mutex_t cyclicTopoLock;
