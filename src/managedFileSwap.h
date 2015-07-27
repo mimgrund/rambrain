@@ -43,9 +43,8 @@ struct aiotracker {
     int *tracker;
 };
 
-
+///@brief saves some storage in pageFileLocation
 union glob_off_union {
-
     pageFileLocation *glob_off_next;
     managedMemoryChunk *chunk;
     glob_off_union() {
