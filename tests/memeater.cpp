@@ -16,7 +16,7 @@ using namespace std;
 int main ( int argc, char **argv )
 {
     if ( argc < 2 ) {
-        printf ( "Usage: ./membrain-memeater <MB to leave free>\n" );
+        printf ( "Usage: ./rambrain-memeater <MB to leave free>\n" );
         return -1;
     }
 

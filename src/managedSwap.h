@@ -4,9 +4,9 @@
 #include "managedMemoryChunk.h"
 #include "common.h"
 #include "managedMemory.h"
-#include "membrain_atomics.h"
+#include "rambrain_atomics.h"
 
-namespace membrain
+namespace rambrain
 {
 
 class managedSwap
@@ -46,7 +46,7 @@ public:
     }
 
     //Caching Control.
-    virtual inline bool cleanupCachedElements ( membrain::global_bytesize minimum_size = 0 ) {
+    virtual inline bool cleanupCachedElements ( rambrain::global_bytesize minimum_size = 0 ) {
         return true;
     }
     virtual inline void invalidateCacheFor ( managedMemoryChunk &chunk ) {}

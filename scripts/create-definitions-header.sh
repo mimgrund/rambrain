@@ -1,7 +1,7 @@
 #!/bin/bash
 
 vars=$(echo $1 | tr ";" "\n")
-file="membrainDefinitionsHeader.h"
+file="rambrainDefinitionsHeader.h"
 wd=$(pwd)
 
 echo "Creating definitions header file $file in $wd"

@@ -21,7 +21,7 @@ class managedFileSwap_Unit_ManualSwapping_Test;
 class managedFileSwap_Unit_ManualSwappingDelete_Test;
 class managedFileSwap_Unit_ManualMultiSwapping_Test;
 
-namespace membrain
+namespace rambrain
 {
 class managedFileSwap;
 class managedSwap;
@@ -72,7 +72,7 @@ public:
 
     //Chunk Management
     ///Triggers swapin of chunk
-    bool prepareUse ( membrain::managedMemoryChunk &chunk, bool acquireLock = true );
+    bool prepareUse ( rambrain::managedMemoryChunk &chunk, bool acquireLock = true );
     /// Convenience interface for setUse( managedMemoryChunk &chunk, bool writeAccess ) @see setUse(managedMemoryChunk &chunk,bool writeAccess);
     bool setUse ( memoryID id );
     /// Convenience interface for unsetUse ( managedMemoryChunk &chunk, bool writeAccess ) @see unsetUse(managedMemoryChunk &chunk,bool writeAccess);
@@ -123,7 +123,7 @@ protected:
     /// @brief this function is a stub. In the future it should be capable of resizing an existing allocation
     bool mrealloc ( memoryID id, global_bytesize sizereq );
     /// @brief this function unregisters and deallocates a chunk
-    void mfree ( membrain::memoryID id, bool inCleanup = false );
+    void mfree ( rambrain::memoryID id, bool inCleanup = false );
     ///returns a reference to the memoryChunk indexed by id id
     managedMemoryChunk &resolveMemChunk ( const memoryID &id );
 

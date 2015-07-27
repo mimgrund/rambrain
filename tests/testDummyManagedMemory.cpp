@@ -3,7 +3,7 @@
 #include "exceptions.h"
 #include "managedPtr.h"
 
-using namespace membrain;
+using namespace rambrain;
 
 /**
 * @test Checks that dummyManager starts crying when he is asked to create an object for us

@@ -19,7 +19,7 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
             for ( unsigned int step = 0; step < steps; ++step ) {
                 string params = getParamsString ( param, step );
                 stringstream call;
-                call << path << "membrain-performancetests " << repetitions << " " << name << " " << params << " 2> /dev/null";
+                call << path << "rambrain-performancetests " << repetitions << " " << name << " " << params << " 2> /dev/null";
                 cout << "Calling: " << call.str() << endl;
                 system ( call.str().c_str() );
 
@@ -212,7 +212,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     string outFile = getTestOutfile ( varryParam, step );
     string timingFile = outFile + "_stats";
     string tempFile = "timingTemp.dat";
-    if ( rename ( "membrain-swapstats.log", timingFile.c_str() ) ) {
+    if ( rename ( "rambrain-swapstats.log", timingFile.c_str() ) ) {
         errmsgf ( "Could not rename swapstats log to %s", timingFile.c_str() );
     }
 
@@ -401,8 +401,8 @@ void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 2;
 
-    membrainglobals::config.resizeMemory ( mem );
-    membrainglobals::config.resizeSwap ( swapmem );
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
 
     test.addTimeMeasurement();
 
@@ -481,8 +481,8 @@ void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 2;
 
-    membrainglobals::config.resizeMemory ( mem );
-    membrainglobals::config.resizeSwap ( swapmem );
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
 
     test.addTimeMeasurement();
 
@@ -593,8 +593,8 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
-    membrainglobals::config.resizeMemory ( mem );
-    membrainglobals::config.resizeSwap ( swapmem );
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
 
     test.addTimeMeasurement();
 
@@ -711,8 +711,8 @@ void matrixCleverBlockTransposeTest::actualTestMethod ( tester &test, int param1
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
-    membrainglobals::config.resizeMemory ( mem );
-    membrainglobals::config.resizeSwap ( swapmem );
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
 
 
     test.addTimeMeasurement();
@@ -827,8 +827,8 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
-    membrainglobals::config.resizeMemory ( mem );
-    membrainglobals::config.resizeSwap ( swapmem );
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
 
 
     test.addTimeMeasurement();
@@ -943,8 +943,8 @@ void matrixMultiplyTest::actualTestMethod ( tester &test, int param1, int param2
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
-    membrainglobals::config.resizeMemory ( mem );
-    membrainglobals::config.resizeSwap ( swapmem );
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
 
 
     test.addTimeMeasurement();
@@ -1050,8 +1050,8 @@ void matrixMultiplyOpenMPTest::actualTestMethod ( tester &test, int param1, int 
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
-    membrainglobals::config.resizeMemory ( mem );
-    membrainglobals::config.resizeSwap ( swapmem );
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
 
 
     test.addTimeMeasurement();
@@ -1160,8 +1160,8 @@ void matrixCopyTest::actualTestMethod ( tester &test, int param1, int param2 )
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
-    membrainglobals::config.resizeMemory ( mem );
-    membrainglobals::config.resizeSwap ( swapmem );
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
 
 
     test.addTimeMeasurement();
@@ -1249,8 +1249,8 @@ void matrixCopyOpenMPTest::actualTestMethod ( tester &test, int param1, int para
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
-    membrainglobals::config.resizeMemory ( mem );
-    membrainglobals::config.resizeSwap ( swapmem );
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
 
 
     test.addTimeMeasurement();
@@ -1342,8 +1342,8 @@ void matrixDoubleCopyTest::actualTestMethod ( tester &test, int param1, int para
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
-    membrainglobals::config.resizeMemory ( mem );
-    membrainglobals::config.resizeSwap ( swapmem );
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
 
 
     test.addTimeMeasurement();
@@ -1444,8 +1444,8 @@ void matrixDoubleCopyOpenMPTest::actualTestMethod ( tester &test, int param1, in
     const global_bytesize mem = size * sizeof ( double ) *  memlines;
     const global_bytesize swapmem = size * size * sizeof ( double ) * 4;
 
-    membrainglobals::config.resizeMemory ( mem );
-    membrainglobals::config.resizeSwap ( swapmem );
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
 
 
     test.addTimeMeasurement();
@@ -1547,8 +1547,8 @@ measureThroughputTest::measureThroughputTest() : performanceTest<int, int> ( "Me
 /// @todo PTEST_CHECKS is missing in this test
 void measureThroughputTest::actualTestMethod ( tester &test, int bytesize , int load )
 {
-    membrainglobals::config.resizeMemory ( bytesize * 2 );
-    membrainglobals::config.resizeSwap ( bytesize * 2 );
+    rambrainglobals::config.resizeMemory ( bytesize * 2 );
+    rambrainglobals::config.resizeSwap ( bytesize * 2 );
 
     managedPtr<char> ptr[3] = {managedPtr<char>  ( bytesize ), managedPtr<char>  ( bytesize ), managedPtr<char>  ( bytesize ) };
     adhereTo<char> *adh[3];

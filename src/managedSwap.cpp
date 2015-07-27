@@ -1,7 +1,7 @@
 #include "managedSwap.h"
 #include "managedMemory.h"
 
-namespace membrain
+namespace rambrain
 {
 
 managedSwap::managedSwap ( global_bytesize size ) : swapSize ( size ), swapUsed ( 0 )

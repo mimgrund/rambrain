@@ -5,7 +5,7 @@
 #include "managedDummySwap.h"
 #include "exceptions.h"
 
-namespace membrain
+namespace rambrain
 {
 
 class dummyManagedMemory : public managedMemory

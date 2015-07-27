@@ -5,7 +5,7 @@
 #include "managedFileSwap.h"
 
 using namespace std;
-using namespace membrain;
+using namespace rambrain;
 
 /**
  * @brief Provides a test binary to check the behaviour of mpi in combination with the lib
@@ -23,7 +23,7 @@ int main ( int argc, char **argv )
     MPI_Comm_size ( MPI_COMM_WORLD, &tasks );
     cout << "Starting mpi test on " << tasks << " tasks" << endl;
 
-    managedFileSwap swap ( swapmem, "/tmp/membrainswap-%d-%d" );
+    managedFileSwap swap ( swapmem, "/tmp/rambrainswap-%d-%d" );
     cyclicManagedMemory manager ( &swap, mem );
 
     managedPtr<double> data1 ( dblamount );

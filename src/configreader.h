@@ -14,7 +14,7 @@ using namespace std;
 //Test classes
 class configReader_Unit_ParseProgramName_Test;
 
-namespace membrain
+namespace rambrain
 {
 
 /**
@@ -104,7 +104,7 @@ void configLine<swapPolicy>::setValue ( const string &str );
 
 /**
  * @brief Main struct to save configuration variables
- * @note Should not be instantiated by the user, this is done in membrainconfig.h and managedMemory.cpp
+ * @note Should not be instantiated by the user, this is done in rambrainconfig.h and managedMemory.cpp
  * @note When extended don't forget to add the new options to configOptions
  */
 struct configuration {
@@ -214,8 +214,8 @@ private:
      */
     string getApplicationName() const;
 
-    const string globalConfigPath = "/etc/membrain.conf";
-    const string localConfigPath = "~/.membrain.conf";
+    const string globalConfigPath = "/etc/rambrain.conf";
+    const string localConfigPath = "~/.rambrain.conf";
     string customConfigPath = "";
 
     const regexMatcher regex;

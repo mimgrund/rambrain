@@ -17,7 +17,7 @@ class managedFileSwap_Unit_SwapAllocation_Test;
 class managedFileSwap_Integration_RandomAccess_Test;
 class managedFileSwap_Integration_RandomAccessVariousSize_Test;
 
-namespace membrain
+namespace rambrain
 {
 ///@brief the status for pageFileLocations
 enum pageChunkStatus {PAGE_FREE = 1 /** PageChunk is free space not occupied by a swapped chunk **/,
@@ -113,10 +113,10 @@ private:
     struct swapFileDesc *swapFiles = NULL;
 
     //Memory copy:
-    void scheduleCopy ( membrain::pageFileLocation &ref, void *ramBuf, int *tracker, bool reverse = false ) ;
-    void copyMem ( membrain::pageFileLocation &ref, void *ramBuf, bool reverse = false  )  ;
+    void scheduleCopy ( rambrain::pageFileLocation &ref, void *ramBuf, int *tracker, bool reverse = false ) ;
+    void copyMem ( rambrain::pageFileLocation &ref, void *ramBuf, bool reverse = false  )  ;
 
-    inline void copyMem ( void *ramBuf, membrain::pageFileLocation &ref ) {
+    inline void copyMem ( void *ramBuf, rambrain::pageFileLocation &ref ) {
         copyMem ( ref, ramBuf, true );
     }
 
@@ -132,7 +132,7 @@ private:
 
 
     //page file malloc:
-    pageFileLocation *pfmalloc ( membrain::global_bytesize size, membrain::managedMemoryChunk *chunk );
+    pageFileLocation *pfmalloc ( rambrain::global_bytesize size, rambrain::managedMemoryChunk *chunk );
     void pffree ( pageFileLocation *pagePtr );
     pageFileLocation *allocInFree ( pageFileLocation *freeChunk, global_bytesize size );
 
@@ -145,8 +145,8 @@ protected:
     bool deleteFilesOnExit = true;
 
     //sigEvent Handler:
-    void asyncIoArrived ( membrain::pageFileLocation *ref, struct io_event *aio );
-    void completeTransactionOn ( membrain::pageFileLocation *ref, bool lock = true );
+    void asyncIoArrived ( rambrain::pageFileLocation *ref, struct io_event *aio );
+    void completeTransactionOn ( rambrain::pageFileLocation *ref, bool lock = true );
 
     virtual bool checkForAIO();
     static void *checkForAIO ( void *ptr );
@@ -179,7 +179,7 @@ protected:
     void my_io_submit ( struct iocb *aio );
     static void *io_submit_worker ( void *ptr );
 
-    bool cleanupCachedElements ( membrain::global_bytesize minimum_size = 0 );
+    bool cleanupCachedElements ( rambrain::global_bytesize minimum_size = 0 );
     virtual void invalidateCacheFor ( managedMemoryChunk &chunk );
 };
 

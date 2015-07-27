@@ -5,7 +5,7 @@
 #include "exceptions.h"
 #include "tester.h"
 
-using namespace membrain;
+using namespace rambrain;
 IGNORE_TEST_WARNINGS;
 
 /**
@@ -201,7 +201,7 @@ TEST ( managedPtr, Unit_DeleteWhileInUse )
     managedPtr<double> *ptr = new managedPtr<double> ( 10 );
     ptr->setUse();
 
-    ASSERT_DEATH ( delete ptr, "terminate called after throwing an instance of 'membrain::memoryException'" );
+    ASSERT_DEATH ( delete ptr, "terminate called after throwing an instance of 'rambrain::memoryException'" );
     printf ( "Hello from below" );
 
     //We would like to call the destructor of managedMemory, however this destructor will segfault because of the death test...

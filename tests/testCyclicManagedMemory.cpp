@@ -8,9 +8,9 @@
 #include "exceptions.h"
 #include <configreader.h>
 #include "tester.h"
-#include "membrainconfig.h"
+#include "rambrainconfig.h"
 
-using namespace membrain;
+using namespace rambrain;
 
 /**
 * @test Checks whether we can allocate data via memory manager
@@ -588,5 +588,5 @@ TEST ( cyclicManagedMemory, Unit_CleanupOfForgottenPointers )
     ASSERT_NO_FATAL_FAILURE ( delete swap );
 
     //This test breaks default manager.
-    membrain::membrainglobals::config.reinit();
+    rambrain::rambrainglobals::config.reinit();
 }

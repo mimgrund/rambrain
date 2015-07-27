@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-namespace membrain
+namespace rambrain
 {
 
 enum memoryStatus {MEM_ROOT = 0,

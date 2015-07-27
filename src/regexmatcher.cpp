@@ -1,7 +1,7 @@
 #include "regexmatcher.h"
 #include <sstream>
 
-namespace membrain
+namespace rambrain
 {
 
 regexMatcher::regexMatcher()

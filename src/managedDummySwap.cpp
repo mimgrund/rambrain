@@ -4,7 +4,7 @@
 #include "managedMemory.h"
 #include <mm_malloc.h>
 
-namespace membrain
+namespace rambrain
 {
 
 managedDummySwap::managedDummySwap ( global_bytesize size ) : managedSwap ( size )

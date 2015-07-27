@@ -1,6 +1,6 @@
 #include "timer.h"
 
-namespace membrain
+namespace rambrain
 {
 
 timer_t Timer::timerid;

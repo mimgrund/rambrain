@@ -6,18 +6,18 @@
 
 using namespace std;
 
-namespace membrain
+namespace rambrain
 {
 
-class membrainException : exception
+class rambrainException : exception
 {
 
 public:
-    virtual ~membrainException() {}
+    virtual ~rambrainException() {}
 };
 
 
-class incompleteSetupException : membrainException
+class incompleteSetupException : rambrainException
 {
 
 public:
@@ -34,7 +34,7 @@ private:
 };
 
 
-class memoryException : membrainException
+class memoryException : rambrainException
 {
 
 public:
@@ -51,7 +51,7 @@ private:
 };
 
 
-class unexpectedStateException : membrainException
+class unexpectedStateException : rambrainException
 {
 
 public:
@@ -68,7 +68,7 @@ private:
 };
 
 
-class unfinishedCodeException : membrainException
+class unfinishedCodeException : rambrainException
 {
 
 public:

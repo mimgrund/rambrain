@@ -1,7 +1,7 @@
 #include "cyclicManagedMemory.h"
 #include "common.h"
 #include "exceptions.h"
-#include "membrain_atomics.h"
+#include "rambrain_atomics.h"
 #include "managedSwap.h"
 #include <pthread.h>
 // #define VERYVERBOSE
@@ -14,7 +14,7 @@
 
 //#define CYCLIC_VERBOSE_DBG
 
-namespace membrain
+namespace rambrain
 {
 pthread_mutex_t cyclicManagedMemory::cyclicTopoLock = PTHREAD_MUTEX_INITIALIZER;
 
@@ -406,7 +406,7 @@ void cyclicManagedMemory::printCycle() const
     printf ( "\n" );
 }
 
-cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( membrain::global_bytesize min_size )
+cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::global_bytesize min_size )
 {
 #ifdef CYCLIC_VERBOSE_DBG
     printCycle();

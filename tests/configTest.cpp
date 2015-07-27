@@ -2,10 +2,10 @@
 #include "managedPtr.h"
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
-#include "membrainconfig.h"
+#include "rambrainconfig.h"
 
 using namespace std;
-using namespace membrain;
+using namespace rambrain;
 
 /**
  * @brief A test to check if binary specific custom config files are properly read in and used.
@@ -15,10 +15,10 @@ int main ( int argc, char **argv )
     int ret = 0;
     cout << "Starting check if binary specific config is read and used properly" << endl;
 
-    membrainglobals::config.setCustomConfigPath ( "../tests/testConfig.conf" );
-    membrainglobals::config.reinit ( true );
+    rambrainglobals::config.setCustomConfigPath ( "../tests/testConfig.conf" );
+    rambrainglobals::config.reinit ( true );
 
-    const configuration &config = membrainglobals::config.getConfig();
+    const configuration &config = rambrainglobals::config.getConfig();
     managedMemory *man = managedMemory::defaultManager;
 
     if ( config.memoryManager.value != "cyclicManagedMemory" || reinterpret_cast<cyclicManagedMemory *> ( man ) == NULL ) {
@@ -44,8 +44,8 @@ int main ( int argc, char **argv )
     }
 
     /// @todo also check this in system
-    if ( config.swapfiles.value != "membrainswapconfigtest-%d-%d" ) {
-        cerr << "Swap files are named incorrectly! " << config.swapfiles.value << " != membrainswapconfigtest-%d-%d" << endl;
+    if ( config.swapfiles.value != "rambrainswapconfigtest-%d-%d" ) {
+        cerr << "Swap files are named incorrectly! " << config.swapfiles.value << " != rambrainswapconfigtest-%d-%d" << endl;
         ++ ret;
     }
 

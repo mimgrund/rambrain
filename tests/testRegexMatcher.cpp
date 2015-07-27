@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "regexmatcher.h"
 
-using namespace membrain;
+using namespace rambrain;
 
 /**
 * @test Checks if block header matching works

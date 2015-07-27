@@ -3,24 +3,24 @@
 #include "exceptions.h"
 #include "dummyManagedMemory.h"
 #include <sys/signal.h>
-#include "membrainconfig.h"
-#include "membrain_atomics.h"
+#include "rambrainconfig.h"
+#include "rambrain_atomics.h"
 #include "git_info.h"
 #include <time.h>
 #include <mm_malloc.h>
 
-namespace membrain
+namespace rambrain
 {
-namespace membrainglobals
+namespace rambrainglobals
 {
-membrainConfig config;
+rambrainConfig config;
 }
 
 managedMemory *managedMemory::defaultManager;
 
 #ifdef SWAPSTATS
 #ifdef LOGSTATS
-FILE *managedMemory::logFile = fopen ( "membrain-swapstats.log", "w" );
+FILE *managedMemory::logFile = fopen ( "rambrain-swapstats.log", "w" );
 bool managedMemory::firstLog = true;
 #endif
 #endif
@@ -710,7 +710,7 @@ bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLoc
 
 }
 
-void membrain::managedMemory::claimUsageof ( membrain::global_bytesize bytes, bool rambytes, bool used )
+void rambrain::managedMemory::claimUsageof ( rambrain::global_bytesize bytes, bool rambytes, bool used )
 {
     if ( rambytes ) {
         memory_used += used ? bytes : - bytes ;
@@ -720,7 +720,7 @@ void membrain::managedMemory::claimUsageof ( membrain::global_bytesize bytes, bo
 
 }
 
-void membrain::managedMemory::claimTobefreed ( membrain::global_bytesize bytes, bool tobefreed )
+void rambrain::managedMemory::claimTobefreed ( rambrain::global_bytesize bytes, bool tobefreed )
 {
     memory_tobefreed += tobefreed ? bytes : -bytes;
 }

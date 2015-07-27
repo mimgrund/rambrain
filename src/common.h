@@ -4,7 +4,7 @@
 #include <malloc.h>
 #include <inttypes.h>
 
-namespace membrain
+namespace rambrain
 {
 
 typedef double myScalar;
@@ -38,8 +38,8 @@ inline static double sqr ( double x )
 typedef uint64_t global_bytesize;
 
 const global_bytesize kib = 1024;
-const global_bytesize mib = kib * kib;
-const global_bytesize gig = mib * kib;
+const global_bytesize mib = kib *kib;
+const global_bytesize gig = mib *kib;
 
 }
 

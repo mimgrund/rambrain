@@ -16,10 +16,10 @@
 #include "managedFileSwap.h"
 #include "cyclicManagedMemory.h"
 #include "managedPtr.h"
-#include "membrainconfig.h"
+#include "rambrainconfig.h"
 
 using namespace std;
-using namespace membrain;
+using namespace rambrain;
 
 /**
  * @brief A base class to encapsulate parameters for performance tests

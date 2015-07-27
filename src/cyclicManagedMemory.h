@@ -3,7 +3,7 @@
 
 #include "managedMemory.h"
 
-namespace membrain
+namespace rambrain
 {
 ///@brief structure created by scheduler to track access times of memoryChunks
 struct cyclicAtime {
@@ -16,7 +16,7 @@ struct cyclicAtime {
 class cyclicManagedMemory : public managedMemory
 {
 public:
-    cyclicManagedMemory ( membrain::managedSwap *swap, membrain::global_bytesize size );
+    cyclicManagedMemory ( rambrain::managedSwap *swap, rambrain::global_bytesize size );
     virtual ~cyclicManagedMemory();
 
     ///@brief prints out all elements known to the scheduler with their respective status

@@ -58,7 +58,7 @@ for branch in ${branches[@]}; do
         else
             echo "Running tests..."
             echo -e "\n\n" >> "$outname"
-            timeout --kill-after=10 300 ../bin/membrain-tests >> "${outname}" 2>&1
+            timeout --kill-after=10 300 ../bin/rambrain-tests >> "${outname}" 2>&1
 
             fail=$?
             if [ $fail -ne 0 ]; then

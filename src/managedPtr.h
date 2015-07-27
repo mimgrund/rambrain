@@ -2,7 +2,7 @@
 #define MANAGEDPTR_H
 
 #include "managedMemory.h"
-#include "membrain_atomics.h"
+#include "rambrain_atomics.h"
 #include "common.h"
 #include "exceptions.h"
 #include <type_traits>
@@ -19,7 +19,7 @@ class adhereTo_Unit_LoadUnload_Test;
 class adhereTo_Unit_LoadUnloadConst_Test;
 class adhereTo_Unit_TwiceAdhered_Test;
 
-namespace membrain
+namespace rambrain
 {
 
 template <class T>
@@ -39,7 +39,7 @@ class adhereTo;
 
 
 /**
- * \brief Main class to allocate memory that is managed by the membrain memory defaultManager
+ * \brief Main class to allocate memory that is managed by the rambrain memory defaultManager
  *
  * @warning _thread-safety_
  * * The object itself is not thread-safe
@@ -53,7 +53,7 @@ class managedPtr
 {
 public:
     managedPtr ( const managedPtr<T> &ref ) : chunk ( ref.chunk ), tracker ( ref.tracker ), n_elem ( ref.n_elem ) {
-        membrain_atomic_add_fetch ( tracker, 1 );
+        rambrain_atomic_add_fetch ( tracker, 1 );
     }
 
 
@@ -128,7 +128,7 @@ public:
 
 
     ~managedPtr() {
-        int trackerold = membrain_atomic_sub_fetch ( tracker, 1 );
+        int trackerold = rambrain_atomic_sub_fetch ( tracker, 1 );
         if ( trackerold  == 0 ) {//Ensure destructor to be called only once.
             mDelete<T>();
         }
@@ -143,7 +143,7 @@ public:
     bool setUse ( bool writable = true, bool *tracker = NULL ) const {
         pthread_mutex_lock ( &mutex );
         if ( tracker )
-            if ( !membrain_atomic_bool_compare_and_swap ( tracker, false, true ) ) {
+            if ( !rambrain_atomic_bool_compare_and_swap ( tracker, false, true ) ) {
                 pthread_mutex_unlock ( &mutex );
                 return false;
             }
@@ -160,13 +160,13 @@ public:
         if ( ref.chunk == chunk ) {
             return *this;
         }
-        if ( membrain_atomic_sub_fetch ( tracker, 1 ) == 0 ) {
+        if ( rambrain_atomic_sub_fetch ( tracker, 1 ) == 0 ) {
             mDelete<T>();
         }
         n_elem = ref.n_elem;
         chunk = ref.chunk;
         tracker = ref.tracker;
-        membrain_atomic_add_fetch ( tracker, 1 );
+        rambrain_atomic_add_fetch ( tracker, 1 );
         return *this;
     }
 
@@ -246,7 +246,7 @@ private:
 };
 
 /**
- * @brief Main class to fetch memory that is managed by membrain for actual usage.
+ * @brief Main class to fetch memory that is managed by rambrain for actual usage.
  *
  * \warning _thread-safety_
  * * The object itself is not thread-safe

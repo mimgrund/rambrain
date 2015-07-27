@@ -4,13 +4,13 @@
 #include "managedMemoryChunk.h"
 #include "managedSwap.h"
 
-namespace membrain
+namespace rambrain
 {
 
 class managedDummySwap : public managedSwap
 {
 public:
-    managedDummySwap ( membrain::global_bytesize size );
+    managedDummySwap ( rambrain::global_bytesize size );
     virtual ~managedDummySwap() {}
 
     virtual global_bytesize swapIn ( managedMemoryChunk **chunklist, unsigned int nchunks );

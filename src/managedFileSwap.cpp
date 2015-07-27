@@ -13,7 +13,7 @@
 #include <sys/ioctl.h>
 #include <mm_malloc.h>
 
-namespace membrain
+namespace rambrain
 {
 
 //#define DBG_AIO
@@ -622,7 +622,7 @@ tryagain:
 
 };
 
-void managedFileSwap::asyncIoArrived ( membrain::pageFileLocation *ref, io_event *event )
+void managedFileSwap::asyncIoArrived ( rambrain::pageFileLocation *ref, io_event *event )
 {
 
 #ifdef DBG_AIO

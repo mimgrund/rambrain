@@ -6,7 +6,7 @@
 #include <string.h>
 #include <sys/signal.h>
 
-namespace membrain
+namespace rambrain
 {
 
 /**

@@ -4,7 +4,7 @@
 #include "managedDummySwap.h"
 #include "exceptions.h"
 
-using namespace membrain;
+using namespace rambrain;
 
 TEST ( managedDummySwap, Unit_ManualSwapping )
 {

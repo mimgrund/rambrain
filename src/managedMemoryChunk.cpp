@@ -1,7 +1,7 @@
 #include "managedMemoryChunk.h"
 #include <stdlib.h>
 
-namespace membrain
+namespace rambrain
 {
 
 #ifdef PARENTAL_CONTROL

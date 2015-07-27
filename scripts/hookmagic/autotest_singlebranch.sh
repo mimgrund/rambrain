@@ -4,7 +4,7 @@ repodir="/var/gits/membrain"
 branch=$1
 options=(PARENTAL_CONTROL OPTIMISE_COMPILATION) #what about dma? what about optimisation?
 processes=8
-cd /membrain_compile
+cd /rambrain_compile
 git clone $repodir $branch
 fail=$?
 if [ $fail -ne 0 ]; then
@@ -23,8 +23,8 @@ cd $branch
 
 #override gengit.sh script
 cat - >scripts/gengit.sh<<EOF
-echo const unsigned char gitCommit [] = {0x00}\;>/membrain_compile/$branch/src/git_info.h
-echo const unsigned char gitDiff [] = {0x00}\;>>/membrain_compile/$branch/src/git_info.h
+echo const unsigned char gitCommit [] = {0x00}\;>/rambrain_compile/$branch/src/git_info.h
+echo const unsigned char gitDiff [] = {0x00}\;>>/rambrain_compile/$branch/src/git_info.h
 EOF
 
 good=0
@@ -64,7 +64,7 @@ good=0
         else
             echo "Running tests..."
             echo -e "\n\n" >> "$outname"
-            timeout --kill-after=10 300 ../bin/membrain-tests >> "${outname}" 2>&1
+            timeout --kill-after=10 300 ../bin/rambrain-tests >> "${outname}" 2>&1
 
             fail=$?
             if [ $fail -ne 0 ]; then
@@ -77,7 +77,7 @@ good=0
 	echo -e "\n-------------------------------------------------\n\n\n\n\n\n" >>"$outname"
         
     done
-cd /membrain_compile
+cd /rambrain_compile
 if [ $good -eq $(($max+1)) ]; then
 	echo SUCESSFULL >${branch}_success.txt
 else

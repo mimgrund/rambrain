@@ -3,7 +3,7 @@
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
 #include <omp.h>
-using namespace membrain;
+using namespace rambrain;
 
 /**
 * @test Checks exact loading stages of objects provoked by the use of adhereTo

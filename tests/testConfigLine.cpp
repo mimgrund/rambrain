@@ -2,7 +2,7 @@
 #include "configreader.h"
 
 using namespace std;
-using namespace membrain;
+using namespace rambrain;
 
 /**
 * @test Checks if values with units for byte sizes can be set properly

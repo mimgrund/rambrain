@@ -3,7 +3,7 @@
 #include "dummyManagedMemory.h"
 #include "cyclicManagedMemory.h"
 
-using namespace membrain;
+using namespace rambrain;
 /**
 * @test Checks presence of a default manager at runtime without doing anything before
 */

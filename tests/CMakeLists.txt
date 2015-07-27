@@ -10,27 +10,27 @@ file(GLOB TEST_SOURCES
         "test*.cpp"
 )
 list(APPEND TEST_SOURCES "allTests.cpp")
-add_executable (membrain-tests ${TEST_SOURCES})
-add_custom_command(TARGET membrain-tests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries (membrain-tests gmock gtest pthread membrain_static)
+add_executable (rambrain-tests ${TEST_SOURCES})
+add_custom_command(TARGET rambrain-tests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+target_link_libraries (rambrain-tests gmock gtest pthread rambrain_static)
 
 
 file(GLOB TEST_SOURCES
         "test*.cpp"
 )
 list(APPEND TEST_SOURCES "unitTests.cpp")
-add_executable (membrain-unittests ${TEST_SOURCES})
-add_custom_command(TARGET membrain-unittests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries (membrain-unittests gmock gtest pthread membrain_static)
+add_executable (rambrain-unittests ${TEST_SOURCES})
+add_custom_command(TARGET rambrain-unittests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+target_link_libraries (rambrain-unittests gmock gtest pthread rambrain_static)
 
 
 file(GLOB TEST_SOURCES
         "test*.cpp"
 )
 list(APPEND TEST_SOURCES "integrationTests.cpp")
-add_executable (membrain-integrationtests ${TEST_SOURCES})
-add_custom_command(TARGET membrain-integrationtests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries (membrain-integrationtests gmock gtest pthread membrain_static)
+add_executable (rambrain-integrationtests ${TEST_SOURCES})
+add_custom_command(TARGET rambrain-integrationtests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+target_link_libraries (rambrain-integrationtests gmock gtest pthread rambrain_static)
 
 
 file(GLOB TEST_SOURCES
@@ -38,9 +38,9 @@ file(GLOB TEST_SOURCES
         "tester.cpp"
         "performanceTestClasses.cpp"
 )
-add_executable(membrain-performancetests ${TEST_SOURCES})
-add_custom_command(TARGET membrain-performancetests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries (membrain-performancetests pthread membrain_static)
+add_executable(rambrain-performancetests ${TEST_SOURCES})
+add_custom_command(TARGET rambrain-performancetests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+target_link_libraries (rambrain-performancetests pthread rambrain_static)
 
 
 file(GLOB TEST_SOURCES
@@ -48,9 +48,9 @@ file(GLOB TEST_SOURCES
         "tester.cpp"
         "performanceTestClasses.cpp"
 )
-add_executable(membrain-performancetestswrapper ${TEST_SOURCES})
-add_custom_command(TARGET membrain-performancetestswrapper PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries (membrain-performancetestswrapper pthread membrain_static)
+add_executable(rambrain-performancetestswrapper ${TEST_SOURCES})
+add_custom_command(TARGET rambrain-performancetestswrapper PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+target_link_libraries (rambrain-performancetestswrapper pthread rambrain_static)
 
 
 find_package(MPI)
@@ -65,9 +65,9 @@ if(NOT "${MPI_INCLUDE_PATH}" STREQUAL "")
     file(GLOB TEST_SOURCES
             "mpitest.cpp"
     )
-    add_executable(membrain-mpitest ${TEST_SOURCES})
-    add_custom_command(TARGET membrain-mpitest PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-    target_link_libraries (membrain-mpitest pthread membrain_static ${MPI_C_LIBRARIES})
+    add_executable(rambrain-mpitest ${TEST_SOURCES})
+    add_custom_command(TARGET rambrain-mpitest PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+    target_link_libraries (rambrain-mpitest pthread rambrain_static ${MPI_C_LIBRARIES})
 else()
     message(WARNING "Omitting mpi specific test")
 endif()
@@ -76,13 +76,13 @@ endif()
 file(GLOB TEST_SOURCES
         "configTest.cpp"
 )
-add_executable(membrain-configtest ${TEST_SOURCES})
-add_custom_command(TARGET membrain-configtest PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-target_link_libraries (membrain-configtest pthread membrain_static)
+add_executable(rambrain-configtest ${TEST_SOURCES})
+add_custom_command(TARGET rambrain-configtest PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+target_link_libraries (rambrain-configtest pthread rambrain_static)
 
 
 file(GLOB TEST_SOURCES
         "memeater.cpp"
 )
-add_executable(membrain-memeater ${TEST_SOURCES})
-add_custom_command(TARGET membrain-memeater PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+add_executable(rambrain-memeater ${TEST_SOURCES})
+add_custom_command(TARGET rambrain-memeater PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
