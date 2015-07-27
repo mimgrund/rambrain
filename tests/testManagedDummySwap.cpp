@@ -6,6 +6,10 @@
 
 using namespace rambrain;
 
+/**
+ * @test Checks if swapping works when triggered manually
+ * @note This is not supposed to be used by the user, just for checking internals
+ */
 TEST ( managedDummySwap, Unit_ManualSwapping )
 {
     const unsigned int dblamount = 100;
@@ -83,6 +87,10 @@ TEST ( managedDummySwap, Unit_ManualMultiSwapping )
     }
 }
 
+/**
+ * @test Checks if swap delete works manually
+ * @todo Again testing internals, not for use like this
+ */
 TEST ( managedDummySwap, Unit_ManualSwappingDelete )
 {
     const unsigned int dblamount = 100;
@@ -114,6 +122,10 @@ TEST ( managedDummySwap, Unit_ManualSwappingDelete )
     delete chunk;
 }
 
+/**
+ * @test Checks if the swap size is adjusted when setUse and unsetUse are called
+ * @note Again for testing internals, not thought for use like this
+ */
 TEST ( managedDummySwap, Unit_SwapSize )
 {
     const unsigned int dblamount = 100;

@@ -6,6 +6,9 @@
 using namespace std;
 using namespace rambrain;
 
+/**
+ * @test Checks the default values of configuration options and set up of the collection
+ */
 TEST ( configuration, Unit_DefaultValues )
 {
     configuration config;
@@ -15,8 +18,14 @@ TEST ( configuration, Unit_DefaultValues )
     ASSERT_FALSE ( config.swap.value.empty() );
     ASSERT_FALSE ( config.swapfiles.value.empty() );
     ASSERT_GT ( config.swapMemory.value, 0.0 );
+    ASSERT_FALSE ( config.enableDMA.value );
+    ASSERT_EQ ( swapPolicy::autoextendable, config.policy.value );
+    ASSERT_EQ ( 7u, config.configOptions.size() );
 }
 
+/**
+ * @test Checks if config file in a custom path is read in properly
+ */
 TEST ( configReader, Unit_ParseCustomFile )
 {
     //Create custom config file
@@ -40,6 +49,9 @@ TEST ( configReader, Unit_ParseCustomFile )
     ASSERT_EQ ( 5000000000uLL, config.memory.value );
 }
 
+/**
+ * @test Checks if comment lines are ignored properly
+ */
 TEST ( configReader, Unit_IgnoreCommentLines )
 {
     //Create custom config file
@@ -48,6 +60,7 @@ TEST ( configReader, Unit_IgnoreCommentLines )
     out << "#memoryManager = somethingstupid" << std::endl;
     out << "memoryManager = dummyManagedMemory" << std::endl;
     out << "#memoryManager = somethingstupid" << std::endl;
+    out << " # memoryManager = somethingmorestupid" << std::endl;
     out.close();
 
     // Read in the file
@@ -61,6 +74,10 @@ TEST ( configReader, Unit_IgnoreCommentLines )
     ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
 }
 
+/**
+ * @test Checks if config variables may be missing
+ * @todo Write a test for the following case (fails atm): First comes a binary specific block with missing variables then default where they appear: Then these should be taken from default.
+ */
 TEST ( configReader, Unit_IgnoreMissingVariables )
 {
     //Create custom config file
@@ -79,6 +96,9 @@ TEST ( configReader, Unit_IgnoreMissingVariables )
     ASSERT_FALSE ( config.memoryManager.value.empty() );
 }
 
+/**
+ * @test Checks if the application name can be retreived properly
+ */
 TEST ( configReader, Unit_ParseProgramName )
 {
     configReader reader;
@@ -86,6 +106,9 @@ TEST ( configReader, Unit_ParseProgramName )
     ASSERT_TRUE ( reader.getApplicationName() == "rambrain-unittests" || reader.getApplicationName() == "rambrain-tests" );
 }
 
+/**
+ * @test Checks if a binary specific block can overwrite the default block
+ */
 TEST ( configReader, Unit_OverwriteDefault )
 {
     //Create custom config file
@@ -109,6 +132,9 @@ TEST ( configReader, Unit_OverwriteDefault )
     ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
 }
 
+/**
+ * @test Checks if a default block after the specific block does not overwrite the latter
+ */
 TEST ( configReader, Unit_OverwriteDefaultInverseOrder )
 {
     //Create custom config file
@@ -132,6 +158,9 @@ TEST ( configReader, Unit_OverwriteDefaultInverseOrder )
     ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
 }
 
+/**
+ * @test Checks if empty lines are properly ignored
+ */
 TEST ( configReader, Unit_IgnoreEmptyLines )
 {
     //Create custom config file
