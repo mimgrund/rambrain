@@ -10,8 +10,8 @@ IGNORE_TEST_WARNINGS;
 using namespace rambrain;
 
 /**
-* @test Checks exact loading stages of objects provoked by the use of adhereTo
-*/
+ * @test Checks exact loading stages of objects provoked by the use of adhereTo
+ */
 TEST ( adhereTo, Unit_LoadUnload )
 {
     managedDummySwap swap ( 100 );
@@ -57,8 +57,8 @@ TEST ( adhereTo, Unit_LoadUnload )
 }
 
 /**
-* @test Checks exact loading stages of const objects provoked by the use of adhereTo
-*/
+ * @test Checks exact loading stages of const objects provoked by the use of adhereTo
+ */
 TEST ( adhereTo, Unit_LoadUnloadConst )
 {
     managedDummySwap swap ( 100 );
@@ -102,8 +102,8 @@ TEST ( adhereTo, Unit_LoadUnloadConst )
 }
 
 /**
-* @test Checks whether we can access stored data
-*/
+ * @test Checks whether we can access stored data
+ */
 TEST ( adhereTo, Unit_AccessData )
 {
     const unsigned int count = 5;
@@ -131,8 +131,8 @@ TEST ( adhereTo, Unit_AccessData )
 }
 
 /**
-* @test Checks multithreading compatibility of adhereTo
-*/
+ * @test Checks multithreading compatibility of adhereTo
+ */
 TEST ( adhereTo, Unit_Multithreading )
 {
     const int count = 100;
@@ -163,8 +163,8 @@ TEST ( adhereTo, Unit_Multithreading )
 }
 
 /**
-* @test Checks multithreading compatibility of adhereTo with concurrent access
-*/
+ * @test Checks multithreading compatibility of adhereTo with concurrent access
+ */
 TEST ( adhereTo, Unit_TwiceAdhered )
 {
     const unsigned int count = 5;
@@ -204,8 +204,8 @@ TEST ( adhereTo, Unit_TwiceAdhered )
 }
 
 /**
-* @test Checks correct working of convenience macros
-*/
+ * @test Checks correct working of convenience macros
+ */
 TEST ( adhereTo, Unit_MacroUsage )
 {
     const unsigned int count = 5;
@@ -225,8 +225,8 @@ TEST ( adhereTo, Unit_MacroUsage )
 }
 
 /**
-* @test Checks whether adhereTo Objects are copied correctly
-*/
+ * @test Checks whether adhereTo Objects are copied correctly
+ */
 TEST ( adhereTo, Unit_CopyCorrectness )
 {
     const unsigned int count = 5;
