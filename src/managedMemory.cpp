@@ -162,10 +162,19 @@ bool managedMemory::ensureEnoughSpace ( global_bytesize sizereq, managedMemoryCh
                     swap->cleanupCachedElements();
                     if ( outOfSwapIsFatal ) { //throw if user wants us to, otherwise wait indefinitely (ram-deadlock)
                         pthread_mutex_unlock ( &stateChangeMutex );
-                        Throw ( memoryException ( "Could not swap memory" ) );
+                        switch ( err ) {
+                        case ERR_MORETHANTOTALRAM:
+                            Throw ( memoryException ( "Could not swap memory: Object size requested is bigger than actual RAM limits" ) );
+                        case ERR_NOTENOUGHCANDIDATES:
+                            Throw ( memoryException ( "Could not swap memory: Too much used elements to make room" ) );
+                        case ERR_SWAPFULL:
+                            Throw ( memoryException ( "Could not swap memory: Swap is unrecoverably full" ) );
+                        default:
+                            Throw ( memoryException ( "Could not swap memory, I don't know why" ) );
 
-                        ///@todo: implement swapping policy
-                        ///@todo: check whether we have other threads still working on data (and possibly free it)
+                        }
+
+
                     }
                 }
             }

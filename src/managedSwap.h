@@ -5,6 +5,7 @@
 #include "common.h"
 #include "managedMemory.h"
 #include "rambrain_atomics.h"
+#include "configreader.h"
 
 namespace rambrain
 {
@@ -41,6 +42,23 @@ public:
      **/
     virtual void swapDelete ( managedMemoryChunk *chunk ) = 0;
 
+
+    /** @brief extend swap by policy
+     * @return success
+     * @param min_size Minimum size the swap has to be extended before success is returned
+     **/
+    virtual bool extendSwapByPolicy ( global_bytesize min_size ) {
+        errmsg ( "Your swap module does not support extending swap by policy" );
+        return false;
+    };
+    /** @brief extend swap by size number of bytes
+     * @return success
+     **/
+    virtual bool extendSwap ( global_bytesize size ) {
+        errmsg ( "Your swap module does not support extending swap" );
+        return false;
+    }
+
     ///Simple getter
     virtual inline global_bytesize getSwapSize() const {
         return swapSize;
@@ -53,6 +71,19 @@ public:
     virtual inline global_bytesize getFreeSwap() const {
         return swapFree;
     }
+
+    //Simple getter
+    virtual inline swapPolicy getSwapPolicy() const {
+        return policy;
+    }
+
+    //Simple setter returning old policy
+    virtual inline swapPolicy setSwapPolicy ( swapPolicy newPolicy ) {
+        swapPolicy oldPolicy = policy;
+        policy = newPolicy;
+        return oldPolicy;
+    }
+
     ///Returns possible memory alignment restrictions
     inline size_t getMemoryAlignment() const {
         return memoryAlignment;
@@ -92,6 +123,8 @@ protected:
     unsigned int totalSwapActionsQueued = 0;
 
     size_t memoryAlignment = 1;
+
+    swapPolicy policy = swapPolicy::fixed;
 };
 
 

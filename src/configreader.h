@@ -22,7 +22,6 @@ namespace rambrain
  *
  * Can either keep the boundary fixed, extend it automatically as it needs or start an interactive shell to ask the user for advice
  * @warning Currently not used
- * @todo Implement usage
  */
 enum class swapPolicy {
     fixed,

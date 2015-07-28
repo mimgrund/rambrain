@@ -422,9 +422,12 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         return ERR_MORETHANTOTALRAM;
     }
     global_bytesize swap_free = swap->getFreeSwap();
-    if ( min_size > swap_free ) {
-        pthread_mutex_unlock ( &cyclicTopoLock );
-        return ERR_SWAPFULL;
+    if ( swap_free < min_size ) {
+        if ( !swap->extendSwapByPolicy ( min_size ) ) {
+            pthread_mutex_unlock ( &cyclicTopoLock );
+            return ERR_SWAPFULL;
+        }
+        swap_free = swap->getFreeSwap();
     }
 
     global_bytesize mem_alloc_max = memory_max * swapOutFrac; //<- This is target size

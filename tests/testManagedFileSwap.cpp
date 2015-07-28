@@ -634,4 +634,47 @@ TEST ( managedFileSwap, Integration_MatrixTranspose )
     }
 }
 
+/** @test Check correct usage of swap policy**/
+TEST ( managedFileSwap, Unit_SwapPolicy )
+{
+    const unsigned int size = mib;
+    const unsigned int swapmem = 1 * mib;
+
+    managedFileSwap swap ( swapmem, "/tmp/rambrainswap1-%d-%d" );
+    EXPECT_EQ ( swapPolicy::fixed, swap.getSwapPolicy() );
+    EXPECT_EQ ( mib, swap.getFreeSwap() );
+    cyclicManagedMemory manager ( &swap, size );
+
+    managedPtr<char> d1 ( mib );
+    managedPtr<char> d2 ( mib );
+    EXPECT_THROW (
+        managedPtr<char> d3 ( mib ), memoryException );
+
+    managedFileSwap swap2 ( swapmem, "/tmp/rambrainswap2-%d-%d" );
+    cyclicManagedMemory manager2 ( &swap2, size );
+    swap2.setSwapPolicy ( swapPolicy::autoextendable );
+
+    managedPtr<char> e1 ( mib );
+    {
+        ADHERETOLOC ( char, e1, data );
+        data[1337] = 0x42;
+    }
+    managedPtr<char> e2 ( mib );
+    {
+        ADHERETOLOC ( char, e2, data );
+        data[42] = 0x13;
+    }
+    EXPECT_NO_THROW (
+        managedPtr<char> e3 ( mib ) );
+    {
+        ADHERETOLOC ( char, e2, data );
+        EXPECT_EQ ( 0x13, data[42] ) ;
+    }
+    {
+        ADHERETOLOC ( char, e1, data );
+        EXPECT_EQ ( 0x42, data[1337] ) ;
+    }
+
+}
+
 RESTORE_WARNINGS;

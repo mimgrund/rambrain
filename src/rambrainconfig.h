@@ -57,7 +57,7 @@ public:
     void resizeMemory ( global_bytesize memory );
     /**
      * @brief Simple setter
-     * @warning Currently no swap resizing is supported, ergo this means to reinitiate the main classes and to throw away the old ones deleting all existing managed pointers
+     * @warning Currently only extending may be supported, ergo this means to reinitiate the main classes and to throw away the old ones deleting all existing managed pointers
      */
     void resizeSwap ( global_bytesize memory );
 

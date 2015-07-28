@@ -12,6 +12,8 @@
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <mm_malloc.h>
+#include <sys/statvfs.h>
+#include <iostream>
 
 namespace rambrain
 {
@@ -43,6 +45,7 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     //copy filemask:
     this->filemask = ( char * ) malloc ( sizeof ( char ) * ( strlen ( filemask ) + 1 ) );
     strcpy ( ( char * ) this->filemask, filemask );
+
 
     swapFiles = NULL;
     if ( !openSwapFiles() ) {
@@ -124,15 +127,9 @@ void managedFileSwap::setDMA ( bool arg1 )
     memoryAlignment = arg1 ? 512 : 1; //Dynamical detection is tricky if not impossible to solve in general
 }
 
-bool managedFileSwap::openSwapFiles()
+bool managedFileSwap::openSwapFileRange ( unsigned int start, unsigned int stop )
 {
-    if ( swapFiles ) {
-        throw memoryException ( "Swap files already opened. Close first" );
-        return false;
-    }
-    swapFiles = ( struct swapFileDesc * ) malloc ( sizeof ( struct swapFileDesc ) * pageFileNumber );
-badjump:
-    for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
+    for ( unsigned int n = start; n < stop; ++n ) {
         char fname[1024];
         snprintf ( fname, 1024, filemask, getpid(), n );
         swapFiles[n].fileno = open ( fname, O_RDWR | O_TRUNC | O_CREAT | ( enableDMA ? O_DIRECT : 0 << 0 ), S_IRUSR | S_IWUSR );
@@ -140,7 +137,7 @@ badjump:
             if ( errno == EINVAL && n == 0 && enableDMA ) { //Probably happens because we have O_DIRECT set even though file system does not support this...
                 warnmsg ( "Could not open first swapfile. Probably DMA is not supported on underlying filesystem. Trying again without dma" )
                 setDMA ( false );
-                goto badjump;
+                return false;
             }
             errmsgf ( "Encountered error code %d when opening file %s\n", errno, fname );
             throw memoryException ( "Could not open swap file." );
@@ -150,6 +147,114 @@ badjump:
     }
     return true;
 }
+
+bool managedFileSwap::openSwapFiles()
+{
+    if ( swapFiles ) {
+        throw memoryException ( "Swap files already opened. Close first" );
+        return false;
+    }
+    swapFiles = ( struct swapFileDesc * ) malloc ( sizeof ( struct swapFileDesc ) * pageFileNumber );
+
+    if ( !openSwapFileRange ( 0, pageFileNumber ) ) // DMA may fail on first / we recover in openSwapFileRange
+        if ( !openSwapFileRange ( 0, pageFileNumber ) ) { // if we did not recover, fail...
+            return false;
+        }
+    return true;
+}
+
+bool managedFileSwap::extendSwapByPolicy ( global_bytesize min_size )
+{
+
+    global_bytesize extendby = 0;
+    global_bytesize freeondisk = 0;
+    global_bytesize needed = min_size + ( min_size % pageFileSize == 0 ? 0 : ( pageFileSize - min_size % pageFileSize ) );
+    switch ( policy ) {
+    case swapPolicy::fixed:
+        return false;
+        break;
+    case swapPolicy::autoextendable:
+        //Check for still free space at swapfile location:
+        freeondisk = getFreeDiskSpace();
+        if ( freeondisk < needed ) {
+            return false;
+        }
+
+        warnmsgf ( "Extending possible swap space by %lu MB ( %lu MB left on hdd)\n", pageFileSize / mib, freeondisk / mib );
+        extendby = needed;
+        break;
+    case swapPolicy::interactive:
+        freeondisk = getFreeDiskSpace();
+        while ( ( extendby < needed || extendby > freeondisk ) ) {
+
+            warnmsgf ( "I am out of swap.\n\t\
+                Can increase in steps of ~%luMB\n\t\
+                need at least %lu steps, possible steps until disk is full: %lu ", pageFileSize / mib, needed / pageFileSize, freeondisk / pageFileSize );
+            std::cin >> extendby;
+
+            //again check disk free space as this may have changed due to user interaction:
+            freeondisk = getFreeDiskSpace();
+            extendby *= pageFileSize;
+            if ( extendby > freeondisk ) {
+                errmsg ( "You want to assign more disk space than you have." );
+            }
+            if ( extendby < needed ) {
+                errmsg ( "You want to assign less than we need." );
+            }
+        }
+        break;
+
+    }
+    //Extend by extendby:
+    if ( !extendSwap ( extendby ) ) {
+        return false;
+    }
+    return true;
+}
+
+bool managedFileSwap::extendSwap ( global_bytesize size )
+{
+    size += size % pageFileSize == 0 ? 0 : pageFileSize - ( size % pageFileSize );
+    if ( size > getFreeDiskSpace() ) {
+        return false;
+    }
+    unsigned int oldpn = pageFileNumber;
+    pageFileNumber += size / pageFileSize;
+    struct swapFileDesc *oldList = swapFiles;
+    swapFiles = ( struct swapFileDesc * ) malloc ( sizeof ( struct swapFileDesc ) * pageFileNumber );
+    memcpy ( swapFiles, oldList, sizeof ( swapFileDesc ) *oldpn );
+    if ( !openSwapFileRange ( oldpn, pageFileNumber ) ) {
+        return false;
+    }
+    for ( unsigned int n = oldpn; n < pageFileNumber; n++ ) {
+        pageFileLocation *pfloc = new pageFileLocation ( n, 0, pageFileSize );
+        free_space[n * pageFileSize] = pfloc;
+        all_space[n * pageFileSize] = pfloc;
+    }
+
+    swapFree += size;
+    swapSize += size;
+    free ( oldList );
+    return true;
+}
+
+
+global_bytesize managedFileSwap::getFreeDiskSpace()
+{
+    string directory ( filemask );
+    std::size_t found  = directory.find_last_of ( "/" );
+    if ( found == directory.npos ) {
+        directory = ".";
+    } else {
+        directory = directory.substr ( 0, found );
+    }
+    struct statvfs stats;
+    statvfs ( directory.c_str(), &stats );
+    global_bytesize bytesfree =  stats.f_bfree * stats.f_bsize;
+    return bytesfree;
+}
+
+
 
 pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemoryChunk *chunk )
 {
@@ -223,6 +328,7 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemor
 
         } else {
             throw memoryException ( "Out of swap space" );
+
         }
 
     }

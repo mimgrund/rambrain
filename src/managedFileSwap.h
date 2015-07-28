@@ -16,6 +16,7 @@
 class managedFileSwap_Unit_SwapAllocation_Test;
 class managedFileSwap_Integration_RandomAccess_Test;
 class managedFileSwap_Integration_RandomAccessVariousSize_Test;
+class managedFileSwap_Unit_SwapPolicy_Test;
 
 namespace rambrain
 {
@@ -94,6 +95,9 @@ public:
     virtual global_bytesize swapIn ( managedMemoryChunk *chunk );
     virtual global_bytesize swapOut ( managedMemoryChunk **chunklist, unsigned int nchunks );
     virtual global_bytesize swapOut ( managedMemoryChunk *chunk );
+    virtual bool extendSwap ( global_bytesize size );
+    virtual bool extendSwapByPolicy ( global_bytesize min_size );
+
     void setDMA ( bool arg1 );
 
     const unsigned int pageSize;
@@ -106,6 +110,8 @@ private:
     inline global_offset determineGlobalOffset ( const pageFileLocation &ref ) const;
     /** @brief opens swap files according to settings**/
     bool openSwapFiles();
+    /** @brief opens certain range of swap files according to settings**/
+    bool openSwapFileRange ( unsigned int start, unsigned int stop );
     /** @brief closes swap files**/
     void closeSwapFiles();
 
@@ -184,6 +190,7 @@ protected:
     friend class ::managedFileSwap_Unit_SwapAllocation_Test;
     friend class ::managedFileSwap_Integration_RandomAccess_Test;
     friend class ::managedFileSwap_Integration_RandomAccessVariousSize_Test;
+    friend class ::managedFileSwap_Unit_SwapPolicy_Test;
 
     static managedFileSwap *instance;
     /** @brief returns some statistics. Typically, we will be sensitive to SIGUSR2 if compiled with -DSWAPSTATS=on**/
@@ -205,6 +212,9 @@ protected:
     bool cleanupCachedElements ( rambrain::global_bytesize minimum_size = 0 );
     /** @brief tells managedFileSwap that the chunk under consideration might have been changed by user and needs to be copied out freshly**/
     virtual void invalidateCacheFor ( managedMemoryChunk &chunk );
+
+    /** @brief returns free disk space at file system location specified by filemask **/
+    global_bytesize getFreeDiskSpace();
 };
 
 }

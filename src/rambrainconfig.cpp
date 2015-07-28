@@ -46,7 +46,6 @@ void rambrainConfig::resizeSwap ( global_bytesize memory )
 {
     configuration &c = config.getConfig();
     c.swapMemory.value = memory;
-    //! \todo implement a resize for the swap
     reinit ( false );
 }
 
@@ -58,6 +57,7 @@ void rambrainConfig::init ()
         swap = new managedDummySwap ( c.swapMemory.value );
     } else if ( c.swap.value == "managedFileSwap" ) {
         swap = new managedFileSwap ( c.swapMemory.value, c.swapfiles.value.c_str(), 0, c.enableDMA.value );
+        swap->setSwapPolicy ( c.policy.value );
     }
 
     if ( c.memoryManager.value == "dummyManagedMemory" ) {
