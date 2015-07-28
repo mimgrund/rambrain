@@ -23,7 +23,8 @@ namespace rambrain
  * Can either keep the boundary fixed, extend it automatically as it needs or start an interactive shell to ask the user for advice
  * @warning Currently not used
  */
-enum class swapPolicy {
+enum class swapPolicy
+{
     fixed,
     autoextendable,
     interactive
@@ -135,6 +136,9 @@ struct configuration {
  * key = value\n
  * ...\n
  * While keys are exactly the names of members of the configuration struct
+ * There are three different locations to search for a config file, in descending priority: custom location > user home dir > global
+ * Not all options need to be supplied. Missing options are taken from the default block or (if not present there either) from the defaults
+ * Also all different files are taken into account to supply missing options
  * @note Comments can be inserted with leading hash
  */
 class configReader
@@ -180,33 +184,37 @@ public:
      * @brief Simple getter
      */
     inline bool readSuccessfully() const {
-        return readSuccessfullyOnce;
+        return readSuccess;
     }
 
 private:
     /**
-     * @brief Open stream to config file
+     * @brief (Re)Open streams to config files
      *
      * Order is Custom location > Local user space > Global config
      * @return Success
      */
-    bool openStream();
+    bool reopenStreams();
 
     /**
      * @brief Parse config file
      *
      * Look for default block as well as block matching the current binary name (which has priority of course)
+     * @param stream The input stream
+     * @param readLines Vector to track which config options are already read
      * @return Success
      * @see parseConfigBlock()
      */
-    bool parseConfigFile();
+    bool parseConfigFile ( istream &stream, vector<configLineBase *> &readLines );
     /**
      * @brief Parse an identified configuration block and extract all matching variables
+     * @param stream The input stream
+     * @param readLines Vector to track which config options are already read
      * @return Success
      * @warning Does not check for unknown variables or typos, every unknown thing is simply ignored
      * @see parseConfigLine
      */
-    bool parseConfigBlock();
+    bool parseConfigBlock ( istream &stream, vector<configLineBase *> &readLines );
 
     /**
      * @brief Extract the current binary's name out of the /proc file system
@@ -220,11 +228,11 @@ private:
 
     const regexMatcher regex;
 
-    ifstream stream;
+    ifstream streams[3];
 
     configuration config;
 
-    bool readSuccessfullyOnce = false;
+    bool readSuccess = false;
 
     //Test classes
     friend class ::configReader_Unit_ParseProgramName_Test;

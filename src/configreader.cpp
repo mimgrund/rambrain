@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <sys/statvfs.h>
 #include <cstring>
+#include <algorithm>
 
 namespace rambrain
 {
@@ -134,64 +135,70 @@ configReader::configReader()
 
 bool configReader::readConfig()
 {
-    if ( !openStream() ) {
+    if ( !reopenStreams() ) {
         return false;
     }
 
-    if ( parseConfigFile() ) {
-        readSuccessfullyOnce = true;
-        return true;
-    } else {
-        readSuccessfullyOnce = false;
-        return false;
+    vector<configLineBase *> readLines;
+
+    readSuccess = true;
+    for ( int i = 0; i < 3; ++i ) {
+        if ( readLines.size() < config.configOptions.size() ) {
+            readSuccess &= parseConfigFile ( streams[i], readLines );
+        }
     }
+    return readSuccess;
 }
 
-bool configReader::openStream()
+bool configReader::reopenStreams()
 {
-    if ( stream.is_open() ) {
-        stream.close();
+    for ( int i = 0; i < 3; ++i ) {
+        if ( streams[i].is_open() ) {
+            streams[i].close();
+        }
     }
 
-    stream.open ( customConfigPath );
-    if ( stream.is_open() ) {
-        return true;
-    }
+    streams[0].open ( customConfigPath );
+    streams[1].open ( localConfigPath );
+    streams[2].open ( globalConfigPath );
 
-    stream.open ( localConfigPath );
-    if ( stream.is_open() ) {
-        return true;
-    }
-
-    stream.open ( globalConfigPath );
-    if ( stream.is_open() ) {
-        return true;
-    }
-
-    return false;
+    return streams[0].is_open() || streams[1].is_open() || streams[2].is_open();
 }
 
-bool configReader::parseConfigFile()
+bool configReader::parseConfigFile ( istream &stream, vector<configLineBase *> &readLines )
 {
     string line;
-    bool ret = false;
+    bool ret = true, defaultDone = false, specificDone = false;
+    string appName = getApplicationName();
+    vector<configLineBase *> thisReadLines ( readLines );
 
-    while ( stream.good() ) {
+    while ( stream.good() && ! ( defaultDone && specificDone ) ) {
         getline ( stream, line );
+        unsigned int current = stream.tellg();
+
         if ( regex.matchConfigBlock ( line ) ) {
-            unsigned int current = stream.tellg();
-            ret = parseConfigBlock();
-            stream.seekg ( current );
-        } else if ( regex.matchConfigBlock ( line, getApplicationName() ) ) {
-            ret = parseConfigBlock();
-            break;
+            ret &= parseConfigBlock ( stream, specificDone ? readLines : thisReadLines );
+
+            defaultDone = true;
+        } else if ( regex.matchConfigBlock ( line, appName ) ) {
+            ret &= parseConfigBlock ( stream, readLines );
+
+            // Merge thisReadLines into readLines if a default has been done before, ergo memorize also elements from default and not specific
+            if ( defaultDone ) {
+                readLines.insert ( readLines.end(), thisReadLines.begin(), thisReadLines.end() );
+                unique ( readLines.begin(), readLines.end() );
+            }
+
+            specificDone = true;
         }
+
+        stream.seekg ( current );
     }
 
     return ret;
 }
 
-bool configReader::parseConfigBlock()
+bool configReader::parseConfigBlock ( istream &stream, vector<configLineBase *> &readLines )
 {
     string line, first;
 
@@ -205,10 +212,13 @@ bool configReader::parseConfigBlock()
         } else {
             for ( auto it = config.configOptions.begin(); it != config.configOptions.end(); ++it ) {
                 configLineBase *cl = *it;
-                std::pair<string, string> match = regex.matchKeyEqualsValue ( line, cl->name, cl->matchType );
-                if ( match.first == cl->name ) {
-                    cl->setValue ( match.second );
-                    break;
+                if ( find ( readLines.begin(), readLines.end(), cl ) == readLines.end() ) { // Only if this config option has not been read yet
+                    std::pair<string, string> match = regex.matchKeyEqualsValue ( line, cl->name, cl->matchType );
+                    if ( match.first == cl->name ) {
+                        readLines.push_back ( cl );
+                        cl->setValue ( match.second );
+                        break;
+                    }
                 }
             }
         }
