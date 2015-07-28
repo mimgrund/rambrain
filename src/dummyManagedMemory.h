@@ -8,6 +8,9 @@
 namespace rambrain
 {
 
+/** @brief a dummy managed Memory that basically does nothing and throws on everything.
+ *  @note there is no productive use of this class, it only serves testing purposes
+ **/
 class dummyManagedMemory : public managedMemory
 {
 public:

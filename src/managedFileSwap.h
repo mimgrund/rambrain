@@ -64,20 +64,24 @@ public:
     pageFileLocation ( unsigned int file, global_bytesize offset, global_bytesize size, pageChunkStatus status = PAGE_FREE ) :
         file ( file ), offset ( offset ), size ( size ), status ( status ), aio_ptr ( NULL ) {}
 
-    unsigned int file;
-    global_bytesize offset;
-    global_bytesize size;
-    union glob_off_union glob_off_next;//This points if used to the next part, if free to the next free chunk, if PAGE_END points to memchunk.
-    pageChunkStatus status;
-    struct aiotracker *aio_ptr = NULL;
-    char aio_lock = 0;
+    unsigned int file /** The number of the file this pageFileLocation is resident in**/;
+    global_bytesize offset /** Byte offset into the file**/;
+    global_bytesize size /** size of the chunk (data, not including possible reserved bytes after data)**/;
+    union glob_off_union glob_off_next/** This points if used to the next part, if free to the next free chunk, if PAGE_END points to memchunk. **/;//
+    pageChunkStatus status /** the status of the page**/;
+    struct aiotracker *aio_ptr = NULL /** pointer possibly pointing to any pending aio requests concerning this chunk**/;
+    char aio_lock = 0 /** an elementary lock that lets us wait on a single pageFileLocation **/;
 };
 
 
 
 class managedFileSwap;
 
-
+/** @brief An implementation of managedSwap that is capable of kernel asynchronousIO
+ *
+ *  @note we also support DMA, however this is not recommended as kernel caching&buffering will be circumvent. For our use case this turns out to slow down things more and we do not make best use of system resources.
+ *  @note all public functions of managedFileSwap need to be called holding stateChangeMutex
+ **/
 class managedFileSwap : public managedSwap
 {
 public:
@@ -96,9 +100,13 @@ public:
 
 
 private:
+    /** @brief generate a pageFileLocation object given a global offset and a length of the data. This maps our "virtual" adress space to physical locations in a certain file**/
     pageFileLocation determinePFLoc ( global_offset g_offset, global_bytesize length ) const;
+    /** @brief maps from physical location to "virtual" adress**/
     inline global_offset determineGlobalOffset ( const pageFileLocation &ref ) const;
+    /** @brief opens swap files according to settings**/
     bool openSwapFiles();
+    /** @brief closes swap files**/
     void closeSwapFiles();
 
     const char *filemask;
@@ -111,18 +119,25 @@ private:
 
     struct swapFileDesc *swapFiles = NULL;
 
-    //Memory copy:
+    /** @brief Schedules an elementary pageFileLocation chunk for copying (in or out)**/
     void scheduleCopy ( rambrain::pageFileLocation &ref, void *ramBuf, int *tracker, bool reverse = false ) ;
+    /** @brief Schedules copying on level of whole managedMemoryChunks and calls scheduleCopy on the assigned parts
+     * @param ref the pageFileLocation the chunks data should be copied to
+     * @param ramBuf pointer to the managedMemoryChunk data buffer
+     * @param reverse copy in the other direction
+     **/
     void copyMem ( rambrain::pageFileLocation &ref, void *ramBuf, bool reverse = false  )  ;
 
+    /** @brief Convenience function for reverse copying**/
     inline void copyMem ( void *ramBuf, rambrain::pageFileLocation &ref ) {
         copyMem ( ref, ramBuf, true );
     }
-
+    /** @brief Convenience function for reverse scheduling a copy**/
     inline void scheduleCopy ( void *ramBuf, pageFileLocation &ref, int *parttracker ) {
         scheduleCopy ( ref, ramBuf, parttracker, true );
     }
 
+    /** @brief If we have any restrictions regarding memory alignment of RAM buffers(DMA), this function tells us about it**/
     inline size_t getMemoryAlignment() const {
         return memoryAlignment;
     }
@@ -131,8 +146,10 @@ private:
 
 
     //page file malloc:
+    /** @brief Tries to find space in the swapFiles to write out an object of size size and returns first pageFileLocation to it **/
     pageFileLocation *pfmalloc ( rambrain::global_bytesize size, rambrain::managedMemoryChunk *chunk );
     void pffree ( pageFileLocation *pagePtr );
+    ///Helper function for pfmalloc
     pageFileLocation *allocInFree ( pageFileLocation *freeChunk, global_bytesize size );
 
     std::map<global_offset, pageFileLocation *> free_space;
@@ -144,11 +161,16 @@ protected:
     bool deleteFilesOnExit = true;
 
     //sigEvent Handler:
+    /** @brief deals with a single asynchronous IO event completion**/
     void asyncIoArrived ( rambrain::pageFileLocation *ref, struct io_event *aio );
+    /** @brief called to finish a transaction when all pending aio on a managedMemoryChunk has completed**/
     void completeTransactionOn ( rambrain::pageFileLocation *ref, bool lock = true );
 
+    /** @brief gives this class the chance to treat incoming aio events
+     *  @return true if there is pending IO to wait for, false otherwise
+     *  @warning if false is returned, immediate waiting for pending aio results in deadlock
+     **/
     virtual bool checkForAIO();
-    static void *checkForAIO ( void *ptr );
 
     struct iocb aio_template;
     io_context_t aio_context = 0;
@@ -164,6 +186,7 @@ protected:
     friend class ::managedFileSwap_Integration_RandomAccessVariousSize_Test;
 
     static managedFileSwap *instance;
+    /** @brief returns some statistics. Typically, we will be sensitive to SIGUSR2 if compiled with -DSWAPSTATS=on**/
     static void sigStat ( int signum );
 
     //Thread pool for asynchronous io:
@@ -178,7 +201,9 @@ protected:
     void my_io_submit ( struct iocb *aio );
     static void *io_submit_worker ( void *ptr );
 
+    /** @brief throws out cached elements still in ram but also resident on disk. This makes space in situations of low swap memory**/
     bool cleanupCachedElements ( rambrain::global_bytesize minimum_size = 0 );
+    /** @brief tells managedFileSwap that the chunk under consideration might have been changed by user and needs to be copied out freshly**/
     virtual void invalidateCacheFor ( managedMemoryChunk &chunk );
 };
 

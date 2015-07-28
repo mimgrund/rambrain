@@ -28,6 +28,9 @@ typedef uint64_t memoryAtime;
  * we decided for this due to performance issues. More documentation to come. The basically
  * possible transitions are depicted in the following graph:
  * \dotfile chunkStatusScheme.dot
+ * @note when changing status, you have to hold the stateChangeMutex of the associated memoryManager
+ * @warning There may be changes to any objects status when calling waiting functions in managedMemory or managedSwap.
+ * Thus the user has to check the status of the object again having called such functions or having freshly acquired the lock
  * **/
 class managedMemoryChunk
 {
@@ -39,25 +42,25 @@ public:
 #endif
 
     //Local management
-    memoryStatus status;
-    unsigned short useCnt;
-    void *locPtr;
-    global_bytesize size;
+    memoryStatus status ;
+    unsigned short useCnt /** @brief Number of using adhereTos or a possible location for locking the object to changes **/;
+    void *locPtr /** @brief pointer to the actual data in RAM **/;
+    global_bytesize size /** @brief Size of actual object in bytes**/;
 
     //Organization
-    memoryID id;
+    memoryID id /** @brief an ID to identify the object in scheduler or elsewhere **/;
 #ifdef PARENTAL_CONTROL
-    memoryID parent;
-    memoryID next;
-    memoryID child;
+    memoryID parent /** @brief parent element if created in class hierarchy **/;
+    memoryID next/** @brief next element**/;
+    memoryID child /** @brief first child element if creating a class hierarchy **/;
 #endif
     bool preemptiveLoaded = false;
 
     //Swap scheduling:
-    void *schedBuf; //Give the mem scheduler a place for a buffer.
+    void *schedBuf /** @brief a place to store additional scheduling information **/;
 
     //Swap raw management:
-    void *swapBuf; //Give the swapper a place for a buffer.
+    void *swapBuf/** @brief a place to store additional swapping information **/;
 };
 
 }

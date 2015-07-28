@@ -57,7 +57,9 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     }
 
     instance = this;
+#ifdef SWAPSTATS
     signal ( SIGUSR2, managedFileSwap::sigStat );
+#endif
 
     aio_eventarr = ( struct io_event * ) malloc ( sizeof ( struct io_event ) * aio_max_transactions );
     memset ( aio_eventarr, 0, sizeof ( struct io_event ) *aio_max_transactions );
