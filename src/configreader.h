@@ -137,6 +137,9 @@ struct configuration {
  * key = value\n
  * ...\n
  * While keys are exactly the names of members of the configuration struct
+ * There are three different locations to search for a config file, in descending priority: custom location > user home dir > global
+ * Not all options need to be supplied. Missing options are taken from the default block or (if not present there either) from the defaults
+ * @note Only one config file is read. We do not support collecting options from all the different files in order.
  * @note Comments can be inserted with leading hash
  */
 class configReader
