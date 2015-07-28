@@ -76,7 +76,6 @@ TEST ( configReader, Unit_IgnoreCommentLines )
 
 /**
  * @test Checks if config variables may be missing
- * @todo Write a test for the following case (fails atm): First comes a binary specific block with missing variables then default where they appear: Then these should be taken from default.
  */
 TEST ( configReader, Unit_IgnoreMissingVariables )
 {
@@ -94,6 +93,62 @@ TEST ( configReader, Unit_IgnoreMissingVariables )
     configuration config = reader.getConfig();
 
     ASSERT_FALSE ( config.memoryManager.value.empty() );
+}
+
+/**
+ * @test Checks if config variables which are missing in a specific block are overwritten by the default block
+ */
+TEST ( configReader, Unit_DefaultOverwritesMissingVariables )
+{
+    //Create custom config file
+    ofstream out ( "testconfig.conf" );
+    out << "[default]" << std::endl;
+    out << "memoryManager = cyclicManagedMemory" << std::endl;
+    out << "memory = 5GB" << std::endl;
+    out << "[rambrain-unittests]" << std::endl;
+    out << "memoryManager = dummyManagedMemory" << std::endl;
+    out << "[rambrain-tests]" << std::endl;
+    out << "memoryManager = dummyManagedMemory" << std::endl;
+    out.close();
+
+    // Read in the file
+    configReader reader;
+    reader.setCustomConfigPath ( "testconfig.conf" );
+
+    ASSERT_TRUE ( reader.readConfig() );
+
+    configuration config = reader.getConfig();
+
+    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
+    ASSERT_EQ ( 5000000000uLL, config.memory.value );
+}
+
+/**
+ * @test Checks if config variables which are missing in a specific block are overwritten by the default block even if the default block comes after the specific one
+ */
+TEST ( configReader, Unit_DefaultOverwritesMissingVariablesLookFurther )
+{
+    //Create custom config file
+    ofstream out ( "testconfig.conf" );
+    out << "[rambrain-unittests]" << std::endl;
+    out << "memoryManager = dummyManagedMemory" << std::endl;
+    out << "[rambrain-tests]" << std::endl;
+    out << "memoryManager = dummyManagedMemory" << std::endl;
+    out << "[default]" << std::endl;
+    out << "memoryManager = cyclicManagedMemory" << std::endl;
+    out << "memory = 5GB" << std::endl;
+    out.close();
+
+    // Read in the file
+    configReader reader;
+    reader.setCustomConfigPath ( "testconfig.conf" );
+
+    ASSERT_TRUE ( reader.readConfig() );
+
+    configuration config = reader.getConfig();
+
+    ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
+    ASSERT_EQ ( 5000000000uLL, config.memory.value );
 }
 
 /**
