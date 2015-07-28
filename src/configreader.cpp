@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <sys/statvfs.h>
 #include <cstring>
+#include <algorithm>
 
 namespace rambrain
 {
@@ -134,67 +135,61 @@ configReader::configReader()
 
 bool configReader::readConfig()
 {
-    if ( !openStream() ) {
+    if ( !reopenStreams() ) {
         return false;
     }
 
-    if ( parseConfigFile() ) {
-        readSuccessfullyOnce = true;
-        return true;
-    } else {
-        readSuccessfullyOnce = false;
-        return false;
+    vector<configLineBase *> readLines;
+
+    readSuccess = true;
+    for ( int i = 0; i < 3; ++i ) {
+        if ( readLines.size() < config.configOptions.size() ) {
+            readSuccess &= parseConfigFile ( streams[i], readLines );
+        }
     }
+    return readSuccess;
 }
 
-bool configReader::openStream()
+bool configReader::reopenStreams()
 {
-    if ( stream.is_open() ) {
-        stream.close();
+    for ( int i = 0; i < 3; ++i ) {
+        if ( streams[i].is_open() ) {
+            streams[i].close();
+        }
     }
 
-    stream.open ( customConfigPath );
-    if ( stream.is_open() ) {
-        return true;
-    }
+    streams[0].open ( customConfigPath );
+    streams[1].open ( localConfigPath );
+    streams[2].open ( globalConfigPath );
 
-    stream.open ( localConfigPath );
-    if ( stream.is_open() ) {
-        return true;
-    }
-
-    stream.open ( globalConfigPath );
-    if ( stream.is_open() ) {
-        return true;
-    }
-
-    return false;
+    return streams[0].is_open() || streams[1].is_open() || streams[2].is_open();
 }
 
-bool configReader::parseConfigFile()
+bool configReader::parseConfigFile ( istream &stream, vector<configLineBase *> &readLines )
 {
     string line;
-    bool ret = false;
-    vector<configLineBase *> readLines;
+    bool ret = true, defaultDone = false, specificDone = false;
     string appName = getApplicationName();
-    int toRead = 2;
+    vector<configLineBase *> thisReadLines ( readLines );
 
-    while ( stream.good() && toRead ) {
+    while ( stream.good() && ! ( defaultDone && specificDone ) ) {
         getline ( stream, line );
         unsigned int current = stream.tellg();
 
         if ( regex.matchConfigBlock ( line ) ) {
-            ret = parseConfigBlock ( readLines );
+            ret &= parseConfigBlock ( stream, specificDone ? readLines : thisReadLines );
 
-            -- toRead;
+            defaultDone = true;
         } else if ( regex.matchConfigBlock ( line, appName ) ) {
-            readLines.clear(); // Only need to keep this for specific before default not the other way round
-            ret = parseConfigBlock ( readLines );
+            ret &= parseConfigBlock ( stream, readLines );
 
-            -- toRead;
-            if ( toRead && readLines.size() == config.configOptions.size() ) {
-                toRead = 0;
+            // Merge thisReadLines into readLines if a default has been done before, ergo memorize also elements from default and not specific
+            if ( defaultDone ) {
+                readLines.insert ( readLines.end(), thisReadLines.begin(), thisReadLines.end() );
+                unique ( readLines.begin(), readLines.end() );
             }
+
+            specificDone = true;
         }
 
         stream.seekg ( current );
@@ -203,7 +198,7 @@ bool configReader::parseConfigFile()
     return ret;
 }
 
-bool configReader::parseConfigBlock ( vector<configLineBase *> &readLines )
+bool configReader::parseConfigBlock ( istream &stream, vector<configLineBase *> &readLines )
 {
     string line, first;
 
