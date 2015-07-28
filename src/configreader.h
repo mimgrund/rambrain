@@ -24,7 +24,8 @@ namespace rambrain
  * @warning Currently not used
  * @todo Implement usage
  */
-enum class swapPolicy {
+enum class swapPolicy
+{
     fixed,
     autoextendable,
     interactive
@@ -203,11 +204,12 @@ private:
     bool parseConfigFile();
     /**
      * @brief Parse an identified configuration block and extract all matching variables
+     * @param readLines Vector to track which config options are already read
      * @return Success
      * @warning Does not check for unknown variables or typos, every unknown thing is simply ignored
      * @see parseConfigLine
      */
-    bool parseConfigBlock();
+    bool parseConfigBlock ( vector<configLineBase *> &readLines );
 
     /**
      * @brief Extract the current binary's name out of the /proc file system

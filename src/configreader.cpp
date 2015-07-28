@@ -175,23 +175,35 @@ bool configReader::parseConfigFile()
 {
     string line;
     bool ret = false;
+    vector<configLineBase *> readLines;
+    string appName = getApplicationName();
+    int toRead = 2;
 
-    while ( stream.good() ) {
+    while ( stream.good() && toRead ) {
         getline ( stream, line );
+        unsigned int current = stream.tellg();
+
         if ( regex.matchConfigBlock ( line ) ) {
-            unsigned int current = stream.tellg();
-            ret = parseConfigBlock();
-            stream.seekg ( current );
-        } else if ( regex.matchConfigBlock ( line, getApplicationName() ) ) {
-            ret = parseConfigBlock();
-            break;
+            ret = parseConfigBlock ( readLines );
+
+            -- toRead;
+        } else if ( regex.matchConfigBlock ( line, appName ) ) {
+            readLines.clear(); // Only need to keep this for specific before default not the other way round
+            ret = parseConfigBlock ( readLines );
+
+            -- toRead;
+            if ( toRead && readLines.size() == config.configOptions.size() ) {
+                toRead = 0;
+            }
         }
+
+        stream.seekg ( current );
     }
 
     return ret;
 }
 
-bool configReader::parseConfigBlock()
+bool configReader::parseConfigBlock ( vector<configLineBase *> &readLines )
 {
     string line, first;
 
@@ -205,10 +217,13 @@ bool configReader::parseConfigBlock()
         } else {
             for ( auto it = config.configOptions.begin(); it != config.configOptions.end(); ++it ) {
                 configLineBase *cl = *it;
-                std::pair<string, string> match = regex.matchKeyEqualsValue ( line, cl->name, cl->matchType );
-                if ( match.first == cl->name ) {
-                    cl->setValue ( match.second );
-                    break;
+                if ( find ( readLines.begin(), readLines.end(), cl ) == readLines.end() ) { // Only if this config option has not been read yet
+                    std::pair<string, string> match = regex.matchKeyEqualsValue ( line, cl->name, cl->matchType );
+                    if ( match.first == cl->name ) {
+                        readLines.push_back ( cl );
+                        cl->setValue ( match.second );
+                        break;
+                    }
                 }
             }
         }
