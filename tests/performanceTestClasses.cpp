@@ -369,7 +369,6 @@ void performanceTest<>::plotTimingInfos ( ofstream &gnutemp, const string &outna
     } else {
         gnutemp << "set style data lines" << endl;
     }
-    //! \todo actually the legend comes from the definition of the test class like in the normal plot, make this a general gather
 
     gnutemp << "plot ";
     int c = 1;
@@ -425,7 +424,6 @@ void performanceTest<>::plotTimingHitMissInfos ( ofstream &gnutemp, const string
     } else {
         gnutemp << "set style data lines" << endl;
     }
-    //! \todo actually the legend comes from the definition of the test class like in the normal plot, make this a general gather
 
     gnutemp << "plot ";
     int c = 1;
