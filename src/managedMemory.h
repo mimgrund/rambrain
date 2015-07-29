@@ -36,9 +36,12 @@
 #include "exceptions.h"
 
 
+//Test classes
+#ifdef BUILD_TESTS
 class managedFileSwap_Unit_ManualSwapping_Test;
 class managedFileSwap_Unit_ManualSwappingDelete_Test;
 class managedFileSwap_Unit_ManualMultiSwapping_Test;
+#endif
 
 namespace rambrain
 {
@@ -216,10 +219,13 @@ protected:
     friend class managedPtr;
     friend class managedSwap;
     friend class managedFileSwap;
+    //Test classes
+#ifdef BUILD_TESTS
     friend class ::managedFileSwap_Unit_ManualSwapping_Test;
     friend class ::managedFileSwap_Unit_ManualMultiSwapping_Test;
     friend class ::managedFileSwap_Unit_ManualSwappingDelete_Test;
     friend managedSwap *configTestGetSwap ( managedMemory *man );
+#endif
 
 #ifdef SWAPSTATS
 protected:

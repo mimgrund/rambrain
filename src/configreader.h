@@ -31,7 +31,9 @@
 using namespace std;
 
 //Test classes
+#ifdef BUILD_TESTS
 class configReader_Unit_ParseProgramName_Test;
+#endif
 
 namespace rambrain
 {
@@ -42,7 +44,8 @@ namespace rambrain
  * Can either keep the boundary fixed, extend it automatically as it needs or start an interactive shell to ask the user for advice
  * @warning Currently not used
  */
-enum class swapPolicy {
+enum class swapPolicy
+{
     fixed,
     autoextendable,
     interactive
@@ -252,7 +255,9 @@ private:
     bool readSuccess = false;
 
     //Test classes
+#ifdef BUILD_TESTS
     friend class ::configReader_Unit_ParseProgramName_Test;
+#endif
 
 };
 

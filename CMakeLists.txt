@@ -36,24 +36,28 @@ else()
     set(OPTIMISATION -O0)
 endif()
 
+if(BUILD_TESTS)
+    add_definitions(-DBUILD_TESTS)
+endif()
+
 find_package (Threads REQUIRED)
-if (NOT CMAKE_USE_PTHREADS_INIT)
+if(NOT CMAKE_USE_PTHREADS_INIT)
     error ("Could NOT find pthreads.")
-endif ()
+endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR})
-set (EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
-set (LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
 
 find_package(AIO REQUIRED)
 include_directories(${AIO_INCLUDE_DIR})
 
-set (CMAKE_BUILD_TYPE DEBUG)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fopenmp -Wall -g ${OPTIMISATION}")
+set(CMAKE_BUILD_TYPE DEBUG)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -fopenmp -Wall -g ${OPTIMISATION}")
 
 message(STATUS "Compiling with ${CMAKE_CXX_FLAGS}")
 
-if (CMAKE_CXX_COMPILER_ID MATCHES Clang)
+if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
     add_definitions (-fcolor-diagnostics -fansi-escape-codes)
 endif()
 
@@ -64,9 +68,9 @@ add_definitions(-D__GIT_VERSION="${GIT_VERSION}")
 add_subdirectory (src)
 add_subdirectory (external)
 
-if (BUILD_TESTS)
+if(BUILD_TESTS)
     add_subdirectory (tests)
-endif ()
+endif()
 
 add_custom_target(doc doxygen ${CMAKE_SOURCE_DIR}/doc/doxyfile ${CMAKE_SOURCE_DIR} COMMENT "Generating API documentation with Doxygen" VERBATIM)
 

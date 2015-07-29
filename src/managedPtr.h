@@ -27,7 +27,8 @@
 #include <type_traits>
 #include <pthread.h>
 
-// Test classes
+//Test classes
+#ifdef BUILD_TESTS
 class managedPtr_Unit_ChunkInUse_Test;
 class managedPtr_Unit_GetLocPointer_Test;
 class managedPtr_Unit_SmartPointery_Test;
@@ -37,6 +38,7 @@ class managedFileSwap_Unit_SwapNextAndSingleIsland_Test;
 class adhereTo_Unit_LoadUnload_Test;
 class adhereTo_Unit_LoadUnloadConst_Test;
 class adhereTo_Unit_TwiceAdhered_Test;
+#endif
 
 namespace rambrain
 {
@@ -257,12 +259,14 @@ private:
     template<class G>
     friend class adhereToConst;
 
-    // Test classes
+    //Test classes
+#ifdef BUILD_TESTS
     friend class ::managedPtr_Unit_ChunkInUse_Test;
     friend class ::managedPtr_Unit_GetLocPointer_Test;
     friend class ::managedPtr_Unit_SmartPointery_Test;
     friend class ::managedFileSwap_Unit_SwapSingleIsland_Test;
     friend class ::managedFileSwap_Unit_SwapNextAndSingleIsland_Test;
+#endif
 };
 
 /**
@@ -348,10 +352,12 @@ private:
     mutable bool loadedWritable = false;
     mutable bool loadedReadable = false;
 
-    // Test classes
+    //Test classes
+#ifdef BUILD_TESTS
     friend class ::adhereTo_Unit_LoadUnload_Test;
     friend class ::adhereTo_Unit_LoadUnloadConst_Test;
     friend class ::adhereTo_Unit_TwiceAdhered_Test;
+#endif
 };
 
 

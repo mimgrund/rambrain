@@ -32,10 +32,12 @@
 #include <unistd.h>
 
 //Test classes
+#ifdef BUILD_TESTS
 class managedFileSwap_Unit_SwapAllocation_Test;
 class managedFileSwap_Integration_RandomAccess_Test;
 class managedFileSwap_Integration_RandomAccessVariousSize_Test;
 class managedFileSwap_Unit_SwapPolicy_Test;
+#endif
 
 namespace rambrain
 {
@@ -205,12 +207,6 @@ protected:
 
     std::unordered_map<struct iocb *, pageFileLocation *> pendingAios;
 
-    //Test classes
-    friend class ::managedFileSwap_Unit_SwapAllocation_Test;
-    friend class ::managedFileSwap_Integration_RandomAccess_Test;
-    friend class ::managedFileSwap_Integration_RandomAccessVariousSize_Test;
-    friend class ::managedFileSwap_Unit_SwapPolicy_Test;
-
     static managedFileSwap *instance;
     /** @brief returns some statistics. Typically, we will be sensitive to SIGUSR2 if compiled with -DSWAPSTATS=on**/
     static void sigStat ( int signum );
@@ -234,6 +230,14 @@ protected:
 
     /** @brief returns free disk space at file system location specified by filemask **/
     global_bytesize getFreeDiskSpace();
+
+    //Test classes
+#ifdef BUILD_TESTS
+    friend class ::managedFileSwap_Unit_SwapAllocation_Test;
+    friend class ::managedFileSwap_Integration_RandomAccess_Test;
+    friend class ::managedFileSwap_Integration_RandomAccessVariousSize_Test;
+    friend class ::managedFileSwap_Unit_SwapPolicy_Test;
+#endif
 };
 
 }
