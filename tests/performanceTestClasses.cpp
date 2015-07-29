@@ -236,6 +236,7 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     // Move stats file for permanent storage
     string outFile = getTestOutfile ( varryParam, step );
     string timingFile = outFile + "_stats";
+    string hitMissFile = outFile + "_hm";
     string tempFile = "timingTemp.dat";
     if ( rename ( "rambrain-swapstats.log", timingFile.c_str() ) ) {
         errmsgf ( "Could not rename swapstats log to %s", timingFile.c_str() );
@@ -281,19 +282,25 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     out.close();
 
     // Plot that thing
-    ofstream gnutemp ( "temp.gnuplot" );
-    cout << "Generating output file " << timingFile << endl;
+    ofstream gnutemp1 ( "temp.gnuplot" ), gnutemp2 ( "temp2.gnuplot" );
+    cout << "Generating output files " << timingFile << " and " << hitMissFile << endl;
 
     const int maxDataPoints = 50 * repetitions;
-    plotTimingInfos ( gnutemp, timingFile, tempFile, measurements, repetitions, dataPoints <= maxDataPoints );
+    plotTimingInfos ( gnutemp1, timingFile, tempFile, measurements, repetitions, dataPoints <= maxDataPoints );
+    plotTimingHitMissInfos ( gnutemp2, hitMissFile, tempFile, measurements, repetitions, dataPoints <= maxDataPoints );
 
-    gnutemp.close();
+    gnutemp1.close();
+    gnutemp2.close();
 
     cout << "Calling gnuplot and displaying result" << endl;
     int dummy = 0;
     dummy |= system ( "gnuplot temp.gnuplot" );
     dummy |= system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
     dummy |= system ( ( "display " + timingFile + ".png &" ).c_str() );
+
+    dummy |= system ( "gnuplot temp2.gnuplot" );
+    dummy |= system ( ( "convert -density 300 -resize 1920x " + hitMissFile + ".eps -flatten " + hitMissFile + ".png" ).c_str() );
+    dummy |= system ( ( "display " + hitMissFile + ".png &" ).c_str() );
 
     if ( !dummy ) {
         cerr << "An error in system calls occured..." << endl;
@@ -334,18 +341,18 @@ void performanceTest<>::timingInfosToFile ( ofstream &out, const vector<vector<s
             const unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttime;
             const unsigned long long mbOut = strtoul ( ( *it ) [2].c_str(), &buf, 10 ) / mib;
             const unsigned long long mbIn = strtoul ( ( *it ) [5].c_str(), &buf, 10 ) / mib;
+            const string hitmiss = ( *it ) [7];
             const unsigned long long mbUsed = strtoul ( ( *it ) [8].c_str(), &buf, 10 ) / mib;
             const unsigned long long mbSwapped = strtoul ( ( *it ) [10].c_str(), &buf, 10 ) / mib;
 
-            out << relTime << " " << mbOut << " " << mbIn << " " << mbUsed << " " << mbSwapped << endl;
+            out << relTime << " " << mbOut << " " << mbIn << " " << mbUsed << " " << mbSwapped << " " << hitmiss << endl;
         }
     } else {
-        out << 0 << " " << 0 << " " << 0 << " " << 0 << endl;
+        out << 0 << " " << 0 << " " << 0 << " " << 0 << " " << 0 << " " << 0.0 << endl;
     }
     out << endl;
 }
 
-//! \todo what about hit/miss plot?
 void performanceTest<>::plotTimingInfos ( ofstream &gnutemp, const string &outname, const string &dataFile, unsigned int measurements, unsigned int repetitions, bool linesPoints )
 {
     gnutemp << "set terminal postscript eps enhanced color 'Helvetica,10'" << endl;
@@ -398,6 +405,34 @@ void performanceTest<>::plotTimingInfos ( ofstream &gnutemp, const string &outna
             gnutemp << ", \\";
         }
         gnutemp << endl;
+    }
+}
+
+void performanceTest<>::plotTimingHitMissInfos ( ofstream &gnutemp, const string &outname, const string &dataFile, unsigned int measurements, unsigned int repetitions, bool linesPoints )
+{
+    gnutemp << "set terminal postscript eps enhanced color 'Helvetica,10'" << endl;
+    gnutemp << "set output \"" << outname << ".eps\"" << endl;
+    gnutemp << "set xlabel \"Time [ms]\"" << endl;
+    gnutemp << "set ylabel \"Hit / Miss ratio\"" << endl;
+    gnutemp << "set title \"" << name << "\"" << endl;
+    gnutemp << "set log y" << endl;
+
+    if ( linesPoints ) {
+        gnutemp << "set style data linespoints" << endl;
+    } else {
+        gnutemp << "set style data lines" << endl;
+    }
+    //! \todo actually the legend comes from the definition of the test class like in the normal plot, make this a general gather
+
+    gnutemp << "plot ";
+    int c = 1;
+    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+        int mrep = m * repetitions;
+        gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:6 lt 1";
+        if ( linesPoints ) {
+            gnutemp << " pt " << s;
+        }
+        gnutemp << " lc " << c << " title \"Hit / Miss " << ( m + 1 ) << "\", \\" << endl;
     }
 }
 

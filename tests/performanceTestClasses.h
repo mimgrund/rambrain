@@ -296,6 +296,16 @@ protected:
      * @param linesPoints If points shall be added on top of lines for data points
      */
     virtual void plotTimingInfos ( ofstream &gnutemp, const string &outname, const string &dataFile, unsigned int measurements, unsigned int repetitions, bool linesPoints );
+    /**
+     * @brief Plot timed hit/miss information
+     * @param gnutemp Outfile for gnuplot script
+     * @param outname Name of resulting file
+     * @param dataFile Name of data file
+     * @param measurements Amount of measurements
+     * @param repetitions Amount of repetitions
+     * @param linesPoints If points shall be added on top of lines for data points
+     */
+    virtual void plotTimingHitMissInfos ( ofstream &gnutemp, const string &outname, const string &dataFile, unsigned int measurements, unsigned int repetitions, bool linesPoints );
 
     /**
      * @brief Create a gnuplot script for plotting test results
