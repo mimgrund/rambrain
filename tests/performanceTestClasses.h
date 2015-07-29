@@ -254,6 +254,7 @@ protected:
     virtual vector<string> splitString ( const string &in, char delimiter );
     /**
      * @brief Generate a gnuplot script for swapstats output plotting
+     * @param infile Name of the file where the data is stored
      * @param name Name of the output file
      * @param xlabel Label of the x axis
      * @param ylabel Label of the y axis
@@ -263,7 +264,7 @@ protected:
      * @return The gnuplot script
      * @see resultToTempFile
      */
-    virtual string generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn );
+    virtual string generateGnuplotScript ( const string &infile, const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn );
     /**
      * @brief Handles the timing informations and produces a plot
      * @param varryParam Which parameter is stepped through

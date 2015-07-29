@@ -35,7 +35,10 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
     for ( int param = parameters.size() - 1; param >= 0; --param ) {
         if ( parameters[param]->enabled ) {
             unsigned int steps = getStepsForParam ( param );
-            ofstream temp ( "temp.dat" );
+            stringstream outname;
+            outname << name << param;
+
+            ofstream temp ( outname.str() );
 
             for ( unsigned int step = 0; step < steps; ++step ) {
                 string params = getParamsString ( param, step );
@@ -53,10 +56,8 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
 
             temp.close();
             ofstream gnutemp ( "temp.gnuplot" );
-            stringstream outname;
-            outname << name << param;
             cout << "Generating output file " << outname.str() << endl;
-            gnutemp << generateGnuplotScript ( outname.str(), parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog, parameters.size() - param );
+            gnutemp << generateGnuplotScript ( outname.str(), outname.str(), parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog, parameters.size() - param );
             gnutemp.close();
 
             cout << "Calling gnuplot and displaying result" << endl;
@@ -214,7 +215,7 @@ vector<string> performanceTest<>::splitString ( const string &in, char delimiter
     return parts;
 }
 
-string performanceTest<>::generateGnuplotScript ( const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn )
+string performanceTest<>::generateGnuplotScript ( const string &infile, const string &name, const string &xlabel, const string &ylabel, const string &title, bool log, int paramColumn )
 {
     stringstream ss;
     ss << "set terminal postscript eps enhanced color 'Helvetica,10'" << endl;
@@ -227,7 +228,7 @@ string performanceTest<>::generateGnuplotScript ( const string &name, const stri
     } else {
         ss << "set log y" << endl;
     }
-    ss << generateMyGnuplotPlotPart ( "temp.dat", paramColumn );
+    ss << generateMyGnuplotPlotPart ( infile, paramColumn );
     return ss.str();
 }
 
@@ -237,16 +238,16 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     string outFile = getTestOutfile ( varryParam, step );
     string timingFile = outFile + "_stats";
     string hitMissFile = outFile + "_hm";
-    string tempFile = "timingTemp.dat";
+    string tempFile = outFile + "_timing";
     if ( rename ( "rambrain-swapstats.log", timingFile.c_str() ) ) {
         errmsgf ( "Could not rename swapstats log to %s", timingFile.c_str() );
     }
 
-    ifstream test ( outFile );
-    ifstream timing ( timingFile );
-    ofstream out ( tempFile );
+    ifstream testInFile ( outFile );
+    ifstream timingInFile ( timingFile );
+    ofstream timingTruncFile ( tempFile );
 
-    int initpos = timing.tellg();
+    int initpos = timingInFile.tellg();
     // Go through test output and get first pair of times
     string testLine;
     int measurements = 0, dataPoints = 0;
@@ -255,31 +256,31 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
         starttimes[r] = 0LLu;
     }
 
-    while ( getline ( test, testLine ) ) {
+    while ( getline ( testInFile, testLine ) ) {
         if ( testLine.find ( '#' ) == string::npos ) {
             vector<string> testParts = splitString ( testLine, '\t' );
 
             ++ measurements;
             const unsigned int runCols = 4;
             char *buf;
-            timing.seekg ( initpos );
+            timingInFile.seekg ( initpos );
             for ( unsigned int r = 0; r < repetitions; ++r ) {
                 unsigned long long start = strtoull ( testParts[r * runCols + 1].c_str(), &buf, 10 );
                 unsigned long long end = strtoull ( testParts[r * runCols + 2].c_str(), &buf, 10 );
 
                 // No go through timing file and look for the matching lines there
-                vector<vector<string>> relevantTimingParts = getRelevantTimingParts ( timing, start, end );
+                vector<vector<string>> relevantTimingParts = getRelevantTimingParts ( timingInFile, start, end );
 
                 // We have all stats for the current run segment, output this data to the temp file
-                timingInfosToFile ( out, relevantTimingParts, starttimes[r] );
+                timingInfosToFile ( timingTruncFile, relevantTimingParts, starttimes[r] );
                 dataPoints += relevantTimingParts.size();
             }
         }
     }
 
-    test.close();
-    timing.close();
-    out.close();
+    testInFile.close();
+    timingInFile.close();
+    timingTruncFile.close();
 
     // Plot that thing
     ofstream gnutemp1 ( "temp.gnuplot" ), gnutemp2 ( "temp2.gnuplot" );
@@ -332,6 +333,7 @@ vector<vector<string>> performanceTest<>::getRelevantTimingParts ( ifstream &in,
 
 void performanceTest<>::timingInfosToFile ( ofstream &out, const vector<vector<string>> &relevantTimingParts, unsigned long long &starttime )
 {
+    out << "#Time since beginning [ms]\tSwappedOut [B]\tSwappedIn [B]\tMemory Used [B]\tSwap Used [B]\tHit / Miss" << endl;
     if ( relevantTimingParts.size() > 0 ) {
         char *buf;
         if ( starttime == 0LLu ) {
