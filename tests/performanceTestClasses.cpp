@@ -332,10 +332,10 @@ void performanceTest<>::timingInfosToFile ( ofstream &out, const vector<vector<s
         }
         for ( auto it = relevantTimingParts.begin(); it != relevantTimingParts.end(); ++it ) {
             const unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttime;
-            const unsigned long long mbOut = strtoul ( ( *it ) [1].c_str(), &buf, 10 ) / mib;
-            const unsigned long long mbIn = strtoul ( ( *it ) [3].c_str(), &buf, 10 ) / mib;
-            const unsigned long long mbUsed = strtoul ( ( *it ) [6].c_str(), &buf, 10 ) / mib;
-            const unsigned long long mbSwapped = strtoul ( ( *it ) [8].c_str(), &buf, 10 ) / mib;
+            const unsigned long long mbOut = strtoul ( ( *it ) [2].c_str(), &buf, 10 ) / mib;
+            const unsigned long long mbIn = strtoul ( ( *it ) [5].c_str(), &buf, 10 ) / mib;
+            const unsigned long long mbUsed = strtoul ( ( *it ) [8].c_str(), &buf, 10 ) / mib;
+            const unsigned long long mbSwapped = strtoul ( ( *it ) [10].c_str(), &buf, 10 ) / mib;
 
             out << relTime << " " << mbOut << " " << mbIn << " " << mbUsed << " " << mbSwapped << endl;
         }
