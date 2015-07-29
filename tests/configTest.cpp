@@ -26,6 +26,14 @@
 using namespace std;
 using namespace rambrain;
 
+namespace rambrain
+{
+managedSwap *configTestGetSwap ( managedMemory *man )
+{
+    return man->swap;
+}
+}
+
 /**
  * @brief A test to check if binary specific custom config files are properly read in and used.
  */
@@ -39,14 +47,14 @@ int main ( int argc, char **argv )
 
     const configuration &config = rambrainglobals::config.getConfig();
     managedMemory *man = managedMemory::defaultManager;
+    managedSwap *swap = configTestGetSwap ( man );
 
     if ( config.memoryManager.value != "cyclicManagedMemory" || reinterpret_cast<cyclicManagedMemory *> ( man ) == NULL ) {
         cerr << "Manager is wrong!" << endl;
         ++ ret;
     }
 
-    /// @todo check if correct swap is in place
-    if ( config.swap.value != "managedDummySwap" ) {
+    if ( config.swap.value != "managedDummySwap" || reinterpret_cast<managedDummySwap *> ( swap ) == NULL ) {
         cerr << "Swap is wrong!" << endl;
         ++ ret;
     }
@@ -56,13 +64,11 @@ int main ( int argc, char **argv )
         ++ ret;
     }
 
-    /// @todo check if swap is correct size
-    if ( config.swapMemory.value != 1000000000 ) {
+    if ( config.swapMemory.value != 1000000000uLL || swap->getSwapSize() != 1000000000uLL ) {
         cerr << "Swap limit is wrong! " << config.swapMemory.value << " != 1000000000" << endl;
         ++ ret;
     }
 
-    /// @todo also check this in system
     if ( config.swapfiles.value != "rambrainswapconfigtest-%d-%d" ) {
         cerr << "Swap files are named incorrectly! " << config.swapfiles.value << " != rambrainswapconfigtest-%d-%d" << endl;
         ++ ret;

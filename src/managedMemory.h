@@ -219,6 +219,7 @@ protected:
     friend class ::managedFileSwap_Unit_ManualSwapping_Test;
     friend class ::managedFileSwap_Unit_ManualMultiSwapping_Test;
     friend class ::managedFileSwap_Unit_ManualSwappingDelete_Test;
+    friend managedSwap *configTestGetSwap ( managedMemory *man );
 
 #ifdef SWAPSTATS
 protected:
