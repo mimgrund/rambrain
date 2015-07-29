@@ -320,6 +320,7 @@ protected:
     bool enabled = true;
     vector<testParameterBase *> parameters;
     static map<string, performanceTest<> *> testClasses;
+    vector<string> plotParts;
 
 };
 

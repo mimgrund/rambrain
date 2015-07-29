@@ -362,6 +362,7 @@ void performanceTest<>::plotTimingInfos ( ofstream &gnutemp, const string &outna
     gnutemp << "set xlabel \"Time [ms]\"" << endl;
     gnutemp << "set ylabel \"Swap Movement [MB]\"" << endl;
     gnutemp << "set title \"" << name << "\"" << endl;
+    gnutemp << "set key top left" << endl;
 
     if ( linesPoints ) {
         gnutemp << "set style data linespoints" << endl;
@@ -378,7 +379,7 @@ void performanceTest<>::plotTimingInfos ( ofstream &gnutemp, const string &outna
         if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
-        gnutemp << " lc " << c << " title \"Swapped out " << ( m + 1 ) << "\", \\" << endl;
+        gnutemp << " lc " << c << " title \"" << plotParts[m] << ": Swapped out\", \\" << endl;
     }
     for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
@@ -386,7 +387,7 @@ void performanceTest<>::plotTimingInfos ( ofstream &gnutemp, const string &outna
         if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
-        gnutemp << " lc " << c << " title \"Swapped in " << ( m + 1 ) << "\", \\" << endl;
+        gnutemp << " lc " << c << " title \"" << plotParts[m] << ": Swapped in\", \\" << endl;
     }
     for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
@@ -394,7 +395,7 @@ void performanceTest<>::plotTimingInfos ( ofstream &gnutemp, const string &outna
         if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
-        gnutemp << " lc " << c << " title \"Main Memory " << ( m + 1 ) << "\", \\" << endl;
+        gnutemp << " lc " << c << " title \"" << plotParts[m] << ": Main Memory\", \\" << endl;
     }
     for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
         int mrep = m * repetitions;
@@ -402,7 +403,7 @@ void performanceTest<>::plotTimingInfos ( ofstream &gnutemp, const string &outna
         if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
-        gnutemp << " lc " << c << " title \"Swap Memory " << ( m + 1 ) << "\"";
+        gnutemp << " lc " << c << " title \"" << plotParts[m] << ": Swap Memory\"";
         if ( m != measurements - 1 ) {
             gnutemp << ", \\";
         }
@@ -434,7 +435,7 @@ void performanceTest<>::plotTimingHitMissInfos ( ofstream &gnutemp, const string
         if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
-        gnutemp << " lc " << c << " title \"Hit / Miss " << ( m + 1 ) << "\", \\" << endl;
+        gnutemp << " lc " << c << " title \"" << plotParts[m] << ": Hit / Miss\", \\" << endl;
     }
 }
 
@@ -459,6 +460,7 @@ matrixTransposeTest::matrixTransposeTest() : performanceTest<int, int> ( "Matrix
 {
     TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
     TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Transposition", "Deletion"} );
 }
 
 void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -525,7 +527,7 @@ void matrixTransposeTest::actualTestMethod ( tester &test, int param1, int param
 string matrixTransposeTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"" << endl;
@@ -539,6 +541,7 @@ matrixCleverTransposeTest::matrixCleverTransposeTest() : performanceTest<int, in
 {
     TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
     TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Transposition", "Deletion"} );
 }
 
 void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -637,7 +640,7 @@ void matrixCleverTransposeTest::actualTestMethod ( tester &test, int param1, int
 string matrixCleverTransposeTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
@@ -651,6 +654,7 @@ matrixCleverTransposeOpenMPTest::matrixCleverTransposeOpenMPTest() : performance
 {
     TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
     TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Transposition", "Deletion"} );
 }
 
 void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -755,7 +759,7 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
 string matrixCleverTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
@@ -769,6 +773,7 @@ matrixCleverBlockTransposeTest::matrixCleverBlockTransposeTest() : performanceTe
 {
     TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
     TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Transposition", "Deletion"} );
 }
 
 void matrixCleverBlockTransposeTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -871,7 +876,7 @@ void matrixCleverBlockTransposeTest::actualTestMethod ( tester &test, int param1
 string matrixCleverBlockTransposeTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
@@ -885,6 +890,7 @@ matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : p
 {
     TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
     TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Transposition", "Deletion"} );
 }
 
 void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -987,7 +993,7 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
 string matrixCleverBlockTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
@@ -1001,6 +1007,7 @@ matrixMultiplyTest::matrixMultiplyTest() : performanceTest<int, int> ( "MatrixMu
 {
     TESTPARAM ( 1, 10, 6000, 20, true, 4000, "Matrix size per dimension" );
     TESTPARAM ( 2, 4000, 15000, 20, true, 6000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Multiplication", "Deletion"} );
 }
 
 void matrixMultiplyTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -1094,7 +1101,7 @@ void matrixMultiplyTest::actualTestMethod ( tester &test, int param1, int param2
 string matrixMultiplyTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
@@ -1108,6 +1115,7 @@ matrixMultiplyOpenMPTest::matrixMultiplyOpenMPTest() : performanceTest<int, int>
 {
     TESTPARAM ( 1, 10, 6000, 20, true, 4000, "Matrix size per dimension" );
     TESTPARAM ( 2, 4000, 15000, 20, true, 6000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Multiplication", "Deletion"} );
 }
 
 void matrixMultiplyOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -1204,7 +1212,7 @@ void matrixMultiplyOpenMPTest::actualTestMethod ( tester &test, int param1, int 
 string matrixMultiplyOpenMPTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
@@ -1218,6 +1226,7 @@ matrixCopyTest::matrixCopyTest() : performanceTest<int, int> ( "MatrixCopy" )
 {
     TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Matrix size per dimension" );
     TESTPARAM ( 2, 100, 10000, 20, true, 5000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Copy", "Deletion"} );
 }
 
 void matrixCopyTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -1293,8 +1302,8 @@ void matrixCopyTest::actualTestMethod ( tester &test, int param1, int param2 )
 string matrixCopyTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Copy\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
@@ -1307,6 +1316,7 @@ matrixCopyOpenMPTest::matrixCopyOpenMPTest() : performanceTest<int, int> ( "Matr
 {
     TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Matrix size per dimension" );
     TESTPARAM ( 2, 100, 10000, 20, true, 5000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Copy", "Deletion"} );
 }
 
 void matrixCopyOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -1386,8 +1396,8 @@ void matrixCopyOpenMPTest::actualTestMethod ( tester &test, int param1, int para
 string matrixCopyOpenMPTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Copy\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
@@ -1400,6 +1410,7 @@ matrixDoubleCopyTest::matrixDoubleCopyTest() : performanceTest<int, int> ( "Matr
 {
     TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Matrix size per dimension" );
     TESTPARAM ( 2, 100, 10000, 20, true, 5000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Copy", "Deletion"} );
 }
 
 void matrixDoubleCopyTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -1488,8 +1499,8 @@ void matrixDoubleCopyTest::actualTestMethod ( tester &test, int param1, int para
 string matrixDoubleCopyTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Copy\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
@@ -1502,6 +1513,7 @@ matrixDoubleCopyOpenMPTest::matrixDoubleCopyOpenMPTest() : performanceTest<int, 
 {
     TESTPARAM ( 1, 100, 10000, 20, true, 5000, "Matrix size per dimension" );
     TESTPARAM ( 2, 100, 10000, 20, true, 5000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Copy", "Deletion"} );
 }
 
 void matrixDoubleCopyOpenMPTest::actualTestMethod ( tester &test, int param1, int param2 )
@@ -1595,8 +1607,8 @@ void matrixDoubleCopyOpenMPTest::actualTestMethod ( tester &test, int param1, in
 string matrixDoubleCopyOpenMPTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation & Definition\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Multiplication\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Copy\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
@@ -1609,6 +1621,7 @@ measureThroughputTest::measureThroughputTest() : performanceTest<int, int> ( "Me
 {
     TESTPARAM ( 1, 1024, 1024000, 20, true, 1024000, "Byte size per used chunk" );
     TESTPARAM ( 2, 1, 200, 20, true, 100, "percentage of array that will be written to" );
+    plotParts = vector<string> ( {"Set Use", "Perpare", "Calculation"} );
 }
 
 /// @todo PTEST_CHECKS is missing in this test
