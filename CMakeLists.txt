@@ -9,6 +9,7 @@ option (LOGSTATS "Log stats instead of outputting them to stdout" OFF)
 option (PARENTAL_CONTROL "Hook up chunks in a tree" OFF)
 option (CAN_IGNORE_WARNINGS "Enable warning ignore macros to be used to suppress unnescessary stuff" ON)
 option (OPTIMISE_COMPILATION "Enable O3 optimisation instead O0" ON)
+option (USE_XPRESSIVE "Use boost xpressive for regular expressions" OFF)
 
 
 
@@ -50,6 +51,12 @@ endif()
 
 if(BUILD_TESTS)
     add_definitions(-DBUILD_TESTS)
+endif()
+
+if(USE_XPRESSIVE)
+    add_definitions(-DUSE_XPRESSIVE)
+    find_package(Boost REQUIRED)
+    include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
 find_package (Threads REQUIRED)

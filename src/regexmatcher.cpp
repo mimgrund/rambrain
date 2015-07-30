@@ -19,9 +19,20 @@
 
 #include "regexmatcher.h"
 #include <sstream>
-#include <xpressive.hpp>
 
+#ifdef USE_XPRESSIVE
+
+#include <boost/xpressive/xpressive.hpp>
+#define COMPILE_RGX(name, rx) sregex name = sregex::compile ( rx )
 using namespace boost::xpressive;
+
+#else
+
+#include <regex>
+#define COMPILE_RGX(name, rx) regex name( rx )
+
+#endif
+
 
 namespace rambrain
 {
@@ -32,7 +43,7 @@ regexMatcher::regexMatcher()
 
 bool regexMatcher::matchConfigBlock ( const string &str, const string &blockname ) const
 {
-    const sregex rgx = sregex::compile ( "\\s*\\[" + blockname + "\\]\\s*" );
+    const COMPILE_RGX ( rgx, "\\s*\\[" + blockname + "\\]\\s*" );
     return regex_match ( str, rgx );
 }
 
@@ -45,7 +56,7 @@ pair<string, string> regexMatcher::matchKeyEqualsValue ( const string &str, cons
 {
     pair<string, string> res;
     smatch match;
-    const sregex rgx = sregex::compile ( "\\s*(" + key + ")\\s*=\\s*(" + createRegexMatching ( valueType ) + ")\\s*" );
+    const COMPILE_RGX ( rgx, "\\s*(" + key + ")\\s*=\\s*(" + createRegexMatching ( valueType ) + ")\\s*" );
 
     if ( regex_match ( str, match, rgx ) ) {
         res.first = match[1];
@@ -87,7 +98,7 @@ string regexMatcher::createRegexMatching ( int type ) const
 pair<double, string> regexMatcher::splitDoubleValueUnit ( const string &str ) const
 {
     pair<double, string> res;
-    const sregex rgx = sregex::compile ( "([0-9]+\\.?\\d*f?)\\s*([a-zA-Z]*)" );
+    const COMPILE_RGX ( rgx, "([0-9]+\\.?\\d*f?)\\s*([a-zA-Z]*)" );
     smatch match;
 
     if ( regex_match ( str, match, rgx ) ) {
@@ -103,7 +114,7 @@ pair<double, string> regexMatcher::splitDoubleValueUnit ( const string &str ) co
 pair<long long, string> regexMatcher::splitIntegerValueUnit ( const string &str ) const
 {
     pair<unsigned long long, string> res;
-    const sregex rgx = sregex::compile ( "([0-9]+)\\s*([a-zA-Z]*)" );
+    const COMPILE_RGX ( rgx, "([0-9]+)\\s*([a-zA-Z]*)" );
     smatch match;
 
     if ( regex_match ( str, match, rgx ) ) {
