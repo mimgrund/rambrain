@@ -84,7 +84,7 @@ private:
 
     static pthread_mutex_t cyclicTopoLock;
 
-    global_bytesize preemptiveTurnoffFraction = .01;
+    double preemptiveTurnoffFraction = .01;
 
 
 };

@@ -169,8 +169,6 @@ private:
         return memoryAlignment;
     }
 
-    bool filesOpen = false;
-
 
     //page file malloc:
     /** @brief Tries to find space in the swapFiles to write out an object of size size and returns first pageFileLocation to it **/

@@ -554,7 +554,8 @@ global_offset managedFileSwap::determineGlobalOffset ( const pageFileLocation &r
 }
 pageFileLocation managedFileSwap::determinePFLoc ( global_offset g_offset, global_bytesize length ) const
 {
-    pageFileLocation pfLoc ( g_offset / pageFileSize, g_offset - pfLoc.file * pageFileSize, length, PAGE_UNKNOWN_STATE );
+    unsigned int file = g_offset / pageFileSize;
+    pageFileLocation pfLoc ( file, g_offset - file * pageFileSize, length, PAGE_UNKNOWN_STATE );
     return pfLoc;
 }
 
