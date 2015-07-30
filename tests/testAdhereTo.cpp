@@ -24,7 +24,10 @@ IGNORE_TEST_WARNINGS;
 #include "managedPtr.h"
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
+
+#ifndef OpenMP_NOT_FOUND
 #include <omp.h>
+#endif
 
 using namespace rambrain;
 
@@ -149,6 +152,7 @@ TEST ( adhereTo, Unit_AccessData )
     delete global;
 }
 
+#ifndef OpenMP_NOT_FOUND
 /**
  * @test Checks multithreading compatibility of adhereTo
  */
@@ -177,9 +181,8 @@ TEST ( adhereTo, Unit_Multithreading )
     for ( int n = 0; n < count; ++n ) {
         EXPECT_EQ ( n * n, ptrloc[n] );
     }
-
-
 }
+#endif
 
 /**
  * @test Checks multithreading compatibility of adhereTo with concurrent access

@@ -26,6 +26,10 @@ IGNORE_TEST_WARNINGS;
 #include "managedDummySwap.h"
 #include "exceptions.h"
 
+#ifndef OpenMP_NOT_FOUND
+#include <omp.h>
+#endif
+
 using namespace rambrain;
 
 /**
@@ -426,6 +430,7 @@ TEST ( managedPtr, Integration_DirectVsSmartAccess )
 }
 
 
+#ifndef OpenMP_NOT_FOUND
 /**
  * @test Tests if parallel deleting of pointers work
  * @note would like to assert no throw, but pragma omp is not allowd
@@ -516,6 +521,7 @@ TEST ( managedPtr, Unit_ConcurrentUseAccessThree )
         loc[0] = i;
     }
 }
+#endif
 
 
 /**
