@@ -59,6 +59,7 @@ endif()
 
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     add_definitions(-D__STRICT_ANSI__)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Qunused-arguments")
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR})
