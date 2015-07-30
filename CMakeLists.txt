@@ -13,7 +13,7 @@ option (OPTIMISE_COMPILATION "Enable O3 optimisation instead O0" ON)
 
 
 find_package(OpenMP)
-if(${OpenMP_FOUND})
+if(${OPENMP_FOUND})
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 else()
     if(BUILD_TESTS)
