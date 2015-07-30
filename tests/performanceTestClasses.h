@@ -352,7 +352,7 @@ protected:
 };
 
 
-#define PARAMREFS(number, param, params...) testParameter<param> &parameter##number = performanceTest<param, ##params>::parameter
+#define PARAMREFS(number, param, params...) testParameter<param> &parameter##number = (performanceTest<param, ##params>::parameter)
 
 #define ONEPARAM(param) PARAMREFS(1, param)
 #define TWOPARAMS(param1, param2) PARAMREFS(1, param1, param2); \

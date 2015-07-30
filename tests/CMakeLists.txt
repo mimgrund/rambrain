@@ -32,26 +32,24 @@ add_executable (rambrain-integrationtests ${TEST_SOURCES})
 add_custom_command(TARGET rambrain-integrationtests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 target_link_libraries (rambrain-integrationtests gmock gtest pthread rambrain_static)
 
-if(NOT ${OpenMP_FOUND})
-    file(GLOB TEST_SOURCES
-            "performanceTests.cpp"
-            "tester.cpp"
-            "performanceTestClasses.cpp"
-    )
-    add_executable(rambrain-performancetests ${TEST_SOURCES})
-    add_custom_command(TARGET rambrain-performancetests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-    target_link_libraries (rambrain-performancetests pthread rambrain_static)
+file(GLOB TEST_SOURCES
+        "performanceTests.cpp"
+        "tester.cpp"
+        "performanceTestClasses.cpp"
+)
+add_executable(rambrain-performancetests ${TEST_SOURCES})
+add_custom_command(TARGET rambrain-performancetests PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+target_link_libraries (rambrain-performancetests pthread rambrain_static)
 
 
-    file(GLOB TEST_SOURCES
-            "performanceTestsWrapper.cpp"
-            "tester.cpp"
-            "performanceTestClasses.cpp"
-    )
-    add_executable(rambrain-performancetestswrapper ${TEST_SOURCES})
-    add_custom_command(TARGET rambrain-performancetestswrapper PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-    target_link_libraries (rambrain-performancetestswrapper pthread rambrain_static)
-endif()
+file(GLOB TEST_SOURCES
+        "performanceTestsWrapper.cpp"
+        "tester.cpp"
+        "performanceTestClasses.cpp"
+)
+add_executable(rambrain-performancetestswrapper ${TEST_SOURCES})
+add_custom_command(TARGET rambrain-performancetestswrapper PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+target_link_libraries (rambrain-performancetestswrapper pthread rambrain_static)
 
 
 find_package(MPI)
