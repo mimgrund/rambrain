@@ -20,7 +20,6 @@
 #ifndef REGEXMATCHER_H
 #define REGEXMATCHER_H
 
-#include <regex>
 #include <string>
 #include <map>
 #include "common.h"

@@ -19,6 +19,9 @@
 
 #include "regexmatcher.h"
 #include <sstream>
+#include <xpressive.hpp>
+
+using namespace boost::xpressive;
 
 namespace rambrain
 {
@@ -29,7 +32,7 @@ regexMatcher::regexMatcher()
 
 bool regexMatcher::matchConfigBlock ( const string &str, const string &blockname ) const
 {
-    const regex rgx ( "\\s*\\[" + blockname + "\\]\\s*" );
+    const sregex rgx = sregex::compile ( "\\s*\\[" + blockname + "\\]\\s*" );
     return regex_match ( str, rgx );
 }
 
@@ -42,7 +45,7 @@ pair<string, string> regexMatcher::matchKeyEqualsValue ( const string &str, cons
 {
     pair<string, string> res;
     smatch match;
-    const regex rgx ( "\\s*(" + key + ")\\s*=\\s*(" + createRegexMatching ( valueType ) + ")\\s*" );
+    const sregex rgx = sregex::compile ( "\\s*(" + key + ")\\s*=\\s*(" + createRegexMatching ( valueType ) + ")\\s*" );
 
     if ( regex_match ( str, match, rgx ) ) {
         res.first = match[1];
@@ -84,12 +87,12 @@ string regexMatcher::createRegexMatching ( int type ) const
 pair<double, string> regexMatcher::splitDoubleValueUnit ( const string &str ) const
 {
     pair<double, string> res;
-    const regex rgx ( "([0-9]+\\.?\\d*f?)\\s*([a-zA-Z]*)" );
+    const sregex rgx = sregex::compile ( "([0-9]+\\.?\\d*f?)\\s*([a-zA-Z]*)" );
     smatch match;
 
     if ( regex_match ( str, match, rgx ) ) {
         res.first = atof ( static_cast<string> ( match[1] ).c_str() );
-        if ( match.length() > 2 ) {
+        if ( match.size() > 2 ) {
             res.second = match[2];
         }
     }
@@ -100,7 +103,7 @@ pair<double, string> regexMatcher::splitDoubleValueUnit ( const string &str ) co
 pair<long long, string> regexMatcher::splitIntegerValueUnit ( const string &str ) const
 {
     pair<unsigned long long, string> res;
-    const regex rgx ( "([0-9]+)\\s*([a-zA-Z]*)" );
+    const sregex rgx = sregex::compile ( "([0-9]+)\\s*([a-zA-Z]*)" );
     smatch match;
 
     if ( regex_match ( str, match, rgx ) ) {
