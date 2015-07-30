@@ -211,16 +211,16 @@ bool configReader::parseConfigFile ( istream &stream, vector<configLineBase *> &
         } else if ( regex.matchConfigBlock ( line, appName ) ) {
             ret &= parseConfigBlock ( stream, readLines );
 
-            // Merge thisReadLines into readLines if a default has been done before, ergo memorize also elements from default and not specific
-            if ( defaultDone ) {
-                readLines.insert ( readLines.end(), thisReadLines.begin(), thisReadLines.end() );
-                unique ( readLines.begin(), readLines.end() );
-            }
-
             specificDone = true;
         }
 
         stream.seekg ( current );
+    }
+
+    // Merge thisReadLines into readLines if a default has been done before, ergo memorize also elements from default and not specific
+    if ( defaultDone ) {
+        readLines.insert ( readLines.end(), thisReadLines.begin(), thisReadLines.end() );
+        unique ( readLines.begin(), readLines.end() );
     }
 
     return ret;
