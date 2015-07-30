@@ -1,3 +1,10 @@
+include_directories (
+        ${CMAKE_INCLUDE_PATH}
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_SOURCE_DIR}/src
+        ${CMAKE_SOURCE_DIR}/external/xpressive/
+)
+
 file (GLOB SOURCES
     "*.cpp"
 )

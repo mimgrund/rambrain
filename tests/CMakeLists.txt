@@ -4,6 +4,7 @@ include_directories (
         ${CMAKE_SOURCE_DIR}/src
         ${CMAKE_SOURCE_DIR}/external/gmock-1.7.0/
         ${CMAKE_SOURCE_DIR}/external/gtest-1.7.0/
+        ${CMAKE_SOURCE_DIR}/external/xpressive/
 )
 
 file(GLOB TEST_SOURCES
