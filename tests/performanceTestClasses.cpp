@@ -20,6 +20,10 @@
 #include "performanceTestClasses.h"
 #include <chrono>
 
+#ifndef OpenMP_NOT_FOUND
+#include <omp.h>
+#endif
+
 map<string, performanceTest<> *> performanceTest<>::testClasses;
 
 performanceTest<>::performanceTest ( const char *name ) : name ( name )
@@ -646,6 +650,7 @@ string matrixCleverTransposeTest::generateMyGnuplotPlotPart ( const string &file
 }
 
 
+#ifndef OpenMP_NOT_FOUND
 TESTSTATICS ( matrixCleverTransposeOpenMPTest, "Same as cleverTranspose, but with OpenMP" );
 
 matrixCleverTransposeOpenMPTest::matrixCleverTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverTransposeOpenMP" )
@@ -763,6 +768,7 @@ string matrixCleverTransposeOpenMPTest::generateMyGnuplotPlotPart ( const string
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
+#endif
 
 
 TESTSTATICS ( matrixCleverBlockTransposeTest, "Same as cleverTranspose, but with blockwise multiplication" );
@@ -809,7 +815,6 @@ void matrixCleverBlockTransposeTest::actualTestMethod ( tester &test, int param1
             double *locPtr = adh;
             unsigned int i_lim = ( ii + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, vertical limit
             unsigned int j_lim = rows_fetch;//( jj + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, horizontal limit
-            #pragma omp parallel for
             for ( unsigned int i = 0; i < i_lim; i++ ) {
                 for ( unsigned int j = 0; j < j_lim; j++ ) {
                     locPtr[i * rows_fetch + j] = ( ii * rows_fetch + i ) * size + ( j + rows_fetch * jj );
@@ -834,7 +839,6 @@ void matrixCleverBlockTransposeTest::actualTestMethod ( tester &test, int param1
             double *aLoc = aBlock;
             double *bLoc = bBlock;
 
-            #pragma omp parallel for
             for ( unsigned int j = 0; j < j_lim; j++ ) {
                 for ( unsigned int i = 0; i < ( jj == ii ? j : i_lim ); i++ ) { //Inner block matrix transpose, vertical index in A
                     //Inner block matrxi transpose, horizontal index in A
@@ -863,7 +867,6 @@ void matrixCleverBlockTransposeTest::actualTestMethod ( tester &test, int param1
 #endif
 
     // Delete
-    #pragma omp parallel for
     for ( unsigned int i = 0; i < n_blocks * n_blocks; ++i ) {
         delete rows[i];
     }
@@ -882,6 +885,7 @@ string matrixCleverBlockTransposeTest::generateMyGnuplotPlotPart ( const string 
 }
 
 
+#ifndef OpenMP_NOT_FOUND
 TESTSTATICS ( matrixCleverBlockTransposeOpenMPTest, "Same as cleverTranspose, but with OpenMP and blockwise multiplication" );
 
 matrixCleverBlockTransposeOpenMPTest::matrixCleverBlockTransposeOpenMPTest() : performanceTest<int, int> ( "MatrixCleverBlockTransposeOpenMP" )
@@ -997,6 +1001,7 @@ string matrixCleverBlockTransposeOpenMPTest::generateMyGnuplotPlotPart ( const s
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
+#endif
 
 
 TESTSTATICS ( matrixMultiplyTest, "Matrix multiplication with matrices being stored in columns / rows" );
@@ -1107,6 +1112,7 @@ string matrixMultiplyTest::generateMyGnuplotPlotPart ( const string &file , int 
 }
 
 
+#ifndef OpenMP_NOT_FOUND
 TESTSTATICS ( matrixMultiplyOpenMPTest, "Matrix multiplication with matrices being stored in columns / rows" );
 
 matrixMultiplyOpenMPTest::matrixMultiplyOpenMPTest() : performanceTest<int, int> ( "MatrixMultiplyOpenMP" )
@@ -1216,6 +1222,7 @@ string matrixMultiplyOpenMPTest::generateMyGnuplotPlotPart ( const string &file 
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
+#endif
 
 
 TESTSTATICS ( matrixCopyTest, "Copy one matrix onto another" );
@@ -1308,6 +1315,7 @@ string matrixCopyTest::generateMyGnuplotPlotPart ( const string &file , int para
 }
 
 
+#ifndef OpenMP_NOT_FOUND
 TESTSTATICS ( matrixCopyOpenMPTest, "Copy one matrix onto another" );
 
 matrixCopyOpenMPTest::matrixCopyOpenMPTest() : performanceTest<int, int> ( "MatrixCopyOpenMP" )
@@ -1400,6 +1408,7 @@ string matrixCopyOpenMPTest::generateMyGnuplotPlotPart ( const string &file , in
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
+#endif
 
 
 TESTSTATICS ( matrixDoubleCopyTest, "Copy one matrix onto another and back" );
@@ -1505,6 +1514,7 @@ string matrixDoubleCopyTest::generateMyGnuplotPlotPart ( const string &file , in
 }
 
 
+#ifndef OpenMP_NOT_FOUND
 TESTSTATICS ( matrixDoubleCopyOpenMPTest, "Copy one matrix onto another and back" );
 
 matrixDoubleCopyOpenMPTest::matrixDoubleCopyOpenMPTest() : performanceTest<int, int> ( "MatrixDoubleCopyOpenMP" )
@@ -1611,6 +1621,7 @@ string matrixDoubleCopyOpenMPTest::generateMyGnuplotPlotPart ( const string &fil
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
+#endif
 
 
 TESTSTATICS ( measureThroughputTest, "Measures throughput under load" );

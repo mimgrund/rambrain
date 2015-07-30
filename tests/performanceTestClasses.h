@@ -411,15 +411,25 @@ protected:
 
 TWOPARAMTEST ( matrixTransposeTest, int, int );
 TWOPARAMTEST ( matrixCleverTransposeTest, int, int );
+#ifndef OpenMP_NOT_FOUND
 TWOPARAMTEST ( matrixCleverTransposeOpenMPTest, int, int );
+#endif
 TWOPARAMTEST ( matrixCleverBlockTransposeTest, int, int );
+#ifndef OpenMP_NOT_FOUND
 TWOPARAMTEST ( matrixCleverBlockTransposeOpenMPTest, int, int );
+#endif
 TWOPARAMTEST ( matrixMultiplyTest, int, int );
+#ifndef OpenMP_NOT_FOUND
 TWOPARAMTEST ( matrixMultiplyOpenMPTest, int, int );
+#endif
 TWOPARAMTEST ( matrixCopyTest, int, int );
+#ifndef OpenMP_NOT_FOUND
 TWOPARAMTEST ( matrixCopyOpenMPTest, int, int );
+#endif
 TWOPARAMTEST ( matrixDoubleCopyTest, int, int );
+#ifndef OpenMP_NOT_FOUND
 TWOPARAMTEST ( matrixDoubleCopyOpenMPTest, int, int );
+#endif
 /// @todo Write a similar test to check preemptive
 TWOPARAMTEST ( measureThroughputTest, int, int );
 
