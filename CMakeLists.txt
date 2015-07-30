@@ -45,6 +45,10 @@ if(NOT CMAKE_USE_PTHREADS_INIT)
     error ("Could NOT find pthreads.")
 endif()
 
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    add_definitions(-D__STRICT_ANSI__)
+endif()
+
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
