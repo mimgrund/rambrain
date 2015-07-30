@@ -90,7 +90,7 @@ void configLine<swapPolicy>::setValue ( const string &str )
 
 configuration::configuration() : memoryManager ( "memoryManager", "cyclicManagedMemory", regexMatcher::text ),
     swap ( "swap", "managedFileSwap", regexMatcher::text ),
-    /** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
+/** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
     swapfiles ( "swapfiles", "rambrainswap-%d-%d", regexMatcher::text ),
     memory ( "memory", 0, regexMatcher::floating | regexMatcher::units ),
     swapMemory ( "swapMemory", 0, regexMatcher::floating | regexMatcher::units ),
@@ -178,8 +178,17 @@ bool configReader::reopenStreams()
     }
 
     streams[0].open ( customConfigPath );
+    if ( streams[0].is_open() ) {
+        infomsgf ( "Found config file in custom path to read in: %s\n", customConfigPath.c_str() );
+    }
     streams[1].open ( localConfigPath );
+    if ( streams[1].is_open() ) {
+        infomsgf ( "Found config file in home dir to read in: %s\n", localConfigPath.c_str() );
+    }
     streams[2].open ( globalConfigPath );
+    if ( streams[2].is_open() ) {
+        infomsgf ( "Found config file in system wide path to read in: %s\n", globalConfigPath.c_str() );
+    }
 
     return streams[0].is_open() || streams[1].is_open() || streams[2].is_open();
 }
@@ -202,16 +211,16 @@ bool configReader::parseConfigFile ( istream &stream, vector<configLineBase *> &
         } else if ( regex.matchConfigBlock ( line, appName ) ) {
             ret &= parseConfigBlock ( stream, readLines );
 
-            // Merge thisReadLines into readLines if a default has been done before, ergo memorize also elements from default and not specific
-            if ( defaultDone ) {
-                readLines.insert ( readLines.end(), thisReadLines.begin(), thisReadLines.end() );
-                unique ( readLines.begin(), readLines.end() );
-            }
-
             specificDone = true;
         }
 
         stream.seekg ( current );
+    }
+
+    // Merge thisReadLines into readLines if a default has been done before, ergo memorize also elements from default and not specific
+    if ( defaultDone ) {
+        readLines.insert ( readLines.end(), thisReadLines.begin(), thisReadLines.end() );
+        unique ( readLines.begin(), readLines.end() );
     }
 
     return ret;
