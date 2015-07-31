@@ -90,7 +90,7 @@ void configLine<swapPolicy>::setValue ( const string &str )
 
 configuration::configuration() : memoryManager ( "memoryManager", "cyclicManagedMemory", regexMatcher::text ),
     swap ( "swap", "managedFileSwap", regexMatcher::text ),
-/** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
+    /** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
     swapfiles ( "swapfiles", "rambrainswap-%d-%d", regexMatcher::text ),
     memory ( "memory", 0, regexMatcher::floating | regexMatcher::units ),
     swapMemory ( "swapMemory", 0, regexMatcher::floating | regexMatcher::units ),
@@ -176,18 +176,24 @@ bool configReader::reopenStreams()
             streams[i].close();
         }
     }
-
+    bool readAConfig = false;
     streams[0].open ( customConfigPath );
     if ( streams[0].is_open() ) {
-        infomsgf ( "Found config file in custom path to read in: %s\n", customConfigPath.c_str() );
+        infomsgf ( "Rambrain was initialized using custom config file: %s\n", customConfigPath.c_str() );
+        readAConfig = true;
     }
     streams[1].open ( localConfigPath );
     if ( streams[1].is_open() ) {
-        infomsgf ( "Found config file in home dir to read in: %s\n", localConfigPath.c_str() );
+        infomsgf ( "Rambrain was initialized using user's config file: %s\n", localConfigPath.c_str() );
+        readAConfig = true;
     }
     streams[2].open ( globalConfigPath );
     if ( streams[2].is_open() ) {
-        infomsgf ( "Found config file in system wide path to read in: %s\n", globalConfigPath.c_str() );
+        infomsgf ( "Rambrain was initialized using system wide config file: %s\n", globalConfigPath.c_str() );
+        readAConfig = true;
+    }
+    if ( !readAConfig ) {
+        infomsg ( "Rambrain was initialized using default settings." );
     }
 
     return streams[0].is_open() || streams[1].is_open() || streams[2].is_open();

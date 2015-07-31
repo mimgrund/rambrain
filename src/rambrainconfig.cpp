@@ -70,6 +70,8 @@ void rambrainConfig::resizeSwap ( global_bytesize memory )
 
 void rambrainConfig::init ()
 {
+    //Read in config by default
+    config.readConfig();
     const configuration &c = getConfig();
 
     if ( c.swap.value == "managedDummySwap" ) {
