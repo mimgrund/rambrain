@@ -194,6 +194,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 
     bool preemptiveAutoon = ( ( double ) swap->getFreeSwap() ) / swap->getSwapSize() > preemptiveTurnoffFraction;
 
+
     if ( preemtiveSwapIn && preemptiveAutoon ) {
         global_bytesize targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
         //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
