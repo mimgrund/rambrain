@@ -150,6 +150,7 @@ configuration::configuration() : memoryManager ( "memoryManager", "cyclicManaged
 
 configReader::configReader()
 {
+    readConfig();
 }
 
 bool configReader::readConfig()
