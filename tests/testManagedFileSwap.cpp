@@ -32,7 +32,58 @@ IGNORE_TEST_WARNINGS;
 
 using namespace rambrain;
 
-/// @todo Write a test for const lazy allocation / deallocation
+/**
+ * @test Tests for speedup implied by const lazy deallocation
+ * @note As this is normally cached, real life speedup will be a multiple of this when writing to disk...
+ */
+TEST ( managedFileSwap, Unit_LazyPffree )
+{
+    const unsigned int dblamount = 1024;
+    const unsigned int dblsize = dblamount * sizeof ( double );
+    const unsigned int swapmem = dblsize * 10;
+    managedFileSwap swap ( swapmem, "/tmp/rambrainswap-%d-%d" );
+    cyclicManagedMemory manager ( &swap, dblsize * 10 );
+
+    //Allocate 100 doubles:
+    managedPtr<managedPtr<double>> arr ( 100, dblamount );
+    adhereTo<managedPtr<double>> glue ( arr );
+    managedPtr<double> *field = glue;
+
+    //Initialize them
+    for ( int n = 0; n < 100; ++n ) {
+        adhereTo<double> locGlue ( field[n] );
+        double *loc = locGlue;
+        *loc = n;
+    };
+
+    tester test;
+    test.startNewTimeCycle();
+    test.addTimeMeasurement();
+    //Check for consistency, 10 times
+    for ( int m = 0; m < 1000; ++m ) {
+        for ( int n = 0; n < 100; ++n ) {
+            const adhereTo<double> locGlue ( field[n] );
+            const double *loc = locGlue;
+            EXPECT_EQ ( n, *loc );
+        };
+    }
+    test.addTimeMeasurement();
+    //Check for consistency, this time getting non-const ptr:
+    for ( int m = 0; m < 1000; ++m ) {
+        for ( int n = 0; n < 100; ++n ) {
+            adhereTo<double> locGlue ( field[n] );
+            double *loc = locGlue;
+            EXPECT_EQ ( n, *loc );
+        };
+    }
+    test.addTimeMeasurement();
+
+    std::vector<int64_t> durations = test.getDurationsForCurrentCycle();
+    infomsgf ( "Const access ran for %ld ms", durations[0] );
+    infomsgf ( "Non-Const access ran for %ld ms", durations[1] );
+    infomsgf ( "Non-Const access cost %g as much time as const access", 1.0 * durations[1] / durations[0] );
+    EXPECT_TRUE ( durations[1] > durations[0] );
+}
 
 /**
  * @test Tests whether managedFileSwap can take a memoryChunk and store it securely.
