@@ -171,6 +171,14 @@ bool cyclicManagedMemory::setPreemptiveLoading ( bool preemptive )
     preemtiveSwapIn = preemptive;
     return old;
 }
+
+bool cyclicManagedMemory::setPreemptiveUnloading ( bool preemptive )
+{
+    bool old = preemtiveSwapOut;
+    preemtiveSwapOut = preemptive;
+    return old;
+}
+
 void cyclicManagedMemory::printMemUsage() const
 {
     global_bytesize claimed_use = swap->getUsedSwap();
@@ -299,20 +307,18 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 
 void cyclicManagedMemory::untouch ( managedMemoryChunk &chunk )
 {
+    if ( !preemtiveSwapOut ) {
+        return;
+    }
     global_bytesize keep_free_for_user = ( 1. - swapInFrac ) * ( memory_max );
-    global_bytesize total_preemptives = ( swapInFrac - swapOutFrac ) * ( memory_max );
+    global_bytesize total_preemptive_needed = preemtiveSwapIn ? ( swapInFrac - swapOutFrac ) * ( memory_max ) - preemptiveBytes : 0;
     //We also account for memory that is in the process of becoming free:
     global_bytesize currently_free = memory_max - memory_used + memory_tobefreed;
-    global_bytesize desired_free = total_preemptives - preemptiveBytes + keep_free_for_user;
+    global_bytesize desired_free = total_preemptive_needed + keep_free_for_user;
     if ( currently_free < desired_free ) {
         global_bytesize try_free = desired_free - currently_free;
         swapOut ( try_free );
-    } else {
-        //printf("We would need %d bytes, but %d are already free (%f %)\n",desired_free,currently_free,((float)currently_free)/memory_max*100.);
     }
-
-
-
 }
 
 

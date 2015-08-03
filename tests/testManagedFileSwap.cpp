@@ -44,6 +44,7 @@ TEST ( managedFileSwap, Unit_LazyPffree )
     managedFileSwap swap ( swapmem, "/tmp/rambrainswap-%d-%d" );
     cyclicManagedMemory manager ( &swap, dblsize * 10 );
 
+
     //Allocate 100 doubles:
     managedPtr<managedPtr<double>> arr ( 100, dblamount );
     adhereTo<managedPtr<double>> glue ( arr );
@@ -442,6 +443,7 @@ TEST ( managedFileSwap, Unit_SwapAllocation )
     ASSERT_EQ ( 16u, swap.free_space.size() );
 
     cyclicManagedMemory manager ( &swap, 1024 * 10 );
+    manager.setPreemptiveUnloading ( false );
     {
         managedPtr<double> testarr ( 1024 ); //80% RAM full.
         for ( int n = 0; n < 16; n++ ) {
@@ -570,7 +572,7 @@ TEST ( managedFileSwap, Unit_SwapSingleIsland )
     const unsigned int bigdblamount = dblamount - smalldblamount;
     managedFileSwap swap ( oneswap, "/tmp/rambrainswap-%d-%d", oneswap );
     cyclicManagedMemory manager ( &swap, oneswap );
-
+    manager.setPreemptiveUnloading ( false ); //Preemptive swapout kills us here.
     ASSERT_EQ ( mib, swap.getSwapSize() );
 
     //ASSERT_NO_THROW (
@@ -614,6 +616,7 @@ TEST ( managedFileSwap, Unit_SwapNextAndSingleIsland )
     const unsigned int bigdblamount = dblamount - 2 * smalldblamount;
     managedFileSwap swap ( oneswap, "/tmp/rambrainswap-%d-%d", oneswap );
     cyclicManagedMemory manager ( &swap, oneswap );
+    manager.setPreemptiveUnloading ( false ); //Preemptive swapout kills us here.
 
     ASSERT_EQ ( mib, swap.getSwapSize() );
 
