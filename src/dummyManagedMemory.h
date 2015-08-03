@@ -54,6 +54,11 @@ protected:
         Throw ( memoryException ( "No memory manager in place." ) );
         return ERR_SUCCESS;
     }
+    inline virtual void untouch ( managedMemoryChunk & ) {
+        pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
+        Throw ( memoryException ( "No memory manager in place." ) );
+        return;
+    }
     inline virtual void schedulerRegister ( managedMemoryChunk & ) {
         pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
         Throw ( memoryException ( "No memory manager in place." ) );

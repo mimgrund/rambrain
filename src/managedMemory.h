@@ -180,6 +180,8 @@ protected:
     virtual bool swapIn ( managedMemoryChunk &chunk ) = 0;
     /** @brief marks chunk as recently active as a hint for scheduling **/
     virtual bool touch ( managedMemoryChunk &chunk ) = 0;
+    /** @brief marks chunk as recently not needed any more**/
+    virtual void untouch ( managedMemoryChunk &chunk ) = 0;
     ///@brief gives scheduler code the opportunity to register its own datastructures associated with a chunk
     virtual void schedulerRegister ( managedMemoryChunk &chunk ) = 0;
     ///@brief signals deletion of chunk to scheduler code

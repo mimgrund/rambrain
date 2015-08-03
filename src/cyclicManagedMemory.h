@@ -69,6 +69,8 @@ private:
      */
     virtual swapErrorCode swapOut ( global_bytesize min_size );
     virtual bool touch ( managedMemoryChunk &chunk );
+    ///@brief tries to regulate immediately usable free memory in ram to a level optimal for preemptive loading
+    virtual void untouch ( managedMemoryChunk &chunk );
     virtual void schedulerRegister ( managedMemoryChunk &chunk );
     virtual void schedulerDelete ( managedMemoryChunk &chunk );
 

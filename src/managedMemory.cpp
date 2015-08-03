@@ -387,6 +387,7 @@ bool managedMemory::unsetUse ( managedMemoryChunk &chunk , unsigned int no_unset
     if ( chunk.status & MEM_ALLOCATED_INUSE_READ ) {
         chunk.useCnt -= no_unsets;
         chunk.status = ( chunk.useCnt == 0 ? MEM_ALLOCATED : chunk.status );
+        untouch ( chunk );
         signalSwappingCond();//Unsetting use may trigger different possible swapouts.
         pthread_mutex_unlock ( &stateChangeMutex );
         return true;
