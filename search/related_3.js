@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['managedfileswap',['managedFileSwap',['../a00015.html#a7a57555464dec1f54ad14f68749ba2cd',1,'rambrain::managedMemory']]],
+  ['managedptr',['managedPtr',['../a00015.html#a4db9f2403c3411068243fdf0798d43f5',1,'rambrain::managedMemory']]],
+  ['managedswap',['managedSwap',['../a00015.html#ad7a44371743b957ef559f0c1d92f0ed0',1,'rambrain::managedMemory']]]
+];
