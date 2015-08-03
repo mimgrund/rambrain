@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"globals_vars.html":[4,1,2],
 "hierarchy.html":[3,2],
 "index.html":[],
 "namespacemembers.html":[2,1,0],
