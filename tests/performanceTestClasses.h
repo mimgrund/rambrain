@@ -430,8 +430,8 @@ TWOPARAMTEST ( matrixDoubleCopyTest, int, int );
 #ifndef OpenMP_NOT_FOUND
 TWOPARAMTEST ( matrixDoubleCopyOpenMPTest, int, int );
 #endif
-/// @todo Write a similar test to check preemptive
 TWOPARAMTEST ( measureThroughputTest, int, int );
+TWOPARAMTEST ( measurePreemptiveSpeedupTest, int, int );
 
 #endif // PERFORMANCETESTCLASSES_H
 
