@@ -205,6 +205,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     if ( preemtiveSwapIn && preemptiveAutoon ) {
         global_bytesize targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
         //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
+
         //Swap out if we want to read in more than what we thought:
         if ( targetReadinVol + memory_used > memory_max ) {
             global_bytesize targetSwapoutVol = actual_obj_size + ( 1. - swapOutFrac ) * memory_max - preemptiveBytes;
@@ -217,7 +218,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
                 }
                 targetReadinVol = actual_obj_size;
             }
-
+            targetReadinVol = targetSwapoutVol;
         }
         VERBOSEPRINT ( "swapInAfterSwap" );
         cyclicAtime *readEl = ( cyclicAtime * ) chunk.schedBuf;
@@ -230,7 +231,8 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
             ++numberSelected;
             selectedReadinVol += cur->chunk->size;
-            if ( selectedReadinVol > targetReadinVol ) {
+            if ( selectedReadinVol >= targetReadinVol ) {
+                cur = cur->prev;
                 break;
             }
             cur = cur->prev;
@@ -239,40 +241,45 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         managedMemoryChunk *chunks[numberSelected];
         unsigned int n = 0;
 
-        while ( readEl != cur ) {
+        do {
             chunks[n++] = readEl->chunk;
             readEl = readEl->prev;
-        };
-        if ( ( swap->swapIn ( chunks, numberSelected ) != selectedReadinVol ) ) {
-            return Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
-
-        } else {
-            cyclicAtime *beginSwapin = readEl->next;
-            cyclicAtime *oldafter = endSwapin->next;
-            if ( endSwapin != active ) { //swapped in element is already 'active' when all others have been swapped.
-                if ( oldafter != active && beginSwapin != active ) {
-                    cyclicAtime *oldbefore = readEl;
-                    cyclicAtime *before = active->prev;
-                    MUTUAL_CONNECT ( oldbefore, oldafter );
-                    MUTUAL_CONNECT ( endSwapin, active );
-                    MUTUAL_CONNECT ( before, beginSwapin );
-                }
-                if ( counterActive == active && counterActive->chunk->status == MEM_SWAPPED ) {
-                    counterActive = endSwapin;
-                }
-                active = endSwapin;
+        } while ( readEl != cur );
+        global_bytesize swappedInBytes = swap->swapIn ( chunks, numberSelected );
+        if ( (  swappedInBytes != selectedReadinVol ) ) {
+            //Check if we at least have swapped in enough:
+            if ( ! ( chunk.status & MEM_ALLOCATED || chunk.status == MEM_SWAPIN ) ) {
+                return Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
             }
 
-            preemptiveBytes += selectedReadinVol - actual_obj_size;
+        }
+        cur = cur->next;
+        cyclicAtime *beginSwapin = readEl->next;
+        cyclicAtime *oldafter = endSwapin->next;
+        if ( endSwapin != active ) { //swapped in element is already 'active' when all others have been swapped.
+            if ( oldafter != active && beginSwapin != active ) {
+                cyclicAtime *oldbefore = readEl;
+                cyclicAtime *before = active->prev;
+                MUTUAL_CONNECT ( oldbefore, oldafter );
+                MUTUAL_CONNECT ( endSwapin, active );
+                MUTUAL_CONNECT ( before, beginSwapin );
+            }
+            if ( counterActive == active && counterActive->chunk->status == MEM_SWAPPED ) {
+                counterActive = endSwapin;
+            }
+            active = endSwapin;
+        }
+
+        preemptiveBytes += selectedReadinVol - actual_obj_size;
 
 #ifdef SWAPSTATS
-            swap_in_scheduled_bytes += selectedReadinVol;
-            n_swap_in += 1;
+        swap_in_scheduled_bytes += selectedReadinVol;
+        n_swap_in += 1;
 #endif
-            VERBOSEPRINT ( "swapInBeforeReturn" );
-            pthread_mutex_unlock ( &cyclicTopoLock );
-            return true;
-        }
+        VERBOSEPRINT ( "swapInBeforeReturn" );
+        pthread_mutex_unlock ( &cyclicTopoLock );
+        return true;
+
     } else {
         bool alreadyThere = ensureEnoughSpace ( actual_obj_size, &chunk );
         if ( alreadyThere ) {
