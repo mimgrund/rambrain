@@ -102,7 +102,9 @@ managedMemory::~managedMemory()
 
         defaultManager = previousManager;
     }
-    swap->waitForCleanExit();
+    if ( swap ) {
+        swap->waitForCleanExit();
+    }
 #ifdef PARENTAL_CONTROL
     //Clean up objects:
     recursiveMfree ( root );
@@ -384,6 +386,7 @@ bool managedMemory::setUse ( memoryID id )
 bool managedMemory::unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets )
 {
     pthread_mutex_lock ( &stateChangeMutex );
+    memoryStatus status = chunk.status;
     if ( chunk.status & MEM_ALLOCATED_INUSE_READ ) {
         chunk.useCnt -= no_unsets;
         chunk.status = ( chunk.useCnt == 0 ? MEM_ALLOCATED : chunk.status );
