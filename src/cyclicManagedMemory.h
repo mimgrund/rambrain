@@ -50,10 +50,16 @@ public:
      * @brief sets whether scheduler should guess next needed items
      * @param preemtive iff set to true, scheduler will guess (default)
      * \note not thread-safe - does not make sense to call it from different threads anyway
-     * \note returns previous value
-     * @return returns previous value
+     * @return previous value
      */
     bool setPreemptiveLoading ( bool preemptive );
+    /**
+     * @brief sets whether scheduler should swap out elements without strict need
+     * @param preemtive iff set to true, scheduler will guess (default)
+     * \note not thread-safe - does not make sense to call it from different threads anyway
+     * @return previous value
+     */
+    bool setPreemptiveUnloading ( bool preemptive );
 
 
 
@@ -81,7 +87,8 @@ private:
     float swapOutFrac = .8;
     float swapInFrac = .9;
 
-    bool preemtiveSwapIn = true;
+    bool preemtiveSwapIn = false;
+    bool preemtiveSwapOut = true;
     global_bytesize preemptiveBytes = 0;
 
     static pthread_mutex_t cyclicTopoLock;

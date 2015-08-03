@@ -102,7 +102,7 @@ managedMemory::~managedMemory()
 
         defaultManager = previousManager;
     }
-
+    swap->waitForCleanExit();
 #ifdef PARENTAL_CONTROL
     //Clean up objects:
     recursiveMfree ( root );
