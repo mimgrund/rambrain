@@ -192,7 +192,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     global_bytesize actual_obj_size = chunk.size;
     //We want to read in what the user requested plus fill up the preemptive area with opportune guesses
 
-    bool preemptiveAutoon = swap->getFreeSwap() / swap->getSwapSize() > preemptiveTurnoffFraction;
+    bool preemptiveAutoon = ( ( double ) swap->getFreeSwap() ) / swap->getSwapSize() > preemptiveTurnoffFraction;
 
     if ( preemtiveSwapIn && preemptiveAutoon ) {
         global_bytesize targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
@@ -219,13 +219,13 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         unsigned int numberSelected = 0;
         pthread_mutex_lock ( &cyclicTopoLock );
         do {
-            if ( selectedReadinVol + cur->chunk->size > targetReadinVol ) {
+            cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
+            ++numberSelected;
+            selectedReadinVol += cur->chunk->size;
+            if ( selectedReadinVol > targetReadinVol ) {
                 break;
             }
-            cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
-            selectedReadinVol += cur->chunk->size;
             cur = cur->prev;
-            ++numberSelected;
         } while ( cur != oldBorder );
 
         managedMemoryChunk *chunks[numberSelected];
