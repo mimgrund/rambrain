@@ -229,7 +229,10 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
                 }
                 targetReadinVol = actual_obj_size;
             }
-            ensureEnoughSpace ( targetSwapoutVol, &chunk );
+            if ( ensureEnoughSpace ( targetSwapoutVol, &chunk ) ) {
+                waitForSwapin ( chunk, true );
+                return true;
+            }
             targetReadinVol = targetSwapoutVol;
         }
         VERBOSEPRINT ( "swapInAfterSwap" );
@@ -244,10 +247,11 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         // Because, as we should load in a swapped element, we're in the swapped section,
         // which only contains swapped elements until counterActive is reached.
         do {
-            if ( selectedReadinVol + cur->chunk->size + memory_used <= memory_max ) {
+            if ( selectedReadinVol + cur->chunk->size + memory_used <= memory_max && cur->chunk->status == MEM_SWAPPED ) {
 
                 cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
                 ++numberSelected;
+
                 selectedReadinVol += cur->chunk->size;
                 if ( selectedReadinVol >= targetReadinVol ) {
                     cur = cur->prev;
@@ -264,12 +268,16 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         unsigned int n = 0;
         global_bytesize selectedReadinVol2 = 0;
         do {
-            if ( selectedReadinVol2 + readEl->chunk->size + memory_used <= memory_max ) {
-                selectedReadinVol2 += readEl->chunk->size;
+            if ( selectedReadinVol2 + readEl->chunk->size + memory_used <= memory_max && readEl->chunk->status == MEM_SWAPPED ) {
                 chunks[n++] = readEl->chunk;
+                selectedReadinVol2 += readEl->chunk->size;
+                if ( selectedReadinVol2 >= targetReadinVol ) {
+                    cur = cur->prev;
+                    break;
+                }
             }
             readEl = readEl->prev;
-        } while ( readEl != cur );
+        } while ( readEl != oldBorder );
         global_bytesize swappedInBytes = swap->swapIn ( chunks, numberSelected );
         if ( (  swappedInBytes != selectedReadinVol ) ) {
             //Check if we at least have swapped in enough:
@@ -528,8 +536,12 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     global_bytesize unload_size = 0;
     global_bytesize unload_size2 = 0;
     unsigned int passed = 0, unload = 0;
-    unsigned int preemptiveBytesStill = preemptiveBytes;
+    //In case of preemptives, we cannot break at active, but will have to go through preemptive elements to find swap candidates.
+    global_bytesize preemptiveBytesStill = preemptiveBytes;
+    //However, when there's nothing preemptive, we have to go until reaching the active element.
     bool activeReached = false;
+
+    //First round: Calculate number of objects to swap out.
     while ( unload_size < mem_swap ) {
         ++passed;
         if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size <= swap_free )  && ( countPos->chunk->useCnt == 0 ) ) {
@@ -542,17 +554,16 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
             }
         }
 
-        if ( active == countPos ) {
+
+        preemptiveBytesStill -= countPos->chunk->preemptiveLoaded ? countPos->chunk->size : 0;
+        if ( countPos == active ) {
             activeReached = true;
         }
-        if ( activeReached ) {
-            preemptiveBytesStill -= countPos->chunk->preemptiveLoaded ? countPos->chunk->size : 0;
-            if ( preemptiveBytesStill == 0 ) {
+        if ( preemptiveBytesStill == 0 && activeReached ) {
 #ifdef CYCLIC_VERBOSE_DBG
-                printf ( "emergency, once round!\n" );
+            printf ( "emergency, once round!\n" );
 #endif
-                break;
-            }
+            break;
         }
 
         countPos = countPos->prev;
@@ -567,9 +578,9 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
 #ifdef CYCLIC_VERBOSE_DBG
     printf ( "active = %d\n", active->chunk->id );
 #endif
-    activeReached = false;
     preemptiveBytesStill = preemptiveBytes;
-    while ( unload_size2 < mem_swap ) {
+    activeReached = false;
+    while ( unload_size2 < unload_size ) {
         ++passed;
         if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) && ( fromPos->chunk->useCnt == 0 ) ) {
             if ( fromPos->chunk->size + unload_size2 <= swap_free ) {
@@ -587,18 +598,15 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
                 }
             }
         }
-
-        if ( active == fromPos ) {
+        preemptiveBytesStill -= fromPos->chunk->preemptiveLoaded ? fromPos->chunk->size : 0;
+        if ( fromPos == active ) {
             activeReached = true;
         }
-        if ( activeReached ) {
-            preemptiveBytesStill -= fromPos->chunk->preemptiveLoaded ? fromPos->chunk->size : 0;
-            if ( preemptiveBytesStill == 0 ) {
+        if ( preemptiveBytesStill == 0 && activeReached ) {
 #ifdef CYCLIC_VERBOSE_DBG
-                printf ( "emergency, once round!\n" );
+            printf ( "emergency, once round!\n" );
 #endif
-                break;
-            }
+            break;
         }
 
         fromPos = fromPos->prev;
