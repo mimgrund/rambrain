@@ -281,8 +281,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         preemptiveBytes += selectedReadinVol - actual_obj_size;
 
 #ifdef SWAPSTATS
-        //swap_in_scheduled_bytes += selectedReadinVol;
-        swap_in_bytes += swappedInBytes;
+        swap_in_scheduled_bytes += selectedReadinVol;
         n_swap_in += 1;
 #endif
         VERBOSEPRINT ( "swapInBeforeReturn" );
@@ -309,8 +308,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             }
 
 #ifdef SWAPSTATS
-            //swap_in_scheduled_bytes += chunk.size;
-            swap_in_bytes += chunk.size;
+            swap_in_scheduled_bytes += chunk.size;
             n_swap_in += 1;
 #endif
             pthread_mutex_unlock ( &cyclicTopoLock );
@@ -703,8 +701,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     VERBOSEPRINT ( "swapOutReturn" );
     if ( swapSuccess ) {
 #ifdef SWAPSTATS
-        //swap_out_scheduled_bytes += unload_size;
-        swap_out_bytes += unload_size;
+        swap_out_scheduled_bytes += unload_size;
         n_swap_out += 1;
 #endif
         return ERR_SUCCESS;
