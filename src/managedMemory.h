@@ -245,6 +245,7 @@ protected:
 
     global_bytesize swap_hits = 0;
     global_bytesize swap_misses = 0;
+#endif
     /** @brief Waits until a certain chunk is present
      *  @return success
      *  @warning ensure that chunk is to be swapped in or may be present.
@@ -281,6 +282,7 @@ protected:
 #endif
 
 public:
+#ifdef SWAPSTATS
     ///@brief print statistic about the number, size and efficiency of swapping actions
     void printSwapstats() const;
     ///@brief reset statistic about the number, size and efficiency of swapping actions

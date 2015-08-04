@@ -550,7 +550,6 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     printf ( "active = %d\n", active->chunk->id );
 #endif
     activeReached = false;
-    bool activeSwapped = false;
     preemptiveBytesStill = preemptiveBytes;
     while ( unload_size2 < mem_swap ) {
         ++passed;
@@ -564,9 +563,6 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
                     ///@todo investigate if subtracting swapped out preemptive bytes is affecting performance (too much preemptive action possible)
                     fromPos->chunk->preemptiveLoaded = false;
                     preemptiveBytes -= fromPos->chunk->size;
-                }
-                if ( active == fromPos ) {
-                    activeSwapped = true;
                 }
             }
         }

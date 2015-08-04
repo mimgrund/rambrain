@@ -66,7 +66,7 @@ public:
     /**
      * @brief Simple getter
      */
-    inline const configuration &getConfig() const {
+    inline const configuration &getConfig() {
         return config.getConfig();
     }
 
