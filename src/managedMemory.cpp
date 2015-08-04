@@ -282,9 +282,12 @@ bool managedMemory::prepareUse ( managedMemoryChunk &chunk, bool acquireLock )
     ++chunk.useCnt;//This protects element from being swapped out by somebody else if it was swapped in.
     switch ( chunk.status ) {
     case MEM_SWAPOUT: // Object is about to be swapped out.
-        waitForSwapout ( chunk, true );
+        if ( !waitForSwapout ( chunk, true ) ) {
+            return true;
+        }
     case MEM_SWAPPED:
         if ( !swapIn ( chunk ) ) {
+            errmsgf ( "Could not swap in chunk %lu", chunk.id );
             if ( acquireLock ) {
                 pthread_mutex_unlock ( &stateChangeMutex );
             }
@@ -312,13 +315,17 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
     ++chunk.useCnt;//This protects element from being swapped out by somebody else if it was swapped in.
     switch ( chunk.status ) {
     case MEM_SWAPOUT: // Object is about to be swapped out.
+
     case MEM_SWAPPED:
-        prepareUse ( chunk, false );
+        if ( !prepareUse ( chunk, false ) ) {
+            return false;
+        }
         --chunk.useCnt;//prepareUse sets additional usage, but we want to end up with +1 only
     case MEM_SWAPIN: // Wait for object to appear
         if ( !waitForSwapin ( chunk, true ) ) {
             if ( ! ( chunk.status & MEM_ALLOCATED ) ) {
                 pthread_mutex_unlock ( &stateChangeMutex );
+                errmsgf ( "Waited for swapin of chunk %lu and could not make it.", chunk.id );
                 return false;
             }
         }
@@ -707,7 +714,7 @@ void managedMemory::waitForAIO()
 
 bool managedMemory::waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock )
 {
-    if ( chunk.status == MEM_SWAPOUT ) { //Chunk is about to be swapped out...
+    if ( chunk.status == MEM_SWAPOUT || chunk.status == MEM_SWAPPED ) { //Chunk is about to be swapped out...
         if ( !keepSwapLock ) {
             pthread_mutex_unlock ( &stateChangeMutex );
         }
@@ -725,7 +732,7 @@ bool managedMemory::waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock
 
 bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock )
 {
-    if ( chunk.status == MEM_SWAPIN ) { //We would wait indefinitely, as the chunk is not about to appear
+    if ( chunk.status == MEM_SWAPIN | chunk.status & MEM_ALLOCATED ) { //We would wait indefinitely, as the chunk is not about to appear
         if ( !keepSwapLock ) {
             pthread_mutex_unlock ( &stateChangeMutex );
         }

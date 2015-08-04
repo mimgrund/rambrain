@@ -24,7 +24,7 @@
 #include "managedSwap.h"
 #include <pthread.h>
 //#define VERYVERBOSE
-//#define CYCLIC_VERBOSE_DBG
+// #define CYCLIC_VERBOSE_DBG
 
 #ifdef VERYVERBOSE
 #define VERBOSEPRINT(x) printf("\n<--%s\n",x);printCycle();printf("\n%s---->\n",x);
@@ -190,6 +190,12 @@ void cyclicManagedMemory::printMemUsage() const
 bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 {
     VERBOSEPRINT ( "swapInEntry" );
+#ifdef VERYVERBOSE
+    if ( chunk.useCnt == 0 ) {
+        printf ( "Unprotected!!!\n;" );
+    }
+    printf ( "Main Subject %lu\n", chunk.id );
+#endif
     if ( chunk.status & MEM_ALLOCATED || chunk.status == MEM_SWAPIN ) {
         return true;
     }
@@ -213,15 +219,17 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         //Swap out if we want to read in more than what we thought:
         if ( targetReadinVol + memory_used > memory_max ) {
             global_bytesize targetSwapoutVol = actual_obj_size + ( 1. - swapOutFrac ) * memory_max - preemptiveBytes;
-            swapErrorCode err = swapOut ( targetSwapoutVol );
+            swapErrorCode err = swapOut ( targetSwapoutVol ); // A simple call to ensureEnoughSpace is not enough, we want to control what happens on error.
             if ( err != ERR_SUCCESS ) {
                 bool alreadyThere = ensureEnoughSpace ( actual_obj_size, &chunk );
                 if ( alreadyThere ) {
                     waitForSwapin ( chunk, true );
+                    VERBOSEPRINT ( "Is Already swapped in by so else" );
                     return true;
                 }
                 targetReadinVol = actual_obj_size;
             }
+            ensureEnoughSpace ( targetSwapoutVol, &chunk );
             targetReadinVol = targetSwapoutVol;
         }
         VERBOSEPRINT ( "swapInAfterSwap" );
@@ -236,26 +244,36 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         // Because, as we should load in a swapped element, we're in the swapped section,
         // which only contains swapped elements until counterActive is reached.
         do {
-            cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
-            ++numberSelected;
-            selectedReadinVol += cur->chunk->size;
-            if ( selectedReadinVol >= targetReadinVol ) {
-                cur = cur->prev;
-                break;
+            if ( selectedReadinVol + cur->chunk->size + memory_used <= memory_max ) {
+
+                cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
+                ++numberSelected;
+                selectedReadinVol += cur->chunk->size;
+                if ( selectedReadinVol >= targetReadinVol ) {
+                    cur = cur->prev;
+                    break;
+                }
+#ifdef VERYVERBOSE
+                printf ( "swapin %d\n", cur->chunk->id );
+#endif
             }
             cur = cur->prev;
         } while ( cur != oldBorder );
 
         managedMemoryChunk *chunks[numberSelected];
         unsigned int n = 0;
-
+        global_bytesize selectedReadinVol2 = 0;
         do {
-            chunks[n++] = readEl->chunk;
+            if ( selectedReadinVol2 + readEl->chunk->size + memory_used <= memory_max ) {
+                selectedReadinVol2 += readEl->chunk->size;
+                chunks[n++] = readEl->chunk;
+            }
             readEl = readEl->prev;
         } while ( readEl != cur );
         global_bytesize swappedInBytes = swap->swapIn ( chunks, numberSelected );
         if ( (  swappedInBytes != selectedReadinVol ) ) {
             //Check if we at least have swapped in enough:
+            VERBOSEPRINT ( "exiting with non complete job" );
             if ( ! ( chunk.status & MEM_ALLOCATED || chunk.status == MEM_SWAPIN ) ) {
                 return Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
             }
@@ -514,7 +532,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     bool activeReached = false;
     while ( unload_size < mem_swap ) {
         ++passed;
-        if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size <= swap_free ) ) {
+        if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size <= swap_free )  && ( countPos->chunk->useCnt == 0 ) ) {
             if ( countPos->chunk->size + unload_size <= swap_free ) {
                 unload_size += countPos->chunk->size;
                 ++unload;
@@ -553,11 +571,14 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     preemptiveBytesStill = preemptiveBytes;
     while ( unload_size2 < mem_swap ) {
         ++passed;
-        if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) ) {
+        if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) && ( fromPos->chunk->useCnt == 0 ) ) {
             if ( fromPos->chunk->size + unload_size2 <= swap_free ) {
                 unload_size2 += fromPos->chunk->size;
                 *unloadElem = fromPos->chunk;
                 ++unloadElem;
+#ifdef VERYVERBOSE
+                printf ( "swapout %d\n", fromPos->chunk->id );
+#endif
                 if ( fromPos->chunk->preemptiveLoaded ) { //We had this chunk preemptive, but now have to swap out.
                     //This is a bit evil, as we will reload preemptive bytes when we've swapped them out.
                     ///@todo investigate if subtracting swapped out preemptive bytes is affecting performance (too much preemptive action possible)
