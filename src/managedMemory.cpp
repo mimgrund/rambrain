@@ -308,12 +308,13 @@ bool managedMemory::prepareUse ( managedMemoryChunk &chunk, bool acquireLock )
 bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false )
 {
     pthread_mutex_lock ( &stateChangeMutex );
+    //printf("setUse on %d\n",chunk.id);
     ++chunk.useCnt;//This protects element from being swapped out by somebody else if it was swapped in.
     switch ( chunk.status ) {
     case MEM_SWAPOUT: // Object is about to be swapped out.
     case MEM_SWAPPED:
         prepareUse ( chunk, false );
-        --chunk.useCnt;
+        --chunk.useCnt;//prepareUse sets additional usage, but we want to end up with +1 only
     case MEM_SWAPIN: // Wait for object to appear
         if ( !waitForSwapin ( chunk, true ) ) {
             if ( ! ( chunk.status & MEM_ALLOCATED ) ) {
@@ -385,6 +386,7 @@ bool managedMemory::setUse ( memoryID id )
 
 bool managedMemory::unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets )
 {
+    //printf("unsetUse on %d, %d times\n",chunk.id,no_unsets);
     pthread_mutex_lock ( &stateChangeMutex );
     memoryStatus status = chunk.status;
     if ( chunk.status & MEM_ALLOCATED_INUSE_READ ) {

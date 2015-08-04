@@ -23,7 +23,8 @@
 #include "rambrain_atomics.h"
 #include "managedSwap.h"
 #include <pthread.h>
-// #define VERYVERBOSE
+//#define VERYVERBOSE
+//#define CYCLIC_VERBOSE_DBG
 
 #ifdef VERYVERBOSE
 #define VERBOSEPRINT(x) printf("\n<--%s\n",x);printCycle();printf("\n%s---->\n",x);
@@ -31,7 +32,7 @@
 #define VERBOSEPRINT(x) ;
 #endif
 
-//#define CYCLIC_VERBOSE_DBG
+
 
 namespace rambrain
 {
@@ -203,6 +204,9 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     bool preemptiveAutoon = ( ( double ) swap->getFreeSwap() ) / swap->getSwapSize() > preemptiveTurnoffFraction;
 
     if ( preemtiveSwapIn && preemptiveAutoon ) {
+#ifdef VERYVERBOSE
+        printf ( "Preemptive swapin\n" );
+#endif
         global_bytesize targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
         //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
 
@@ -227,6 +231,10 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         global_bytesize selectedReadinVol = 0;
         unsigned int numberSelected = 0;
         pthread_mutex_lock ( &cyclicTopoLock );
+
+        //Why do we not have to check for chunk's status?
+        // Because, as we should load in a swapped element, we're in the swapped section,
+        // which only contains swapped elements until counterActive is reached.
         do {
             cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
             ++numberSelected;
@@ -281,6 +289,9 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         return true;
 
     } else {
+#ifdef VERYVERBOSE
+        printf ( "Non-preemptive swapin\n" );
+#endif
         bool alreadyThere = ensureEnoughSpace ( actual_obj_size, &chunk );
         if ( alreadyThere ) {
             return true;
@@ -420,10 +431,18 @@ void cyclicManagedMemory::printCycle() const
         status[1] = 0x00;
         switch ( atime->chunk->status ) {
         case MEM_ALLOCATED:
-            status[0] = 'A';
+            if ( atime->chunk->useCnt > 0 ) {
+                status[0] = 'a';    //Small letters means that usage is already claimed.
+            } else {
+                status[0] = 'A';
+            }
             break;
         case MEM_SWAPIN:
-            status[0] = 'I';
+            if ( atime->chunk->useCnt > 0 ) {
+                status[0] = 'i';    //Small letters means that usage is already claimed.
+            } else {
+                status[0] = 'I';
+            }
             break;
         case MEM_SWAPOUT:
             status[0] = 'O';
@@ -531,6 +550,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     printf ( "active = %d\n", active->chunk->id );
 #endif
     activeReached = false;
+    bool activeSwapped = false;
     preemptiveBytesStill = preemptiveBytes;
     while ( unload_size2 < mem_swap ) {
         ++passed;
@@ -539,6 +559,15 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
                 unload_size2 += fromPos->chunk->size;
                 *unloadElem = fromPos->chunk;
                 ++unloadElem;
+                if ( fromPos->chunk->preemptiveLoaded ) { //We had this chunk preemptive, but now have to swap out.
+                    //This is a bit evil, as we will reload preemptive bytes when we've swapped them out.
+                    ///@todo investigate if subtracting swapped out preemptive bytes is affecting performance (too much preemptive action possible)
+                    fromPos->chunk->preemptiveLoaded = false;
+                    preemptiveBytes -= fromPos->chunk->size;
+                }
+                if ( active == fromPos ) {
+                    activeSwapped = true;
+                }
             }
         }
 
