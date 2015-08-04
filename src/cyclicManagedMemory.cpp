@@ -660,13 +660,10 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         counterActive = counterActive->prev;
     }
     if ( ! ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) ) { // We may have swapped out the first allocated element
-        cyclicAtime *next = active->next;
-        if ( next->chunk->status & MEM_ALLOCATED || next->chunk->status == MEM_SWAPIN ) {
-            active = next;
+        active = counterActive;
 #ifdef CYCLIC_VERBOSE_DBG
-            printf ( "had to move active", fromPos->chunk->id );
+        printf ( "had to move active", fromPos->chunk->id );
 #endif
-        }
     }
     pthread_mutex_unlock ( &cyclicTopoLock );
 #ifdef CYCLIC_VERBOSE_DBG
