@@ -1820,3 +1820,136 @@ string measurePreemptiveSpeedupTest::generateMyGnuplotPlotPart ( const string &f
     ss << "'" << file << "' using " << paramColumn << ":($6+$7+$8) with lines lt 0 lc 5 title \"Total*\"";
     return ss.str();
 }
+
+TESTSTATICS ( measureExplicitAsyncSpeedupTest, "Measures throughput under load" );
+
+measureExplicitAsyncSpeedupTest::measureExplicitAsyncSpeedupTest() : performanceTest<int, int> ( "measureExplicitAsyncSpeedup" )
+{
+    TESTPARAM ( 1, 1024, 1024000, 20, true, 102400, "Byte size per used chunk" );
+    TESTPARAM ( 2, 1, 200, 20, true, 100, "percentage of array that will be written to" );
+    plotParts = vector<string> ( {"Set Use", "Perpare", "Calculation"} );
+}
+
+/// @todo PTEST_CHECKS is missing in this test
+void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytesize , int load )
+{
+    unsigned int numel = 1024;
+    rambrainglobals::config.resizeMemory ( numel / 2 * bytesize );
+    rambrainglobals::config.resizeSwap ( numel * bytesize );
+
+    managedPtr<managedPtr<char>> arr ( numel, bytesize );
+    ADHERETOLOC ( managedPtr<char>, arr, ptr );
+
+    float rewritetimes = load < 0 ? 1 : ( float ) load / 100.;
+    int iterations = 10230;
+
+
+
+    std::chrono::duration<double> allSetuse ( 0 );
+    std::chrono::duration<double> allPrepare ( 0 );
+    std::chrono::duration<double> allCalc ( 0 );
+
+    using namespace std::chrono;
+    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveLoading ( true );
+    for ( int i = 0; i < iterations; ++i ) {
+        unsigned int use = ( i % numel );
+
+
+        //Important: First say what you will use, then say, what you will use next!
+        high_resolution_clock::time_point t0 = high_resolution_clock::now();
+        adhereTo<char> glue ( ptr[use] );
+        high_resolution_clock::time_point t1 = high_resolution_clock::now();
+        char *loc = glue; //Actually use the stuff.
+        high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+        for ( int r = 0; r < rewritetimes * bytesize; r++ ) {
+            loc[r % bytesize] = r * i;
+        }
+        high_resolution_clock::time_point t3 = high_resolution_clock::now();
+
+        std::chrono::duration<double> setuse = duration_cast<duration<double>> ( t1 - t0 );;
+        std::chrono::duration<double> preparet = duration_cast<duration<double>> ( t2 - t1 );
+        std::chrono::duration<double> calc = duration_cast<duration<double>> ( t3 - t2 );
+        if ( load < 0 ) {
+            rewritetimes *= ( preparet + setuse ) > calc ? 1.01 : .99;
+        }
+
+        allSetuse += setuse;
+        allPrepare += preparet;
+        allCalc += calc;
+    }
+
+
+
+
+    test.addExternalTime ( allSetuse );
+    test.addExternalTime ( allPrepare );
+    test.addExternalTime ( allCalc );
+
+    std::chrono::duration<double> allSetuse2 ( 0 );
+    std::chrono::duration<double> allPrepare2 ( 0 );
+    std::chrono::duration<double> allCalc2 ( 0 );
+    std::chrono::duration<double> allDel ( 0 );
+
+    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveLoading ( false );
+    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveUnloading ( false );
+    adhereTo <char> *adharr[numel];
+    adharr[0] = new adhereTo<char> ( ptr[0] );
+
+    for ( int i = 0; i < iterations; ++i ) {
+        unsigned int use = ( i % numel );
+        unsigned int prepare = ( ( i + 1 ) % numel );
+
+
+        //Important: First say what you will use, then say, what you will use next!
+        high_resolution_clock::time_point t0 = high_resolution_clock::now();
+        adharr[prepare] = new adhereTo<char> ( ptr[prepare] );
+        high_resolution_clock::time_point t1 = high_resolution_clock::now();
+        char *loc = *adharr[use]; //Actually use the stuff.
+        high_resolution_clock::time_point t2 = high_resolution_clock::now();
+
+        for ( int r = 0; r < rewritetimes * bytesize; r++ ) {
+            loc[r % bytesize] = r * i;
+        }
+        high_resolution_clock::time_point t3 = high_resolution_clock::now();
+        delete adharr[use];
+        high_resolution_clock::time_point t4 = high_resolution_clock::now();
+        std::chrono::duration<double> setuse = duration_cast<duration<double>> ( t1 - t0 );;
+        std::chrono::duration<double> preparet = duration_cast<duration<double>> ( t2 - t1 );
+        std::chrono::duration<double> calc = duration_cast<duration<double>> ( t3 - t2 );
+        std::chrono::duration<double> del = duration_cast<duration<double>> ( t4 - t3 );
+        if ( load < 0 ) {
+            rewritetimes *= ( preparet + setuse ) > calc ? 1.01 : .99;
+        }
+
+        allSetuse2 += setuse;
+        allPrepare2 += preparet;
+        allCalc2 += calc;
+        allDel += del;
+    }
+
+
+
+
+    test.addExternalTime ( allSetuse2 );
+    test.addExternalTime ( allPrepare2 );
+    test.addExternalTime ( allCalc2 );
+    test.addExternalTime ( allDel );
+
+}
+string measureExplicitAsyncSpeedupTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"adhereTo<>\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"type *ptr = glue\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Calculation\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":(100-($5*100/($3+$4+$5))) with lines title \"idle time in \%\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":6 with lines lt 0 lc 1 title \"adhereTo<> *\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":7 with lines lt 0 lc 2 title \"type *ptr = glue *\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":8 with lines lt 0 lc 3 title \"Calculation*\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":9 with lines lt 0 lc 3 title \"adhereTo<> deletion*\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":(100-($8*100/($6+$7+$8+$9))) with lines lt 0 lc 4 title \"idle time* in \%\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($6+$7+$8+$9) with lines lt 0 lc 5 title \"Total*\"";
+    return ss.str();
+}
