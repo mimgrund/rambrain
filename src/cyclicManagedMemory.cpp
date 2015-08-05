@@ -259,7 +259,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         // which only contains swapped elements until counterActive is reached.
         do {
 #ifdef VERYVERBOSE
-            printf ( "Chunk %lu has %lu bytes, this is %ld over the top", cur->chunk->id, cur->chunk->size, selectedReadinVol + cur->chunk->size + memory_used - memory_max );
+            printf ( "Chunk %lu has %lu bytes, this is %ld over the top\n", cur->chunk->id, cur->chunk->size, selectedReadinVol + cur->chunk->size + memory_used - memory_max );
 #endif
             if ( selectedReadinVol + cur->chunk->size + memory_used <= memory_max && cur->chunk->status == MEM_SWAPPED ) {
 
@@ -301,24 +301,73 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             }
 
         }
-        cur = cur->next;
-        cyclicAtime *beginSwapin = readEl->next;
-        cyclicAtime *oldafter = endSwapin->next;
-        if ( endSwapin != active ) { //swapped in element is already 'active' when all others have been swapped.
-            if ( oldafter != active && beginSwapin != active ) {
-                cyclicAtime *oldbefore = readEl;
-                cyclicAtime *before = active->prev;
-                MUTUAL_CONNECT ( oldbefore, oldafter );
-                MUTUAL_CONNECT ( endSwapin, active );
-                MUTUAL_CONNECT ( before, beginSwapin );
-            }
-            if ( counterActive == active && counterActive->chunk->status == MEM_SWAPPED ) {
-                counterActive = endSwapin;
-            }
-            active = endSwapin;
+        VERBOSEPRINT ( "Before active first" );
+        //We need to insert the first element (which we had to swap in) making it the new active:
+        if ( endSwapin != active->next ) { //If we're not anyways correctly placed
+            cyclicAtime *beforeIC = endSwapin->prev;
+            cyclicAtime *afterIC = endSwapin->next;
+            cyclicAtime *beforeActive = active->prev;
+#ifdef VERYVERBOSE
+            printf ( "beforeIC = %lu , afterIC = %lu , afterActive = %lu \n", beforeIC->chunk->id, afterIC->chunk->id, beforeActive->chunk->id );
+#endif
+            MUTUAL_CONNECT ( beforeIC, afterIC );
+            MUTUAL_CONNECT ( beforeActive, endSwapin );
+            MUTUAL_CONNECT ( endSwapin, active );
         }
+        VERBOSEPRINT ( "Before reordering" );
+        //Check if we have additional preemptives to place correctly
+        if ( numberSelected > 1 ) {
+            //Now we're right after active. We need to place the preemptive ones at back as if we do not,
+            //The most recently loaded preemptives would be swapped out first, which would not be good.
+            //Thus, let us search forewards until we are at the border of the preemptive area:
+            while ( endSwapin->prev->chunk->preemptiveLoaded == true ) { // This would surely quit at the requested element
+                endSwapin = endSwapin->prev;
+            }
+#ifdef VERYVERBOSE
+            printf ( "endSwapin is at %lu\n", endSwapin->chunk->id );
+#endif
+            //Now, lets do this rather stupidly:
+            cyclicAtime *curel = endSwapin;
+            unsigned int max = memChunks.size();
+            unsigned int noen = 0;
+            while ( curel->chunk != chunks[numberSelected - 1] && noen++ < max ) { // As long as we've not placed the last element we've swapped in
+#ifdef VERYVERBOSE
+                printCycle();
+                printf ( "curel->prev = %lu\n, vs %lu ", curel->prev->chunk->id, chunks[numberSelected - 1]->id );
+#endif
+                if ( curel->prev->chunk->preemptiveLoaded ) { // Next one is preemptive...
+                    if ( curel == endSwapin ) { //...and its anyways where we sit at
+#ifdef VERYVERBOSE
+                        printf ( "Moving backwards\n" );
+#endif
+                        endSwapin = endSwapin->prev;
+                    } else { //...and we have elements in between
+                        cyclicAtime *startMove = curel->prev;
+                        cyclicAtime *endMove = curel->prev;
 
-        preemptiveBytes += selectedReadinVol - actual_obj_size;
+                        while ( startMove->prev->chunk->preemptiveLoaded ) { // let us search until the last consecutive element which is preemptive
+                            startMove = startMove->prev;
+                        }
+#ifdef VERYVERBOSE
+                        printf ( "startMove = %lu , EndMove = %lu , endSwapin = %lu \n", startMove->chunk->id, endMove->chunk->id, endSwapin->chunk->id );
+#endif
+
+                        curel = startMove->prev; // after the action, we will further investigate from here on.
+                        cyclicAtime *beforeInsert = endSwapin->prev;
+                        MUTUAL_CONNECT ( startMove->prev, endMove->next ); // Cuts out elements [startMove,Endmove]
+                        MUTUAL_CONNECT ( beforeInsert, startMove ); //These two insert elements at back of preemptives
+                        MUTUAL_CONNECT ( endMove, endSwapin );
+                        endSwapin = startMove; // And the end of preemptives is now at startMove.
+                        if ( startMove->chunk == chunks[numberSelected - 1] ) {
+                            break;
+                        }
+                    }
+                }
+                curel = curel->prev;
+            }
+
+            preemptiveBytes += selectedReadinVol - actual_obj_size;
+        }
 
 #ifdef SWAPSTATS
         swap_in_scheduled_bytes += selectedReadinVol;

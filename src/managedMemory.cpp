@@ -732,7 +732,7 @@ bool managedMemory::waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock
 
 bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLock )
 {
-    if ( chunk.status == MEM_SWAPIN | chunk.status & MEM_ALLOCATED ) { //We would wait indefinitely, as the chunk is not about to appear
+    if ( ( chunk.status == MEM_SWAPIN ) | ( chunk.status & MEM_ALLOCATED ) ) { //We would wait indefinitely, as the chunk is not about to appear
         if ( !keepSwapLock ) {
             pthread_mutex_unlock ( &stateChangeMutex );
         }
