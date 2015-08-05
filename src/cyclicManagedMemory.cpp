@@ -24,7 +24,7 @@
 #include "managedSwap.h"
 #include <pthread.h>
 //#define VERYVERBOSE
-// #define CYCLIC_VERBOSE_DBG
+//#define CYCLIC_VERBOSE_DBG
 
 #ifdef VERYVERBOSE
 #define VERBOSEPRINT(x) printf("\n<--%s\n",x);printCycle();printf("\n%s---->\n",x);
@@ -215,26 +215,33 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 #endif
         global_bytesize targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
         //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
-
         //Swap out if we want to read in more than what we thought:
+        bool outOfSwapWasFatal = outOfSwapIsFatal;
+        //outOfSwapIsFatal = false;
         if ( targetReadinVol + memory_used > memory_max ) {
             global_bytesize targetSwapoutVol = actual_obj_size + ( 1. - swapOutFrac ) * memory_max - preemptiveBytes;
-            swapErrorCode err = swapOut ( targetSwapoutVol ); // A simple call to ensureEnoughSpace is not enough, we want to control what happens on error.
+            targetReadinVol = targetSwapoutVol;
+            swapErrorCode err = swapOut ( targetReadinVol ); // A simple call to ensureEnoughSpace is not enough, we want to control what happens on error.
+
             if ( err != ERR_SUCCESS ) {
+                //We could not swap out enough, lets retry with the object only (which is the minimum)
                 bool alreadyThere = ensureEnoughSpace ( actual_obj_size, &chunk );
                 if ( alreadyThere ) {
                     waitForSwapin ( chunk, true );
                     VERBOSEPRINT ( "Is Already swapped in by so else" );
+                    outOfSwapIsFatal = outOfSwapWasFatal;
                     return true;
                 }
                 targetReadinVol = actual_obj_size;
             }
-            if ( ensureEnoughSpace ( targetSwapoutVol, &chunk ) ) {
+            if ( ensureEnoughSpace ( targetReadinVol, &chunk ) ) {
                 waitForSwapin ( chunk, true );
+                VERBOSEPRINT ( "Is Already swapped in by so else" );
+                outOfSwapIsFatal = outOfSwapWasFatal;
                 return true;
             }
-            targetReadinVol = targetSwapoutVol;
         }
+        outOfSwapIsFatal = outOfSwapWasFatal;
         VERBOSEPRINT ( "swapInAfterSwap" );
         cyclicAtime *readEl = ( cyclicAtime * ) chunk.schedBuf;
         cyclicAtime *cur = readEl;
@@ -243,10 +250,17 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         unsigned int numberSelected = 0;
         pthread_mutex_lock ( &cyclicTopoLock );
 
+#ifdef VERYVERBOSE
+        printf ( "Starting swapin selection" );
+#endif
+
         //Why do we not have to check for chunk's status?
         // Because, as we should load in a swapped element, we're in the swapped section,
         // which only contains swapped elements until counterActive is reached.
         do {
+#ifdef VERYVERBOSE
+            printf ( "Chunk %lu has %lu bytes, this is %ld over the top", cur->chunk->id, cur->chunk->size, selectedReadinVol + cur->chunk->size + memory_used - memory_max );
+#endif
             if ( selectedReadinVol + cur->chunk->size + memory_used <= memory_max && cur->chunk->status == MEM_SWAPPED ) {
 
                 cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
