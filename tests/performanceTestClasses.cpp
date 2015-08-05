@@ -1768,6 +1768,7 @@ void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize
     std::chrono::duration<double> allCalc2 ( 0 );
 
     ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveLoading ( false );
+    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveUnloading ( false );
     for ( int i = 0; i < iterations; ++i ) {
         unsigned int use = ( i % numel );
 
@@ -1807,15 +1808,15 @@ void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize
 string measurePreemptiveSpeedupTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"SetUse\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Prepare\", \\" << endl;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"adhereTo<>\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"type *ptr = glue\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Calculation\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":(100-($5*100/($3+$4+$5))) with lines title \"idle time in \%\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":6 with lines title \"SetUse*\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":7 with lines title \"Prepare*\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":8 with lines title \"Calculation*\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":(100-($8*100/($6+$7+$8))) with lines title \"idle time* in \%\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":($6+$7+$8) with lines title \"Total*\"";
+    ss << "'" << file << "' using " << paramColumn << ":6 with lines lt 0 lc 1 title \"adhereTo<> *\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":7 with lines lt 0 lc 2 title \"type *ptr = glue *\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":8 with lines lt 0 lc 3 title \"Calculation*\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":(100-($8*100/($6+$7+$8))) with lines lt 0 lc 4 title \"idle time* in \%\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($6+$7+$8) with lines lt 0 lc 5 title \"Total*\"";
     return ss.str();
 }
