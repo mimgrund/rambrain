@@ -210,26 +210,37 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     bool preemptiveAutoon = ( ( double ) swap->getFreeSwap() ) / swap->getSwapSize() > preemptiveTurnoffFraction;
 
     if ( preemtiveSwapIn && preemptiveAutoon ) {
+        global_bytesize max_preemptive = ( swapInFrac - swapOutFrac ) * memory_max;
 #ifdef VERYVERBOSE
-        printf ( "Preemptive swapin\n" );
+        if ( preemptiveBytes > max_preemptive ) {
+            warnmsg ( "Loaded more premptively than suggested!" );
+        }
 #endif
+
         global_bytesize targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
+#ifdef VERYVERBOSE
+        printf ( "Preemptive swapin (premptiveBytes = %lu) (targetReadinVol = %lu)\n", preemptiveBytes, targetReadinVol );
+#endif
         //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
         //Swap out if we want to read in more than what we thought:
-        bool outOfSwapWasFatal = outOfSwapIsFatal;
-        //outOfSwapIsFatal = false;
+
         if ( targetReadinVol + memory_used > memory_max ) {
+#ifdef VERYVERBOSE
+            printf ( "We do not have space to get fully preemptive, lets try swap something out\n" );
+#endif
             global_bytesize targetSwapoutVol = actual_obj_size + ( 1. - swapOutFrac ) * memory_max - preemptiveBytes;
             targetReadinVol = targetSwapoutVol;
             swapErrorCode err = swapOut ( targetReadinVol ); // A simple call to ensureEnoughSpace is not enough, we want to control what happens on error.
 
             if ( err != ERR_SUCCESS ) {
+#ifdef VERYVERBOSE
+                printf ( "We could not swap out enough, lets retry with the object only (which is the minimum)\n" );
+#endif
                 //We could not swap out enough, lets retry with the object only (which is the minimum)
                 bool alreadyThere = ensureEnoughSpace ( actual_obj_size, &chunk );
                 if ( alreadyThere ) {
                     waitForSwapin ( chunk, true );
                     VERBOSEPRINT ( "Is Already swapped in by so else" );
-                    outOfSwapIsFatal = outOfSwapWasFatal;
                     return true;
                 }
                 targetReadinVol = actual_obj_size;
@@ -237,22 +248,28 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             if ( ensureEnoughSpace ( targetReadinVol, &chunk ) ) {
                 waitForSwapin ( chunk, true );
                 VERBOSEPRINT ( "Is Already swapped in by so else" );
-                outOfSwapIsFatal = outOfSwapWasFatal;
                 return true;
             }
         }
-        outOfSwapIsFatal = outOfSwapWasFatal;
+#ifdef VERYVERBOSE
+        else {
+            printf ( "We got enough space right away.\n" );
+        }
+#endif
         VERBOSEPRINT ( "swapInAfterSwap" );
         cyclicAtime *readEl = ( cyclicAtime * ) chunk.schedBuf;
         cyclicAtime *cur = readEl;
         cyclicAtime *endSwapin = readEl;
         global_bytesize selectedReadinVol = 0;
+        global_bytesize preemtivelySelected = 0;
         unsigned int numberSelected = 0;
         pthread_mutex_lock ( &cyclicTopoLock );
 
 #ifdef VERYVERBOSE
         printf ( "Starting swapin selection" );
 #endif
+
+        max_preemptive -= preemptiveBytes; //Our limit for this transaction.
 
         //Why do we not have to check for chunk's status?
         // Because, as we should load in a swapped element, we're in the swapped section,
@@ -261,14 +278,16 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 #ifdef VERYVERBOSE
             printf ( "Chunk %lu has %lu bytes, this is %ld over the top\n", cur->chunk->id, cur->chunk->size, selectedReadinVol + cur->chunk->size + memory_used - memory_max );
 #endif
-            if ( selectedReadinVol + cur->chunk->size + memory_used <= memory_max && cur->chunk->status == MEM_SWAPPED ) {
+            if ( selectedReadinVol + cur->chunk->size + memory_used <= memory_max && cur->chunk->status == MEM_SWAPPED && ( selectedReadinVol == 0 || ( preemtivelySelected + cur->chunk->size < max_preemptive ) ) ) {
 
                 cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
                 ++numberSelected;
 
                 selectedReadinVol += cur->chunk->size;
+                if ( selectedReadinVol > 0 ) {
+                    preemtivelySelected += cur->chunk->size;
+                }
                 if ( selectedReadinVol >= targetReadinVol ) {
-                    cur = cur->prev;
                     break;
                 }
 #ifdef VERYVERBOSE
@@ -281,12 +300,15 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         managedMemoryChunk *chunks[numberSelected];
         unsigned int n = 0;
         global_bytesize selectedReadinVol2 = 0;
+        preemtivelySelected = 0;
         do {
-            if ( selectedReadinVol2 + readEl->chunk->size + memory_used <= memory_max && readEl->chunk->status == MEM_SWAPPED ) {
+            if ( selectedReadinVol2 + readEl->chunk->size + memory_used <= memory_max && readEl->chunk->status == MEM_SWAPPED && ( selectedReadinVol2 == 0 || ( preemtivelySelected + readEl->chunk->size < max_preemptive ) ) ) {
                 chunks[n++] = readEl->chunk;
                 selectedReadinVol2 += readEl->chunk->size;
+                if ( selectedReadinVol > 0 ) {
+                    preemtivelySelected += readEl->chunk->size;
+                }
                 if ( selectedReadinVol2 >= targetReadinVol ) {
-                    cur = cur->prev;
                     break;
                 }
             }

@@ -178,6 +178,7 @@ TEST ( cyclicManagedMemory, Integration_ArrayAccess )
     }
 #ifdef SWAPSTATS
     manager.printSwapstats();
+    ///@todo Check hits over miss
 #endif
 
     for ( int n = 0; n < allocarrn; n++ ) {
