@@ -41,11 +41,13 @@
 class managedFileSwap_Unit_ManualSwapping_Test;
 class managedFileSwap_Unit_ManualSwappingDelete_Test;
 class managedFileSwap_Unit_ManualMultiSwapping_Test;
+class cyclicManagedMemory_Integration_ArrayAccess_Test;
 #endif
 
 namespace rambrain
 {
 class managedFileSwap;
+class managedDummySwap;
 class managedSwap;
 template<class T>
 class managedPtr;
@@ -221,11 +223,13 @@ protected:
     friend class managedPtr;
     friend class managedSwap;
     friend class managedFileSwap;
+    friend class managedDummySwap;
     //Test classes
 #ifdef BUILD_TESTS
     friend class ::managedFileSwap_Unit_ManualSwapping_Test;
     friend class ::managedFileSwap_Unit_ManualMultiSwapping_Test;
     friend class ::managedFileSwap_Unit_ManualSwappingDelete_Test;
+    friend class ::cyclicManagedMemory_Integration_ArrayAccess_Test;
     friend managedSwap *configTestGetSwap ( managedMemory *man );
 #endif
 
@@ -287,9 +291,21 @@ public:
     void printSwapstats() const;
     ///@brief reset statistic about the number, size and efficiency of swapping actions
     void resetSwapstats();
-    /**@brief static binding that will print out some stats.
+    ///@brief returns current hits over misses rate for accessing elements.
+    double getHitsOverMisses();
+
+    ///@brief simple Getter
+    double getTotalSwappedOutBytes() {
+        return swap_out_bytes;
+    };
+    ///@brief simple Getter
+    double getTotalSwappedInBytes() {
+        return swap_in_bytes;
+    };
+
+    /** @brief static binding that will print out some stats.
     Compile with cmake -DSWAPSTATS=on and send process SIGUSR1 to call this function
-    **/
+    */
     static void sigswapstats ( int sig );
 #endif
     ///@brief prints out a GIT version info and a diff on this version at compile time

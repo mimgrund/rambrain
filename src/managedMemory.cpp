@@ -674,6 +674,12 @@ void managedMemory::sigswapstats ( int )
     defaultManager->swap_out_bytes_last = defaultManager->swap_out_bytes;
     defaultManager->swap_in_bytes_last = defaultManager->swap_in_bytes;
 }
+double managedMemory::getHitsOverMisses()
+{
+    return ( ( double ) swap_hits ) / swap_misses;
+}
+
+
 #endif
 
 void managedMemory::versionInfo()

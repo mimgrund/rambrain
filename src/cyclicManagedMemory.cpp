@@ -682,7 +682,8 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
 #endif
                 if ( fromPos->chunk->preemptiveLoaded ) { //We had this chunk preemptive, but now have to swap out.
                     //This is a bit evil, as we will reload preemptive bytes when we've swapped them out.
-                    ///@todo investigate if subtracting swapped out preemptive bytes is affecting performance (too much preemptive action possible)
+                    ///@todo investigate if subtracting swapped out preemptive bytes is affecting \
+                    performance ( too much preemptive action possible ). Naively testing, this is not the case.
                     fromPos->chunk->preemptiveLoaded = false;
                     preemptiveBytes -= fromPos->chunk->size;
                 }
