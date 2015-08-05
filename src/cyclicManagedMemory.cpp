@@ -23,7 +23,8 @@
 #include "rambrain_atomics.h"
 #include "managedSwap.h"
 #include <pthread.h>
-// #define VERYVERBOSE
+//#define VERYVERBOSE
+//#define CYCLIC_VERBOSE_DBG
 
 #ifdef VERYVERBOSE
 #define VERBOSEPRINT(x) printf("\n<--%s\n",x);printCycle();printf("\n%s---->\n",x);
@@ -31,7 +32,7 @@
 #define VERBOSEPRINT(x) ;
 #endif
 
-//#define CYCLIC_VERBOSE_DBG
+
 
 namespace rambrain
 {
@@ -189,6 +190,12 @@ void cyclicManagedMemory::printMemUsage() const
 bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 {
     VERBOSEPRINT ( "swapInEntry" );
+#ifdef VERYVERBOSE
+    if ( chunk.useCnt == 0 ) {
+        printf ( "Unprotected!!!\n;" );
+    }
+    printf ( "Main Subject %lu\n", chunk.id );
+#endif
     if ( chunk.status & MEM_ALLOCATED || chunk.status == MEM_SWAPIN ) {
         return true;
     }
@@ -203,74 +210,191 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     bool preemptiveAutoon = ( ( double ) swap->getFreeSwap() ) / swap->getSwapSize() > preemptiveTurnoffFraction;
 
     if ( preemtiveSwapIn && preemptiveAutoon ) {
-        global_bytesize targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
-        //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
+        global_bytesize max_preemptive = ( swapInFrac - swapOutFrac ) * memory_max;
+#ifdef VERYVERBOSE
+        if ( preemptiveBytes > max_preemptive ) {
+            warnmsg ( "Loaded more premptively than suggested!" );
+        }
+#endif
 
+        global_bytesize targetReadinVol = actual_obj_size + ( swapInFrac - swapOutFrac ) * memory_max - preemptiveBytes;
+#ifdef VERYVERBOSE
+        printf ( "Preemptive swapin (premptiveBytes = %lu) (targetReadinVol = %lu)\n", preemptiveBytes, targetReadinVol );
+#endif
+        //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
         //Swap out if we want to read in more than what we thought:
+
         if ( targetReadinVol + memory_used > memory_max ) {
+#ifdef VERYVERBOSE
+            printf ( "We do not have space to get fully preemptive, lets try swap something out\n" );
+#endif
             global_bytesize targetSwapoutVol = actual_obj_size + ( 1. - swapOutFrac ) * memory_max - preemptiveBytes;
-            swapErrorCode err = swapOut ( targetSwapoutVol );
+            targetReadinVol = targetSwapoutVol;
+            swapErrorCode err = swapOut ( targetReadinVol ); // A simple call to ensureEnoughSpace is not enough, we want to control what happens on error.
+
             if ( err != ERR_SUCCESS ) {
+#ifdef VERYVERBOSE
+                printf ( "We could not swap out enough, lets retry with the object only (which is the minimum)\n" );
+#endif
+                //We could not swap out enough, lets retry with the object only (which is the minimum)
                 bool alreadyThere = ensureEnoughSpace ( actual_obj_size, &chunk );
                 if ( alreadyThere ) {
                     waitForSwapin ( chunk, true );
+                    VERBOSEPRINT ( "Is Already swapped in by so else" );
                     return true;
                 }
                 targetReadinVol = actual_obj_size;
             }
-            targetReadinVol = targetSwapoutVol;
+            if ( ensureEnoughSpace ( targetReadinVol, &chunk ) ) {
+                waitForSwapin ( chunk, true );
+                VERBOSEPRINT ( "Is Already swapped in by so else" );
+                return true;
+            }
         }
+#ifdef VERYVERBOSE
+        else {
+            printf ( "We got enough space right away.\n" );
+        }
+#endif
         VERBOSEPRINT ( "swapInAfterSwap" );
         cyclicAtime *readEl = ( cyclicAtime * ) chunk.schedBuf;
         cyclicAtime *cur = readEl;
         cyclicAtime *endSwapin = readEl;
         global_bytesize selectedReadinVol = 0;
+        global_bytesize preemtivelySelected = 0;
         unsigned int numberSelected = 0;
         pthread_mutex_lock ( &cyclicTopoLock );
+
+#ifdef VERYVERBOSE
+        printf ( "Starting swapin selection" );
+#endif
+
+        max_preemptive -= preemptiveBytes; //Our limit for this transaction.
+
+        //Why do we not have to check for chunk's status?
+        // Because, as we should load in a swapped element, we're in the swapped section,
+        // which only contains swapped elements until counterActive is reached.
         do {
-            cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
-            ++numberSelected;
-            selectedReadinVol += cur->chunk->size;
-            if ( selectedReadinVol >= targetReadinVol ) {
-                cur = cur->prev;
-                break;
+#ifdef VERYVERBOSE
+            printf ( "Chunk %lu has %lu bytes, this is %ld over the top\n", cur->chunk->id, cur->chunk->size, selectedReadinVol + cur->chunk->size + memory_used - memory_max );
+#endif
+            if ( selectedReadinVol + cur->chunk->size + memory_used <= memory_max && cur->chunk->status == MEM_SWAPPED && ( selectedReadinVol == 0 || ( preemtivelySelected + cur->chunk->size < max_preemptive ) ) ) {
+
+                cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
+                ++numberSelected;
+
+                selectedReadinVol += cur->chunk->size;
+                if ( selectedReadinVol > 0 ) {
+                    preemtivelySelected += cur->chunk->size;
+                }
+                if ( selectedReadinVol >= targetReadinVol ) {
+                    break;
+                }
+#ifdef VERYVERBOSE
+                printf ( "swapin %d\n", cur->chunk->id );
+#endif
             }
             cur = cur->prev;
         } while ( cur != oldBorder );
 
         managedMemoryChunk *chunks[numberSelected];
         unsigned int n = 0;
-
+        global_bytesize selectedReadinVol2 = 0;
+        preemtivelySelected = 0;
         do {
-            chunks[n++] = readEl->chunk;
+            if ( selectedReadinVol2 + readEl->chunk->size + memory_used <= memory_max && readEl->chunk->status == MEM_SWAPPED && ( selectedReadinVol2 == 0 || ( preemtivelySelected + readEl->chunk->size < max_preemptive ) ) ) {
+                chunks[n++] = readEl->chunk;
+                selectedReadinVol2 += readEl->chunk->size;
+                if ( selectedReadinVol > 0 ) {
+                    preemtivelySelected += readEl->chunk->size;
+                }
+                if ( selectedReadinVol2 >= targetReadinVol ) {
+                    break;
+                }
+            }
             readEl = readEl->prev;
-        } while ( readEl != cur );
+        } while ( readEl != oldBorder );
         global_bytesize swappedInBytes = swap->swapIn ( chunks, numberSelected );
         if ( (  swappedInBytes != selectedReadinVol ) ) {
             //Check if we at least have swapped in enough:
+            VERBOSEPRINT ( "exiting with non complete job" );
             if ( ! ( chunk.status & MEM_ALLOCATED || chunk.status == MEM_SWAPIN ) ) {
                 return Throw ( memoryException ( "managedSwap failed to swap in :-(" ) );
             }
 
         }
-        cur = cur->next;
-        cyclicAtime *beginSwapin = readEl->next;
-        cyclicAtime *oldafter = endSwapin->next;
-        if ( endSwapin != active ) { //swapped in element is already 'active' when all others have been swapped.
-            if ( oldafter != active && beginSwapin != active ) {
-                cyclicAtime *oldbefore = readEl;
-                cyclicAtime *before = active->prev;
-                MUTUAL_CONNECT ( oldbefore, oldafter );
-                MUTUAL_CONNECT ( endSwapin, active );
-                MUTUAL_CONNECT ( before, beginSwapin );
-            }
-            if ( counterActive == active && counterActive->chunk->status == MEM_SWAPPED ) {
-                counterActive = endSwapin;
-            }
-            active = endSwapin;
+        VERBOSEPRINT ( "Before active first" );
+        //We need to insert the first element (which we had to swap in) making it the new active:
+        if ( endSwapin != active->prev ) { //If we're not anyways correctly placed
+            cyclicAtime *beforeIC = endSwapin->prev;
+            cyclicAtime *afterIC = endSwapin->next;
+            cyclicAtime *beforeActive = active->prev;
+#ifdef VERYVERBOSE
+            printf ( "beforeIC = %lu , afterIC = %lu , afterActive = %lu \n", beforeIC->chunk->id, afterIC->chunk->id, beforeActive->chunk->id );
+#endif
+            MUTUAL_CONNECT ( beforeIC, afterIC );
+            MUTUAL_CONNECT ( beforeActive, endSwapin );
+            MUTUAL_CONNECT ( endSwapin, active );
         }
+        VERBOSEPRINT ( "Before reordering" );
+        //Check if we have additional preemptives to place correctly
+        if ( numberSelected > 1 ) {
+            //Now we're right after active. We need to place the preemptive ones at back as if we do not,
+            //The most recently loaded preemptives would be swapped out first, which would not be good.
+            //Thus, let us search forewards until we are at the border of the preemptive area:
+            while ( endSwapin->prev->chunk->preemptiveLoaded == true ) { // This would surely quit at the requested element
+                endSwapin = endSwapin->prev;
+            }
+#ifdef VERYVERBOSE
+            printf ( "endSwapin is at %lu\n", endSwapin->chunk->id );
+#endif
+            //Now, lets do this rather stupidly:
+            cyclicAtime *curel = endSwapin;
+            unsigned int max = memChunks.size();
+            unsigned int noen = 0;
+            while ( curel->chunk != chunks[numberSelected - 1] && noen++ < max ) { // As long as we've not placed the last element we've swapped in
+#ifdef VERYVERBOSE
+                printCycle();
+                printf ( "curel->prev = %lu\n, vs %lu ", curel->prev->chunk->id, chunks[numberSelected - 1]->id );
+#endif
+                if ( curel->prev->chunk->preemptiveLoaded ) { // Next one is preemptive...
+                    if ( curel == endSwapin ) { //...and its anyways where we sit at
+#ifdef VERYVERBOSE
+                        printf ( "Moving backwards\n" );
+#endif
+                        endSwapin = endSwapin->prev;
+                    } else { //...and we have elements in between
+                        cyclicAtime *startMove = curel->prev;
+                        cyclicAtime *endMove = curel->prev;
 
-        preemptiveBytes += selectedReadinVol - actual_obj_size;
+                        while ( startMove->prev->chunk->preemptiveLoaded ) { // let us search until the last consecutive element which is preemptive
+                            startMove = startMove->prev;
+                        }
+#ifdef VERYVERBOSE
+                        printf ( "startMove = %lu , EndMove = %lu , endSwapin = %lu \n", startMove->chunk->id, endMove->chunk->id, endSwapin->chunk->id );
+#endif
+
+                        curel = startMove->prev; // after the action, we will further investigate from here on.
+                        cyclicAtime *beforeInsert = endSwapin->prev;
+                        MUTUAL_CONNECT ( startMove->prev, endMove->next ); // Cuts out elements [startMove,Endmove]
+                        MUTUAL_CONNECT ( beforeInsert, startMove ); //These two insert elements at back of preemptives
+                        MUTUAL_CONNECT ( endMove, endSwapin );
+                        endSwapin = startMove; // And the end of preemptives is now at startMove.
+                        if ( startMove->chunk == chunks[numberSelected - 1] ) {
+                            break;
+                        }
+                    }
+                }
+                curel = curel->prev;
+            }
+
+            preemptiveBytes += selectedReadinVol - actual_obj_size;
+        }
+        pthread_mutex_unlock ( &cyclicTopoLock );
+        touch ( chunk );
+        if ( counterActive->chunk->status == MEM_SWAPPED ) {
+            counterActive = active;
+        }
 
 #ifdef SWAPSTATS
         swap_in_scheduled_bytes += selectedReadinVol;
@@ -281,6 +405,9 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         return true;
 
     } else {
+#ifdef VERYVERBOSE
+        printf ( "Non-preemptive swapin\n" );
+#endif
         bool alreadyThere = ensureEnoughSpace ( actual_obj_size, &chunk );
         if ( alreadyThere ) {
             return true;
@@ -420,10 +547,18 @@ void cyclicManagedMemory::printCycle() const
         status[1] = 0x00;
         switch ( atime->chunk->status ) {
         case MEM_ALLOCATED:
-            status[0] = 'A';
+            if ( atime->chunk->useCnt > 0 ) {
+                status[0] = 'a';    //Small letters means that usage is already claimed.
+            } else {
+                status[0] = 'A';
+            }
             break;
         case MEM_SWAPIN:
-            status[0] = 'I';
+            if ( atime->chunk->useCnt > 0 ) {
+                status[0] = 'i';    //Small letters means that usage is already claimed.
+            } else {
+                status[0] = 'I';
+            }
             break;
         case MEM_SWAPOUT:
             status[0] = 'O';
@@ -491,11 +626,15 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     global_bytesize unload_size = 0;
     global_bytesize unload_size2 = 0;
     unsigned int passed = 0, unload = 0;
-    unsigned int preemptiveBytesStill = preemptiveBytes;
+    //In case of preemptives, we cannot break at active, but will have to go through preemptive elements to find swap candidates.
+    global_bytesize preemptiveBytesStill = preemptiveBytes;
+    //However, when there's nothing preemptive, we have to go until reaching the active element.
     bool activeReached = false;
+
+    //First round: Calculate number of objects to swap out.
     while ( unload_size < mem_swap ) {
         ++passed;
-        if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size <= swap_free ) ) {
+        if ( countPos->chunk->status == MEM_ALLOCATED && ( unload_size + countPos->chunk->size <= swap_free )  && ( countPos->chunk->useCnt == 0 ) ) {
             if ( countPos->chunk->size + unload_size <= swap_free ) {
                 unload_size += countPos->chunk->size;
                 ++unload;
@@ -505,17 +644,16 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
             }
         }
 
-        if ( active == countPos ) {
+
+        preemptiveBytesStill -= countPos->chunk->preemptiveLoaded ? countPos->chunk->size : 0;
+        if ( countPos == active ) {
             activeReached = true;
         }
-        if ( activeReached ) {
-            preemptiveBytesStill -= countPos->chunk->preemptiveLoaded ? countPos->chunk->size : 0;
-            if ( preemptiveBytesStill == 0 ) {
+        if ( preemptiveBytesStill == 0 && activeReached ) {
 #ifdef CYCLIC_VERBOSE_DBG
-                printf ( "emergency, once round!\n" );
+            printf ( "emergency, once round!\n" );
 #endif
-                break;
-            }
+            break;
         }
 
         countPos = countPos->prev;
@@ -530,29 +668,36 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
 #ifdef CYCLIC_VERBOSE_DBG
     printf ( "active = %d\n", active->chunk->id );
 #endif
-    activeReached = false;
     preemptiveBytesStill = preemptiveBytes;
-    while ( unload_size2 < mem_swap ) {
+    activeReached = false;
+    while ( unload_size2 < unload_size ) {
         ++passed;
-        if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) ) {
+        if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) && ( fromPos->chunk->useCnt == 0 ) ) {
             if ( fromPos->chunk->size + unload_size2 <= swap_free ) {
                 unload_size2 += fromPos->chunk->size;
                 *unloadElem = fromPos->chunk;
                 ++unloadElem;
+#ifdef VERYVERBOSE
+                printf ( "swapout %d\n", fromPos->chunk->id );
+#endif
+                if ( fromPos->chunk->preemptiveLoaded ) { //We had this chunk preemptive, but now have to swap out.
+                    //This is a bit evil, as we will reload preemptive bytes when we've swapped them out.
+                    ///@todo investigate if subtracting swapped out preemptive bytes is affecting \
+                    performance ( too much preemptive action possible ). Naively testing, this is not the case.
+                    fromPos->chunk->preemptiveLoaded = false;
+                    preemptiveBytes -= fromPos->chunk->size;
+                }
             }
         }
-
-        if ( active == fromPos ) {
+        preemptiveBytesStill -= fromPos->chunk->preemptiveLoaded ? fromPos->chunk->size : 0;
+        if ( fromPos == active ) {
             activeReached = true;
         }
-        if ( activeReached ) {
-            preemptiveBytesStill -= fromPos->chunk->preemptiveLoaded ? fromPos->chunk->size : 0;
-            if ( preemptiveBytesStill == 0 ) {
+        if ( preemptiveBytesStill == 0 && activeReached ) {
 #ifdef CYCLIC_VERBOSE_DBG
-                printf ( "emergency, once round!\n" );
+            printf ( "emergency, once round!\n" );
 #endif
-                break;
-            }
+            break;
         }
 
         fromPos = fromPos->prev;
@@ -660,13 +805,10 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         counterActive = counterActive->prev;
     }
     if ( ! ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) ) { // We may have swapped out the first allocated element
-        cyclicAtime *next = active->next;
-        if ( next->chunk->status & MEM_ALLOCATED || next->chunk->status == MEM_SWAPIN ) {
-            active = next;
+        active = counterActive;
 #ifdef CYCLIC_VERBOSE_DBG
-            printf ( "had to move active", fromPos->chunk->id );
+        printf ( "had to move active", fromPos->chunk->id );
 #endif
-        }
     }
     pthread_mutex_unlock ( &cyclicTopoLock );
 #ifdef CYCLIC_VERBOSE_DBG

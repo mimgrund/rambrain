@@ -195,12 +195,6 @@ public:
         }
         return config;
     }
-    /**
-     * @brief Simple getter
-     */
-    inline const configuration &getConfig() const {
-        return config;
-    }
 
     /**
      * @brief Simple getter

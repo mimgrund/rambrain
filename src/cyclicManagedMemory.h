@@ -87,7 +87,7 @@ private:
     float swapOutFrac = .8;
     float swapInFrac = .9;
 
-    bool preemtiveSwapIn = false;
+    bool preemtiveSwapIn = true;
     bool preemtiveSwapOut = true;
     global_bytesize preemptiveBytes = 0;
 

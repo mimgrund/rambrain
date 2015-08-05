@@ -178,6 +178,7 @@ TEST ( cyclicManagedMemory, Integration_ArrayAccess )
     }
 #ifdef SWAPSTATS
     manager.printSwapstats();
+    EXPECT_TRUE ( manager.getHitsOverMisses() > 1. );
 #endif
 
     for ( int n = 0; n < allocarrn; n++ ) {
@@ -189,7 +190,7 @@ TEST ( cyclicManagedMemory, Integration_ArrayAccess )
 /**
 * @test checks integrity and accessability of array objects in random access
 */
-TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
+TEST ( cyclicManagedMemory, Integration_RandomArrayAccess )
 {
     const  int fac = 1000;
     const  int memsize = 10.240 * fac;
@@ -201,6 +202,7 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
     managedDummySwap swap ( allocarrn * 100 );
     //Allocate Manager
     cyclicManagedMemory manager ( &swap, memsize );
+
 
     managedPtr<double> *ptrs[allocarrn];
     for ( int n = 0; n < allocarrn; ++n ) {
@@ -216,10 +218,22 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
 #endif
     }
 
+#ifdef SWAPSTATS
+    double averageRate = 0;
+    double datain = 0, dataout = 0;
+#endif
+    /* //This should get us somewhere near ideal: (use for testing whether test was written correctly)
+    manager.setPreemptiveLoading(false);
+    manager.setPreemptiveUnloading(false);
+    //*/
     ASSERT_TRUE ( manager.checkCycle() );
     for ( int o = 0; o < 10; ++o ) {
         ASSERT_TRUE ( manager.checkCycle() );
         //Write fun to tree, but require swapping:
+#ifdef SWAPSTATS
+        manager.resetSwapstats();
+#endif
+
         for ( int n = 0; n < allocarrn; ++n ) {
             unsigned int randomi = test.random ( allocarrn );
             adhereTo<double> aLoc ( *ptrs[randomi] );
@@ -234,6 +248,12 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
             manager.printMemUsage();
 #endif
         }
+#ifdef SWAPSTATS
+        averageRate += manager.getHitsOverMisses();
+        datain += manager.getTotalSwappedInBytes();
+        dataout += manager.getTotalSwappedInBytes();
+        manager.printSwapstats();
+#endif
         //Now check equality:
         for ( int n = 0; n < allocarrn; n++ ) {
             adhereTo<double> aLoc ( *ptrs[n] );
@@ -242,6 +262,7 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
                 EXPECT_TRUE ( darr[m] == -1 || ( darr[m] == n * 13 + m * o ) );
 
             }
+
 #ifdef SWAPSTATSLONG
             manager.printMemUsage();
 #endif
@@ -259,8 +280,19 @@ TEST ( cyclicManagedMemory, Integration_RamdomArrayAccess )
         }
 
     }
+
 #ifdef SWAPSTATS
+    averageRate /= 10.;
     manager.printSwapstats();
+    double ideal_homirate = ( ( double ) memsize ) / ( allocarrn * 10 * sizeof ( double ) );
+    infomsgf ( "Ideal hits over misses %lf vs. reached: %lf factor of ~ %lf", ideal_homirate, averageRate, ideal_homirate / averageRate );
+    EXPECT_TRUE ( averageRate > .5 * ideal_homirate );
+
+    double ideal_rate = ( 10 * allocarrn * 10 * sizeof ( double ) ) * ( 1 - ideal_homirate );
+    infomsgf ( "Ideal data rate %lf vs. reached: %lf (in) %lf (out) factor of ~ %lf ", ideal_rate, datain, dataout, ( .5 * ( datain + dataout ) / ideal_rate ) );
+    EXPECT_TRUE ( datain < 4 * ideal_rate );
+    EXPECT_TRUE ( dataout < 4 * ideal_rate );
+
 #endif
 
     for ( int n = 0; n < allocarrn; n++ ) {

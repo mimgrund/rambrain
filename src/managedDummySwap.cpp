@@ -46,6 +46,9 @@ global_bytesize managedDummySwap::swapOut ( managedMemoryChunk *chunk )
         chunk->status = MEM_SWAPPED;
         claimUsageof ( chunk->size, false, true );
         claimUsageof ( chunk->size, true, false );
+#ifdef SWAPSTATS
+        managedMemory::defaultManager->swap_out_bytes += chunk->size;
+#endif
         ///We are not writing asynchronous, thus, we have to signal that we're done writing...
         managedMemory::signalSwappingCond();
 
@@ -80,6 +83,9 @@ global_bytesize managedDummySwap::swapIn ( managedMemoryChunk *chunk )
         chunk->status = MEM_ALLOCATED;
         claimUsageof ( chunk->size, false, false );
         claimUsageof ( chunk->size, true, true );
+#ifdef SWAPSTATS
+        managedMemory::defaultManager->swap_in_bytes += chunk->size;
+#endif
         ///We are not writing asynchronous, thus, we have to signal that we're done reading...
         managedMemory::signalSwappingCond();
         return chunk->size;
