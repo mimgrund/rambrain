@@ -395,6 +395,11 @@ bool managedMemory::unsetUse ( managedMemoryChunk &chunk , unsigned int no_unset
 {
     //printf("unsetUse on %d, %d times\n",chunk.id,no_unsets);
     pthread_mutex_lock ( &stateChangeMutex );
+    //The following will hapen for immediate loads.
+    if ( no_unsets == 0 ) {
+        chunk.useCnt --;
+        return true;
+    }
     if ( chunk.status & MEM_ALLOCATED_INUSE_READ ) {
         chunk.useCnt -= no_unsets;
         chunk.status = ( chunk.useCnt == 0 ? MEM_ALLOCATED : chunk.status );

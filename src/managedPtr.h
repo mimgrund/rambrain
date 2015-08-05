@@ -295,9 +295,9 @@ public:
 
     };
 
-    adhereTo ( const managedPtr<T> &data, bool loadImidiately = false ) : data ( &data ) {
+    adhereTo ( const managedPtr<T> &data, bool loadImidiately = true ) : data ( &data ) {
         if ( loadImidiately ) {
-            loadedReadable = true;
+            loadedImmediately = true;
             data.prepareUse();
         }
 
@@ -339,18 +339,21 @@ public:
     }
 
     ~adhereTo() {
-        if ( loadedReadable ) {
-            data->unsetUse();
+        unsigned char loaded = 0;
+        loaded = loadedReadable || loadedWritable ? ( loadedReadable ? 1 : 0 ) + ( loadedWritable ? 1 : 0 ) + ( loadedImmediately ? 1 : 0 ) : 0;
+        if ( loaded > 0 ) {
+            data->unsetUse ( loaded );
+        } else if ( loadedImmediately ) {
+            data->unsetUse ( 0 );
         }
-        if ( loadedWritable ) {
-            data->unsetUse();
-        }
+
     }
 private:
     const managedPtr<T> *data;
 
     mutable bool loadedWritable = false;
     mutable bool loadedReadable = false;
+    mutable bool loadedImmediately = false;
 
     //Test classes
 #ifdef BUILD_TESTS
