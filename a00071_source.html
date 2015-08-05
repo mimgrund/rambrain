@@ -1875,57 +1875,190 @@ $(document).ready(function(){initNavTree('a00071_source.html','');});
 <div class="line"><a name="l01768"></a><span class="lineno"> 1768</span>&#160;    std::chrono::duration&lt;double&gt; allCalc2 ( 0 );</div>
 <div class="line"><a name="l01769"></a><span class="lineno"> 1769</span>&#160;</div>
 <div class="line"><a name="l01770"></a><span class="lineno"> 1770</span>&#160;    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )-&gt;setPreemptiveLoading ( <span class="keyword">false</span> );</div>
-<div class="line"><a name="l01771"></a><span class="lineno"> 1771</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; iterations; ++i ) {</div>
-<div class="line"><a name="l01772"></a><span class="lineno"> 1772</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> use = ( i % numel );</div>
-<div class="line"><a name="l01773"></a><span class="lineno"> 1773</span>&#160;</div>
+<div class="line"><a name="l01771"></a><span class="lineno"> 1771</span>&#160;    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )-&gt;setPreemptiveUnloading ( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l01772"></a><span class="lineno"> 1772</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; iterations; ++i ) {</div>
+<div class="line"><a name="l01773"></a><span class="lineno"> 1773</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> use = ( i % numel );</div>
 <div class="line"><a name="l01774"></a><span class="lineno"> 1774</span>&#160;</div>
-<div class="line"><a name="l01775"></a><span class="lineno"> 1775</span>&#160;        <span class="comment">//Important: First say what you will use, then say, what you will use next!</span></div>
-<div class="line"><a name="l01776"></a><span class="lineno"> 1776</span>&#160;        high_resolution_clock::time_point t0 = high_resolution_clock::now();</div>
-<div class="line"><a name="l01777"></a><span class="lineno"> 1777</span>&#160;        adhereTo&lt;char&gt; glue ( ptr[use] );</div>
-<div class="line"><a name="l01778"></a><span class="lineno"> 1778</span>&#160;        high_resolution_clock::time_point t1 = high_resolution_clock::now();</div>
-<div class="line"><a name="l01779"></a><span class="lineno"> 1779</span>&#160;        <span class="keywordtype">char</span> *loc = glue; <span class="comment">//Actually use the stuff.</span></div>
-<div class="line"><a name="l01780"></a><span class="lineno"> 1780</span>&#160;        high_resolution_clock::time_point t2 = high_resolution_clock::now();</div>
-<div class="line"><a name="l01781"></a><span class="lineno"> 1781</span>&#160;</div>
-<div class="line"><a name="l01782"></a><span class="lineno"> 1782</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> r = 0; r &lt; rewritetimes * bytesize; r++ ) {</div>
-<div class="line"><a name="l01783"></a><span class="lineno"> 1783</span>&#160;            loc[r % bytesize] = r * i;</div>
-<div class="line"><a name="l01784"></a><span class="lineno"> 1784</span>&#160;        }</div>
-<div class="line"><a name="l01785"></a><span class="lineno"> 1785</span>&#160;        high_resolution_clock::time_point t3 = high_resolution_clock::now();</div>
-<div class="line"><a name="l01786"></a><span class="lineno"> 1786</span>&#160;</div>
-<div class="line"><a name="l01787"></a><span class="lineno"> 1787</span>&#160;        std::chrono::duration&lt;double&gt; setuse = duration_cast&lt;duration&lt;double&gt;&gt; ( t1 - t0 );;</div>
-<div class="line"><a name="l01788"></a><span class="lineno"> 1788</span>&#160;        std::chrono::duration&lt;double&gt; preparet = duration_cast&lt;duration&lt;double&gt;&gt; ( t2 - t1 );</div>
-<div class="line"><a name="l01789"></a><span class="lineno"> 1789</span>&#160;        std::chrono::duration&lt;double&gt; calc = duration_cast&lt;duration&lt;double&gt;&gt; ( t3 - t2 );</div>
-<div class="line"><a name="l01790"></a><span class="lineno"> 1790</span>&#160;        <span class="keywordflow">if</span> ( load &lt; 0 ) {</div>
-<div class="line"><a name="l01791"></a><span class="lineno"> 1791</span>&#160;            rewritetimes *= ( preparet + setuse ) &gt; calc ? 1.01 : .99;</div>
-<div class="line"><a name="l01792"></a><span class="lineno"> 1792</span>&#160;        }</div>
-<div class="line"><a name="l01793"></a><span class="lineno"> 1793</span>&#160;</div>
-<div class="line"><a name="l01794"></a><span class="lineno"> 1794</span>&#160;        allSetuse2 += setuse;</div>
-<div class="line"><a name="l01795"></a><span class="lineno"> 1795</span>&#160;        allPrepare2 += preparet;</div>
-<div class="line"><a name="l01796"></a><span class="lineno"> 1796</span>&#160;        allCalc2 += calc;</div>
-<div class="line"><a name="l01797"></a><span class="lineno"> 1797</span>&#160;    }</div>
-<div class="line"><a name="l01798"></a><span class="lineno"> 1798</span>&#160;</div>
+<div class="line"><a name="l01775"></a><span class="lineno"> 1775</span>&#160;</div>
+<div class="line"><a name="l01776"></a><span class="lineno"> 1776</span>&#160;        <span class="comment">//Important: First say what you will use, then say, what you will use next!</span></div>
+<div class="line"><a name="l01777"></a><span class="lineno"> 1777</span>&#160;        high_resolution_clock::time_point t0 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01778"></a><span class="lineno"> 1778</span>&#160;        adhereTo&lt;char&gt; glue ( ptr[use] );</div>
+<div class="line"><a name="l01779"></a><span class="lineno"> 1779</span>&#160;        high_resolution_clock::time_point t1 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01780"></a><span class="lineno"> 1780</span>&#160;        <span class="keywordtype">char</span> *loc = glue; <span class="comment">//Actually use the stuff.</span></div>
+<div class="line"><a name="l01781"></a><span class="lineno"> 1781</span>&#160;        high_resolution_clock::time_point t2 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01782"></a><span class="lineno"> 1782</span>&#160;</div>
+<div class="line"><a name="l01783"></a><span class="lineno"> 1783</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> r = 0; r &lt; rewritetimes * bytesize; r++ ) {</div>
+<div class="line"><a name="l01784"></a><span class="lineno"> 1784</span>&#160;            loc[r % bytesize] = r * i;</div>
+<div class="line"><a name="l01785"></a><span class="lineno"> 1785</span>&#160;        }</div>
+<div class="line"><a name="l01786"></a><span class="lineno"> 1786</span>&#160;        high_resolution_clock::time_point t3 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01787"></a><span class="lineno"> 1787</span>&#160;</div>
+<div class="line"><a name="l01788"></a><span class="lineno"> 1788</span>&#160;        std::chrono::duration&lt;double&gt; setuse = duration_cast&lt;duration&lt;double&gt;&gt; ( t1 - t0 );;</div>
+<div class="line"><a name="l01789"></a><span class="lineno"> 1789</span>&#160;        std::chrono::duration&lt;double&gt; preparet = duration_cast&lt;duration&lt;double&gt;&gt; ( t2 - t1 );</div>
+<div class="line"><a name="l01790"></a><span class="lineno"> 1790</span>&#160;        std::chrono::duration&lt;double&gt; calc = duration_cast&lt;duration&lt;double&gt;&gt; ( t3 - t2 );</div>
+<div class="line"><a name="l01791"></a><span class="lineno"> 1791</span>&#160;        <span class="keywordflow">if</span> ( load &lt; 0 ) {</div>
+<div class="line"><a name="l01792"></a><span class="lineno"> 1792</span>&#160;            rewritetimes *= ( preparet + setuse ) &gt; calc ? 1.01 : .99;</div>
+<div class="line"><a name="l01793"></a><span class="lineno"> 1793</span>&#160;        }</div>
+<div class="line"><a name="l01794"></a><span class="lineno"> 1794</span>&#160;</div>
+<div class="line"><a name="l01795"></a><span class="lineno"> 1795</span>&#160;        allSetuse2 += setuse;</div>
+<div class="line"><a name="l01796"></a><span class="lineno"> 1796</span>&#160;        allPrepare2 += preparet;</div>
+<div class="line"><a name="l01797"></a><span class="lineno"> 1797</span>&#160;        allCalc2 += calc;</div>
+<div class="line"><a name="l01798"></a><span class="lineno"> 1798</span>&#160;    }</div>
 <div class="line"><a name="l01799"></a><span class="lineno"> 1799</span>&#160;</div>
 <div class="line"><a name="l01800"></a><span class="lineno"> 1800</span>&#160;</div>
 <div class="line"><a name="l01801"></a><span class="lineno"> 1801</span>&#160;</div>
-<div class="line"><a name="l01802"></a><span class="lineno"> 1802</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allSetuse2 );</div>
-<div class="line"><a name="l01803"></a><span class="lineno"> 1803</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allPrepare2 );</div>
-<div class="line"><a name="l01804"></a><span class="lineno"> 1804</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allCalc2 );</div>
-<div class="line"><a name="l01805"></a><span class="lineno"> 1805</span>&#160;</div>
-<div class="line"><a name="l01806"></a><span class="lineno"> 1806</span>&#160;}</div>
-<div class="line"><a name="l01807"></a><span class="lineno"> 1807</span>&#160;<span class="keywordtype">string</span> measurePreemptiveSpeedupTest::generateMyGnuplotPlotPart ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;file , <span class="keywordtype">int</span> paramColumn )</div>
-<div class="line"><a name="l01808"></a><span class="lineno"> 1808</span>&#160;{</div>
-<div class="line"><a name="l01809"></a><span class="lineno"> 1809</span>&#160;    stringstream ss;</div>
-<div class="line"><a name="l01810"></a><span class="lineno"> 1810</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;plot &#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:3 with lines title \&quot;SetUse\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l01811"></a><span class="lineno"> 1811</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:4 with lines title \&quot;Prepare\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l01812"></a><span class="lineno"> 1812</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:5 with lines title \&quot;Calculation\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l01813"></a><span class="lineno"> 1813</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:(100-($5*100/($3+$4+$5))) with lines title \&quot;idle time in \%\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l01814"></a><span class="lineno"> 1814</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:($3+$4+$5) with lines title \&quot;Total\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l01815"></a><span class="lineno"> 1815</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:6 with lines title \&quot;SetUse*\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l01816"></a><span class="lineno"> 1816</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:7 with lines title \&quot;Prepare*\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l01817"></a><span class="lineno"> 1817</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:8 with lines title \&quot;Calculation*\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l01818"></a><span class="lineno"> 1818</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:(100-($8*100/($6+$7+$8))) with lines title \&quot;idle time* in \%\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l01819"></a><span class="lineno"> 1819</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:($6+$7+$8) with lines title \&quot;Total*\&quot;&quot;</span>;</div>
-<div class="line"><a name="l01820"></a><span class="lineno"> 1820</span>&#160;    <span class="keywordflow">return</span> ss.str();</div>
-<div class="line"><a name="l01821"></a><span class="lineno"> 1821</span>&#160;}</div>
+<div class="line"><a name="l01802"></a><span class="lineno"> 1802</span>&#160;</div>
+<div class="line"><a name="l01803"></a><span class="lineno"> 1803</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allSetuse2 );</div>
+<div class="line"><a name="l01804"></a><span class="lineno"> 1804</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allPrepare2 );</div>
+<div class="line"><a name="l01805"></a><span class="lineno"> 1805</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allCalc2 );</div>
+<div class="line"><a name="l01806"></a><span class="lineno"> 1806</span>&#160;</div>
+<div class="line"><a name="l01807"></a><span class="lineno"> 1807</span>&#160;}</div>
+<div class="line"><a name="l01808"></a><span class="lineno"> 1808</span>&#160;<span class="keywordtype">string</span> measurePreemptiveSpeedupTest::generateMyGnuplotPlotPart ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;file , <span class="keywordtype">int</span> paramColumn )</div>
+<div class="line"><a name="l01809"></a><span class="lineno"> 1809</span>&#160;{</div>
+<div class="line"><a name="l01810"></a><span class="lineno"> 1810</span>&#160;    stringstream ss;</div>
+<div class="line"><a name="l01811"></a><span class="lineno"> 1811</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;plot &#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:3 with lines title \&quot;adhereTo&lt;&gt;\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01812"></a><span class="lineno"> 1812</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:4 with lines title \&quot;type *ptr = glue\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01813"></a><span class="lineno"> 1813</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:5 with lines title \&quot;Calculation\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01814"></a><span class="lineno"> 1814</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:(100-($5*100/($3+$4+$5))) with lines title \&quot;idle time in \%\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01815"></a><span class="lineno"> 1815</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:($3+$4+$5) with lines title \&quot;Total\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01816"></a><span class="lineno"> 1816</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:6 with lines lt 0 lc 1 title \&quot;adhereTo&lt;&gt; *\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01817"></a><span class="lineno"> 1817</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:7 with lines lt 0 lc 2 title \&quot;type *ptr = glue *\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01818"></a><span class="lineno"> 1818</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:8 with lines lt 0 lc 3 title \&quot;Calculation*\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01819"></a><span class="lineno"> 1819</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:(100-($8*100/($6+$7+$8))) with lines lt 0 lc 4 title \&quot;idle time* in \%\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01820"></a><span class="lineno"> 1820</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:($6+$7+$8) with lines lt 0 lc 5 title \&quot;Total*\&quot;&quot;</span>;</div>
+<div class="line"><a name="l01821"></a><span class="lineno"> 1821</span>&#160;    <span class="keywordflow">return</span> ss.str();</div>
+<div class="line"><a name="l01822"></a><span class="lineno"> 1822</span>&#160;}</div>
+<div class="line"><a name="l01823"></a><span class="lineno"> 1823</span>&#160;</div>
+<div class="line"><a name="l01824"></a><span class="lineno"> 1824</span>&#160;<a class="code" href="a00071.html#a26ae4c36275297208e567385c2f52d9c">TESTSTATICS</a> ( measureExplicitAsyncSpeedupTest, <span class="stringliteral">&quot;Measures throughput under load&quot;</span> );</div>
+<div class="line"><a name="l01825"></a><span class="lineno"> 1825</span>&#160;</div>
+<div class="line"><a name="l01826"></a><span class="lineno"> 1826</span>&#160;measureExplicitAsyncSpeedupTest::measureExplicitAsyncSpeedupTest() : <a class="code" href="a00021.html">performanceTest</a>&lt;int, int&gt; ( <span class="stringliteral">&quot;measureExplicitAsyncSpeedup&quot;</span> )</div>
+<div class="line"><a name="l01827"></a><span class="lineno"> 1827</span>&#160;{</div>
+<div class="line"><a name="l01828"></a><span class="lineno"> 1828</span>&#160;    TESTPARAM ( 1, 1024, 1024000, 20, <span class="keyword">true</span>, 102400, <span class="stringliteral">&quot;Byte size per used chunk&quot;</span> );</div>
+<div class="line"><a name="l01829"></a><span class="lineno"> 1829</span>&#160;    TESTPARAM ( 2, 1, 200, 20, <span class="keyword">true</span>, 100, <span class="stringliteral">&quot;percentage of array that will be written to&quot;</span> );</div>
+<div class="line"><a name="l01830"></a><span class="lineno"> 1830</span>&#160;    plotParts = vector&lt;string&gt; ( {<span class="stringliteral">&quot;Set Use&quot;</span>, <span class="stringliteral">&quot;Perpare&quot;</span>, <span class="stringliteral">&quot;Calculation&quot;</span>} );</div>
+<div class="line"><a name="l01831"></a><span class="lineno"> 1831</span>&#160;}</div>
+<div class="line"><a name="l01832"></a><span class="lineno"> 1832</span>&#160;</div>
+<div class="line"><a name="l01834"></a><span class="lineno"> 1834</span>&#160;<span class="keywordtype">void</span> measureExplicitAsyncSpeedupTest::actualTestMethod ( <a class="code" href="a00028.html">tester</a> &amp;test, <span class="keywordtype">int</span> bytesize , <span class="keywordtype">int</span> load )</div>
+<div class="line"><a name="l01835"></a><span class="lineno"> 1835</span>&#160;{</div>
+<div class="line"><a name="l01836"></a><span class="lineno"> 1836</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> numel = 1024;</div>
+<div class="line"><a name="l01837"></a><span class="lineno"> 1837</span>&#160;    <a class="code" href="a00093.html#ad02508d72047bc55a38eda857e4816c1">rambrainglobals::config</a>.<a class="code" href="a00024.html#a55f24943ba147e71eee649812bec31e3">resizeMemory</a> ( numel / 2 * bytesize );</div>
+<div class="line"><a name="l01838"></a><span class="lineno"> 1838</span>&#160;    <a class="code" href="a00093.html#ad02508d72047bc55a38eda857e4816c1">rambrainglobals::config</a>.<a class="code" href="a00024.html#a33b6e5764cb838b06e0cb624f47bdf67">resizeSwap</a> ( numel * bytesize );</div>
+<div class="line"><a name="l01839"></a><span class="lineno"> 1839</span>&#160;</div>
+<div class="line"><a name="l01840"></a><span class="lineno"> 1840</span>&#160;    managedPtr&lt;managedPtr&lt;char&gt;&gt; arr ( numel, bytesize );</div>
+<div class="line"><a name="l01841"></a><span class="lineno"> 1841</span>&#160;    ADHERETOLOC ( managedPtr&lt;char&gt;, arr, ptr );</div>
+<div class="line"><a name="l01842"></a><span class="lineno"> 1842</span>&#160;</div>
+<div class="line"><a name="l01843"></a><span class="lineno"> 1843</span>&#160;    <span class="keywordtype">float</span> rewritetimes = load &lt; 0 ? 1 : ( float ) load / 100.;</div>
+<div class="line"><a name="l01844"></a><span class="lineno"> 1844</span>&#160;    <span class="keywordtype">int</span> iterations = 10230;</div>
+<div class="line"><a name="l01845"></a><span class="lineno"> 1845</span>&#160;</div>
+<div class="line"><a name="l01846"></a><span class="lineno"> 1846</span>&#160;</div>
+<div class="line"><a name="l01847"></a><span class="lineno"> 1847</span>&#160;</div>
+<div class="line"><a name="l01848"></a><span class="lineno"> 1848</span>&#160;    std::chrono::duration&lt;double&gt; allSetuse ( 0 );</div>
+<div class="line"><a name="l01849"></a><span class="lineno"> 1849</span>&#160;    std::chrono::duration&lt;double&gt; allPrepare ( 0 );</div>
+<div class="line"><a name="l01850"></a><span class="lineno"> 1850</span>&#160;    std::chrono::duration&lt;double&gt; allCalc ( 0 );</div>
+<div class="line"><a name="l01851"></a><span class="lineno"> 1851</span>&#160;</div>
+<div class="line"><a name="l01852"></a><span class="lineno"> 1852</span>&#160;    <span class="keyword">using namespace </span>std::chrono;</div>
+<div class="line"><a name="l01853"></a><span class="lineno"> 1853</span>&#160;    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )-&gt;setPreemptiveLoading ( <span class="keyword">true</span> );</div>
+<div class="line"><a name="l01854"></a><span class="lineno"> 1854</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; iterations; ++i ) {</div>
+<div class="line"><a name="l01855"></a><span class="lineno"> 1855</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> use = ( i % numel );</div>
+<div class="line"><a name="l01856"></a><span class="lineno"> 1856</span>&#160;</div>
+<div class="line"><a name="l01857"></a><span class="lineno"> 1857</span>&#160;</div>
+<div class="line"><a name="l01858"></a><span class="lineno"> 1858</span>&#160;        <span class="comment">//Important: First say what you will use, then say, what you will use next!</span></div>
+<div class="line"><a name="l01859"></a><span class="lineno"> 1859</span>&#160;        high_resolution_clock::time_point t0 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01860"></a><span class="lineno"> 1860</span>&#160;        adhereTo&lt;char&gt; glue ( ptr[use] );</div>
+<div class="line"><a name="l01861"></a><span class="lineno"> 1861</span>&#160;        high_resolution_clock::time_point t1 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01862"></a><span class="lineno"> 1862</span>&#160;        <span class="keywordtype">char</span> *loc = glue; <span class="comment">//Actually use the stuff.</span></div>
+<div class="line"><a name="l01863"></a><span class="lineno"> 1863</span>&#160;        high_resolution_clock::time_point t2 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01864"></a><span class="lineno"> 1864</span>&#160;</div>
+<div class="line"><a name="l01865"></a><span class="lineno"> 1865</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> r = 0; r &lt; rewritetimes * bytesize; r++ ) {</div>
+<div class="line"><a name="l01866"></a><span class="lineno"> 1866</span>&#160;            loc[r % bytesize] = r * i;</div>
+<div class="line"><a name="l01867"></a><span class="lineno"> 1867</span>&#160;        }</div>
+<div class="line"><a name="l01868"></a><span class="lineno"> 1868</span>&#160;        high_resolution_clock::time_point t3 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01869"></a><span class="lineno"> 1869</span>&#160;</div>
+<div class="line"><a name="l01870"></a><span class="lineno"> 1870</span>&#160;        std::chrono::duration&lt;double&gt; setuse = duration_cast&lt;duration&lt;double&gt;&gt; ( t1 - t0 );;</div>
+<div class="line"><a name="l01871"></a><span class="lineno"> 1871</span>&#160;        std::chrono::duration&lt;double&gt; preparet = duration_cast&lt;duration&lt;double&gt;&gt; ( t2 - t1 );</div>
+<div class="line"><a name="l01872"></a><span class="lineno"> 1872</span>&#160;        std::chrono::duration&lt;double&gt; calc = duration_cast&lt;duration&lt;double&gt;&gt; ( t3 - t2 );</div>
+<div class="line"><a name="l01873"></a><span class="lineno"> 1873</span>&#160;        <span class="keywordflow">if</span> ( load &lt; 0 ) {</div>
+<div class="line"><a name="l01874"></a><span class="lineno"> 1874</span>&#160;            rewritetimes *= ( preparet + setuse ) &gt; calc ? 1.01 : .99;</div>
+<div class="line"><a name="l01875"></a><span class="lineno"> 1875</span>&#160;        }</div>
+<div class="line"><a name="l01876"></a><span class="lineno"> 1876</span>&#160;</div>
+<div class="line"><a name="l01877"></a><span class="lineno"> 1877</span>&#160;        allSetuse += setuse;</div>
+<div class="line"><a name="l01878"></a><span class="lineno"> 1878</span>&#160;        allPrepare += preparet;</div>
+<div class="line"><a name="l01879"></a><span class="lineno"> 1879</span>&#160;        allCalc += calc;</div>
+<div class="line"><a name="l01880"></a><span class="lineno"> 1880</span>&#160;    }</div>
+<div class="line"><a name="l01881"></a><span class="lineno"> 1881</span>&#160;</div>
+<div class="line"><a name="l01882"></a><span class="lineno"> 1882</span>&#160;</div>
+<div class="line"><a name="l01883"></a><span class="lineno"> 1883</span>&#160;</div>
+<div class="line"><a name="l01884"></a><span class="lineno"> 1884</span>&#160;</div>
+<div class="line"><a name="l01885"></a><span class="lineno"> 1885</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allSetuse );</div>
+<div class="line"><a name="l01886"></a><span class="lineno"> 1886</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allPrepare );</div>
+<div class="line"><a name="l01887"></a><span class="lineno"> 1887</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allCalc );</div>
+<div class="line"><a name="l01888"></a><span class="lineno"> 1888</span>&#160;</div>
+<div class="line"><a name="l01889"></a><span class="lineno"> 1889</span>&#160;    std::chrono::duration&lt;double&gt; allSetuse2 ( 0 );</div>
+<div class="line"><a name="l01890"></a><span class="lineno"> 1890</span>&#160;    std::chrono::duration&lt;double&gt; allPrepare2 ( 0 );</div>
+<div class="line"><a name="l01891"></a><span class="lineno"> 1891</span>&#160;    std::chrono::duration&lt;double&gt; allCalc2 ( 0 );</div>
+<div class="line"><a name="l01892"></a><span class="lineno"> 1892</span>&#160;    std::chrono::duration&lt;double&gt; allDel ( 0 );</div>
+<div class="line"><a name="l01893"></a><span class="lineno"> 1893</span>&#160;</div>
+<div class="line"><a name="l01894"></a><span class="lineno"> 1894</span>&#160;    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )-&gt;setPreemptiveLoading ( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l01895"></a><span class="lineno"> 1895</span>&#160;    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )-&gt;setPreemptiveUnloading ( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l01896"></a><span class="lineno"> 1896</span>&#160;    adhereTo &lt;char&gt; *adharr[numel];</div>
+<div class="line"><a name="l01897"></a><span class="lineno"> 1897</span>&#160;    adharr[0] = <span class="keyword">new</span> adhereTo&lt;char&gt; ( ptr[0] );</div>
+<div class="line"><a name="l01898"></a><span class="lineno"> 1898</span>&#160;</div>
+<div class="line"><a name="l01899"></a><span class="lineno"> 1899</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; iterations; ++i ) {</div>
+<div class="line"><a name="l01900"></a><span class="lineno"> 1900</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> use = ( i % numel );</div>
+<div class="line"><a name="l01901"></a><span class="lineno"> 1901</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> prepare = ( ( i + 1 ) % numel );</div>
+<div class="line"><a name="l01902"></a><span class="lineno"> 1902</span>&#160;</div>
+<div class="line"><a name="l01903"></a><span class="lineno"> 1903</span>&#160;</div>
+<div class="line"><a name="l01904"></a><span class="lineno"> 1904</span>&#160;        <span class="comment">//Important: First say what you will use, then say, what you will use next!</span></div>
+<div class="line"><a name="l01905"></a><span class="lineno"> 1905</span>&#160;        high_resolution_clock::time_point t0 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01906"></a><span class="lineno"> 1906</span>&#160;        adharr[prepare] = <span class="keyword">new</span> adhereTo&lt;char&gt; ( ptr[prepare] );</div>
+<div class="line"><a name="l01907"></a><span class="lineno"> 1907</span>&#160;        high_resolution_clock::time_point t1 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01908"></a><span class="lineno"> 1908</span>&#160;        <span class="keywordtype">char</span> *loc = *adharr[use]; <span class="comment">//Actually use the stuff.</span></div>
+<div class="line"><a name="l01909"></a><span class="lineno"> 1909</span>&#160;        high_resolution_clock::time_point t2 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01910"></a><span class="lineno"> 1910</span>&#160;</div>
+<div class="line"><a name="l01911"></a><span class="lineno"> 1911</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> r = 0; r &lt; rewritetimes * bytesize; r++ ) {</div>
+<div class="line"><a name="l01912"></a><span class="lineno"> 1912</span>&#160;            loc[r % bytesize] = r * i;</div>
+<div class="line"><a name="l01913"></a><span class="lineno"> 1913</span>&#160;        }</div>
+<div class="line"><a name="l01914"></a><span class="lineno"> 1914</span>&#160;        high_resolution_clock::time_point t3 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01915"></a><span class="lineno"> 1915</span>&#160;        <span class="keyword">delete</span> adharr[use];</div>
+<div class="line"><a name="l01916"></a><span class="lineno"> 1916</span>&#160;        high_resolution_clock::time_point t4 = high_resolution_clock::now();</div>
+<div class="line"><a name="l01917"></a><span class="lineno"> 1917</span>&#160;        std::chrono::duration&lt;double&gt; setuse = duration_cast&lt;duration&lt;double&gt;&gt; ( t1 - t0 );;</div>
+<div class="line"><a name="l01918"></a><span class="lineno"> 1918</span>&#160;        std::chrono::duration&lt;double&gt; preparet = duration_cast&lt;duration&lt;double&gt;&gt; ( t2 - t1 );</div>
+<div class="line"><a name="l01919"></a><span class="lineno"> 1919</span>&#160;        std::chrono::duration&lt;double&gt; calc = duration_cast&lt;duration&lt;double&gt;&gt; ( t3 - t2 );</div>
+<div class="line"><a name="l01920"></a><span class="lineno"> 1920</span>&#160;        std::chrono::duration&lt;double&gt; del = duration_cast&lt;duration&lt;double&gt;&gt; ( t4 - t3 );</div>
+<div class="line"><a name="l01921"></a><span class="lineno"> 1921</span>&#160;        <span class="keywordflow">if</span> ( load &lt; 0 ) {</div>
+<div class="line"><a name="l01922"></a><span class="lineno"> 1922</span>&#160;            rewritetimes *= ( preparet + setuse ) &gt; calc ? 1.01 : .99;</div>
+<div class="line"><a name="l01923"></a><span class="lineno"> 1923</span>&#160;        }</div>
+<div class="line"><a name="l01924"></a><span class="lineno"> 1924</span>&#160;</div>
+<div class="line"><a name="l01925"></a><span class="lineno"> 1925</span>&#160;        allSetuse2 += setuse;</div>
+<div class="line"><a name="l01926"></a><span class="lineno"> 1926</span>&#160;        allPrepare2 += preparet;</div>
+<div class="line"><a name="l01927"></a><span class="lineno"> 1927</span>&#160;        allCalc2 += calc;</div>
+<div class="line"><a name="l01928"></a><span class="lineno"> 1928</span>&#160;        allDel += del;</div>
+<div class="line"><a name="l01929"></a><span class="lineno"> 1929</span>&#160;    }</div>
+<div class="line"><a name="l01930"></a><span class="lineno"> 1930</span>&#160;</div>
+<div class="line"><a name="l01931"></a><span class="lineno"> 1931</span>&#160;</div>
+<div class="line"><a name="l01932"></a><span class="lineno"> 1932</span>&#160;</div>
+<div class="line"><a name="l01933"></a><span class="lineno"> 1933</span>&#160;</div>
+<div class="line"><a name="l01934"></a><span class="lineno"> 1934</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allSetuse2 );</div>
+<div class="line"><a name="l01935"></a><span class="lineno"> 1935</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allPrepare2 );</div>
+<div class="line"><a name="l01936"></a><span class="lineno"> 1936</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allCalc2 );</div>
+<div class="line"><a name="l01937"></a><span class="lineno"> 1937</span>&#160;    test.<a class="code" href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">addExternalTime</a> ( allDel );</div>
+<div class="line"><a name="l01938"></a><span class="lineno"> 1938</span>&#160;</div>
+<div class="line"><a name="l01939"></a><span class="lineno"> 1939</span>&#160;}</div>
+<div class="line"><a name="l01940"></a><span class="lineno"> 1940</span>&#160;<span class="keywordtype">string</span> measureExplicitAsyncSpeedupTest::generateMyGnuplotPlotPart ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;file , <span class="keywordtype">int</span> paramColumn )</div>
+<div class="line"><a name="l01941"></a><span class="lineno"> 1941</span>&#160;{</div>
+<div class="line"><a name="l01942"></a><span class="lineno"> 1942</span>&#160;    stringstream ss;</div>
+<div class="line"><a name="l01943"></a><span class="lineno"> 1943</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;plot &#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:3 with lines title \&quot;adhereTo&lt;&gt;\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01944"></a><span class="lineno"> 1944</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:4 with lines title \&quot;type *ptr = glue\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01945"></a><span class="lineno"> 1945</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:5 with lines title \&quot;Calculation\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01946"></a><span class="lineno"> 1946</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:(100-($5*100/($3+$4+$5))) with lines title \&quot;idle time in \%\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01947"></a><span class="lineno"> 1947</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:($3+$4+$5) with lines title \&quot;Total\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01948"></a><span class="lineno"> 1948</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:6 with lines lt 0 lc 1 title \&quot;adhereTo&lt;&gt; *\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01949"></a><span class="lineno"> 1949</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:7 with lines lt 0 lc 2 title \&quot;type *ptr = glue *\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01950"></a><span class="lineno"> 1950</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:8 with lines lt 0 lc 3 title \&quot;Calculation*\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01951"></a><span class="lineno"> 1951</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:9 with lines lt 0 lc 3 title \&quot;adhereTo&lt;&gt; deletion*\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01952"></a><span class="lineno"> 1952</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:(100-($8*100/($6+$7+$8+$9))) with lines lt 0 lc 4 title \&quot;idle time* in \%\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l01953"></a><span class="lineno"> 1953</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:($6+$7+$8+$9) with lines lt 0 lc 5 title \&quot;Total*\&quot;&quot;</span>;</div>
+<div class="line"><a name="l01954"></a><span class="lineno"> 1954</span>&#160;    <span class="keywordflow">return</span> ss.str();</div>
+<div class="line"><a name="l01955"></a><span class="lineno"> 1955</span>&#160;}</div>
 <div class="ttc" id="a00028_html_a01d742f1f0fe5d55766cb3c256b999d7"><div class="ttname"><a href="a00028.html#a01d742f1f0fe5d55766cb3c256b999d7">tester::addTimeMeasurement</a></div><div class="ttdeci">void addTimeMeasurement()</div><div class="ttdoc">Saves the current timestamp. </div><div class="ttdef"><b>Definition:</b> <a href="a00081_source.html#l00036">tester.cpp:36</a></div></div>
 <div class="ttc" id="a00092_html_a8526efa365cdb0cb597351c2671af168"><div class="ttname"><a href="a00092.html#a8526efa365cdb0cb597351c2671af168">rambrain::mib</a></div><div class="ttdeci">const global_bytesize mib</div><div class="ttdef"><b>Definition:</b> <a href="a00034_source.html#l00060">common.h:60</a></div></div>
 <div class="ttc" id="a00028_html_a67a7cd03f1356bb3e5c1cef32fded3e4"><div class="ttname"><a href="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4">tester::addExternalTime</a></div><div class="ttdeci">void addExternalTime(std::chrono::duration&lt; double &gt;)</div><div class="ttdoc">Add a duration to the timing list. </div><div class="ttdef"><b>Definition:</b> <a href="a00081_source.html#l00045">tester.cpp:45</a></div></div>
@@ -1955,7 +2088,7 @@ $(document).ready(function(){initNavTree('a00071_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00071.html">performanceTestClasses.cpp</a></li>
-    <li class="footer">Generated on Wed Aug 5 2015 01:04:57 for rambrain by
+    <li class="footer">Generated on Thu Aug 6 2015 01:05:53 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

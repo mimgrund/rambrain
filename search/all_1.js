@@ -7,7 +7,7 @@ var searchData=
   ['addparameter',['addParameter',['../a00028.html#a1a61f18468c143dbd7c18c599fc1b695',1,'tester']]],
   ['addtimemeasurement',['addTimeMeasurement',['../a00028.html#a01d742f1f0fe5d55766cb3c256b999d7',1,'tester']]],
   ['adhereto',['adhereTo',['../a00001.html',1,'rambrain']]],
-  ['adhereto',['adhereTo',['../a00017.html#a9f095e8e7b098019dd5a80fe57bc2d68',1,'rambrain::managedPtr::adhereTo()'],['../a00001.html#a0cc6fda5677ecda5c6b367e863e27b3e',1,'rambrain::adhereTo::adhereTo(const adhereTo&lt; T &gt; &amp;ref)'],['../a00001.html#a4e7101411cd04f2558259a2e725de175',1,'rambrain::adhereTo::adhereTo(const managedPtr&lt; T &gt; &amp;data, bool loadImidiately=false)']]],
+  ['adhereto',['adhereTo',['../a00017.html#a9f095e8e7b098019dd5a80fe57bc2d68',1,'rambrain::managedPtr::adhereTo()'],['../a00001.html#a0cc6fda5677ecda5c6b367e863e27b3e',1,'rambrain::adhereTo::adhereTo(const adhereTo&lt; T &gt; &amp;ref)'],['../a00001.html#aa01b94bcd8dc60948dc01435f798419b',1,'rambrain::adhereTo::adhereTo(const managedPtr&lt; T &gt; &amp;data, bool loadImidiately=true)']]],
   ['adheretoconst',['adhereToConst',['../a00017.html#a707a18d5c07014e1cc68a52d519204ff',1,'rambrain::managedPtr']]],
   ['aio',['aio',['../a00002.html#a84e1e9e1423f48e05d0ff6f80ac9e176',1,'rambrain::aiotracker']]],
   ['aio_5fcontext',['aio_context',['../a00014.html#a74e0f3fbe643926c0eb1b81ae7671f97',1,'rambrain::managedFileSwap']]],

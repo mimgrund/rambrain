@@ -206,6 +206,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aab63949c5a3fd590e39d9e15dace8c2d inherit pub_methods_a00015"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#aab63949c5a3fd590e39d9e15dace8c2d">resetSwapstats</a> ()</td></tr>
 <tr class="memdesc:aab63949c5a3fd590e39d9e15dace8c2d inherit pub_methods_a00015"><td class="mdescLeft">&#160;</td><td class="mdescRight">reset statistic about the number, size and efficiency of swapping actions  <a href="#aab63949c5a3fd590e39d9e15dace8c2d">More...</a><br /></td></tr>
 <tr class="separator:aab63949c5a3fd590e39d9e15dace8c2d inherit pub_methods_a00015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24e3c85157bebe35c89e2140c17b4eae inherit pub_methods_a00015"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#a24e3c85157bebe35c89e2140c17b4eae">getHitsOverMisses</a> ()</td></tr>
+<tr class="memdesc:a24e3c85157bebe35c89e2140c17b4eae inherit pub_methods_a00015"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns current hits over misses rate for accessing elements.  <a href="#a24e3c85157bebe35c89e2140c17b4eae">More...</a><br /></td></tr>
+<tr class="separator:a24e3c85157bebe35c89e2140c17b4eae inherit pub_methods_a00015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42267ac7844983eb482c1b06830e1a83 inherit pub_methods_a00015"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#a42267ac7844983eb482c1b06830e1a83">getTotalSwappedOutBytes</a> ()</td></tr>
+<tr class="memdesc:a42267ac7844983eb482c1b06830e1a83 inherit pub_methods_a00015"><td class="mdescLeft">&#160;</td><td class="mdescRight">simple Getter  <a href="#a42267ac7844983eb482c1b06830e1a83">More...</a><br /></td></tr>
+<tr class="separator:a42267ac7844983eb482c1b06830e1a83 inherit pub_methods_a00015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a534cdc10b393a77345f7a3563dee14f2 inherit pub_methods_a00015"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html#a534cdc10b393a77345f7a3563dee14f2">getTotalSwappedInBytes</a> ()</td></tr>
+<tr class="memdesc:a534cdc10b393a77345f7a3563dee14f2 inherit pub_methods_a00015"><td class="mdescLeft">&#160;</td><td class="mdescRight">simple Getter  <a href="#a534cdc10b393a77345f7a3563dee14f2">More...</a><br /></td></tr>
+<tr class="separator:a534cdc10b393a77345f7a3563dee14f2 inherit pub_methods_a00015"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -238,7 +247,7 @@ Private Attributes</h2></td></tr>
 <tr class="separator:aa6463fe9fd7f3ee56f21c17800111aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e623a0be8e856393b4c9d2e85f3a0f3"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a0e623a0be8e856393b4c9d2e85f3a0f3">swapInFrac</a> = .9</td></tr>
 <tr class="separator:a0e623a0be8e856393b4c9d2e85f3a0f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab171eb81dd802f9f85647574715bad41"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#ab171eb81dd802f9f85647574715bad41">preemtiveSwapIn</a> = false</td></tr>
+<tr class="memitem:ab171eb81dd802f9f85647574715bad41"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#ab171eb81dd802f9f85647574715bad41">preemtiveSwapIn</a> = true</td></tr>
 <tr class="separator:ab171eb81dd802f9f85647574715bad41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5024204ad3c4679c48c8f34d2c40075"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#ae5024204ad3c4679c48c8f34d2c40075">preemtiveSwapOut</a> = true</td></tr>
 <tr class="separator:ae5024204ad3c4679c48c8f34d2c40075"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -409,7 +418,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00040">40</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00041">41</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -434,7 +443,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00691">691</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00833">833</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -455,7 +464,7 @@ Additional Inherited Members</h2></td></tr>
 <p>checks whether the scheduler believes to be sane and prints an error message if not </p>
 <dl class="section return"><dt>Returns</dt><dd>true if sane, false if not </dd></dl>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00332">332</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00459">459</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -474,7 +483,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>prints out all elements known to the scheduler with their respective status </p>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00405">405</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00532">532</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -493,7 +502,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>prints out current memory usage </p>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00182">182</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00183">183</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -523,7 +532,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="a00015.html#a9d67620e215f59f9656bdf2f934b9f3e">rambrain::managedMemory</a>.</p>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00073">73</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00074">74</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -553,7 +562,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="a00015.html#ad0f1191e8bcedb261b7464d1bcd5b620">rambrain::managedMemory</a>.</p>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00045">45</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00046">46</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -581,7 +590,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>not thread-safe - does not make sense to call it from different threads anyway </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>previous value </dd></dl>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00168">168</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00169">169</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -609,7 +618,7 @@ Additional Inherited Members</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>not thread-safe - does not make sense to call it from different threads anyway </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>previous value </dd></dl>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00175">175</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00176">176</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -640,7 +649,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="a00015.html#ada713f6703025aa077f28f67971c2443">rambrain::managedMemory</a>.</p>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00189">189</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00190">190</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -668,10 +677,11 @@ Additional Inherited Members</h2></td></tr>
 
 <p>cyclic implementation of swapOut, see paper </p>
 <dl class="section note"><dt>Note</dt><dd>protect call to swapIn by topologicalMutex </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="a00097.html#_todo000001">Todo:</a></b></dt><dd>investigate if subtracting swapped out preemptive bytes is affecting \ </dd></dl>
 
 <p>Implements <a class="el" href="a00015.html#aab9561e5aa8cc910a85e26f55d843347">rambrain::managedMemory</a>.</p>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00458">458</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00593">593</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -701,7 +711,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="a00015.html#ac90bb2829eefb03bcfdb54f3e7657bc1">rambrain::managedMemory</a>.</p>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00116">116</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00117">117</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -731,7 +741,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="a00015.html#a759831ace6eba2ca77cd11493050c126">rambrain::managedMemory</a>.</p>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00315">315</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00037_source.html#l00442">442</a> of file <a class="el" href="a00037_source.html">cyclicManagedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -854,7 +864,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool rambrain::cyclicManagedMemory::preemtiveSwapIn = false</td>
+          <td class="memname">bool rambrain::cyclicManagedMemory::preemtiveSwapIn = true</td>
         </tr>
       </table>
   </td>
@@ -944,7 +954,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a00092.html">rambrain</a></li><li class="navelem"><a class="el" href="a00008.html">cyclicManagedMemory</a></li>
-    <li class="footer">Generated on Wed Aug 5 2015 01:05:04 for rambrain by
+    <li class="footer">Generated on Thu Aug 6 2015 01:05:55 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

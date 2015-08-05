@@ -2,7 +2,7 @@ var searchData=
 [
   ['main',['main',['../a00066.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;allTests.cpp'],['../a00067.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;configTest.cpp'],['../a00068.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;integrationTests.cpp'],['../a00069.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;memeater.cpp'],['../a00070.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;mpitest.cpp'],['../a00073.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;performanceTests.cpp'],['../a00075.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;performanceTestsWrapper.cpp'],['../a00090.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'main(int argc, char **argv):&#160;unitTests.cpp']]],
   ['manageddummyswap',['managedDummySwap',['../a00013.html',1,'rambrain']]],
-  ['manageddummyswap',['managedDummySwap',['../a00013.html#a9bebce00e8e8a69acae98feb30c50530',1,'rambrain::managedDummySwap']]],
+  ['manageddummyswap',['managedDummySwap',['../a00015.html#afc2eae7d63704cb9c8f9efd2606dd258',1,'rambrain::managedMemory::managedDummySwap()'],['../a00013.html#a9bebce00e8e8a69acae98feb30c50530',1,'rambrain::managedDummySwap::managedDummySwap()']]],
   ['manageddummyswap_2ecpp',['managedDummySwap.cpp',['../a00044.html',1,'']]],
   ['manageddummyswap_2eh',['managedDummySwap.h',['../a00045.html',1,'']]],
   ['managedfileswap',['managedFileSwap',['../a00014.html',1,'rambrain']]],

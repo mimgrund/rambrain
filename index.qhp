@@ -31,7 +31,7 @@
                   <section title="rambrainConfig" ref="a00024.html#adf79cce9ad6dde113f1a25c7f28978cc" />
                   <section title="~rambrainConfig" ref="a00024.html#a50356f5e6333c5094970bf201bcca578" />
                   <section title="clean" ref="a00024.html#a3e4485000b2a061fb75d85f68d06017d" />
-                  <section title="getConfig" ref="a00024.html#abbb82ee852a4cc6eb22d6a9b8115fac7" />
+                  <section title="getConfig" ref="a00024.html#aa7f91003d897ef82e6b255c4affb9f00" />
                   <section title="init" ref="a00024.html#a8e0134e8c212da14a0fb6b60611ee2d7" />
                   <section title="reinit" ref="a00024.html#ad149f44c7ec45aa83d741fd0a08e7811" />
                   <section title="resizeMemory" ref="a00024.html#a55f24943ba147e71eee649812bec31e3" />
@@ -44,7 +44,7 @@
               </section>
               <section title="adhereTo" ref="a00001.html">
                 <section title="adhereTo" ref="a00001.html#a0cc6fda5677ecda5c6b367e863e27b3e" />
-                <section title="adhereTo" ref="a00001.html#a4e7101411cd04f2558259a2e725de175" />
+                <section title="adhereTo" ref="a00001.html#aa01b94bcd8dc60948dc01435f798419b" />
                 <section title="~adhereTo" ref="a00001.html#aa7f09ba9f6f4010a6ecce82ce644a0c1" />
                 <section title="operator const T *" ref="a00001.html#a5fc196105e2f3c180883cadb8c9482b9" />
                 <section title="operator const T *" ref="a00001.html#ade7231943a2d0e397719a4081b8d0c69" />
@@ -54,6 +54,7 @@
                 <section title="::adhereTo_Unit_LoadUnloadConst_Test" ref="a00001.html#a6b848bcb609c606a25cecf236b42ff59" />
                 <section title="::adhereTo_Unit_TwiceAdhered_Test" ref="a00001.html#aede63b93552fafc55cfba340555d0902" />
                 <section title="data" ref="a00001.html#aaa6dbb98a31a73a6bcd7609b9e576a0b" />
+                <section title="loadedImmediately" ref="a00001.html#a87f95dfb98bdeabd44be43ead1122745" />
                 <section title="loadedReadable" ref="a00001.html#ab3e4380b00ff3aeb0223f5ea76855f01" />
                 <section title="loadedWritable" ref="a00001.html#a4aa173fa41b3dd2f9b944f6952de0790" />
               </section>
@@ -84,7 +85,6 @@
                 <section title="configReader" ref="a00005.html#a9eff76380e7fa313604dff234e66b205" />
                 <section title="getApplicationName" ref="a00005.html#aa2aee2bca7966d89aae6d822e829de71" />
                 <section title="getConfig" ref="a00005.html#aa9d982624f5495cdb3af2e4a216f4ecd" />
-                <section title="getConfig" ref="a00005.html#a887dafe3ab4cd8253c076cd6cb349cb0" />
                 <section title="parseConfigBlock" ref="a00005.html#a89ebde62397d8fdda601543eb2eb110a" />
                 <section title="parseConfigFile" ref="a00005.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f" />
                 <section title="readConfig" ref="a00005.html#aafcdc8be421ea3e33248a7abe70dedd9" />
@@ -239,9 +239,12 @@
                 <section title="claimTobefreed" ref="a00015.html#a3c18257ab6113e766cbac0eed0a2c13a" />
                 <section title="claimUsageof" ref="a00015.html#a372ed81183939767d35e295887493e24" />
                 <section title="ensureEnoughSpace" ref="a00015.html#aed33f62ffd38add9f04593cc205d475e" />
+                <section title="getHitsOverMisses" ref="a00015.html#a24e3c85157bebe35c89e2140c17b4eae" />
                 <section title="getMemoryLimit" ref="a00015.html#aea4a0f411615e719685e999a51565f46" />
                 <section title="getNumberOfChildren" ref="a00015.html#a1871ed446f04492704e0bd75b16e5d2a" />
                 <section title="getSwappedMemory" ref="a00015.html#a61d250b65165dd5a6e7e833261295ec2" />
+                <section title="getTotalSwappedInBytes" ref="a00015.html#a534cdc10b393a77345f7a3563dee14f2" />
+                <section title="getTotalSwappedOutBytes" ref="a00015.html#a42267ac7844983eb482c1b06830e1a83" />
                 <section title="getUsedMemory" ref="a00015.html#ab4ed9d5c617b36a14037072291b69ee5" />
                 <section title="linearMfree" ref="a00015.html#ac515fe5cbdc520a70d9512da0ab363ce" />
                 <section title="mfree" ref="a00015.html#a53171b37a59555e66a97606f4aa22e6c" />
@@ -269,10 +272,12 @@
                 <section title="waitForAIO" ref="a00015.html#aefc0e17fcecc8ad92431e3888284006c" />
                 <section title="waitForSwapin" ref="a00015.html#ad8309642f6f8847f5d80b80a0e5a90bc" />
                 <section title="waitForSwapout" ref="a00015.html#aa71bd5c33b1ee3c0e89e672f89c4d3f2" />
+                <section title="::cyclicManagedMemory_Integration_ArrayAccess_Test" ref="a00015.html#a64c14b438f19454bdebd737eddb9e0a6" />
                 <section title="::managedFileSwap_Unit_ManualMultiSwapping_Test" ref="a00015.html#a354aaa505fa382a499838b075f92d0f7" />
                 <section title="::managedFileSwap_Unit_ManualSwapping_Test" ref="a00015.html#a61476c6520b6093ca7003a8b2ee302f6" />
                 <section title="::managedFileSwap_Unit_ManualSwappingDelete_Test" ref="a00015.html#aa0cbd2454408b8ae3b5aca513c07eef0" />
                 <section title="configTestGetSwap" ref="a00015.html#afb585b10243d2574af17f1c6d1e7eec5" />
+                <section title="managedDummySwap" ref="a00015.html#afc2eae7d63704cb9c8f9efd2606dd258" />
                 <section title="managedFileSwap" ref="a00015.html#a7a57555464dec1f54ad14f68749ba2cd" />
                 <section title="managedPtr" ref="a00015.html#a4db9f2403c3411068243fdf0798d43f5" />
                 <section title="managedSwap" ref="a00015.html#ad7a44371743b957ef559f0c1d92f0ed0" />
@@ -645,7 +650,6 @@
                   <section title="configReader" ref="a00005.html#a9eff76380e7fa313604dff234e66b205" />
                   <section title="getApplicationName" ref="a00005.html#aa2aee2bca7966d89aae6d822e829de71" />
                   <section title="getConfig" ref="a00005.html#aa9d982624f5495cdb3af2e4a216f4ecd" />
-                  <section title="getConfig" ref="a00005.html#a887dafe3ab4cd8253c076cd6cb349cb0" />
                   <section title="parseConfigBlock" ref="a00005.html#a89ebde62397d8fdda601543eb2eb110a" />
                   <section title="parseConfigFile" ref="a00005.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f" />
                   <section title="readConfig" ref="a00005.html#aafcdc8be421ea3e33248a7abe70dedd9" />
@@ -892,9 +896,12 @@
                   <section title="claimTobefreed" ref="a00015.html#a3c18257ab6113e766cbac0eed0a2c13a" />
                   <section title="claimUsageof" ref="a00015.html#a372ed81183939767d35e295887493e24" />
                   <section title="ensureEnoughSpace" ref="a00015.html#aed33f62ffd38add9f04593cc205d475e" />
+                  <section title="getHitsOverMisses" ref="a00015.html#a24e3c85157bebe35c89e2140c17b4eae" />
                   <section title="getMemoryLimit" ref="a00015.html#aea4a0f411615e719685e999a51565f46" />
                   <section title="getNumberOfChildren" ref="a00015.html#a1871ed446f04492704e0bd75b16e5d2a" />
                   <section title="getSwappedMemory" ref="a00015.html#a61d250b65165dd5a6e7e833261295ec2" />
+                  <section title="getTotalSwappedInBytes" ref="a00015.html#a534cdc10b393a77345f7a3563dee14f2" />
+                  <section title="getTotalSwappedOutBytes" ref="a00015.html#a42267ac7844983eb482c1b06830e1a83" />
                   <section title="getUsedMemory" ref="a00015.html#ab4ed9d5c617b36a14037072291b69ee5" />
                   <section title="linearMfree" ref="a00015.html#ac515fe5cbdc520a70d9512da0ab363ce" />
                   <section title="mfree" ref="a00015.html#a53171b37a59555e66a97606f4aa22e6c" />
@@ -922,10 +929,12 @@
                   <section title="waitForAIO" ref="a00015.html#aefc0e17fcecc8ad92431e3888284006c" />
                   <section title="waitForSwapin" ref="a00015.html#ad8309642f6f8847f5d80b80a0e5a90bc" />
                   <section title="waitForSwapout" ref="a00015.html#aa71bd5c33b1ee3c0e89e672f89c4d3f2" />
+                  <section title="::cyclicManagedMemory_Integration_ArrayAccess_Test" ref="a00015.html#a64c14b438f19454bdebd737eddb9e0a6" />
                   <section title="::managedFileSwap_Unit_ManualMultiSwapping_Test" ref="a00015.html#a354aaa505fa382a499838b075f92d0f7" />
                   <section title="::managedFileSwap_Unit_ManualSwapping_Test" ref="a00015.html#a61476c6520b6093ca7003a8b2ee302f6" />
                   <section title="::managedFileSwap_Unit_ManualSwappingDelete_Test" ref="a00015.html#aa0cbd2454408b8ae3b5aca513c07eef0" />
                   <section title="configTestGetSwap" ref="a00015.html#afb585b10243d2574af17f1c6d1e7eec5" />
+                  <section title="managedDummySwap" ref="a00015.html#afc2eae7d63704cb9c8f9efd2606dd258" />
                   <section title="managedFileSwap" ref="a00015.html#a7a57555464dec1f54ad14f68749ba2cd" />
                   <section title="managedPtr" ref="a00015.html#a4db9f2403c3411068243fdf0798d43f5" />
                   <section title="managedSwap" ref="a00015.html#ad7a44371743b957ef559f0c1d92f0ed0" />
@@ -986,7 +995,7 @@
               <section title="managedPtr.h" ref="a00053.html">
                 <section title="adhereTo" ref="a00001.html">
                   <section title="adhereTo" ref="a00001.html#a0cc6fda5677ecda5c6b367e863e27b3e" />
-                  <section title="adhereTo" ref="a00001.html#a4e7101411cd04f2558259a2e725de175" />
+                  <section title="adhereTo" ref="a00001.html#aa01b94bcd8dc60948dc01435f798419b" />
                   <section title="~adhereTo" ref="a00001.html#aa7f09ba9f6f4010a6ecce82ce644a0c1" />
                   <section title="operator const T *" ref="a00001.html#a5fc196105e2f3c180883cadb8c9482b9" />
                   <section title="operator const T *" ref="a00001.html#ade7231943a2d0e397719a4081b8d0c69" />
@@ -996,6 +1005,7 @@
                   <section title="::adhereTo_Unit_LoadUnloadConst_Test" ref="a00001.html#a6b848bcb609c606a25cecf236b42ff59" />
                   <section title="::adhereTo_Unit_TwiceAdhered_Test" ref="a00001.html#aede63b93552fafc55cfba340555d0902" />
                   <section title="data" ref="a00001.html#aaa6dbb98a31a73a6bcd7609b9e576a0b" />
+                  <section title="loadedImmediately" ref="a00001.html#a87f95dfb98bdeabd44be43ead1122745" />
                   <section title="loadedReadable" ref="a00001.html#ab3e4380b00ff3aeb0223f5ea76855f01" />
                   <section title="loadedWritable" ref="a00001.html#a4aa173fa41b3dd2f9b944f6952de0790" />
                 </section>
@@ -1028,7 +1038,7 @@
                 </section>
                 <section title="adhereTo" ref="a00001.html">
                   <section title="adhereTo" ref="a00001.html#a0cc6fda5677ecda5c6b367e863e27b3e" />
-                  <section title="adhereTo" ref="a00001.html#a4e7101411cd04f2558259a2e725de175" />
+                  <section title="adhereTo" ref="a00001.html#aa01b94bcd8dc60948dc01435f798419b" />
                   <section title="~adhereTo" ref="a00001.html#aa7f09ba9f6f4010a6ecce82ce644a0c1" />
                   <section title="operator const T *" ref="a00001.html#a5fc196105e2f3c180883cadb8c9482b9" />
                   <section title="operator const T *" ref="a00001.html#ade7231943a2d0e397719a4081b8d0c69" />
@@ -1038,6 +1048,7 @@
                   <section title="::adhereTo_Unit_LoadUnloadConst_Test" ref="a00001.html#a6b848bcb609c606a25cecf236b42ff59" />
                   <section title="::adhereTo_Unit_TwiceAdhered_Test" ref="a00001.html#aede63b93552fafc55cfba340555d0902" />
                   <section title="data" ref="a00001.html#aaa6dbb98a31a73a6bcd7609b9e576a0b" />
+                  <section title="loadedImmediately" ref="a00001.html#a87f95dfb98bdeabd44be43ead1122745" />
                   <section title="loadedReadable" ref="a00001.html#ab3e4380b00ff3aeb0223f5ea76855f01" />
                   <section title="loadedWritable" ref="a00001.html#a4aa173fa41b3dd2f9b944f6952de0790" />
                 </section>
@@ -1083,7 +1094,7 @@
                   <section title="rambrainConfig" ref="a00024.html#adf79cce9ad6dde113f1a25c7f28978cc" />
                   <section title="~rambrainConfig" ref="a00024.html#a50356f5e6333c5094970bf201bcca578" />
                   <section title="clean" ref="a00024.html#a3e4485000b2a061fb75d85f68d06017d" />
-                  <section title="getConfig" ref="a00024.html#abbb82ee852a4cc6eb22d6a9b8115fac7" />
+                  <section title="getConfig" ref="a00024.html#aa7f91003d897ef82e6b255c4affb9f00" />
                   <section title="init" ref="a00024.html#a8e0134e8c212da14a0fb6b60611ee2d7" />
                   <section title="reinit" ref="a00024.html#ad149f44c7ec45aa83d741fd0a08e7811" />
                   <section title="resizeMemory" ref="a00024.html#a55f24943ba147e71eee649812bec31e3" />
@@ -1151,6 +1162,7 @@
                 <section title="TESTSTATICS" ref="a00071.html#a2156a0b5b8120f96a8159b162dceaec5" />
                 <section title="TESTSTATICS" ref="a00071.html#a156b148adb86e8d87b1eee751138122f" />
                 <section title="TESTSTATICS" ref="a00071.html#a0c0082439abdf53a350c893f3a41a79b" />
+                <section title="TESTSTATICS" ref="a00071.html#a2a9ce3e71dd22589cb5e03225d4f3b78" />
               </section>
               <section title="performanceTestClasses.h" ref="a00072.html">
                 <section title="testParameterBase" ref="a00030.html">
@@ -1214,6 +1226,7 @@
                 <section title="TWOPARAMTEST" ref="a00072.html#a369f3619b3958e07bfd0e92c31d9b19f" />
                 <section title="TWOPARAMTEST" ref="a00072.html#a1fa05a65451ce4beadfe79f2ad6ec8f9" />
                 <section title="TWOPARAMTEST" ref="a00072.html#a0715fad62e359b618fa3b2c347ae95d1" />
+                <section title="TWOPARAMTEST" ref="a00072.html#a0487402c9462101d58322eaf729423b6" />
               </section>
               <section title="performanceTests.cpp" ref="a00073.html">
                 <section title="main" ref="a00073.html#a3c04138a5bfe5d72780bb7e82a18e627" />
@@ -1254,7 +1267,7 @@
                 <section title="TEST" ref="a00079.html#a39f43fbea06dadaad8c91d05b82f7f7e" />
                 <section title="TEST" ref="a00079.html#aa3d6fa1f4f00348a9dc05c7dc02e18f1" />
                 <section title="TEST" ref="a00079.html#aef1549b42a0b81171f81a38ddc9f0940" />
-                <section title="TEST" ref="a00079.html#a76ebea70580b5769f663dbb56dd77ab9" />
+                <section title="TEST" ref="a00079.html#aab480b10843a72f5c2cd306cd3d2da29" />
                 <section title="TEST" ref="a00079.html#afa4e53c44647626de579c993ff223d3e" />
                 <section title="TEST" ref="a00079.html#a56caf2da431c0a280c68e0b05b533bbb" />
                 <section title="TEST" ref="a00079.html#ae75ff94ede15ce350e66fab6a7b96b09" />
@@ -1404,6 +1417,7 @@
       <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00071.html#a2156a0b5b8120f96a8159b162dceaec5" />
       <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00071.html#a156b148adb86e8d87b1eee751138122f" />
       <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00071.html#a0c0082439abdf53a350c893f3a41a79b" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00071.html#a2a9ce3e71dd22589cb5e03225d4f3b78" />
       <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00072.html#af5ca33e1ddc335f5e8438d775535b0d0" />
       <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00072.html#a5663d51d4b9c8c9988ff8cbd8780d018" />
       <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00072.html#adc7ed635696750ca3486225a7ef3a209" />
@@ -1417,6 +1431,7 @@
       <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00072.html#a369f3619b3958e07bfd0e92c31d9b19f" />
       <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00072.html#a1fa05a65451ce4beadfe79f2ad6ec8f9" />
       <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00072.html#a0715fad62e359b618fa3b2c347ae95d1" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00072.html#a0487402c9462101d58322eaf729423b6" />
       <keyword name="main" id="performanceTests.cpp::main" ref="a00073.html#a3c04138a5bfe5d72780bb7e82a18e627" />
       <keyword name="main" id="performanceTestsWrapper.cpp::main" ref="a00075.html#a3c04138a5bfe5d72780bb7e82a18e627" />
       <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00076.html#a0f8a4b5152ab8f3909aba53869627a74" />
@@ -1444,7 +1459,7 @@
       <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00079.html#a39f43fbea06dadaad8c91d05b82f7f7e" />
       <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00079.html#aa3d6fa1f4f00348a9dc05c7dc02e18f1" />
       <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00079.html#aef1549b42a0b81171f81a38ddc9f0940" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00079.html#a76ebea70580b5769f663dbb56dd77ab9" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00079.html#aab480b10843a72f5c2cd306cd3d2da29" />
       <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00079.html#afa4e53c44647626de579c993ff223d3e" />
       <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00079.html#a56caf2da431c0a280c68e0b05b533bbb" />
       <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00079.html#ae75ff94ede15ce350e66fab6a7b96b09" />
@@ -1616,7 +1631,7 @@
       <keyword name="interactive" id="rambrain::interactive" ref="a00092.html#a7d53dd1748d5012cafa91aa982c7cd35afe88c03a1958b4259f0c51d68eed3213" />
       <keyword name="rambrain::adhereTo" id="rambrain::adhereTo" ref="a00001.html" />
       <keyword name="adhereTo" id="rambrain::adhereTo::adhereTo" ref="a00001.html#a0cc6fda5677ecda5c6b367e863e27b3e" />
-      <keyword name="adhereTo" id="rambrain::adhereTo::adhereTo" ref="a00001.html#a4e7101411cd04f2558259a2e725de175" />
+      <keyword name="adhereTo" id="rambrain::adhereTo::adhereTo" ref="a00001.html#aa01b94bcd8dc60948dc01435f798419b" />
       <keyword name="operator=" id="rambrain::adhereTo::operator=" ref="a00001.html#a358a2fac0b7a77a758e392dfbeddbafa" />
       <keyword name="operator const T *" id="rambrain::adhereTo::operator const T *" ref="a00001.html#a5fc196105e2f3c180883cadb8c9482b9" />
       <keyword name="operator const T *" id="rambrain::adhereTo::operator const T *" ref="a00001.html#ade7231943a2d0e397719a4081b8d0c69" />
@@ -1625,6 +1640,7 @@
       <keyword name="data" id="rambrain::adhereTo::data" ref="a00001.html#aaa6dbb98a31a73a6bcd7609b9e576a0b" />
       <keyword name="loadedWritable" id="rambrain::adhereTo::loadedWritable" ref="a00001.html#a4aa173fa41b3dd2f9b944f6952de0790" />
       <keyword name="loadedReadable" id="rambrain::adhereTo::loadedReadable" ref="a00001.html#ab3e4380b00ff3aeb0223f5ea76855f01" />
+      <keyword name="loadedImmediately" id="rambrain::adhereTo::loadedImmediately" ref="a00001.html#a87f95dfb98bdeabd44be43ead1122745" />
       <keyword name="::adhereTo_Unit_LoadUnload_Test" id="rambrain::adhereTo::::adhereTo_Unit_LoadUnload_Test" ref="a00001.html#a4eaae1fe478a3a7c5e954715e23e002d" />
       <keyword name="::adhereTo_Unit_LoadUnloadConst_Test" id="rambrain::adhereTo::::adhereTo_Unit_LoadUnloadConst_Test" ref="a00001.html#a6b848bcb609c606a25cecf236b42ff59" />
       <keyword name="::adhereTo_Unit_TwiceAdhered_Test" id="rambrain::adhereTo::::adhereTo_Unit_TwiceAdhered_Test" ref="a00001.html#aede63b93552fafc55cfba340555d0902" />
@@ -1657,7 +1673,6 @@
       <keyword name="readConfig" id="rambrain::configReader::readConfig" ref="a00005.html#aafcdc8be421ea3e33248a7abe70dedd9" />
       <keyword name="setCustomConfigPath" id="rambrain::configReader::setCustomConfigPath" ref="a00005.html#aaa1bed466c323f77900c34dc435a6aef" />
       <keyword name="getConfig" id="rambrain::configReader::getConfig" ref="a00005.html#aa9d982624f5495cdb3af2e4a216f4ecd" />
-      <keyword name="getConfig" id="rambrain::configReader::getConfig" ref="a00005.html#a887dafe3ab4cd8253c076cd6cb349cb0" />
       <keyword name="readSuccessfully" id="rambrain::configReader::readSuccessfully" ref="a00005.html#af1a0883e35fe8aae3c49631bc848508e" />
       <keyword name="reopenStreams" id="rambrain::configReader::reopenStreams" ref="a00005.html#ae006ed080d566dc4ddc35cbb677e41cf" />
       <keyword name="parseConfigFile" id="rambrain::configReader::parseConfigFile" ref="a00005.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f" />
@@ -1711,6 +1726,9 @@
       <keyword name="linearMfree" id="rambrain::managedMemory::linearMfree" ref="a00015.html#ac515fe5cbdc520a70d9512da0ab363ce" />
       <keyword name="printSwapstats" id="rambrain::managedMemory::printSwapstats" ref="a00015.html#a4147c7d36b38e4bea0c73b6f4609d477" />
       <keyword name="resetSwapstats" id="rambrain::managedMemory::resetSwapstats" ref="a00015.html#aab63949c5a3fd590e39d9e15dace8c2d" />
+      <keyword name="getHitsOverMisses" id="rambrain::managedMemory::getHitsOverMisses" ref="a00015.html#a24e3c85157bebe35c89e2140c17b4eae" />
+      <keyword name="getTotalSwappedOutBytes" id="rambrain::managedMemory::getTotalSwappedOutBytes" ref="a00015.html#a42267ac7844983eb482c1b06830e1a83" />
+      <keyword name="getTotalSwappedInBytes" id="rambrain::managedMemory::getTotalSwappedInBytes" ref="a00015.html#a534cdc10b393a77345f7a3563dee14f2" />
       <keyword name="swapIn" id="rambrain::cyclicManagedMemory::swapIn" ref="a00008.html#a6ce5a7e8f7fbc5a53bee42e18bf562c9" />
       <keyword name="swapOut" id="rambrain::cyclicManagedMemory::swapOut" ref="a00008.html#ae8cd02152e84886d3a9a933585f13483" />
       <keyword name="touch" id="rambrain::cyclicManagedMemory::touch" ref="a00008.html#a1f216f8e6d2a69e9b15a1cc9c35ebf40" />
@@ -1795,6 +1813,9 @@
       <keyword name="linearMfree" id="rambrain::managedMemory::linearMfree" ref="a00015.html#ac515fe5cbdc520a70d9512da0ab363ce" />
       <keyword name="printSwapstats" id="rambrain::managedMemory::printSwapstats" ref="a00015.html#a4147c7d36b38e4bea0c73b6f4609d477" />
       <keyword name="resetSwapstats" id="rambrain::managedMemory::resetSwapstats" ref="a00015.html#aab63949c5a3fd590e39d9e15dace8c2d" />
+      <keyword name="getHitsOverMisses" id="rambrain::managedMemory::getHitsOverMisses" ref="a00015.html#a24e3c85157bebe35c89e2140c17b4eae" />
+      <keyword name="getTotalSwappedOutBytes" id="rambrain::managedMemory::getTotalSwappedOutBytes" ref="a00015.html#a42267ac7844983eb482c1b06830e1a83" />
+      <keyword name="getTotalSwappedInBytes" id="rambrain::managedMemory::getTotalSwappedInBytes" ref="a00015.html#a534cdc10b393a77345f7a3563dee14f2" />
       <keyword name="swapOut" id="rambrain::dummyManagedMemory::swapOut" ref="a00010.html#a87f2c23257398f23c77e6a24eed8a0f6" />
       <keyword name="swapIn" id="rambrain::dummyManagedMemory::swapIn" ref="a00010.html#a4b4aa73d808bc21e9f28eb1f426d9f39" />
       <keyword name="touch" id="rambrain::dummyManagedMemory::touch" ref="a00010.html#a429af5ee10f45c062da8a20ac860ae47" />
@@ -1983,6 +2004,9 @@
       <keyword name="linearMfree" id="rambrain::managedMemory::linearMfree" ref="a00015.html#ac515fe5cbdc520a70d9512da0ab363ce" />
       <keyword name="printSwapstats" id="rambrain::managedMemory::printSwapstats" ref="a00015.html#a4147c7d36b38e4bea0c73b6f4609d477" />
       <keyword name="resetSwapstats" id="rambrain::managedMemory::resetSwapstats" ref="a00015.html#aab63949c5a3fd590e39d9e15dace8c2d" />
+      <keyword name="getHitsOverMisses" id="rambrain::managedMemory::getHitsOverMisses" ref="a00015.html#a24e3c85157bebe35c89e2140c17b4eae" />
+      <keyword name="getTotalSwappedOutBytes" id="rambrain::managedMemory::getTotalSwappedOutBytes" ref="a00015.html#a42267ac7844983eb482c1b06830e1a83" />
+      <keyword name="getTotalSwappedInBytes" id="rambrain::managedMemory::getTotalSwappedInBytes" ref="a00015.html#a534cdc10b393a77345f7a3563dee14f2" />
       <keyword name="signalSwappingCond" id="rambrain::managedMemory::signalSwappingCond" ref="a00015.html#ad20431139d51105bc8f0ec0e0fc316de" />
       <keyword name="sigswapstats" id="rambrain::managedMemory::sigswapstats" ref="a00015.html#addf9498a417da4d2059e94e238304223" />
       <keyword name="versionInfo" id="rambrain::managedMemory::versionInfo" ref="a00015.html#ace0f33ae4d9875dba1652c13042186df" />
@@ -2040,9 +2064,11 @@
       <keyword name="managedPtr" id="rambrain::managedMemory::managedPtr" ref="a00015.html#a4db9f2403c3411068243fdf0798d43f5" />
       <keyword name="managedSwap" id="rambrain::managedMemory::managedSwap" ref="a00015.html#ad7a44371743b957ef559f0c1d92f0ed0" />
       <keyword name="managedFileSwap" id="rambrain::managedMemory::managedFileSwap" ref="a00015.html#a7a57555464dec1f54ad14f68749ba2cd" />
+      <keyword name="managedDummySwap" id="rambrain::managedMemory::managedDummySwap" ref="a00015.html#afc2eae7d63704cb9c8f9efd2606dd258" />
       <keyword name="::managedFileSwap_Unit_ManualSwapping_Test" id="rambrain::managedMemory::::managedFileSwap_Unit_ManualSwapping_Test" ref="a00015.html#a61476c6520b6093ca7003a8b2ee302f6" />
       <keyword name="::managedFileSwap_Unit_ManualMultiSwapping_Test" id="rambrain::managedMemory::::managedFileSwap_Unit_ManualMultiSwapping_Test" ref="a00015.html#a354aaa505fa382a499838b075f92d0f7" />
       <keyword name="::managedFileSwap_Unit_ManualSwappingDelete_Test" id="rambrain::managedMemory::::managedFileSwap_Unit_ManualSwappingDelete_Test" ref="a00015.html#aa0cbd2454408b8ae3b5aca513c07eef0" />
+      <keyword name="::cyclicManagedMemory_Integration_ArrayAccess_Test" id="rambrain::managedMemory::::cyclicManagedMemory_Integration_ArrayAccess_Test" ref="a00015.html#a64c14b438f19454bdebd737eddb9e0a6" />
       <keyword name="configTestGetSwap" id="rambrain::managedMemory::configTestGetSwap" ref="a00015.html#afb585b10243d2574af17f1c6d1e7eec5" />
       <keyword name="ERR_SUCCESS" id="rambrain::managedMemory::ERR_SUCCESS" ref="a00015.html#a06da9a259c539347727783ee01d49c30a18484ef9fdc0d989d5310001924e459a" />
       <keyword name="ERR_SWAPFULL" id="rambrain::managedMemory::ERR_SWAPFULL" ref="a00015.html#a06da9a259c539347727783ee01d49c30af7e70df8f8c52c62970a658f89095c52" />
@@ -2178,7 +2204,7 @@
       <keyword name="~rambrainConfig" id="rambrain::rambrainglobals::rambrainConfig::~rambrainConfig" ref="a00024.html#a50356f5e6333c5094970bf201bcca578" />
       <keyword name="reinit" id="rambrain::rambrainglobals::rambrainConfig::reinit" ref="a00024.html#ad149f44c7ec45aa83d741fd0a08e7811" />
       <keyword name="setCustomConfigPath" id="rambrain::rambrainglobals::rambrainConfig::setCustomConfigPath" ref="a00024.html#a61be05dcf94bd052199b719c0d3efc81" />
-      <keyword name="getConfig" id="rambrain::rambrainglobals::rambrainConfig::getConfig" ref="a00024.html#abbb82ee852a4cc6eb22d6a9b8115fac7" />
+      <keyword name="getConfig" id="rambrain::rambrainglobals::rambrainConfig::getConfig" ref="a00024.html#aa7f91003d897ef82e6b255c4affb9f00" />
       <keyword name="resizeMemory" id="rambrain::rambrainglobals::rambrainConfig::resizeMemory" ref="a00024.html#a55f24943ba147e71eee649812bec31e3" />
       <keyword name="resizeSwap" id="rambrain::rambrainglobals::rambrainConfig::resizeSwap" ref="a00024.html#a33b6e5764cb838b06e0cb624f47bdf67" />
       <keyword name="init" id="rambrain::rambrainglobals::rambrainConfig::init" ref="a00024.html#a8e0134e8c212da14a0fb6b60611ee2d7" />

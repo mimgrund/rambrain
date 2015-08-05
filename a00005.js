@@ -3,7 +3,6 @@ var a00005 =
     [ "configReader", "a00005.html#a9eff76380e7fa313604dff234e66b205", null ],
     [ "getApplicationName", "a00005.html#aa2aee2bca7966d89aae6d822e829de71", null ],
     [ "getConfig", "a00005.html#aa9d982624f5495cdb3af2e4a216f4ecd", null ],
-    [ "getConfig", "a00005.html#a887dafe3ab4cd8253c076cd6cb349cb0", null ],
     [ "parseConfigBlock", "a00005.html#a89ebde62397d8fdda601543eb2eb110a", null ],
     [ "parseConfigFile", "a00005.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f", null ],
     [ "readConfig", "a00005.html#aafcdc8be421ea3e33248a7abe70dedd9", null ],
