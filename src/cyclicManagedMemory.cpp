@@ -325,7 +325,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         }
         VERBOSEPRINT ( "Before active first" );
         //We need to insert the first element (which we had to swap in) making it the new active:
-        if ( endSwapin != active->next ) { //If we're not anyways correctly placed
+        if ( endSwapin != active->prev ) { //If we're not anyways correctly placed
             cyclicAtime *beforeIC = endSwapin->prev;
             cyclicAtime *afterIC = endSwapin->next;
             cyclicAtime *beforeActive = active->prev;
@@ -389,6 +389,11 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             }
 
             preemptiveBytes += selectedReadinVol - actual_obj_size;
+        }
+        pthread_mutex_unlock ( &cyclicTopoLock );
+        touch ( chunk );
+        if ( counterActive->chunk->status == MEM_SWAPPED ) {
+            counterActive = active;
         }
 
 #ifdef SWAPSTATS
