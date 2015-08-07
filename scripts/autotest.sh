@@ -4,6 +4,7 @@ user=$1
 repodir="ssh://${user}@schedar.usm.uni-muenchen.de/var/gits/membrain"
 branches=(master aio_merger)
 options=(PARENTAL_CONTROL OPTIMISE_COMPILATION)
+#options=(PARENTAL_CONTROL OPTIMISE_COMPILATION USE_XPRESSIVE USE_CLANG) #more complete set
 processes=8
 
 if [ -z "$user" ]; then
@@ -25,6 +26,17 @@ cd cleanbrain/build
 for branch in ${branches[@]}; do
     echo "Checking out branch $branch"
     git checkout $branch
+    #patch CMakeLists to include clang (not recommended in normal use)
+    cat - ../CMakeLists.txt >../CMakeLists.txt_new<<EOF
+option (USE_CLANG "Use Clang Compiler" OFF)
+
+if(USE_CLANG)
+ set(CMAKE_C_COMPILER clang)
+ set(CMAKE_CXX_COMPILER clang++)
+
+endif()
+EOF
+    mv ../CMakeLists.txt_new ../CMakeLists.txt
 
     max=$(awk "BEGIN{print 2 ** ${#options[@]}}")
     max=$((max-1))
