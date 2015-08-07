@@ -223,14 +223,46 @@ TEST ( adhereTo, Unit_TwiceAdhered )
         EXPECT_EQ ( i, loc2[i] );
     }
 
-    ASSERT_NO_THROW ( delete global1 );
+    ASSERT_NO_THROW ( delete global2 );
 
     for ( unsigned int i = 0; i < count; ++i ) {
         EXPECT_EQ ( i, loc2[i] );
     }
 
-    ASSERT_NO_THROW ( delete global2 );
+    ASSERT_NO_THROW ( delete global1 );
+
+
 }
+
+TEST ( adhereTo, Unit_TwiceAdheredOnceUsed )
+{
+    const unsigned int count = 5;
+    managedDummySwap swap ( 100 );
+    cyclicManagedMemory managedMemory ( &swap, 100 );
+    managedPtr<double> ptr ( count );
+
+    adhereTo<double> *global1 = new adhereTo<double> ( ptr );
+    double *loc1 = *global1;
+
+    ASSERT_TRUE ( global1->loadedWritable );
+
+    for ( unsigned int i = 0; i < count; ++i ) {
+        loc1[i] = i;
+    }
+
+    adhereTo<double> *global2 = NULL;
+
+
+
+    ASSERT_NO_THROW ( global2 = new adhereTo<double> ( ptr , true ) );
+    ASSERT_FALSE ( global2->loadedReadable );
+    ASSERT_TRUE ( global2->loadedImmediately );
+
+    ASSERT_NO_THROW ( delete global1 );
+    ASSERT_NO_THROW ( delete global2 );
+
+}
+
 
 /**
  * @test Checks correct working of convenience macros

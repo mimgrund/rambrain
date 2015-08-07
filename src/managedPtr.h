@@ -38,6 +38,7 @@ class managedFileSwap_Unit_SwapNextAndSingleIsland_Test;
 class adhereTo_Unit_LoadUnload_Test;
 class adhereTo_Unit_LoadUnloadConst_Test;
 class adhereTo_Unit_TwiceAdhered_Test;
+class adhereTo_Unit_TwiceAdheredOnceUsed_Test;
 #endif
 
 namespace rambrain
@@ -340,12 +341,11 @@ public:
 
     ~adhereTo() {
         unsigned char loaded = 0;
-        loaded = loadedReadable || loadedWritable ? ( loadedReadable ? 1 : 0 ) + ( loadedWritable ? 1 : 0 ) + ( loadedImmediately ? 1 : 0 ) : 0;
+        loaded = ( loadedReadable ? 1 : 0 ) + ( loadedWritable ? 1 : 0 ) + ( loadedImmediately ? 1 : 0 );
         if ( loaded > 0 ) {
             data->unsetUse ( loaded );
-        } else if ( loadedImmediately ) {
-            data->unsetUse ( 0 );
         }
+
 
     }
 private:
@@ -360,6 +360,7 @@ private:
     friend class ::adhereTo_Unit_LoadUnload_Test;
     friend class ::adhereTo_Unit_LoadUnloadConst_Test;
     friend class ::adhereTo_Unit_TwiceAdhered_Test;
+    friend class ::adhereTo_Unit_TwiceAdheredOnceUsed_Test;
 #endif
 };
 
