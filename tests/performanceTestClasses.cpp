@@ -1811,16 +1811,16 @@ void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize
 string measurePreemptiveSpeedupTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"adhereTo<>\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"type *ptr = glue\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Calculation\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":(100-($5*100/($3+$4+$5))) with lines title \"idle time in \%\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":6 with lines lt 0 lc 1 title \"adhereTo<> *\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":7 with lines lt 0 lc 2 title \"type *ptr = glue *\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":8 with lines lt 0 lc 3 title \"Calculation *\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":(100-($8*100/($6+$7+$8))) with lines lt 0 lc 4 title \"idle time * in \%\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":($6+$7+$8) with lines lt 0 lc 5 title \"Total *\"";
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines lt 1 lc 1 title \"adhereTo<>\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines lt 1 lc 2 title \"type *ptr = glue\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines lt 1 lc 3 title \"Calculation\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":(100-($5*100/($3+$4+$5))) with lines lt 1 lc 4 title \"idle time in \%\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines lt 1 lc 5 title \"Total\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":6 with lines lt 2 lc 1 title \"adhereTo<> *\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":7 with lines lt 2 lc 2 title \"type *ptr = glue *\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":8 with lines lt 2 lc 3 title \"Calculation *\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":(100-($8*100/($6+$7+$8))) with lines lt 2 lc 4 title \"idle time * in \%\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($6+$7+$8) with lines lt 2 lc 5 title \"Total *\"";
     return ss.str();
 }
 
@@ -1848,14 +1848,9 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
     float rewritetimes = load < 0 ? 1 : ( float ) load / 100.;
     int iterations = 10230;
 
-
-
     std::chrono::duration<double> allSetuse ( 0 );
     std::chrono::duration<double> allPrepare ( 0 );
     std::chrono::duration<double> allCalc ( 0 );
-
-
-
     using namespace std::chrono;
     ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveLoading ( true );
     ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveUnloading ( true );
@@ -1943,16 +1938,16 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
 string measureExplicitAsyncSpeedupTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"adhereTo<>\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"type *ptr = glue\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Calculation\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":(100-($5*100/($3+$4+$5))) with lines title \"idle time in \%\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":6 with lines lt 0 lc 1 title \"adhereTo<> *\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":7 with lines lt 0 lc 2 title \"type *ptr = glue *\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":8 with lines lt 0 lc 3 title \"Calculation *\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":9 with lines lt 0 lc 3 title \"adhereTo<> deletion *\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":(100-($8*100/($6+$7+$8+$9))) with lines lt 0 lc 4 title \"idle time * in \%\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":($6+$7+$8+$9) with lines lt 0 lc 5 title \"Total *\"";
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines lt 1 lc 1 title \"adhereTo<>\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines lt 1 lc 2 title \"type *ptr = glue\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines lt 1 lc 3 title \"Calculation\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":(100-($5*100/($3+$4+$5))) with lines lt 1 lc 5 title \"idle time in \%\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines lt 1 lc 6 title \"Total\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":6 with lines lt 2 lc 1 title \"adhereTo<> *\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":7 with lines lt 2 lc 2 title \"type *ptr = glue *\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":8 with lines lt 2 lc 3 title \"Calculation *\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":9 with lines lt 2 lc 4 title \"adhereTo<> deletion *\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":(100-($8*100/($6+$7+$8+$9))) with lines lt 2 lc 5 title \"idle time * in \%\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($6+$7+$8+$9) with lines lt 2 lc 6 title \"Total *\"";
     return ss.str();
 }
