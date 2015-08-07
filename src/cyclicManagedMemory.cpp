@@ -23,19 +23,22 @@
 #include "rambrain_atomics.h"
 #include "managedSwap.h"
 #include <pthread.h>
-//#define VERYVERBOSE
-//#define CYCLIC_VERBOSE_DBG
+// #define VERYVERBOSE
+// #define CYCLIC_VERBOSE_DBG
 
-#ifdef VERYVERBOSE
-#define VERBOSEPRINT(x) printf("\n<--%s\n",x);printCycle();printf("\n%s---->\n",x);
-#else
-#define VERBOSEPRINT(x) ;
-#endif
 
 
 
 namespace rambrain
 {
+#ifdef VERYVERBOSE
+global_bytesize min_elements = 4010;
+
+#define VERBOSEPRINT(x) printf("\n<--%s\n",x); if (memChunks.size()>=min_elements) printCycle();printf("\n%s---->\n",x);
+#else
+#define VERBOSEPRINT(x) ;
+#endif
+
 pthread_mutex_t cyclicManagedMemory::cyclicTopoLock = PTHREAD_MUTEX_INITIALIZER;
 
 cyclicManagedMemory::cyclicManagedMemory ( managedSwap *swap, global_bytesize size ) : managedMemory ( swap, size )
@@ -287,7 +290,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
                 if ( selectedReadinVol > 0 ) {
                     preemtivelySelected += cur->chunk->size;
                 }
-                if ( selectedReadinVol >= targetReadinVol ) {
+                if ( selectedReadinVol >= targetReadinVol || ( selectedReadinVol > 0 && preemtivelySelected == max_preemptive ) ) {
                     break;
                 }
 #ifdef VERYVERBOSE
@@ -308,7 +311,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
                 if ( selectedReadinVol > 0 ) {
                     preemtivelySelected += readEl->chunk->size;
                 }
-                if ( selectedReadinVol2 >= targetReadinVol ) {
+                if ( selectedReadinVol2 >= targetReadinVol || ( selectedReadinVol2 > 0 && preemtivelySelected == max_preemptive ) ) {
                     break;
                 }
             }
@@ -323,47 +326,32 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             }
 
         }
-        VERBOSEPRINT ( "Before active first" );
-        //We need to insert the first element (which we had to swap in) making it the new active:
-        if ( endSwapin != active->prev ) { //If we're not anyways correctly placed
-            cyclicAtime *beforeIC = endSwapin->prev;
-            cyclicAtime *afterIC = endSwapin->next;
-            cyclicAtime *beforeActive = active->prev;
-#ifdef VERYVERBOSE
-            printf ( "beforeIC = %lu , afterIC = %lu , afterActive = %lu \n", beforeIC->chunk->id, afterIC->chunk->id, beforeActive->chunk->id );
-#endif
-            MUTUAL_CONNECT ( beforeIC, afterIC );
-            MUTUAL_CONNECT ( beforeActive, endSwapin );
-            MUTUAL_CONNECT ( endSwapin, active );
-        }
+
+
         VERBOSEPRINT ( "Before reordering" );
+        cyclicAtime *cleanSince2 = endSwapin;
         //Check if we have additional preemptives to place correctly
+        cyclicAtime *curel = endSwapin;
         if ( numberSelected > 1 ) {
             //Now we're right after active. We need to place the preemptive ones at back as if we do not,
             //The most recently loaded preemptives would be swapped out first, which would not be good.
             //Thus, let us search forewards until we are at the border of the preemptive area:
-            while ( endSwapin->prev->chunk->preemptiveLoaded == true ) { // This would surely quit at the requested element
-                endSwapin = endSwapin->prev;
-            }
+
 #ifdef VERYVERBOSE
-            printf ( "endSwapin is at %lu\n", endSwapin->chunk->id );
+            printf ( "endSwapin is at %lu, curel at %lu , curelprev %lu \n", endSwapin->chunk->id, curel->chunk->id, curel->prev->chunk->id );
 #endif
             //Now, lets do this rather stupidly:
-            cyclicAtime *curel = endSwapin;
             unsigned int max = memChunks.size();
             unsigned int noen = 0;
             while ( curel->chunk != chunks[numberSelected - 1] && noen++ < max ) { // As long as we've not placed the last element we've swapped in
 #ifdef VERYVERBOSE
-                printCycle();
+                if ( memChunks.size() > min_elements ) {
+                    printCycle();
+                }
                 printf ( "curel->prev = %lu\n, vs %lu ", curel->prev->chunk->id, chunks[numberSelected - 1]->id );
 #endif
                 if ( curel->prev->chunk->preemptiveLoaded ) { // Next one is preemptive...
-                    if ( curel == endSwapin ) { //...and its anyways where we sit at
-#ifdef VERYVERBOSE
-                        printf ( "Moving backwards\n" );
-#endif
-                        endSwapin = endSwapin->prev;
-                    } else { //...and we have elements in between
+                    if ( curel != endSwapin ) { //...and we have elements in between
                         cyclicAtime *startMove = curel->prev;
                         cyclicAtime *endMove = curel->prev;
 
@@ -384,12 +372,35 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
                             break;
                         }
                     }
+
+                    else { //...and its anyways where we sit at
+                        endSwapin = endSwapin->prev;
+                    }
+
                 }
                 curel = curel->prev;
             }
 
             preemptiveBytes += selectedReadinVol - actual_obj_size;
         }
+
+        VERBOSEPRINT ( "Before active first" );
+        curel = endSwapin;
+        endSwapin = cleanSince2; //Now, everything is hanging before cleanSince2, and curel is the last preemtive element.
+        //We need to insert the first element (which we had to swap in) making it the new active:
+        if ( endSwapin != active->prev ) { //If we're not anyways correctly placed
+            cyclicAtime *beforeIC = curel->prev;
+            cyclicAtime *afterIC = endSwapin->next;
+            cyclicAtime *beforeActive = active->prev;
+#ifdef VERYVERBOSE
+            printf ( "beforeIC = %lu , afterIC = %lu , afterActive = %lu \n", beforeIC->chunk->id, afterIC->chunk->id, beforeActive->chunk->id );
+#endif
+            MUTUAL_CONNECT ( beforeIC, afterIC );
+            MUTUAL_CONNECT ( beforeActive, curel );
+            MUTUAL_CONNECT ( endSwapin, active );
+        }
+
+
         pthread_mutex_unlock ( &cyclicTopoLock );
         touch ( chunk );
         if ( counterActive->chunk->status == MEM_SWAPPED ) {
@@ -486,7 +497,7 @@ bool cyclicManagedMemory::checkCycle() const
         oldcur = cur;
         cur = cur->next;
         if ( oldcur != cur->prev ) {
-            errmsg ( "Mutual connecion failure" );
+            errmsgf ( "Mutual connecion failure at chunks %lu and %lu", oldcur->chunk->id, cur->chunk->id );
             pthread_mutex_unlock ( &cyclicTopoLock );
             pthread_mutex_unlock ( &stateChangeMutex );
 
@@ -592,9 +603,7 @@ void cyclicManagedMemory::printCycle() const
 
 cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::global_bytesize min_size )
 {
-#ifdef CYCLIC_VERBOSE_DBG
-    printCycle();
-#endif
+
     pthread_mutex_lock ( &cyclicTopoLock );
     if ( counterActive == 0 ) {
         pthread_mutex_unlock ( &stateChangeMutex );
@@ -722,11 +731,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
 
 
     cleanFrom = counterActive->next;
-#ifdef CYCLIC_VERBOSE_DBG
-    printCycle();
 
-    printf ( "Begin Movement until %d\n", countPos->chunk->id );
-#endif
     while ( fromPos != countPos || doRoundtrip ) {
 #ifdef CYCLIC_VERBOSE_DBG
         printf ( "at %d\t", fromPos->chunk->id );
@@ -756,9 +761,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
                     MUTUAL_CONNECT ( endIsoswap, startClean );
                     cleanFrom = startIsoswap;
                     moveEnd = NULL;
-#ifdef CYCLIC_VERBOSE_DBG
-                    printCycle();
-#endif
+
                 }
             } else {
                 if ( !moveEnd ) {
@@ -811,9 +814,6 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
 #endif
     }
     pthread_mutex_unlock ( &cyclicTopoLock );
-#ifdef CYCLIC_VERBOSE_DBG
-    printCycle();
-#endif
     VERBOSEPRINT ( "swapOutReturn" );
     if ( swapSuccess ) {
 #ifdef SWAPSTATS
