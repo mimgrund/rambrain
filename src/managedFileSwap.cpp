@@ -391,9 +391,6 @@ pageFileLocation *managedFileSwap::allocInFree ( pageFileLocation *freeChunk, gl
 
 void managedFileSwap::pffree ( pageFileLocation *pagePtr )
 {
-    /*if(pthread_mutex_trylock(&managedMemory::defaultManager->stateChangeMutex)==0){
-        throw memoryException("unprotected call detected");
-    }*/
 
     bool endIsReached = false;
     do { //We possibly need multiple frees.
@@ -603,14 +600,14 @@ void *managedFileSwap::io_submit_worker ( void *ptr )
 {
     managedFileSwap *dhis = ( managedFileSwap * ) ptr;
     do {
-        pthread_mutex_lock ( & ( dhis->io_submit_lock ) );
+        rambrain_pthread_mutex_lock ( & ( dhis->io_submit_lock ) );
         while ( dhis->io_submit_requests.size() == 0 ) {
             pthread_cond_wait ( & ( dhis->io_submit_cond ), & ( dhis->io_submit_lock ) );
         }
         struct iocb *aio = dhis->io_submit_requests.front();
 
         dhis->io_submit_requests.pop();
-        pthread_mutex_unlock ( & ( dhis->io_submit_lock ) );
+        rambrain_pthread_mutex_unlock ( & ( dhis->io_submit_lock ) );
         if ( aio == 0 ) {
             break;
         }
@@ -629,10 +626,10 @@ void *managedFileSwap::io_submit_worker ( void *ptr )
 
 void managedFileSwap::my_io_submit ( struct iocb *aio )
 {
-    pthread_mutex_lock ( &io_submit_lock );
+    rambrain_pthread_mutex_lock ( &io_submit_lock );
     io_submit_requests.push ( aio );
     pthread_cond_signal ( &io_submit_cond );
-    pthread_mutex_unlock ( &io_submit_lock );
+    rambrain_pthread_mutex_unlock ( &io_submit_lock );
 }
 
 
@@ -651,7 +648,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         printf ( "Accounting for a swapin\n" );
 #endif
         if ( lock ) {
-            pthread_mutex_lock ( &managedMemory::stateChangeMutex );
+            rambrain_pthread_mutex_lock ( &managedMemory::stateChangeMutex );
         }
         //if we have a user for this object, protect it from being swapped out again
         chunk->status = chunk->useCnt == 0 ? MEM_ALLOCATED : MEM_ALLOCATED_INUSE_READ;
@@ -661,7 +658,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         managedMemory::defaultManager->swap_in_bytes += chunk->size;
 #endif
         if ( lock ) {
-            pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
+            rambrain_pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
         }
         break;
     case MEM_SWAPOUT:
@@ -669,7 +666,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         printf ( "Accounting for a swapout\n" );
 #endif
         if ( lock ) {
-            pthread_mutex_lock ( &managedMemory::stateChangeMutex );
+            rambrain_pthread_mutex_lock ( &managedMemory::stateChangeMutex );
         }
         _mm_free ( chunk->locPtr );
         chunk->locPtr = NULL; // not strictly required.
@@ -681,7 +678,7 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         managedMemory::defaultManager->claimTobefreed ( chunk->size, false );
         managedMemory::signalSwappingCond();
         if ( lock ) {
-            pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
+            rambrain_pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
         }
         break;
     default:
@@ -713,16 +710,16 @@ bool managedFileSwap::checkForAIO()
 tryagain:
     no_arrived = io_getevents ( aio_context, 0, aio_max_transactions, aio_eventarr, NULL );
     if ( no_arrived == 0 ) {
-        pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
+        rambrain_pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
         no_arrived = io_getevents ( aio_context, 1, aio_max_transactions, aio_eventarr, NULL );
-        pthread_mutex_lock ( & ( managedMemory::stateChangeMutex ) );
+        rambrain_pthread_mutex_lock ( & ( managedMemory::stateChangeMutex ) );
     }
 
     if ( no_arrived < 0 ) {
         if ( no_arrived == -EINTR ) { //We've been interrupted by a system call
             goto tryagain;
         }
-        pthread_mutex_unlock ( &aioWaiterLock );
+        rambrain_pthread_mutex_unlock ( &aioWaiterLock );
         printf ( "We got an error back: %d\n", -no_arrived );
         throw memoryException ( "AIO Error" );
 
@@ -746,7 +743,7 @@ tryagain:
     }
 
 
-    pthread_mutex_unlock ( &aioWaiterLock );
+    rambrain_pthread_mutex_unlock ( &aioWaiterLock );
     return true;
 
 };

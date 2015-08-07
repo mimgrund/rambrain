@@ -103,7 +103,7 @@ public:
         **/
 
         bool iamSyncer;
-        if ( pthread_mutex_trylock ( &managedMemory::parentalMutex ) == 0 ) {
+        if ( rambrain_pthread_mutex_trylock ( &managedMemory::parentalMutex ) == 0 ) {
             //Could lock
             iamSyncer = true;
         } else {
@@ -112,7 +112,7 @@ public:
                 iamSyncer = false;//I was called by my parents!
             } else {
                 //I need to gain the lock:
-                pthread_mutex_lock ( &managedMemory::parentalMutex );
+                rambrain_pthread_mutex_lock ( &managedMemory::parentalMutex );
                 iamSyncer = true;
             }
         }
@@ -143,7 +143,7 @@ public:
         if ( iamSyncer ) {
             managedMemory::creatingThread = 0;
             //Let others do the job:
-            pthread_mutex_unlock ( &managedMemory::parentalMutex );
+            rambrain_pthread_mutex_unlock ( &managedMemory::parentalMutex );
         }
 #endif
     }
@@ -163,14 +163,14 @@ public:
 
     //Atomically sets use if tracker is not already set to true. returns whether we set use or not.
     bool setUse ( bool writable = true, bool *tracker = NULL ) const {
-        pthread_mutex_lock ( &mutex );
+        rambrain_pthread_mutex_lock ( &mutex );
         if ( tracker )
             if ( !rambrain_atomic_bool_compare_and_swap ( tracker, false, true ) ) {
-                pthread_mutex_unlock ( &mutex );
+                rambrain_pthread_mutex_unlock ( &mutex );
                 return false;
             }
         bool result = managedMemory::defaultManager->setUse ( *chunk , writable );
-        pthread_mutex_unlock ( &mutex );
+        rambrain_pthread_mutex_unlock ( &mutex );
         return result;
     }
 

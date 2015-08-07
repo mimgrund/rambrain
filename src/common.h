@@ -43,6 +43,13 @@ inline static double sqr ( double x )
 #define infomsgf(format,...) {char tmp[1024];snprintf(tmp,1024,format,__VA_ARGS__);infomsg(tmp);}
 #define warnmsgf(format,...) {char tmp[1024];snprintf(tmp,1024,format,__VA_ARGS__);warnmsg(tmp);}
 
+#ifdef DBG_MUTICES
+#define rambrain_pthread_mutex_lock(x) infomsg("Lock of " #x " ") pthread_mutex_lock(x);
+#define rambrain_pthread_mutex_unlock(x) infomsg("Unlock of " #x " ") pthread_mutex_unlock(x);
+#else
+#define rambrain_pthread_mutex_lock(x) pthread_mutex_lock(x)
+#define rambrain_pthread_mutex_unlock(x) pthread_mutex_unlock(x)
+#endif
 #define VECTOR_FOREACH(vec,iter) for(int iter = 0; iter < vec.size(); ++iter)
 
 #ifdef __GNUC__

@@ -54,7 +54,7 @@ void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk &chunk )
     //Couple chunk to atime and vice versa:
     neu->chunk = &chunk;
     chunk.schedBuf = ( void * ) neu;
-    pthread_mutex_lock ( &cyclicTopoLock );
+    rambrain_pthread_mutex_lock ( &cyclicTopoLock );
     if ( active == NULL ) { // We're inserting first one
         neu->prev = neu->next = neu;
         counterActive = neu;
@@ -69,7 +69,7 @@ void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk &chunk )
         counterActive = neu;
     }
     active = neu;
-    pthread_mutex_unlock ( &cyclicTopoLock );
+    rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
 }
 
 
@@ -78,7 +78,7 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
 {
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
     //Memory counting for what we account for:
-    pthread_mutex_lock ( &cyclicTopoLock );
+    rambrain_pthread_mutex_lock ( &cyclicTopoLock );
     if ( chunk.status == MEM_SWAPPED || chunk.status == MEM_SWAPOUT ) {
 
     } else if ( chunk.preemptiveLoaded ) {
@@ -92,7 +92,7 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
         active = NULL;
         counterActive = NULL;
         delete element;
-        pthread_mutex_unlock ( &cyclicTopoLock );
+        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         return;
 
     }
@@ -113,13 +113,13 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
     }
 
     delete element;
-    pthread_mutex_unlock ( &cyclicTopoLock );
+    rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
 }
 
 //Touch happens automatically after use, create, swapIn
 bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
 {
-    pthread_mutex_lock ( &cyclicTopoLock );
+    rambrain_pthread_mutex_lock ( &cyclicTopoLock );
     if ( chunk.preemptiveLoaded ) { //This chunk was preemptively loaded
         preemptiveBytes -= chunk.size ;
         chunk.preemptiveLoaded = false;
@@ -129,7 +129,7 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
 
     if ( active == element ) {
-        pthread_mutex_unlock ( &cyclicTopoLock );
+        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         return true;
     }
 
@@ -139,7 +139,7 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
 
     if ( active->prev == element ) {
         active = element;
-        pthread_mutex_unlock ( &cyclicTopoLock );
+        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         return true;
     };
 
@@ -152,7 +152,7 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
         MUTUAL_CONNECT ( element, active );
         MUTUAL_CONNECT ( active, after );
         active = element;
-        pthread_mutex_unlock ( &cyclicTopoLock );
+        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         return true;
     }
 
@@ -165,7 +165,7 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
     MUTUAL_CONNECT ( before, element );
     MUTUAL_CONNECT ( element, after );
     active = element;
-    pthread_mutex_unlock ( &cyclicTopoLock );
+    rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
     return true;
 }
 
@@ -266,7 +266,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         global_bytesize selectedReadinVol = 0;
         global_bytesize preemtivelySelected = 0;
         unsigned int numberSelected = 0;
-        pthread_mutex_lock ( &cyclicTopoLock );
+        rambrain_pthread_mutex_lock ( &cyclicTopoLock );
 
 #ifdef VERYVERBOSE
         printf ( "Starting swapin selection" );
@@ -401,7 +401,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         }
 
 
-        pthread_mutex_unlock ( &cyclicTopoLock );
+        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         touch ( chunk );
         if ( counterActive->chunk->status == MEM_SWAPPED ) {
             counterActive = active;
@@ -412,7 +412,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         n_swap_in += 1;
 #endif
         VERBOSEPRINT ( "swapInBeforeReturn" );
-        pthread_mutex_unlock ( &cyclicTopoLock );
+        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         return true;
 
     } else {
@@ -429,7 +429,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         if ( swap->swapIn ( &chunk ) == chunk.size ) {
             //Wait for object to be swapped in:
             touch ( chunk );
-            pthread_mutex_lock ( &cyclicTopoLock );
+            rambrain_pthread_mutex_lock ( &cyclicTopoLock );
             if ( counterActive->chunk->status == MEM_SWAPPED ) {
                 counterActive = active;
             }
@@ -438,11 +438,11 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             swap_in_scheduled_bytes += chunk.size;
             n_swap_in += 1;
 #endif
-            pthread_mutex_unlock ( &cyclicTopoLock );
+            rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
             return true;
         } else {
             //Unlock mutex under which we were called, as we'll be throwing...
-            pthread_mutex_unlock ( &stateChangeMutex );
+            rambrain_pthread_mutex_unlock ( &stateChangeMutex );
             return Throw ( memoryException ( "Could not swap in an element." ) );
         };
     }
@@ -469,8 +469,8 @@ void cyclicManagedMemory::untouch ( managedMemoryChunk &chunk )
 
 bool cyclicManagedMemory::checkCycle() const
 {
-    pthread_mutex_lock ( &stateChangeMutex );
-    pthread_mutex_lock ( &cyclicTopoLock );
+    rambrain_pthread_mutex_lock ( &stateChangeMutex );
+    rambrain_pthread_mutex_lock ( &cyclicTopoLock );
 #ifdef PARENTAL_CONTROL
     unsigned int no_reg = memChunks.size() - 1;
 #else
@@ -481,8 +481,8 @@ bool cyclicManagedMemory::checkCycle() const
     cyclicAtime *oldcur;
 
     if ( !cur ) {
-        pthread_mutex_unlock ( &cyclicTopoLock );
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         if ( no_reg == 0 && counterActive == NULL ) {
             return true;
         } else {
@@ -498,8 +498,8 @@ bool cyclicManagedMemory::checkCycle() const
         cur = cur->next;
         if ( oldcur != cur->prev ) {
             errmsgf ( "Mutual connecion failure at chunks %lu and %lu", oldcur->chunk->id, cur->chunk->id );
-            pthread_mutex_unlock ( &cyclicTopoLock );
-            pthread_mutex_unlock ( &stateChangeMutex );
+            rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
+            rambrain_pthread_mutex_unlock ( &stateChangeMutex );
 
             return false;
         }
@@ -508,15 +508,15 @@ bool cyclicManagedMemory::checkCycle() const
             if ( oldcur->chunk->status == MEM_SWAPPED || oldcur->chunk->status == MEM_SWAPOUT ) {
                 errmsg ( "Swapped elements in active section!" );
 
-                pthread_mutex_unlock ( &cyclicTopoLock );
-                pthread_mutex_unlock ( &stateChangeMutex );
+                rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
+                rambrain_pthread_mutex_unlock ( &stateChangeMutex );
                 return false;
             }
         } else {
             if ( oldcur->chunk->status == MEM_SWAPPED && !inSwapsection ) {
                 errmsg ( "Isolated swapped element block not tracked by counterActive found!" );
-                pthread_mutex_unlock ( &cyclicTopoLock );
-                pthread_mutex_unlock ( &stateChangeMutex );
+                rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
+                rambrain_pthread_mutex_unlock ( &stateChangeMutex );
                 return false;
             }
             if ( oldcur->chunk->status != MEM_SWAPPED && oldcur->chunk->status != MEM_SWAPOUT ) {
@@ -529,8 +529,8 @@ bool cyclicManagedMemory::checkCycle() const
         }
 
     } while ( cur != active );
-    pthread_mutex_unlock ( &cyclicTopoLock );
-    pthread_mutex_unlock ( &stateChangeMutex );
+    rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
+    rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     if ( encountered != no_reg ) {
         errmsgf ( "Not all elements accessed. %d expected,  %d encountered", no_reg, encountered );
         return false;
@@ -604,21 +604,21 @@ void cyclicManagedMemory::printCycle() const
 cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::global_bytesize min_size )
 {
 
-    pthread_mutex_lock ( &cyclicTopoLock );
+    rambrain_pthread_mutex_lock ( &cyclicTopoLock );
     if ( counterActive == 0 ) {
-        pthread_mutex_unlock ( &stateChangeMutex );
-        pthread_mutex_unlock ( &cyclicTopoLock );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         Throw ( memoryException ( "I can't swap out anything if there's nothing to swap out." ) );
     }
     VERBOSEPRINT ( "swapOutEntry" );
     if ( min_size > memory_max ) {
-        pthread_mutex_unlock ( &cyclicTopoLock );
+        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         return ERR_MORETHANTOTALRAM;
     }
     global_bytesize swap_free = swap->getFreeSwap();
     if ( swap_free < min_size ) {
         if ( !swap->extendSwapByPolicy ( min_size ) ) {
-            pthread_mutex_unlock ( &cyclicTopoLock );
+            rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
             return ERR_SWAPFULL;
         }
         swap_free = swap->getFreeSwap();
@@ -668,7 +668,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         countPos = countPos->prev;
     }
     if ( unload_size == 0 ) {
-        pthread_mutex_unlock ( &cyclicTopoLock );
+        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         return ERR_NOTENOUGHCANDIDATES;
     }
 
@@ -715,7 +715,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     bool swapSuccess = ( real_unloaded == unload_size2 ) ;
     if ( !swapSuccess ) {
         if ( real_unloaded == 0 ) {
-            pthread_mutex_unlock ( &cyclicTopoLock );
+            rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
             return ERR_NOTENOUGHCANDIDATES;
         }
     }
@@ -813,7 +813,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         printf ( "had to move active", fromPos->chunk->id );
 #endif
     }
-    pthread_mutex_unlock ( &cyclicTopoLock );
+    rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
     VERBOSEPRINT ( "swapOutReturn" );
     if ( swapSuccess ) {
 #ifdef SWAPSTATS

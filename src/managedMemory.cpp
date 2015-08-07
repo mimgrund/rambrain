@@ -131,10 +131,10 @@ global_bytesize managedMemory::getSwappedMemory() const
 
 bool managedMemory::setMemoryLimit ( global_bytesize size )
 {
-    pthread_mutex_lock ( &stateChangeMutex );
+    rambrain_pthread_mutex_lock ( &stateChangeMutex );
     if ( size > memory_max ) {
         memory_max = size;
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         return true;
     } else {
         if ( size < memory_used ) {
@@ -142,21 +142,21 @@ bool managedMemory::setMemoryLimit ( global_bytesize size )
             //Try to swap out as much memory as needed:
             global_bytesize tobefreed = ( memory_used - size );
             if ( swapOut ( tobefreed ) != ERR_SUCCESS ) {
-                pthread_mutex_unlock ( &stateChangeMutex );
+                rambrain_pthread_mutex_unlock ( &stateChangeMutex );
                 return false;
             }
 
             memory_max = size;
             swapOut ( 0 ); // Swap out further to adapt to new memory limits. This must not necessarily succeed.
-            pthread_mutex_unlock ( &stateChangeMutex );
+            rambrain_pthread_mutex_unlock ( &stateChangeMutex );
             return true;
         } else {
             memory_max = size;
-            pthread_mutex_unlock ( &stateChangeMutex );
+            rambrain_pthread_mutex_unlock ( &stateChangeMutex );
             return true;
         }
     }
-    pthread_mutex_unlock ( &stateChangeMutex );
+    rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     return false;                                             //Resetting this is not implemented yet.
 }
 
@@ -182,7 +182,7 @@ bool managedMemory::ensureEnoughSpace ( global_bytesize sizereq, managedMemoryCh
                 if ( memory_tobefreed == 0 ) { //If other memory is to be freed, perhaps other threads may continue?
                     swap->cleanupCachedElements();
                     if ( outOfSwapIsFatal ) { //throw if user wants us to, otherwise wait indefinitely (ram-deadlock)
-                        pthread_mutex_unlock ( &stateChangeMutex );
+                        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
                         switch ( err ) {
                         case ERR_MORETHANTOTALRAM:
                             Throw ( memoryException ( "Could not swap memory: Object size requested is bigger than actual RAM limits" ) );
@@ -214,7 +214,7 @@ bool managedMemory::ensureEnoughSpace ( global_bytesize sizereq, managedMemoryCh
 
 managedMemoryChunk *managedMemory::mmalloc ( global_bytesize sizereq )
 {
-    pthread_mutex_lock ( &stateChangeMutex );
+    rambrain_pthread_mutex_lock ( &stateChangeMutex );
     sizereq += sizereq % memoryAlignment == 0 ? 0 : memoryAlignment - sizereq % memoryAlignment; //f**k memoryAlignment
     ensureEnoughSpace ( sizereq );
 
@@ -260,11 +260,11 @@ managedMemoryChunk *managedMemory::mmalloc ( global_bytesize sizereq )
         chunk->locPtr = _mm_malloc ( sizereq , memoryAlignment );
         if ( !chunk->locPtr ) {
             Throw ( memoryException ( "Malloc failed" ) );
-            pthread_mutex_unlock ( &stateChangeMutex );
+            rambrain_pthread_mutex_unlock ( &stateChangeMutex );
             return NULL;
         }
     }
-    pthread_mutex_unlock ( &stateChangeMutex );
+    rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     return chunk;
 }
 
@@ -277,7 +277,7 @@ bool managedMemory::swapIn ( memoryID id )
 bool managedMemory::prepareUse ( managedMemoryChunk &chunk, bool acquireLock )
 {
     if ( acquireLock ) {
-        pthread_mutex_lock ( &stateChangeMutex );
+        rambrain_pthread_mutex_lock ( &stateChangeMutex );
     }
     ++chunk.useCnt;//This protects element from being swapped out by somebody else if it was swapped in.
     switch ( chunk.status ) {
@@ -289,7 +289,7 @@ bool managedMemory::prepareUse ( managedMemoryChunk &chunk, bool acquireLock )
         if ( !swapIn ( chunk ) ) {
             errmsgf ( "Could not swap in chunk %lu", chunk.id );
             if ( acquireLock ) {
-                pthread_mutex_unlock ( &stateChangeMutex );
+                rambrain_pthread_mutex_unlock ( &stateChangeMutex );
             }
             return false;
         }
@@ -301,7 +301,7 @@ bool managedMemory::prepareUse ( managedMemoryChunk &chunk, bool acquireLock )
         ;
     }
     if ( acquireLock ) {
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     }
     return true;
 
@@ -310,7 +310,7 @@ bool managedMemory::prepareUse ( managedMemoryChunk &chunk, bool acquireLock )
 
 bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false )
 {
-    pthread_mutex_lock ( &stateChangeMutex );
+    rambrain_pthread_mutex_lock ( &stateChangeMutex );
     //printf("setUse on %d\n",chunk.id);
     ++chunk.useCnt;//This protects element from being swapped out by somebody else if it was swapped in.
     switch ( chunk.status ) {
@@ -324,7 +324,7 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
     case MEM_SWAPIN: // Wait for object to appear
         if ( !waitForSwapin ( chunk, true ) ) {
             if ( ! ( chunk.status & MEM_ALLOCATED ) ) {
-                pthread_mutex_unlock ( &stateChangeMutex );
+                rambrain_pthread_mutex_unlock ( &stateChangeMutex );
                 errmsgf ( "Waited for swapin of chunk %lu and could not make it.", chunk.id );
                 return false;
             }
@@ -343,10 +343,10 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
         ++swap_hits;
 #endif
         touch ( chunk );
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         return true;
     case MEM_ROOT:
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         return false;
 
     }
@@ -361,17 +361,17 @@ bool managedMemory::mrealloc ( memoryID id, global_bytesize sizereq )
     if ( !setUse ( chunk ) ) {
         return false;
     }
-    pthread_mutex_lock ( &stateChangeMutex );
+    rambrain_pthread_mutex_lock ( &stateChangeMutex );
     void *realloced = realloc ( chunk.locPtr, sizereq );
     if ( realloced ) {
         memory_used -= chunk.size - sizereq;
         chunk.size = sizereq;
         chunk.locPtr = realloced;
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         unsetUse ( chunk );
         return true;
     } else {
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         unsetUse ( chunk );
         return false;
     }
@@ -394,21 +394,22 @@ bool managedMemory::setUse ( memoryID id )
 bool managedMemory::unsetUse ( managedMemoryChunk &chunk , unsigned int no_unsets )
 {
     //printf("unsetUse on %d, %d times\n",chunk.id,no_unsets);
-    pthread_mutex_lock ( &stateChangeMutex );
+    rambrain_pthread_mutex_lock ( &stateChangeMutex );
     //The following will hapen for immediate loads.
     if ( no_unsets == 0 ) {
         chunk.useCnt --;
         return true;
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     }
     if ( chunk.status & MEM_ALLOCATED_INUSE_READ ) {
         chunk.useCnt -= no_unsets;
         chunk.status = ( chunk.useCnt == 0 ? MEM_ALLOCATED : chunk.status );
         untouch ( chunk );
         signalSwappingCond();//Unsetting use may trigger different possible swapouts.
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         return true;
     } else {
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         return Throw ( memoryException ( "Can not unset use of not used memory" ) );
     }
 }
@@ -418,10 +419,10 @@ bool managedMemory::Throw ( memoryException e )
 
 #ifdef PARENTAL_CONTROL
     if ( pthread_mutex_trylock ( &parentalMutex ) == 0 ) {
-        pthread_mutex_unlock ( &parentalMutex );
+        rambrain_pthread_mutex_unlock ( &parentalMutex );
     } else {
         if ( pthread_equal ( pthread_self(), creatingThread ) ) {
-            pthread_mutex_unlock ( &parentalMutex );
+            rambrain_pthread_mutex_unlock ( &parentalMutex );
         }
     }
 #endif
@@ -432,10 +433,10 @@ bool managedMemory::Throw ( memoryException e )
 
 void managedMemory::mfree ( memoryID id, bool inCleanup )
 {
-    pthread_mutex_lock ( &stateChangeMutex );
+    rambrain_pthread_mutex_lock ( &stateChangeMutex );
     managedMemoryChunk *chunk = memChunks[id];
     if ( chunk->status & MEM_ALLOCATED_INUSE ) {
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         Throw ( memoryException ( "Can not free memory which is in use" ) );
         return;
     }
@@ -444,7 +445,7 @@ void managedMemory::mfree ( memoryID id, bool inCleanup )
 
 #ifdef PARENTAL_CONTROL
     if ( chunk->child != invalid ) {
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         Throw ( memoryException ( "Can not free memory which has active children" ) );
         return;
     }
@@ -492,17 +493,17 @@ void managedMemory::mfree ( memoryID id, bool inCleanup )
     //Delete element itself
     memChunks.erase ( id );
     delete ( chunk );
-    pthread_mutex_unlock ( &stateChangeMutex );
+    rambrain_pthread_mutex_unlock ( &stateChangeMutex );
 }
 
 #ifdef PARENTAL_CONTROL
 
 unsigned int managedMemory::getNumberOfChildren ( const memoryID &id )
 {
-    pthread_mutex_lock ( &stateChangeMutex );
+    rambrain_pthread_mutex_lock ( &stateChangeMutex );
     const managedMemoryChunk &chunk = resolveMemChunk ( id );
     if ( chunk.child == invalid ) {
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         return 0;
     }
     unsigned int no = 1;
@@ -511,14 +512,14 @@ unsigned int managedMemory::getNumberOfChildren ( const memoryID &id )
         child = &resolveMemChunk ( child->next );
         no++;
     }
-    pthread_mutex_unlock ( &stateChangeMutex );
+    rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     return no;
 }
 
 
 void managedMemory::printTree ( managedMemoryChunk *current, unsigned int nspaces )
 {
-    pthread_mutex_lock ( &stateChangeMutex );
+    rambrain_pthread_mutex_lock ( &stateChangeMutex );
     if ( !current ) {
         current = &resolveMemChunk ( root );
     }
@@ -563,7 +564,7 @@ void managedMemory::printTree ( managedMemoryChunk *current, unsigned int nspace
             break;
         };
     } while ( 1 == 1 );
-    pthread_mutex_unlock ( &stateChangeMutex );
+    rambrain_pthread_mutex_unlock ( &stateChangeMutex );
 }
 
 ///\note This function does not preserve correct deallocation order in class hierarchies, as such, it is not a valid garbage collector.
@@ -727,7 +728,7 @@ bool managedMemory::waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock
 {
     if ( chunk.status == MEM_SWAPOUT || chunk.status == MEM_SWAPPED ) { //Chunk is about to be swapped out...
         if ( !keepSwapLock ) {
-            pthread_mutex_unlock ( &stateChangeMutex );
+            rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         }
         return false;
     }
@@ -735,7 +736,7 @@ bool managedMemory::waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock
         waitForAIO();
     }
     if ( !keepSwapLock ) {
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     }
     return true;
 }
@@ -745,7 +746,7 @@ bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLoc
 {
     if ( ( chunk.status == MEM_SWAPIN ) | ( chunk.status & MEM_ALLOCATED ) ) { //We would wait indefinitely, as the chunk is not about to appear
         if ( !keepSwapLock ) {
-            pthread_mutex_unlock ( &stateChangeMutex );
+            rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         }
         return false;
     }
@@ -753,7 +754,7 @@ bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLoc
         waitForAIO();
     }
     if ( !keepSwapLock ) {
-        pthread_mutex_unlock ( &stateChangeMutex );
+        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     }
     return true;
 }
