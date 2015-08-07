@@ -55,7 +55,9 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
                 resultToTempFile ( param, step, temp );
                 temp << endl;
 #ifdef LOGSTATS
-                handleTimingInfos ( param, step, repetitions );
+                if ( plotTimingStats ) {
+                    handleTimingInfos ( param, step, repetitions );
+                }
 #endif
             }
 
@@ -1638,6 +1640,7 @@ measureThroughputTest::measureThroughputTest() : performanceTest<int, int> ( "Me
     TESTPARAM ( 1, 1024, 1024000, 20, true, 1024000, "Byte size per used chunk" );
     TESTPARAM ( 2, 1, 200, 20, true, 100, "percentage of array that will be written to" );
     plotParts = vector<string> ( {"Set Use", "Prepare", "Calculation"} );
+    plotTimingStats = false;
 }
 
 /// @todo PTEST_CHECKS is missing in this test
@@ -1695,6 +1698,7 @@ void measureThroughputTest::actualTestMethod ( tester &test, int bytesize , int 
     test.addExternalTime ( allPrepare );
     test.addExternalTime ( allCalc );
 }
+
 string measureThroughputTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
@@ -1705,6 +1709,8 @@ string measureThroughputTest::generateMyGnuplotPlotPart ( const string &file , i
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
+
+
 TESTSTATICS ( measurePreemptiveSpeedupTest, "Measures preemptive vs non preemptive runtime" );
 
 measurePreemptiveSpeedupTest::measurePreemptiveSpeedupTest() : performanceTest<int, int> ( "MeasurePreemptiveSpeedup" )
@@ -1714,6 +1720,7 @@ measurePreemptiveSpeedupTest::measurePreemptiveSpeedupTest() : performanceTest<i
     plotParts = vector<string> ( {"Set Use", "Prepare", "Calculation", \
                                   "Set Use *", "Prepare *", "Calculation *"
                                  } );
+    plotTimingStats = false;
 }
 
 /// @todo PTEST_CHECKS is missing in this test
@@ -1824,6 +1831,7 @@ string measurePreemptiveSpeedupTest::generateMyGnuplotPlotPart ( const string &f
     return ss.str();
 }
 
+
 TESTSTATICS ( measureExplicitAsyncSpeedupTest, "Measures runtime of preemptive versus non preemptive with explicite asynchronous preparation" );
 
 measureExplicitAsyncSpeedupTest::measureExplicitAsyncSpeedupTest() : performanceTest<int, int> ( "MeasureExplicitAsyncSpeedup" )
@@ -1833,6 +1841,7 @@ measureExplicitAsyncSpeedupTest::measureExplicitAsyncSpeedupTest() : performance
     plotParts = vector<string> ( {"Set Use", "Prepare", "Calculation", "Deletion", \
                                   "Set Use *", "Prepare *", "Calculation *", "Deletion *"
                                  } );
+    plotTimingStats = false;
 }
 
 /// @todo PTEST_CHECKS is missing in this test
