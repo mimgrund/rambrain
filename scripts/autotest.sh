@@ -2,7 +2,7 @@
 
 user=$1
 repodir="ssh://${user}@schedar.usm.uni-muenchen.de/var/gits/membrain"
-branches=(master aio_merger)
+branches=(master)
 options=(PARENTAL_CONTROL OPTIMISE_COMPILATION)
 #options=(PARENTAL_CONTROL OPTIMISE_COMPILATION USE_XPRESSIVE USE_CLANG) #more complete set
 processes=8
