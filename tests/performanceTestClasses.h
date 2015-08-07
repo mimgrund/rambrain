@@ -331,6 +331,7 @@ protected:
     static map<string, performanceTest<> *> testClasses;
     vector<string> plotParts;
     static bool displayPlots;
+    bool plotTimingStats = true;
 
 };
 
