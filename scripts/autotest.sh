@@ -42,10 +42,10 @@ EOF
     max=$((max-1))
     for i in `seq 0 $max`; do
         opts=""
-        j=1
+        j=0
         for option in ${options[@]}; do
             opts+=" -D$option="
-            k=$(($i >> $j % 2))
+            k=$((($i >> $j) % 2))
             if [ $k -eq 1 ]; then
                 opts+="ON"
             else

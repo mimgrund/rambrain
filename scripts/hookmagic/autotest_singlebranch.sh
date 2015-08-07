@@ -2,7 +2,7 @@
 
 repodir="/var/gits/membrain"
 branch=$1
-options=(PARENTAL_CONTROL OPTIMISE_COMPILATION) #what about dma? what about optimisation?
+options=(PARENTAL_CONTROL OPTIMISE_COMPILATION)
 processes=8
 cd /rambrain_compile
 git clone $repodir $branch
