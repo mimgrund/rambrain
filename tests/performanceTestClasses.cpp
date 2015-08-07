@@ -1733,6 +1733,9 @@ void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize
     std::chrono::duration<double> allPrepare ( 0 );
     std::chrono::duration<double> allCalc ( 0 );
 
+    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveLoading ( true );
+    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveUnloading ( true );
+
     using namespace std::chrono;
     ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveLoading ( true );
     for ( int i = 0; i < iterations; ++i ) {
@@ -1851,8 +1854,11 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
     std::chrono::duration<double> allPrepare ( 0 );
     std::chrono::duration<double> allCalc ( 0 );
 
+
+
     using namespace std::chrono;
     ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveLoading ( true );
+    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveUnloading ( true );
     for ( int i = 0; i < iterations; ++i ) {
         unsigned int use = ( i % numel );
 
