@@ -1705,7 +1705,7 @@ string measureThroughputTest::generateMyGnuplotPlotPart ( const string &file , i
     ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
     return ss.str();
 }
-TESTSTATICS ( measurePreemptiveSpeedupTest, "Measures throughput under load" );
+TESTSTATICS ( measurePreemptiveSpeedupTest, "Measures preemptive vs non preemptive runtime" );
 
 measurePreemptiveSpeedupTest::measurePreemptiveSpeedupTest() : performanceTest<int, int> ( "MeasurePreemptiveSpeedup" )
 {
@@ -1821,7 +1821,7 @@ string measurePreemptiveSpeedupTest::generateMyGnuplotPlotPart ( const string &f
     return ss.str();
 }
 
-TESTSTATICS ( measureExplicitAsyncSpeedupTest, "Measures throughput under load" );
+TESTSTATICS ( measureExplicitAsyncSpeedupTest, "Measures runtime of preemptive versus non preemptive with explicite asynchronous preparation" );
 
 measureExplicitAsyncSpeedupTest::measureExplicitAsyncSpeedupTest() : performanceTest<int, int> ( "MeasureExplicitAsyncSpeedup" )
 {
