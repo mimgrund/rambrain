@@ -1700,7 +1700,7 @@ string measureThroughputTest::generateMyGnuplotPlotPart ( const string &file , i
 }
 TESTSTATICS ( measurePreemptiveSpeedupTest, "Measures throughput under load" );
 
-measurePreemptiveSpeedupTest::measurePreemptiveSpeedupTest() : performanceTest<int, int> ( "measurePreemptiveSpeedup" )
+measurePreemptiveSpeedupTest::measurePreemptiveSpeedupTest() : performanceTest<int, int> ( "MeasurePreemptiveSpeedup" )
 {
     TESTPARAM ( 1, 1024, 1024000, 20, true, 1024000, "Byte size per used chunk" );
     TESTPARAM ( 2, 1, 200, 20, true, 100, "percentage of array that will be written to" );
@@ -1823,7 +1823,7 @@ string measurePreemptiveSpeedupTest::generateMyGnuplotPlotPart ( const string &f
 
 TESTSTATICS ( measureExplicitAsyncSpeedupTest, "Measures throughput under load" );
 
-measureExplicitAsyncSpeedupTest::measureExplicitAsyncSpeedupTest() : performanceTest<int, int> ( "measureExplicitAsyncSpeedup" )
+measureExplicitAsyncSpeedupTest::measureExplicitAsyncSpeedupTest() : performanceTest<int, int> ( "MeasureExplicitAsyncSpeedup" )
 {
     TESTPARAM ( 1, 1024, 1024000, 20, true, 102400, "Byte size per used chunk" );
     TESTPARAM ( 2, 1, 200, 20, true, 100, "percentage of array that will be written to" );
