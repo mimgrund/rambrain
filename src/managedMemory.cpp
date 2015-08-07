@@ -401,17 +401,20 @@ bool managedMemory::unsetUse ( managedMemoryChunk &chunk , unsigned int no_unset
 
         return Throw ( memoryException ( "Cannot unset zero uses" ) );
     }
-    if ( chunk.status & MEM_ALLOCATED_INUSE_READ ) {
-        chunk.useCnt -= no_unsets;
-        chunk.status = ( chunk.useCnt == 0 ? MEM_ALLOCATED : chunk.status );
-        untouch ( chunk );
-        signalSwappingCond();//Unsetting use may trigger different possible swapouts.
-        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
-        return true;
-    } else {
+    if ( chunk.useCnt < no_unsets ) {
         rambrain_pthread_mutex_unlock ( &stateChangeMutex );
         return Throw ( memoryException ( "Can not unset use of not used memory" ) );
     }
+
+    chunk.useCnt -= no_unsets;
+    if ( chunk.status & MEM_ALLOCATED_INUSE_READ ) {
+        chunk.status = ( chunk.useCnt == 0 ? MEM_ALLOCATED : chunk.status );
+
+    }
+    untouch ( chunk );
+    signalSwappingCond();//Unsetting use may trigger different possible swapouts.
+    rambrain_pthread_mutex_unlock ( &stateChangeMutex );
+    return true;
 }
 
 bool managedMemory::Throw ( memoryException e )

@@ -104,7 +104,7 @@ public:
         **/
 
         bool iamSyncer;
-        if ( rambrain_pthread_mutex_trylock ( &managedMemory::parentalMutex ) == 0 ) {
+        if ( pthread_mutex_trylock ( &managedMemory::parentalMutex ) == 0 ) {
             //Could lock
             iamSyncer = true;
         } else {
