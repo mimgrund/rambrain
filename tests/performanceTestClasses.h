@@ -213,6 +213,15 @@ public:
      */
     virtual string getComment() = 0;
 
+    /**
+     * @brief If the generated plots shall be immediately displayed
+     * @param display Display on or off
+     * @note Default is false
+     */
+    inline static void setDisplayPlots ( bool display ) {
+        displayPlots = display;
+    }
+
 protected:
     /**
      * @brief Get the amount of steps for parameter variation
@@ -321,6 +330,7 @@ protected:
     vector<testParameterBase *> parameters;
     static map<string, performanceTest<> *> testClasses;
     vector<string> plotParts;
+    static bool displayPlots;
 
 };
 

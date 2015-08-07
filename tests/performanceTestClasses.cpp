@@ -25,6 +25,7 @@
 #endif
 
 map<string, performanceTest<> *> performanceTest<>::testClasses;
+bool performanceTest<>::displayPlots = false;
 
 performanceTest<>::performanceTest ( const char *name ) : name ( name )
 {
@@ -67,7 +68,9 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
             cout << "Calling gnuplot and displaying result" << endl;
             dummy |= system ( "gnuplot temp.gnuplot" );
             dummy |= system ( ( "convert -density 300 -resize 1920x " + outname.str() + ".eps -flatten " + outname.str() + ".png" ).c_str() );
-            dummy |= system ( ( "display " + outname.str() + ".png &" ).c_str() );
+            if ( displayPlots ) {
+                dummy |= system ( ( "display " + outname.str() + ".png &" ).c_str() );
+            }
 
             if ( !dummy ) {
                 cerr << "An error in system calls occured..." << endl;
@@ -301,11 +304,15 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
     int dummy = 0;
     dummy |= system ( "gnuplot temp.gnuplot" );
     dummy |= system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
-    dummy |= system ( ( "display " + timingFile + ".png &" ).c_str() );
+    if ( displayPlots ) {
+        dummy |= system ( ( "display " + timingFile + ".png &" ).c_str() );
+    }
 
     dummy |= system ( "gnuplot temp2.gnuplot" );
     dummy |= system ( ( "convert -density 300 -resize 1920x " + hitMissFile + ".eps -flatten " + hitMissFile + ".png" ).c_str() );
-    dummy |= system ( ( "display " + hitMissFile + ".png &" ).c_str() );
+    if ( displayPlots ) {
+        dummy |= system ( ( "display " + hitMissFile + ".png &" ).c_str() );
+    }
 
     if ( !dummy ) {
         cerr << "An error in system calls occured..." << endl;

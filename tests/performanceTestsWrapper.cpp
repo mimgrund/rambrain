@@ -32,7 +32,7 @@ using namespace std;
  * Usage:
  * * Zero parameters: Execute all test classes, varry all parameters
  * * One parameter:  Overwrite amount of repetitions or "help" / "list" just to list the available tests and the current config
- * * More parameters: Overwrite amount of repetitions followed by a + or - sign and the list of test classes to be run or to leave out.
+ * * More parameters: Overwrite amount of repetitions eventually followed by true or false for displaying plots followed by a + or - sign and the list of test classes to be run or to leave out.
  */
 int main ( int argc, char **argv )
 {
@@ -51,19 +51,32 @@ int main ( int argc, char **argv )
 
     // Specialize which test cases to run
     if ( argc > 2 ) {
+        int i = 2;
+        if ( ! strcmp ( argv[i], "true" ) ) {
+            performanceTest<>::setDisplayPlots ( true );
+            cout << "Setting display plots to true" << endl;
+            ++ i;
+        } else if ( ! strcmp ( argv[i], "false" ) ) {
+            cout << "Setting display plots to false" << endl;
+            performanceTest<>::setDisplayPlots ( false );
+            ++ i;
+        }
+
         bool enable;
-        if ( ! strcmp ( argv[2], "+" ) ) {
+        if ( ! strcmp ( argv[i], "+" ) ) {
             performanceTest<>::enableAllTests ( false );
             enable = true;
-        } else if ( ! strcmp ( argv[2], "-" ) ) {
+            ++ i;
+        } else if ( ! strcmp ( argv[i], "-" ) ) {
             // All tests are on by default
             enable = false;
+            ++ i;
         } else {
-            cerr << argv[2] << " not supported as second parameter, expected + or -" << endl;
+            cerr << argv[i] << " not supported as " << i << " parameter, expected true/false or +/-" << endl;
             return 1;
         }
 
-        for ( int i = 3; i < argc; ++i ) {
+        for ( ; i < argc; ++i ) {
             performanceTest<>::enableTest ( argv[i], enable );
         }
     }
