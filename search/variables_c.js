@@ -10,6 +10,7 @@ var searchData=
   ['parentalmutex',['parentalMutex',['../a00015.html#a33804134ad86b84b0765341922ad2bbe',1,'rambrain::managedMemory']]],
   ['pendingaios',['pendingAios',['../a00014.html#a91b2ddf72a35e0727e6bdf26f529dc34',1,'rambrain::managedFileSwap']]],
   ['plotparts',['plotParts',['../a00023.html#aa41228b97e1b171503ca8032057bb41c',1,'performanceTest&lt;&gt;']]],
+  ['plottimingstats',['plotTimingStats',['../a00023.html#aebef6431ba821a8476cf4322add3bcf0',1,'performanceTest&lt;&gt;']]],
   ['policy',['policy',['../a00006.html#a44d5658ac2cbed42f40703780b8483bb',1,'rambrain::configuration::policy()'],['../a00018.html#a483bd634c3132518ee475ce0fb21b92d',1,'rambrain::managedSwap::policy()']]],
   ['preemptivebytes',['preemptiveBytes',['../a00008.html#a4c28d42cf50ef9bb15e575e9d9dd262b',1,'rambrain::cyclicManagedMemory']]],
   ['preemptiveloaded',['preemptiveLoaded',['../a00016.html#af0f0d159f94b3d17ee6f31ae7f87086a',1,'rambrain::managedMemoryChunk']]],

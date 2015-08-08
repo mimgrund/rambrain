@@ -231,7 +231,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00077">77</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00078">78</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -258,7 +258,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00082">82</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00083">83</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -299,7 +299,7 @@ template&lt;typename... ctor_args&gt; </div>
 </div><div class="memdoc">
 <p>I admit, this is a bit complicated. as we do not want users to carry around information about object parenthood into their classes, we have to ensure that our 'memoryManager::parent' attribute is carried down the hierarchy correctly. As this code part is accessed recursively throughout creation, we have to make sure that we do not lock twice (deadlock) we only continue if we're called by the currently active creation process the following is not very elegant, but works. The idea behind this is that we admit one thread at a time to create an object class hierarchy. In this way, the parent argument from below is correct. This is synced by basically checking wether we should be a master or not based on a possibly setted threadID...</p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00085">85</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00086">86</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -326,7 +326,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00152">152</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00153">153</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -354,7 +354,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00215">215</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00216">216</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -381,7 +381,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00206">206</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00207">207</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -410,7 +410,7 @@ template&lt;class G &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00231">231</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00232">232</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -439,7 +439,7 @@ template&lt;class G &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00245">245</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00246">246</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -467,7 +467,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00181">181</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00182">182</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -495,7 +495,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00195">195</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00196">196</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -523,7 +523,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00200">200</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00201">201</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -550,7 +550,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00159">159</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00160">160</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -588,7 +588,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00165">165</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00166">166</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -616,7 +616,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00177">177</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00178">178</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -641,7 +641,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00268">268</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00269">269</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -665,7 +665,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00267">267</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00268">268</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -689,7 +689,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00264">264</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00265">265</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -713,7 +713,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00265">265</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00266">266</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -737,7 +737,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00266">266</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00267">267</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -763,7 +763,7 @@ template&lt;class G &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00258">258</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00259">259</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -789,7 +789,7 @@ template&lt;class G &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00260">260</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00261">261</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -814,7 +814,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00224">224</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00225">225</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -838,7 +838,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00227">227</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00228">228</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -862,7 +862,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00226">226</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00227">227</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -886,7 +886,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00225">225</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00226">226</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -900,7 +900,7 @@ template&lt;class T&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a00092.html">rambrain</a></li><li class="navelem"><a class="el" href="a00017.html">managedPtr</a></li>
-    <li class="footer">Generated on Fri Aug 7 2015 01:05:53 for rambrain by
+    <li class="footer">Generated on Sat Aug 8 2015 07:29:09 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -4,6 +4,7 @@ var searchData=
   ['schedulerdelete',['schedulerDelete',['../a00008.html#a937a2eeee6bdb1d5aeb313a0fa1ccced',1,'rambrain::cyclicManagedMemory::schedulerDelete()'],['../a00010.html#a655f874332b0aee85639bfe4ab812de3',1,'rambrain::dummyManagedMemory::schedulerDelete()'],['../a00015.html#a9d67620e215f59f9656bdf2f934b9f3e',1,'rambrain::managedMemory::schedulerDelete()']]],
   ['schedulerregister',['schedulerRegister',['../a00008.html#a7b185f783b5b46babfc1c7d96297dcd9',1,'rambrain::cyclicManagedMemory::schedulerRegister()'],['../a00010.html#adc7add60dc8976d05d31c0a3a2548922',1,'rambrain::dummyManagedMemory::schedulerRegister()'],['../a00015.html#ad0f1191e8bcedb261b7464d1bcd5b620',1,'rambrain::managedMemory::schedulerRegister()']]],
   ['setcustomconfigpath',['setCustomConfigPath',['../a00005.html#aaa1bed466c323f77900c34dc435a6aef',1,'rambrain::configReader::setCustomConfigPath()'],['../a00024.html#a61be05dcf94bd052199b719c0d3efc81',1,'rambrain::rambrainglobals::rambrainConfig::setCustomConfigPath()']]],
+  ['setdisplayplots',['setDisplayPlots',['../a00023.html#ab244a26d06ae360803ba8e53bfd4cce1',1,'performanceTest&lt;&gt;']]],
   ['setdma',['setDMA',['../a00014.html#a53ecd36635a2dce550989f688d8323d0',1,'rambrain::managedFileSwap']]],
   ['setmemorylimit',['setMemoryLimit',['../a00015.html#af183c26795176260a40a73f3d8eb4445',1,'rambrain::managedMemory']]],
   ['setoutofswapisfatal',['setOutOfSwapIsFatal',['../a00015.html#a4158747bb03019659afc34d0120be28c',1,'rambrain::managedMemory']]],

@@ -161,6 +161,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ae7e6b8d0ac947d531131fdc359569515"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#ae7e6b8d0ac947d531131fdc359569515">runRespectiveTest</a> (const string &amp;<a class="el" href="a00023.html#a6c0cdc27e3ec70a86bd6e17d3d60295b">name</a>, <a class="el" href="a00028.html">tester</a> &amp;myTester, unsigned int repetitions, char **arguments, int &amp;offset, int argumentscount)</td></tr>
 <tr class="memdesc:ae7e6b8d0ac947d531131fdc359569515"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a specific test case several times.  <a href="#ae7e6b8d0ac947d531131fdc359569515">More...</a><br /></td></tr>
 <tr class="separator:ae7e6b8d0ac947d531131fdc359569515"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab244a26d06ae360803ba8e53bfd4cce1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#ab244a26d06ae360803ba8e53bfd4cce1">setDisplayPlots</a> (bool display)</td></tr>
+<tr class="memdesc:ab244a26d06ae360803ba8e53bfd4cce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the generated plots shall be immediately displayed.  <a href="#ab244a26d06ae360803ba8e53bfd4cce1">More...</a><br /></td></tr>
+<tr class="separator:ab244a26d06ae360803ba8e53bfd4cce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -211,11 +214,15 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a7da28b9356f3201600c71c16afcf6030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa41228b97e1b171503ca8032057bb41c"><td class="memItemLeft" align="right" valign="top">vector&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#aa41228b97e1b171503ca8032057bb41c">plotParts</a></td></tr>
 <tr class="separator:aa41228b97e1b171503ca8032057bb41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebef6431ba821a8476cf4322add3bcf0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#aebef6431ba821a8476cf4322add3bcf0">plotTimingStats</a> = true</td></tr>
+<tr class="separator:aebef6431ba821a8476cf4322add3bcf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
 <tr class="memitem:a46c7d278bada9167cf57fa39c680f7ac"><td class="memItemLeft" align="right" valign="top">static map&lt; string, <a class="el" href="a00021.html">performanceTest</a>&lt;&gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a46c7d278bada9167cf57fa39c680f7ac">testClasses</a></td></tr>
 <tr class="separator:a46c7d278bada9167cf57fa39c680f7ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74cccef6126a3c18b81d1fd36a8fe709"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00023.html#a74cccef6126a3c18b81d1fd36a8fe709">displayPlots</a></td></tr>
+<tr class="separator:a74cccef6126a3c18b81d1fd36a8fe709"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;&gt;<br />
@@ -716,7 +723,7 @@ class performanceTest&lt;&gt;</h3>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The steps </dd></dl>
 
-<p>Definition at line <a class="el" href="a00072_source.html#l00222">222</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
+<p>Definition at line <a class="el" href="a00072_source.html#l00231">231</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
@@ -1164,6 +1171,41 @@ class performanceTest&lt;&gt;</h3>
 
 </div>
 </div>
+<a class="anchor" id="ab244a26d06ae360803ba8e53bfd4cce1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="a00021.html">performanceTest</a>&lt;&gt;::setDisplayPlots </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>display</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If the generated plots shall be immediately displayed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">display</td><td>Display on or off </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Default is false </dd></dl>
+
+<p>Definition at line <a class="el" href="a00072_source.html#l00221">221</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a75e206bba7717292e80e80cd7363bb78"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1291,6 +1333,28 @@ class performanceTest&lt;&gt;</h3>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a74cccef6126a3c18b81d1fd36a8fe709"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="a00021.html">performanceTest</a>&lt;&gt;::displayPlots</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00072_source.html#l00333">333</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="aab3749315fc4f0280d2158a80440da24"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1309,7 +1373,7 @@ class performanceTest&lt;&gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00072_source.html#l00320">320</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
+<p>Definition at line <a class="el" href="a00072_source.html#l00329">329</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
@@ -1331,7 +1395,7 @@ class performanceTest&lt;&gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00072_source.html#l00319">319</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
+<p>Definition at line <a class="el" href="a00072_source.html#l00328">328</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
@@ -1353,7 +1417,7 @@ class performanceTest&lt;&gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00072_source.html#l00321">321</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
+<p>Definition at line <a class="el" href="a00072_source.html#l00330">330</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
@@ -1375,7 +1439,29 @@ class performanceTest&lt;&gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00072_source.html#l00323">323</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
+<p>Definition at line <a class="el" href="a00072_source.html#l00332">332</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aebef6431ba821a8476cf4322add3bcf0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="a00021.html">performanceTest</a>&lt;&gt;::plotTimingStats = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00072_source.html#l00334">334</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
@@ -1397,7 +1483,7 @@ class performanceTest&lt;&gt;</h3>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00072_source.html#l00322">322</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
+<p>Definition at line <a class="el" href="a00072_source.html#l00331">331</a> of file <a class="el" href="a00072_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
@@ -1410,7 +1496,7 @@ class performanceTest&lt;&gt;</h3>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a00023.html">performanceTest&lt;&gt;</a></li>
-    <li class="footer">Generated on Fri Aug 7 2015 01:05:51 for rambrain by
+    <li class="footer">Generated on Sat Aug 8 2015 07:29:06 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

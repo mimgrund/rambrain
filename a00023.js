@@ -20,5 +20,6 @@ var a00023 =
     [ "enabled", "a00023.html#aab3749315fc4f0280d2158a80440da24", null ],
     [ "name", "a00023.html#a6c0cdc27e3ec70a86bd6e17d3d60295b", null ],
     [ "parameters", "a00023.html#a7da28b9356f3201600c71c16afcf6030", null ],
-    [ "plotParts", "a00023.html#aa41228b97e1b171503ca8032057bb41c", null ]
+    [ "plotParts", "a00023.html#aa41228b97e1b171503ca8032057bb41c", null ],
+    [ "plotTimingStats", "a00023.html#aebef6431ba821a8476cf4322add3bcf0", null ]
 ];

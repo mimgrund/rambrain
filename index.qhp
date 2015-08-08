@@ -53,6 +53,7 @@
                 <section title="::adhereTo_Unit_LoadUnload_Test" ref="a00001.html#a4eaae1fe478a3a7c5e954715e23e002d" />
                 <section title="::adhereTo_Unit_LoadUnloadConst_Test" ref="a00001.html#a6b848bcb609c606a25cecf236b42ff59" />
                 <section title="::adhereTo_Unit_TwiceAdhered_Test" ref="a00001.html#aede63b93552fafc55cfba340555d0902" />
+                <section title="::adhereTo_Unit_TwiceAdheredOnceUsed_Test" ref="a00001.html#a33afc5203b7ef7a8e11fdb48df25c101" />
                 <section title="data" ref="a00001.html#aaa6dbb98a31a73a6bcd7609b9e576a0b" />
                 <section title="loadedImmediately" ref="a00001.html#a87f95dfb98bdeabd44be43ead1122745" />
                 <section title="loadedReadable" ref="a00001.html#ab3e4380b00ff3aeb0223f5ea76855f01" />
@@ -461,6 +462,7 @@
               <section title="name" ref="a00023.html#a6c0cdc27e3ec70a86bd6e17d3d60295b" />
               <section title="parameters" ref="a00023.html#a7da28b9356f3201600c71c16afcf6030" />
               <section title="plotParts" ref="a00023.html#aa41228b97e1b171503ca8032057bb41c" />
+              <section title="plotTimingStats" ref="a00023.html#aebef6431ba821a8476cf4322add3bcf0" />
             </section>
             <section title="tester" ref="a00028.html">
               <section title="tester" ref="a00028.html#a6cc05095bf2aa614542fb0f533d474e2" />
@@ -671,7 +673,9 @@
                   <section title="interactive" ref="a00036.html#a7d53dd1748d5012cafa91aa982c7cd35afe88c03a1958b4259f0c51d68eed3213" />
                 </section>
               </section>
-              <section title="cyclicManagedMemory.cpp" ref="a00037.html" />
+              <section title="cyclicManagedMemory.cpp" ref="a00037.html">
+                <section title="min_elements" ref="a00037.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc" />
+              </section>
               <section title="cyclicManagedMemory.h" ref="a00038.html">
                 <section title="cyclicAtime" ref="a00007.html">
                   <section title="chunk" ref="a00007.html#a710db2d46d07a035dc5e84e8f0561171" />
@@ -1004,6 +1008,7 @@
                   <section title="::adhereTo_Unit_LoadUnload_Test" ref="a00001.html#a4eaae1fe478a3a7c5e954715e23e002d" />
                   <section title="::adhereTo_Unit_LoadUnloadConst_Test" ref="a00001.html#a6b848bcb609c606a25cecf236b42ff59" />
                   <section title="::adhereTo_Unit_TwiceAdhered_Test" ref="a00001.html#aede63b93552fafc55cfba340555d0902" />
+                  <section title="::adhereTo_Unit_TwiceAdheredOnceUsed_Test" ref="a00001.html#a33afc5203b7ef7a8e11fdb48df25c101" />
                   <section title="data" ref="a00001.html#aaa6dbb98a31a73a6bcd7609b9e576a0b" />
                   <section title="loadedImmediately" ref="a00001.html#a87f95dfb98bdeabd44be43ead1122745" />
                   <section title="loadedReadable" ref="a00001.html#ab3e4380b00ff3aeb0223f5ea76855f01" />
@@ -1047,6 +1052,7 @@
                   <section title="::adhereTo_Unit_LoadUnload_Test" ref="a00001.html#a4eaae1fe478a3a7c5e954715e23e002d" />
                   <section title="::adhereTo_Unit_LoadUnloadConst_Test" ref="a00001.html#a6b848bcb609c606a25cecf236b42ff59" />
                   <section title="::adhereTo_Unit_TwiceAdhered_Test" ref="a00001.html#aede63b93552fafc55cfba340555d0902" />
+                  <section title="::adhereTo_Unit_TwiceAdheredOnceUsed_Test" ref="a00001.html#a33afc5203b7ef7a8e11fdb48df25c101" />
                   <section title="data" ref="a00001.html#aaa6dbb98a31a73a6bcd7609b9e576a0b" />
                   <section title="loadedImmediately" ref="a00001.html#a87f95dfb98bdeabd44be43ead1122745" />
                   <section title="loadedReadable" ref="a00001.html#ab3e4380b00ff3aeb0223f5ea76855f01" />
@@ -1161,8 +1167,8 @@
                 <section title="TESTSTATICS" ref="a00071.html#a60941ebedab2e69540164bc8f18e1161" />
                 <section title="TESTSTATICS" ref="a00071.html#a2156a0b5b8120f96a8159b162dceaec5" />
                 <section title="TESTSTATICS" ref="a00071.html#a156b148adb86e8d87b1eee751138122f" />
-                <section title="TESTSTATICS" ref="a00071.html#a0c0082439abdf53a350c893f3a41a79b" />
-                <section title="TESTSTATICS" ref="a00071.html#a2a9ce3e71dd22589cb5e03225d4f3b78" />
+                <section title="TESTSTATICS" ref="a00071.html#ad61556d383378ff650f8df086737136f" />
+                <section title="TESTSTATICS" ref="a00071.html#a96405547710ead8b3030a73ee6d82002" />
               </section>
               <section title="performanceTestClasses.h" ref="a00072.html">
                 <section title="testParameterBase" ref="a00030.html">
@@ -1207,6 +1213,7 @@
                   <section title="name" ref="a00023.html#a6c0cdc27e3ec70a86bd6e17d3d60295b" />
                   <section title="parameters" ref="a00023.html#a7da28b9356f3201600c71c16afcf6030" />
                   <section title="plotParts" ref="a00023.html#aa41228b97e1b171503ca8032057bb41c" />
+                  <section title="plotTimingStats" ref="a00023.html#aebef6431ba821a8476cf4322add3bcf0" />
                 </section>
                 <section title="performanceTest&lt; T, U...&gt;" ref="a00022.html">
                   <section title="performanceTest" ref="a00022.html#a99e85e5057fdf41735f0321966beec4a" />
@@ -1241,6 +1248,7 @@
                 <section title="TEST" ref="a00076.html#a28fdac7bfa7e91512d09eb9c3b139ce5" />
                 <section title="TEST" ref="a00076.html#a137db832b9dda1490897e32b13059a24" />
                 <section title="TEST" ref="a00076.html#a339f6fd734be72abd42afa17a4345d85" />
+                <section title="TEST" ref="a00076.html#a3013c4ff517165d2aa7466667c3ce4d3" />
                 <section title="TEST" ref="a00076.html#a1364e79218a2e6616939b86512053b16" />
                 <section title="TEST" ref="a00076.html#aaf3f56b616e96dfd62e1739c84622b3c" />
                 <section title="IGNORE_TEST_WARNINGS" ref="a00076.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
@@ -1392,6 +1400,7 @@
       <keyword name="kib" id="common.h::kib" ref="a00034.html#ac2c0fb2cc8161166cbd060cb2b85aaf1" />
       <keyword name="mib" id="common.h::mib" ref="a00034.html#a8526efa365cdb0cb597351c2671af168" />
       <keyword name="gig" id="common.h::gig" ref="a00034.html#a8525b8b73c3e1ec62bd571b3cffd1742" />
+      <keyword name="min_elements" id="cyclicManagedMemory.cpp::min_elements" ref="a00037.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc" />
       <keyword name="gitCommit" id="git_info.h::gitCommit" ref="a00041.html#a7f5007ab114a0895060f2e6437200ea9" />
       <keyword name="gitDiff" id="git_info.h::gitDiff" ref="a00041.html#a73155ddd51dc782d33249917cd27ae19" />
       <keyword name="global_offset" id="managedFileSwap.h::global_offset" ref="a00047.html#a72b644584fab6ba1add401162788507b" />
@@ -1416,8 +1425,8 @@
       <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00071.html#a60941ebedab2e69540164bc8f18e1161" />
       <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00071.html#a2156a0b5b8120f96a8159b162dceaec5" />
       <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00071.html#a156b148adb86e8d87b1eee751138122f" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00071.html#a0c0082439abdf53a350c893f3a41a79b" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00071.html#a2a9ce3e71dd22589cb5e03225d4f3b78" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00071.html#ad61556d383378ff650f8df086737136f" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00071.html#a96405547710ead8b3030a73ee6d82002" />
       <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00072.html#af5ca33e1ddc335f5e8438d775535b0d0" />
       <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00072.html#a5663d51d4b9c8c9988ff8cbd8780d018" />
       <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00072.html#adc7ed635696750ca3486225a7ef3a209" />
@@ -1439,6 +1448,7 @@
       <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00076.html#a28fdac7bfa7e91512d09eb9c3b139ce5" />
       <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00076.html#a137db832b9dda1490897e32b13059a24" />
       <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00076.html#a339f6fd734be72abd42afa17a4345d85" />
+      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00076.html#a3013c4ff517165d2aa7466667c3ce4d3" />
       <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00076.html#a1364e79218a2e6616939b86512053b16" />
       <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00076.html#aaf3f56b616e96dfd62e1739c84622b3c" />
       <keyword name="IGNORE_TEST_WARNINGS" id="testAdhereTo.cpp::IGNORE_TEST_WARNINGS" ref="a00076.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
@@ -1543,6 +1553,7 @@
       <keyword name="unregisterTest" id="performanceTest&lt;&gt;::unregisterTest" ref="a00023.html#a6e249ba8874d4f1ffe55dce7cdd4c3cf" />
       <keyword name="dumpTestInfo" id="performanceTest&lt;&gt;::dumpTestInfo" ref="a00023.html#a6860e272518523075001baea0c31be15" />
       <keyword name="runRespectiveTest" id="performanceTest&lt;&gt;::runRespectiveTest" ref="a00023.html#ae7e6b8d0ac947d531131fdc359569515" />
+      <keyword name="setDisplayPlots" id="performanceTest&lt;&gt;::setDisplayPlots" ref="a00023.html#ab244a26d06ae360803ba8e53bfd4cce1" />
       <keyword name="getStepsForParam" id="performanceTest&lt;&gt;::getStepsForParam" ref="a00023.html#a0e7a9f0e693563cdc8445d44c5cffa2e" />
       <keyword name="getParamsString" id="performanceTest&lt;&gt;::getParamsString" ref="a00023.html#ab488d9038dfd99cb8c8429b92b1e135e" />
       <keyword name="getTestOutfile" id="performanceTest&lt;&gt;::getTestOutfile" ref="a00023.html#a745002c6704317f16e622eeddc62f1b9" />
@@ -1559,7 +1570,9 @@
       <keyword name="enabled" id="performanceTest&lt;&gt;::enabled" ref="a00023.html#aab3749315fc4f0280d2158a80440da24" />
       <keyword name="parameters" id="performanceTest&lt;&gt;::parameters" ref="a00023.html#a7da28b9356f3201600c71c16afcf6030" />
       <keyword name="plotParts" id="performanceTest&lt;&gt;::plotParts" ref="a00023.html#aa41228b97e1b171503ca8032057bb41c" />
+      <keyword name="plotTimingStats" id="performanceTest&lt;&gt;::plotTimingStats" ref="a00023.html#aebef6431ba821a8476cf4322add3bcf0" />
       <keyword name="testClasses" id="performanceTest&lt;&gt;::testClasses" ref="a00023.html#a46c7d278bada9167cf57fa39c680f7ac" />
+      <keyword name="displayPlots" id="performanceTest&lt;&gt;::displayPlots" ref="a00023.html#a74cccef6126a3c18b81d1fd36a8fe709" />
       <keyword name="tester" id="tester" ref="a00028.html" />
       <keyword name="tester" id="tester::tester" ref="a00028.html#a6cc05095bf2aa614542fb0f533d474e2" />
       <keyword name="~tester" id="tester::~tester" ref="a00028.html#ab79e99149907bf96d75d929f1dc49410" />
@@ -1613,6 +1626,7 @@
       <keyword name="kib" id="rambrain::kib" ref="a00092.html#ac2c0fb2cc8161166cbd060cb2b85aaf1" />
       <keyword name="mib" id="rambrain::mib" ref="a00092.html#a8526efa365cdb0cb597351c2671af168" />
       <keyword name="gig" id="rambrain::gig" ref="a00092.html#a8525b8b73c3e1ec62bd571b3cffd1742" />
+      <keyword name="min_elements" id="rambrain::min_elements" ref="a00092.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc" />
       <keyword name="MEM_ROOT" id="rambrain::MEM_ROOT" ref="a00092.html#a2aa4b6f9186dc50dad74cf1abd3799c2ae3335597107739bf9a94567aa64a11c5" />
       <keyword name="MEM_ALLOCATED_INUSE_READ" id="rambrain::MEM_ALLOCATED_INUSE_READ" ref="a00092.html#a2aa4b6f9186dc50dad74cf1abd3799c2a610971eb8090b2a006cab2a9d0b23e1a" />
       <keyword name="MEM_ALLOCATED_INUSE_WRITE" id="rambrain::MEM_ALLOCATED_INUSE_WRITE" ref="a00092.html#a2aa4b6f9186dc50dad74cf1abd3799c2a153517e34aa29157bc4d3263790a2dc7" />
@@ -1644,6 +1658,7 @@
       <keyword name="::adhereTo_Unit_LoadUnload_Test" id="rambrain::adhereTo::::adhereTo_Unit_LoadUnload_Test" ref="a00001.html#a4eaae1fe478a3a7c5e954715e23e002d" />
       <keyword name="::adhereTo_Unit_LoadUnloadConst_Test" id="rambrain::adhereTo::::adhereTo_Unit_LoadUnloadConst_Test" ref="a00001.html#a6b848bcb609c606a25cecf236b42ff59" />
       <keyword name="::adhereTo_Unit_TwiceAdhered_Test" id="rambrain::adhereTo::::adhereTo_Unit_TwiceAdhered_Test" ref="a00001.html#aede63b93552fafc55cfba340555d0902" />
+      <keyword name="::adhereTo_Unit_TwiceAdheredOnceUsed_Test" id="rambrain::adhereTo::::adhereTo_Unit_TwiceAdheredOnceUsed_Test" ref="a00001.html#a33afc5203b7ef7a8e11fdb48df25c101" />
       <keyword name="rambrain::aiotracker" id="rambrain::aiotracker" ref="a00002.html" />
       <keyword name="aio" id="rambrain::aiotracker::aio" ref="a00002.html#a84e1e9e1423f48e05d0ff6f80ac9e176" />
       <keyword name="tracker" id="rambrain::aiotracker::tracker" ref="a00002.html#a72bfabba9067cbf5df66513c973c85c9" />

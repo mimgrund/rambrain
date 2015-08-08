@@ -12,6 +12,6 @@ var a00071 =
     [ "TESTSTATICS", "a00071.html#a60941ebedab2e69540164bc8f18e1161", null ],
     [ "TESTSTATICS", "a00071.html#a2156a0b5b8120f96a8159b162dceaec5", null ],
     [ "TESTSTATICS", "a00071.html#a156b148adb86e8d87b1eee751138122f", null ],
-    [ "TESTSTATICS", "a00071.html#a0c0082439abdf53a350c893f3a41a79b", null ],
-    [ "TESTSTATICS", "a00071.html#a2a9ce3e71dd22589cb5e03225d4f3b78", null ]
+    [ "TESTSTATICS", "a00071.html#ad61556d383378ff650f8df086737136f", null ],
+    [ "TESTSTATICS", "a00071.html#a96405547710ead8b3030a73ee6d82002", null ]
 ];

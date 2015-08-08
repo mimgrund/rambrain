@@ -15,5 +15,6 @@ var searchData=
   ['memorymanager',['memoryManager',['../a00006.html#ae86fcffce8339717271022be71e95815',1,'rambrain::configuration']]],
   ['mib',['mib',['../a00092.html#a8526efa365cdb0cb597351c2671af168',1,'rambrain']]],
   ['min',['min',['../a00029.html#ad9c145df95de9bbffba57074034c2d91',1,'testParameter']]],
+  ['min_5felements',['min_elements',['../a00092.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc',1,'rambrain']]],
   ['mutex',['mutex',['../a00017.html#a422b62d7b68f81be72536ccda11556fc',1,'rambrain::managedPtr']]]
 ];

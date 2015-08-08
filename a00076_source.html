@@ -319,69 +319,101 @@ $(document).ready(function(){initNavTree('a00076_source.html','');});
 <div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        EXPECT_EQ ( i, loc2[i] );</div>
 <div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    }</div>
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    ASSERT_NO_THROW ( <span class="keyword">delete</span> global1 );</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    ASSERT_NO_THROW ( <span class="keyword">delete</span> global2 );</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
 <div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        EXPECT_EQ ( i, loc2[i] );</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    }</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    ASSERT_NO_THROW ( <span class="keyword">delete</span> global2 );</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;}</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    ASSERT_NO_THROW ( <span class="keyword">delete</span> global1 );</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
 <div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
-<div class="line"><a name="l00238"></a><span class="lineno"><a class="line" href="a00076.html#a1364e79218a2e6616939b86512053b16">  238</a></span>&#160;<a class="code" href="a00076.html#a0f8a4b5152ab8f3909aba53869627a74">TEST</a> ( <a class="code" href="a00001.html">adhereTo</a>, Unit_MacroUsage )</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;{</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> count = 5;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <a class="code" href="a00013.html">managedDummySwap</a> swap ( 100 );</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <a class="code" href="a00008.html">cyclicManagedMemory</a> <a class="code" href="a00015.html">managedMemory</a> ( &amp;swap, 100 );</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <a class="code" href="a00017.html">managedPtr&lt;double&gt;</a> ptr ( count );</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    ASSERT_NO_FATAL_FAILURE ( ADHERETOLOC ( <span class="keywordtype">double</span>, ptr, loc );</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    loc[i] = i;</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    } );</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    ASSERT_NO_FATAL_FAILURE ( ADHERETOLOCCONST ( <span class="keywordtype">double</span>, ptr, loc );</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    EXPECT_EQ ( i, loc[i] );</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    } );</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;}</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;}</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
+<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="a00076.html#a3013c4ff517165d2aa7466667c3ce4d3">  237</a></span>&#160;<a class="code" href="a00076.html#a0f8a4b5152ab8f3909aba53869627a74">TEST</a> ( <a class="code" href="a00001.html">adhereTo</a>, Unit_TwiceAdheredOnceUsed )</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;{</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> count = 5;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <a class="code" href="a00013.html">managedDummySwap</a> swap ( 100 );</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <a class="code" href="a00008.html">cyclicManagedMemory</a> <a class="code" href="a00015.html">managedMemory</a> ( &amp;swap, 100 );</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <a class="code" href="a00017.html">managedPtr&lt;double&gt;</a> ptr ( count );</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> *global1 = <span class="keyword">new</span> <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> ( ptr );</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordtype">double</span> *loc1 = *global1;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    ASSERT_TRUE ( global1-&gt;<a class="code" href="a00001.html#a4aa173fa41b3dd2f9b944f6952de0790">loadedWritable</a> );</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        loc1[i] = i;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    }</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> *global2 = NULL;</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;</div>
 <div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
-<div class="line"><a name="l00259"></a><span class="lineno"><a class="line" href="a00076.html#aaf3f56b616e96dfd62e1739c84622b3c">  259</a></span>&#160;<a class="code" href="a00076.html#a0f8a4b5152ab8f3909aba53869627a74">TEST</a> ( <a class="code" href="a00001.html">adhereTo</a>, Unit_CopyCorrectness )</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;{</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> count = 5;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    <a class="code" href="a00013.html">managedDummySwap</a> swap ( <a class="code" href="a00092.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">kib</a> );</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    ASSERT_NO_THROW ( global2 = <span class="keyword">new</span> <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> ( ptr , <span class="keyword">true</span> ) );</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    ASSERT_FALSE ( global2-&gt;<a class="code" href="a00001.html#ab3e4380b00ff3aeb0223f5ea76855f01">loadedReadable</a> );</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    ASSERT_TRUE ( global2-&gt;<a class="code" href="a00001.html#a87f95dfb98bdeabd44be43ead1122745">loadedImmediately</a> );</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    ASSERT_NO_THROW ( <span class="keyword">delete</span> global1 );</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    ASSERT_NO_THROW ( <span class="keyword">delete</span> global2 );</div>
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <a class="code" href="a00008.html">cyclicManagedMemory</a> <a class="code" href="a00015.html">managedMemory</a> ( &amp;swap, <a class="code" href="a00092.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">kib</a> );</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <a class="code" href="a00017.html">managedPtr&lt;double&gt;</a> ptr ( count );</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;}</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;</div>
 <div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> global1 ( ptr );</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    {</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;        <span class="keywordtype">double</span> *loc1 = global1;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            loc1[i] = i;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;        }</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    }</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    ASSERT_NO_THROW (</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;        <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> global2 = global1;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;        <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> global3 ( global1 );</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;    <span class="keywordtype">double</span> *loc2 = global2;</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="keywordtype">double</span> *loc3 = global3;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    EXPECT_EQ ( i, loc2[i] );</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        EXPECT_EQ ( i, loc3[i] );</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    } );</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;}</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
-<div class="line"><a name="l00289"></a><span class="lineno"><a class="line" href="a00076.html#a3d9512de8648bd4680902a4999028b5f">  289</a></span>&#160;<a class="code" href="a00076.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a>;</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;</div>
-<div class="ttc" id="a00076_html_a3d9512de8648bd4680902a4999028b5f"><div class="ttname"><a href="a00076.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a></div><div class="ttdeci">RESTORE_WARNINGS</div><div class="ttdef"><b>Definition:</b> <a href="a00076_source.html#l00289">testAdhereTo.cpp:289</a></div></div>
+<div class="line"><a name="l00270"></a><span class="lineno"><a class="line" href="a00076.html#a1364e79218a2e6616939b86512053b16">  270</a></span>&#160;<a class="code" href="a00076.html#a0f8a4b5152ab8f3909aba53869627a74">TEST</a> ( <a class="code" href="a00001.html">adhereTo</a>, Unit_MacroUsage )</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;{</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> count = 5;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <a class="code" href="a00013.html">managedDummySwap</a> swap ( 100 );</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    <a class="code" href="a00008.html">cyclicManagedMemory</a> <a class="code" href="a00015.html">managedMemory</a> ( &amp;swap, 100 );</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <a class="code" href="a00017.html">managedPtr&lt;double&gt;</a> ptr ( count );</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    ASSERT_NO_FATAL_FAILURE ( ADHERETOLOC ( <span class="keywordtype">double</span>, ptr, loc );</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    loc[i] = i;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    } );</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    ASSERT_NO_FATAL_FAILURE ( ADHERETOLOCCONST ( <span class="keywordtype">double</span>, ptr, loc );</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    EXPECT_EQ ( i, loc[i] );</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    } );</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;}</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
+<div class="line"><a name="l00291"></a><span class="lineno"><a class="line" href="a00076.html#aaf3f56b616e96dfd62e1739c84622b3c">  291</a></span>&#160;<a class="code" href="a00076.html#a0f8a4b5152ab8f3909aba53869627a74">TEST</a> ( <a class="code" href="a00001.html">adhereTo</a>, Unit_CopyCorrectness )</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;{</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> count = 5;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <a class="code" href="a00013.html">managedDummySwap</a> swap ( <a class="code" href="a00092.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">kib</a> );</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    <a class="code" href="a00008.html">cyclicManagedMemory</a> <a class="code" href="a00015.html">managedMemory</a> ( &amp;swap, <a class="code" href="a00092.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">kib</a> );</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <a class="code" href="a00017.html">managedPtr&lt;double&gt;</a> ptr ( count );</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> global1 ( ptr );</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    {</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;        <span class="keywordtype">double</span> *loc1 = global1;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;            loc1[i] = i;</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;        }</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    }</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    ASSERT_NO_THROW (</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> global2 = global1;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;        <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> global3 ( global1 );</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keywordtype">double</span> *loc2 = global2;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keywordtype">double</span> *loc3 = global3;</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    EXPECT_EQ ( i, loc2[i] );</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;        EXPECT_EQ ( i, loc3[i] );</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    } );</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;}</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;</div>
+<div class="line"><a name="l00321"></a><span class="lineno"><a class="line" href="a00076.html#a3d9512de8648bd4680902a4999028b5f">  321</a></span>&#160;<a class="code" href="a00076.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a>;</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;</div>
+<div class="ttc" id="a00076_html_a3d9512de8648bd4680902a4999028b5f"><div class="ttname"><a href="a00076.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a></div><div class="ttdeci">RESTORE_WARNINGS</div><div class="ttdef"><b>Definition:</b> <a href="a00076_source.html#l00321">testAdhereTo.cpp:321</a></div></div>
 <div class="ttc" id="a00015_html"><div class="ttname"><a href="a00015.html">rambrain::managedMemory</a></div><div class="ttdoc">Backend class to handle raw memory and interaction/storage with managedSwap. </div><div class="ttdef"><b>Definition:</b> <a href="a00049_source.html#l00067">managedMemory.h:67</a></div></div>
-<div class="ttc" id="a00001_html"><div class="ttname"><a href="a00001.html">rambrain::adhereTo</a></div><div class="ttdoc">Main class to fetch memory that is managed by rambrain for actual usage. </div><div class="ttdef"><b>Definition:</b> <a href="a00053_source.html#l00047">managedPtr.h:47</a></div></div>
-<div class="ttc" id="a00092_html_ac2c0fb2cc8161166cbd060cb2b85aaf1"><div class="ttname"><a href="a00092.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">rambrain::kib</a></div><div class="ttdeci">const global_bytesize kib</div><div class="ttdef"><b>Definition:</b> <a href="a00034_source.html#l00059">common.h:59</a></div></div>
+<div class="ttc" id="a00001_html"><div class="ttname"><a href="a00001.html">rambrain::adhereTo</a></div><div class="ttdoc">Main class to fetch memory that is managed by rambrain for actual usage. </div><div class="ttdef"><b>Definition:</b> <a href="a00053_source.html#l00048">managedPtr.h:48</a></div></div>
+<div class="ttc" id="a00092_html_ac2c0fb2cc8161166cbd060cb2b85aaf1"><div class="ttname"><a href="a00092.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">rambrain::kib</a></div><div class="ttdeci">const global_bytesize kib</div><div class="ttdef"><b>Definition:</b> <a href="a00034_source.html#l00066">common.h:66</a></div></div>
 <div class="ttc" id="a00076_html_a0f8a4b5152ab8f3909aba53869627a74"><div class="ttname"><a href="a00076.html#a0f8a4b5152ab8f3909aba53869627a74">TEST</a></div><div class="ttdeci">TEST(adhereTo, Unit_LoadUnload)</div><div class="ttdef"><b>Definition:</b> <a href="a00076_source.html#l00037">testAdhereTo.cpp:37</a></div></div>
 <div class="ttc" id="a00082_html"><div class="ttname"><a href="a00082.html">tester.h</a></div></div>
 <div class="ttc" id="a00038_html"><div class="ttname"><a href="a00038.html">cyclicManagedMemory.h</a></div></div>
@@ -401,7 +433,7 @@ $(document).ready(function(){initNavTree('a00076_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00076.html">testAdhereTo.cpp</a></li>
-    <li class="footer">Generated on Fri Aug 7 2015 01:05:50 for rambrain by
+    <li class="footer">Generated on Sat Aug 8 2015 07:29:05 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

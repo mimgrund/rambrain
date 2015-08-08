@@ -61,6 +61,7 @@ var searchData=
   ['mfree',['mfree',['../a00015.html#a53171b37a59555e66a97606f4aa22e6c',1,'rambrain::managedMemory']]],
   ['mib',['mib',['../a00092.html#a8526efa365cdb0cb597351c2671af168',1,'rambrain']]],
   ['min',['min',['../a00029.html#ad9c145df95de9bbffba57074034c2d91',1,'testParameter']]],
+  ['min_5felements',['min_elements',['../a00092.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc',1,'rambrain']]],
   ['mmalloc',['mmalloc',['../a00015.html#a8dd7cb15d0cb0dfedc856e71a690b648',1,'rambrain::managedMemory']]],
   ['mpitest_2ecpp',['mpitest.cpp',['../a00070.html',1,'']]],
   ['mrealloc',['mrealloc',['../a00015.html#af4c81f6f40ec94364b67d58156c80f8f',1,'rambrain::managedMemory']]],

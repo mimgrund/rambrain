@@ -7,6 +7,7 @@ var searchData=
   ['seeded',['seeded',['../a00028.html#a3901e2e2875b3eb883413713f0451c2a',1,'tester']]],
   ['seeds',['seeds',['../a00028.html#a073c37859297abdc2cba42fd06232e9d',1,'tester']]],
   ['setcustomconfigpath',['setCustomConfigPath',['../a00005.html#aaa1bed466c323f77900c34dc435a6aef',1,'rambrain::configReader::setCustomConfigPath()'],['../a00024.html#a61be05dcf94bd052199b719c0d3efc81',1,'rambrain::rambrainglobals::rambrainConfig::setCustomConfigPath()']]],
+  ['setdisplayplots',['setDisplayPlots',['../a00023.html#ab244a26d06ae360803ba8e53bfd4cce1',1,'performanceTest&lt;&gt;']]],
   ['setdma',['setDMA',['../a00014.html#a53ecd36635a2dce550989f688d8323d0',1,'rambrain::managedFileSwap']]],
   ['setmemorylimit',['setMemoryLimit',['../a00015.html#af183c26795176260a40a73f3d8eb4445',1,'rambrain::managedMemory']]],
   ['setoutofswapisfatal',['setOutOfSwapIsFatal',['../a00015.html#a4158747bb03019659afc34d0120be28c',1,'rambrain::managedMemory']]],
