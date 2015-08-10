@@ -62,13 +62,17 @@ void performanceTest<>::runTests ( unsigned int repetitions, const string &path 
             }
 
             temp.close();
-            ofstream gnutemp ( "temp.gnuplot" );
+            stringstream gp_name, gp_exec;
+            gp_name << name << param << ".gnuplot";
+            ofstream gnutemp ( gp_name.str() );
+            gp_exec << "gnuplot " << gp_name.str();
+
             cout << "Generating output file " << outname.str() << endl;
             gnutemp << generateGnuplotScript ( outname.str(), outname.str(), parameters[param]->name, "Execution time [ms]", name, parameters[param]->deltaLog, parameters.size() - param );
             gnutemp.close();
 
             cout << "Calling gnuplot and displaying result" << endl;
-            dummy |= system ( "gnuplot temp.gnuplot" );
+            dummy |= system ( gp_exec.str().c_str() );
             dummy |= system ( ( "convert -density 300 -resize 1920x " + outname.str() + ".eps -flatten " + outname.str() + ".png" ).c_str() );
             if ( displayPlots ) {
                 dummy |= system ( ( "display " + outname.str() + ".png &" ).c_str() );
