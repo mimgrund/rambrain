@@ -170,6 +170,7 @@ bool managedMemory::setOutOfSwapIsFatal ( bool fatal )
 
 bool managedMemory::ensureEnoughSpace ( global_bytesize sizereq, managedMemoryChunk *orisSwappedin )
 {
+    bool cacheCleaned = false;
     while ( sizereq + memory_used > memory_max ) {
         if ( orisSwappedin && ( orisSwappedin->status & MEM_ALLOCATED || orisSwappedin->status == MEM_SWAPIN ) ) {
             return true;
@@ -180,22 +181,26 @@ bool managedMemory::ensureEnoughSpace ( global_bytesize sizereq, managedMemoryCh
             if (  err != ERR_SUCCESS ) { //Execute swapOut in protected context
                 //We did not manage to swap out our stuff right away.
                 if ( memory_tobefreed == 0 ) { //If other memory is to be freed, perhaps other threads may continue?
-                    swap->cleanupCachedElements();
-                    if ( outOfSwapIsFatal ) { //throw if user wants us to, otherwise wait indefinitely (ram-deadlock)
-                        rambrain_pthread_mutex_unlock ( &stateChangeMutex );
-                        switch ( err ) {
-                        case ERR_MORETHANTOTALRAM:
-                            Throw ( memoryException ( "Could not swap memory: Object size requested is bigger than actual RAM limits" ) );
-                        case ERR_NOTENOUGHCANDIDATES:
-                            Throw ( memoryException ( "Could not swap memory: Too much used elements to make room" ) );
-                        case ERR_SWAPFULL:
-                            Throw ( memoryException ( "Could not swap memory: Swap is unrecoverably full" ) );
-                        default:
-                            Throw ( memoryException ( "Could not swap memory, I don't know why" ) );
-
+                    if ( cacheCleaned ) {
+                        if ( outOfSwapIsFatal ) { //throw if user wants us to, otherwise wait indefinitely (ram-deadlock)
+                            rambrain_pthread_mutex_unlock ( &stateChangeMutex );
+                            switch ( err ) {
+                            case ERR_MORETHANTOTALRAM:
+                                Throw ( memoryException ( "Could not swap memory: Object size requested is bigger than actual RAM limits" ) );
+                            case ERR_NOTENOUGHCANDIDATES:
+                                Throw ( memoryException ( "Could not swap memory: Too much used elements to make room" ) );
+                            case ERR_SWAPFULL:
+                                Throw ( memoryException ( "Could not swap memory: Swap is unrecoverably full" ) );
+                            default:
+                                Throw ( memoryException ( "Could not swap memory, I don't know why" ) );
+                            }
+                        } else {
+                            swap->cleanupCachedElements();//Can help in multithreaded situation
                         }
-
-
+                    } else {
+                        //Last resort: clean Cache
+                        swap->cleanupCachedElements();
+                        cacheCleaned = true;
                     }
                 }
             }
