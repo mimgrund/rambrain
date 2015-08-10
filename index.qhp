@@ -334,6 +334,7 @@
                 <section title="prepareUse" ref="a00017.html#a84635bcc9865d9b638aeab5bac93e463" />
                 <section title="setUse" ref="a00017.html#afc4112d3c16edcb7172e7f35030f435a" />
                 <section title="unsetUse" ref="a00017.html#a5e27a4cf25fdeb82501a617e86f8f7fc" />
+                <section title="::adhereTo_Unit_TwiceAdheredOnceUsed_Test" ref="a00017.html#a33afc5203b7ef7a8e11fdb48df25c101" />
                 <section title="::managedFileSwap_Unit_SwapNextAndSingleIsland_Test" ref="a00017.html#a4a034e3521493115d83a646399927cd5" />
                 <section title="::managedFileSwap_Unit_SwapSingleIsland_Test" ref="a00017.html#aae258c729b59134b27cd14a7604387d5" />
                 <section title="::managedPtr_Unit_ChunkInUse_Test" ref="a00017.html#ad4c35adf1407cabd80ef914fedd35077" />
@@ -876,6 +877,7 @@
                   <section title="prepareUse" ref="a00017.html#a84635bcc9865d9b638aeab5bac93e463" />
                   <section title="setUse" ref="a00017.html#afc4112d3c16edcb7172e7f35030f435a" />
                   <section title="unsetUse" ref="a00017.html#a5e27a4cf25fdeb82501a617e86f8f7fc" />
+                  <section title="::adhereTo_Unit_TwiceAdheredOnceUsed_Test" ref="a00017.html#a33afc5203b7ef7a8e11fdb48df25c101" />
                   <section title="::managedFileSwap_Unit_SwapNextAndSingleIsland_Test" ref="a00017.html#a4a034e3521493115d83a646399927cd5" />
                   <section title="::managedFileSwap_Unit_SwapSingleIsland_Test" ref="a00017.html#aae258c729b59134b27cd14a7604387d5" />
                   <section title="::managedPtr_Unit_ChunkInUse_Test" ref="a00017.html#ad4c35adf1407cabd80ef914fedd35077" />
@@ -1029,6 +1031,7 @@
                   <section title="prepareUse" ref="a00017.html#a84635bcc9865d9b638aeab5bac93e463" />
                   <section title="setUse" ref="a00017.html#afc4112d3c16edcb7172e7f35030f435a" />
                   <section title="unsetUse" ref="a00017.html#a5e27a4cf25fdeb82501a617e86f8f7fc" />
+                  <section title="::adhereTo_Unit_TwiceAdheredOnceUsed_Test" ref="a00017.html#a33afc5203b7ef7a8e11fdb48df25c101" />
                   <section title="::managedFileSwap_Unit_SwapNextAndSingleIsland_Test" ref="a00017.html#a4a034e3521493115d83a646399927cd5" />
                   <section title="::managedFileSwap_Unit_SwapSingleIsland_Test" ref="a00017.html#aae258c729b59134b27cd14a7604387d5" />
                   <section title="::managedPtr_Unit_ChunkInUse_Test" ref="a00017.html#ad4c35adf1407cabd80ef914fedd35077" />
@@ -2129,6 +2132,7 @@
       <keyword name="::managedPtr_Unit_SmartPointery_Test" id="rambrain::managedPtr::::managedPtr_Unit_SmartPointery_Test" ref="a00017.html#af04c3351afa2b96f7eedc5cf68142014" />
       <keyword name="::managedFileSwap_Unit_SwapSingleIsland_Test" id="rambrain::managedPtr::::managedFileSwap_Unit_SwapSingleIsland_Test" ref="a00017.html#aae258c729b59134b27cd14a7604387d5" />
       <keyword name="::managedFileSwap_Unit_SwapNextAndSingleIsland_Test" id="rambrain::managedPtr::::managedFileSwap_Unit_SwapNextAndSingleIsland_Test" ref="a00017.html#a4a034e3521493115d83a646399927cd5" />
+      <keyword name="::adhereTo_Unit_TwiceAdheredOnceUsed_Test" id="rambrain::managedPtr::::adhereTo_Unit_TwiceAdheredOnceUsed_Test" ref="a00017.html#a33afc5203b7ef7a8e11fdb48df25c101" />
       <keyword name="rambrain::managedSwap" id="rambrain::managedSwap" ref="a00018.html" />
       <keyword name="managedSwap" id="rambrain::managedSwap::managedSwap" ref="a00018.html#a52dfde8045a75f9e9fcdc1d2d5d237d1" />
       <keyword name="~managedSwap" id="rambrain::managedSwap::~managedSwap" ref="a00018.html#a70fa001b0161095d2298620ecc5d5838" />

@@ -3,7 +3,7 @@ var searchData=
   ['adhereto_5funit_5floadunload_5ftest',['adhereTo_Unit_LoadUnload_Test',['../a00001.html#a4eaae1fe478a3a7c5e954715e23e002d',1,'rambrain::adhereTo']]],
   ['adhereto_5funit_5floadunloadconst_5ftest',['adhereTo_Unit_LoadUnloadConst_Test',['../a00001.html#a6b848bcb609c606a25cecf236b42ff59',1,'rambrain::adhereTo']]],
   ['adhereto_5funit_5ftwiceadhered_5ftest',['adhereTo_Unit_TwiceAdhered_Test',['../a00001.html#aede63b93552fafc55cfba340555d0902',1,'rambrain::adhereTo']]],
-  ['adhereto_5funit_5ftwiceadheredonceused_5ftest',['adhereTo_Unit_TwiceAdheredOnceUsed_Test',['../a00001.html#a33afc5203b7ef7a8e11fdb48df25c101',1,'rambrain::adhereTo']]],
+  ['adhereto_5funit_5ftwiceadheredonceused_5ftest',['adhereTo_Unit_TwiceAdheredOnceUsed_Test',['../a00017.html#a33afc5203b7ef7a8e11fdb48df25c101',1,'rambrain::managedPtr::adhereTo_Unit_TwiceAdheredOnceUsed_Test()'],['../a00001.html#a33afc5203b7ef7a8e11fdb48df25c101',1,'rambrain::adhereTo::adhereTo_Unit_TwiceAdheredOnceUsed_Test()']]],
   ['configreader_5funit_5fparseprogramname_5ftest',['configReader_Unit_ParseProgramName_Test',['../a00005.html#a9d31013c3be15dca42575f695b4e033f',1,'rambrain::configReader']]],
   ['cyclicmanagedmemory_5fintegration_5farrayaccess_5ftest',['cyclicManagedMemory_Integration_ArrayAccess_Test',['../a00015.html#a64c14b438f19454bdebd737eddb9e0a6',1,'rambrain::managedMemory']]],
   ['managedfileswap_5fintegration_5frandomaccess_5ftest',['managedFileSwap_Integration_RandomAccess_Test',['../a00014.html#ae1ef8102728523494e8c8c36b35d63fb',1,'rambrain::managedFileSwap']]],

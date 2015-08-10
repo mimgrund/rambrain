@@ -14,6 +14,7 @@ var a00017 =
     [ "prepareUse", "a00017.html#a84635bcc9865d9b638aeab5bac93e463", null ],
     [ "setUse", "a00017.html#afc4112d3c16edcb7172e7f35030f435a", null ],
     [ "unsetUse", "a00017.html#a5e27a4cf25fdeb82501a617e86f8f7fc", null ],
+    [ "::adhereTo_Unit_TwiceAdheredOnceUsed_Test", "a00017.html#a33afc5203b7ef7a8e11fdb48df25c101", null ],
     [ "::managedFileSwap_Unit_SwapNextAndSingleIsland_Test", "a00017.html#a4a034e3521493115d83a646399927cd5", null ],
     [ "::managedFileSwap_Unit_SwapSingleIsland_Test", "a00017.html#aae258c729b59134b27cd14a7604387d5", null ],
     [ "::managedPtr_Unit_ChunkInUse_Test", "a00017.html#ad4c35adf1407cabd80ef914fedd35077", null ],
