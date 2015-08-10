@@ -23,8 +23,8 @@
 #include "rambrain_atomics.h"
 #include "managedSwap.h"
 #include <pthread.h>
-// #define VERYVERBOSE
-// #define CYCLIC_VERBOSE_DBG
+//#define VERYVERBOSE
+
 
 
 
@@ -32,7 +32,7 @@
 namespace rambrain
 {
 #ifdef VERYVERBOSE
-global_bytesize min_elements = 4010;
+global_bytesize min_elements = 100000;
 
 #define VERBOSEPRINT(x) printf("\n<--%s\n",x); if (memChunks.size()>=min_elements) printCycle();printf("\n%s---->\n",x);
 #else
@@ -224,7 +224,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 #ifdef VERYVERBOSE
         printf ( "Preemptive swapin (premptiveBytes = %lu) (targetReadinVol = %lu)\n", preemptiveBytes, targetReadinVol );
 #endif
-        //fprintf(stderr,"%u %u %u %u %u\n",memory_used,preemptiveBytes,actual_obj_size,targetReadinVol,0);
+        fprintf ( stderr, "%u %u %u %u %u\n", memory_used, preemptiveBytes, actual_obj_size, targetReadinVol, 0 );
         //Swap out if we want to read in more than what we thought:
 
         if ( targetReadinVol + memory_used > memory_max ) {
@@ -480,6 +480,9 @@ bool cyclicManagedMemory::checkCycle() const
     cyclicAtime *cur = active;
     cyclicAtime *oldcur;
 
+    global_bytesize usedBytes = 0;
+    global_bytesize tobef = 0;
+
     if ( !cur ) {
         rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         rambrain_pthread_mutex_unlock ( &stateChangeMutex );
@@ -492,32 +495,32 @@ bool cyclicManagedMemory::checkCycle() const
 
     bool inActiveOnlySection = ( active->chunk->status == MEM_SWAPPED || active->chunk->status == MEM_SWAPOUT ? false : true );
     bool inSwapsection = true;
+    bool memerror = false;
     do {
         ++encountered;
         oldcur = cur;
         cur = cur->next;
+        if ( cur->chunk->status & MEM_ALLOCATED ) {
+            usedBytes += cur->chunk->size;
+        } else if ( cur->chunk->status == MEM_SWAPOUT ) {
+            tobef += cur->chunk->size;
+            usedBytes += cur->chunk->size;
+        }
+
         if ( oldcur != cur->prev ) {
             errmsgf ( "Mutual connecion failure at chunks %lu and %lu", oldcur->chunk->id, cur->chunk->id );
-            rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
-            rambrain_pthread_mutex_unlock ( &stateChangeMutex );
-
-            return false;
+            memerror = true;
         }
 
         if ( inActiveOnlySection ) {
             if ( oldcur->chunk->status == MEM_SWAPPED || oldcur->chunk->status == MEM_SWAPOUT ) {
                 errmsg ( "Swapped elements in active section!" );
-
-                rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
-                rambrain_pthread_mutex_unlock ( &stateChangeMutex );
-                return false;
+                memerror = true;
             }
         } else {
             if ( oldcur->chunk->status == MEM_SWAPPED && !inSwapsection ) {
                 errmsg ( "Isolated swapped element block not tracked by counterActive found!" );
-                rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
-                rambrain_pthread_mutex_unlock ( &stateChangeMutex );
-                return false;
+                memerror = true;
             }
             if ( oldcur->chunk->status != MEM_SWAPPED && oldcur->chunk->status != MEM_SWAPOUT ) {
                 inSwapsection = false;
@@ -529,10 +532,28 @@ bool cyclicManagedMemory::checkCycle() const
         }
 
     } while ( cur != active );
-    rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
+
+
+    if ( usedBytes != memory_used ) {
+        errmsgf ( "Used bytes are not counted correctly, claimed %lu but found %lu", memory_used, usedBytes );
+        memerror = true;
+    }
+    if ( tobef != memory_tobefreed ) {
+        errmsgf ( "To-Be-Freed bytes are not counted correctly, claimed %lu but found %lu", memory_used, usedBytes );
+        memerror = true;
+    }
+    if ( memerror )
+
+    {
+        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
+    }
     rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     if ( encountered != no_reg ) {
         errmsgf ( "Not all elements accessed. %d expected,  %d encountered", no_reg, encountered );
+        memerror = true;
+    }
+
+    if ( memerror ) {
         return false;
     } else {
         return true;
@@ -591,9 +612,9 @@ void cyclicManagedMemory::printCycle() const
             break;
         }
         if ( atime == counterActive ) {
-            printf ( "%lu (%s) %s <-counterActive\t", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
+            printf ( "%lu (%s) %u%s <-counterActive\t", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), atime->chunk->useCnt, status );
         } else {
-            printf ( "%lu (%s) %s \t", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), status );
+            printf ( "%lu (%s) %u%s \t", atime->chunk->id, ( atime->chunk->preemptiveLoaded ? "p" : " " ), atime->chunk->useCnt, status );
         }
         atime = atime->next;
     } while ( atime != active );
@@ -647,7 +668,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
             if ( countPos->chunk->size + unload_size <= swap_free ) {
                 unload_size += countPos->chunk->size;
                 ++unload;
-#ifdef CYCLIC_VERBOSE_DBG
+#ifdef VERYVERBOSE
                 printf ( "U(%d)\t", countPos->chunk->id );
 #endif
             }
@@ -659,7 +680,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
             activeReached = true;
         }
         if ( preemptiveBytesStill == 0 && activeReached ) {
-#ifdef CYCLIC_VERBOSE_DBG
+#ifdef VERYVERBOSE
             printf ( "emergency, once round!\n" );
 #endif
             break;
@@ -668,13 +689,16 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         countPos = countPos->prev;
     }
     if ( unload_size == 0 ) {
+#ifdef VERYVERBOSE
+        printf ( "no candidates found\n" );
+#endif
         rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         return ERR_NOTENOUGHCANDIDATES;
     }
 
     managedMemoryChunk *unloadlist[unload];
     managedMemoryChunk **unloadElem = unloadlist;
-#ifdef CYCLIC_VERBOSE_DBG
+#ifdef VERYVERBOSE
     printf ( "active = %d\n", active->chunk->id );
 #endif
     preemptiveBytesStill = preemptiveBytes;
@@ -703,7 +727,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
             activeReached = true;
         }
         if ( preemptiveBytesStill == 0 && activeReached ) {
-#ifdef CYCLIC_VERBOSE_DBG
+#ifdef VERYVERBOSE
             printf ( "emergency, once round!\n" );
 #endif
             break;
@@ -716,10 +740,13 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     if ( !swapSuccess ) {
         if ( real_unloaded == 0 ) {
             rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
+#ifdef VERYVERBOSE
+            printf ( "Swap out did not work (%lu vs %lu )\n", min_size, real_unloaded );
+#endif
             return ERR_NOTENOUGHCANDIDATES;
         }
     }
-#ifdef CYCLIC_VERBOSE_DBG
+#ifdef VERYVERBOSE
     printf ( "active = %d\n", active->chunk->id );
 #endif
     fromPos = counterActive;
@@ -733,7 +760,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     cleanFrom = counterActive->next;
 
     while ( fromPos != countPos || doRoundtrip ) {
-#ifdef CYCLIC_VERBOSE_DBG
+#ifdef VERYVERBOSE
         printf ( "at %d\t", fromPos->chunk->id );
 #endif
         doRoundtrip = false;
@@ -751,7 +778,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
                     cyclicAtime *startIsoNonswap = moveEnd->next;//C
                     cyclicAtime *endIsoNonswap = cleanFrom->prev;//C
                     cyclicAtime *startClean = cleanFrom;//D
-#ifdef CYCLIC_VERBOSE_DBG
+#ifdef VERYVERBOSE
                     printf ( "----%d><%d-%d><%d-%d><%d---\n", endNonswap->chunk->id, startIsoswap->chunk->id, endIsoswap->chunk->id,
                              startIsoNonswap->chunk->id, endIsoNonswap->chunk->id, startClean->chunk->id );
 #endif
@@ -778,7 +805,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         }
         fromPos = fromPos->prev;
     }
-#ifdef CYCLIC_VERBOSE_DBG
+#ifdef VERYVERBOSE
     printf ( "After loop at %d\n", fromPos->chunk->id );
 #endif
     if ( moveEnd ) {
@@ -792,7 +819,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         cyclicAtime *startIsoNonswap = moveEnd->next;//C
         cyclicAtime *endIsoNonswap = cleanFrom->prev;//C
         cyclicAtime *startClean = cleanFrom;//D
-#ifdef CYCLIC_VERBOSE_DBG
+#ifdef VERYVERBOSE
         printf ( "LAST----%d><%d-%d><%d-%d><%d---\n", endNonswap->chunk->id, startIsoswap->chunk->id, endIsoswap->chunk->id,
                  startIsoNonswap->chunk->id, endIsoNonswap->chunk->id, startClean->chunk->id );
 #endif
@@ -809,19 +836,25 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     }
     if ( ! ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) ) { // We may have swapped out the first allocated element
         active = counterActive;
-#ifdef CYCLIC_VERBOSE_DBG
+#ifdef VERYVERBOSE
         printf ( "had to move active", fromPos->chunk->id );
 #endif
     }
     rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
     VERBOSEPRINT ( "swapOutReturn" );
     if ( swapSuccess ) {
+#ifdef VERYVERBOSE
+        printf ( "Swap out succeeded (%lu vs %lu )\n", min_size, real_unloaded );
+#endif
 #ifdef SWAPSTATS
         swap_out_scheduled_bytes += unload_size;
         n_swap_out += 1;
 #endif
         return ERR_SUCCESS;
     } else {
+#ifdef VERYVERBOSE
+        printf ( "Swap out (%lu vs %lu )\n", min_size, real_unloaded );
+#endif
         if ( real_unloaded > min_size ) {
             return ERR_SUCCESS;
         } else {
