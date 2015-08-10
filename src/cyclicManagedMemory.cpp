@@ -224,7 +224,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 #ifdef VERYVERBOSE
         printf ( "Preemptive swapin (premptiveBytes = %lu) (targetReadinVol = %lu)\n", preemptiveBytes, targetReadinVol );
 #endif
-        fprintf ( stderr, "%u %u %u %u %u\n", memory_used, preemptiveBytes, actual_obj_size, targetReadinVol, 0 );
+
         //Swap out if we want to read in more than what we thought:
 
         if ( targetReadinVol + memory_used > memory_max ) {
@@ -500,7 +500,7 @@ bool cyclicManagedMemory::checkCycle() const
         ++encountered;
         oldcur = cur;
         cur = cur->next;
-        if ( cur->chunk->status & MEM_ALLOCATED ) {
+        if ( cur->chunk->status & MEM_ALLOCATED || cur->chunk->status == MEM_SWAPIN ) {
             usedBytes += cur->chunk->size;
         } else if ( cur->chunk->status == MEM_SWAPOUT ) {
             tobef += cur->chunk->size;
@@ -542,11 +542,8 @@ bool cyclicManagedMemory::checkCycle() const
         errmsgf ( "To-Be-Freed bytes are not counted correctly, claimed %lu but found %lu", memory_used, usedBytes );
         memerror = true;
     }
-    if ( memerror )
 
-    {
-        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
-    }
+    rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
     rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     if ( encountered != no_reg ) {
         errmsgf ( "Not all elements accessed. %d expected,  %d encountered", no_reg, encountered );

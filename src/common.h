@@ -43,6 +43,7 @@ inline static double sqr ( double x )
 #define infomsgf(format,...) {char tmp[1024];snprintf(tmp,1024,format,__VA_ARGS__);infomsg(tmp);}
 #define warnmsgf(format,...) {char tmp[1024];snprintf(tmp,1024,format,__VA_ARGS__);warnmsg(tmp);}
 
+//#define DBG_MUTICES
 #ifdef DBG_MUTICES
 #define rambrain_pthread_mutex_lock(x) infomsg("Lock of " #x " ") pthread_mutex_lock(x);
 #define rambrain_pthread_mutex_unlock(x) infomsg("Unlock of " #x " ") pthread_mutex_unlock(x);

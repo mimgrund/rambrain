@@ -196,7 +196,6 @@ bool managedMemory::ensureEnoughSpace ( global_bytesize sizereq, managedMemoryCh
                             }
                         } else {
                             swap->cleanupCachedElements();//Can help in multithreaded situation
-                            continue;
                         }
                     } else {
                         //Last resort: clean Cache

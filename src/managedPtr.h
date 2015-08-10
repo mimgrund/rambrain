@@ -267,6 +267,7 @@ private:
     friend class ::managedPtr_Unit_SmartPointery_Test;
     friend class ::managedFileSwap_Unit_SwapSingleIsland_Test;
     friend class ::managedFileSwap_Unit_SwapNextAndSingleIsland_Test;
+    friend class ::adhereTo_Unit_TwiceAdheredOnceUsed_Test;
 #endif
 };
 
@@ -287,13 +288,16 @@ public:
     adhereTo ( const adhereTo<T> &ref ) : data ( ref.data ) {
         loadedReadable = ref.loadedReadable;
         loadedWritable = ref.loadedWritable;
+        loadedImmediately = ref.loadedImmediately;
         if ( loadedWritable ) {
             data->setUse ( loadedWritable );
         }
         if ( loadedReadable ) {
             data->setUse ( loadedReadable );
         }
-
+        if ( loadedImmediately ) {
+            data->prepareUse ();
+        }
     };
 
     adhereTo ( const managedPtr<T> &data, bool loadImidiately = true ) : data ( &data ) {
@@ -311,14 +315,21 @@ public:
         if ( loadedWritable ) {
             data->unsetUse();
         }
+        if ( loadedImmediately ) {
+            data->unsetUse();
+        }
         this->data = ref.data;
         loadedReadable = ref.loadedReadble;
         loadedWritable = ref.loadedWritable;
+        loadedImmediately = ref.loadedImmediately;
         if ( loadedWritable ) {
             data->setUse ( loadedWritable );
         }
         if ( loadedReadable ) {
             data->setUse ( loadedReadable );
+        }
+        if ( loadedImmediately ) {
+            data->prepareUse ();
         }
         return *this;
     }
@@ -345,6 +356,7 @@ public:
         if ( loaded > 0 ) {
             data->unsetUse ( loaded );
         }
+
 
 
     }
