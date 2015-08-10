@@ -234,7 +234,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             global_bytesize targetSwapoutVol = actual_obj_size + ( 1. - swapOutFrac ) * memory_max - preemptiveBytes;
             targetReadinVol = targetSwapoutVol;
             swapErrorCode err = swapOut ( targetReadinVol ); // A simple call to ensureEnoughSpace is not enough, we want to control what happens on error.
-
             if ( err != ERR_SUCCESS ) {
 #ifdef VERYVERBOSE
                 printf ( "We could not swap out enough, lets retry with the object only (which is the minimum)\n" );
@@ -644,9 +643,9 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
 
     global_bytesize mem_alloc_max = memory_max * swapOutFrac; //<- This is target size
     global_bytesize mem_swap_min = memory_used > mem_alloc_max ? memory_used - mem_alloc_max : 0;
-    global_bytesize mem_swap = mem_swap_min < min_size ? min_size : mem_swap_min;
+    global_bytesize mem_swap = mem_swap_min < min_size ? min_size : mem_swap_min; // swap at least what you have to
 
-    mem_swap = mem_swap > swap_free ? min_size : mem_swap;
+    mem_swap = mem_swap > swap_free ? min_size : mem_swap;//But do not swap more than swap can take (Or try with only min_size)
 
     cyclicAtime *fromPos = counterActive;
     cyclicAtime *countPos = counterActive;
@@ -733,7 +732,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         fromPos = fromPos->prev;
     }
     global_bytesize real_unloaded = swap->swapOut ( unloadlist, unload );
-    bool swapSuccess = ( real_unloaded == unload_size2 ) ;
+    bool swapSuccess = ( real_unloaded >= mem_swap ) ; // Do not compare with unload size (false positives!)
     if ( !swapSuccess ) {
         if ( real_unloaded == 0 ) {
             rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
@@ -852,7 +851,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
 #ifdef VERYVERBOSE
         printf ( "Swap out (%lu vs %lu )\n", min_size, real_unloaded );
 #endif
-        if ( real_unloaded > min_size ) {
+        if ( real_unloaded >= min_size ) {
             return ERR_SUCCESS;
         } else {
             return ERR_NOTENOUGHCANDIDATES;
