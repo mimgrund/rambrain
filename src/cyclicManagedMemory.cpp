@@ -652,10 +652,12 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     global_bytesize unload_size = 0;
     global_bytesize unload_size2 = 0;
     unsigned int passed = 0, unload = 0;
-    //In case of preemptives, we cannot break at active, but will have to go through preemptive elements to find swap candidates.
-    global_bytesize preemptiveBytesStill = preemptiveBytes;
-    //However, when there's nothing preemptive, we have to go until reaching the active element.
-    bool activeReached = false;
+#ifdef PARENTAL_CONTROL
+    unsigned int allelements = memChunks.size() - 1 ;
+#else
+    unsigned int allelements = memChunks.size();
+#endif
+
 
     //First round: Calculate number of objects to swap out.
     while ( unload_size < mem_swap ) {
@@ -670,12 +672,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
             }
         }
 
-
-        preemptiveBytesStill -= countPos->chunk->preemptiveLoaded ? countPos->chunk->size : 0;
-        if ( countPos == active ) {
-            activeReached = true;
-        }
-        if ( preemptiveBytesStill == 0 && activeReached ) {
+        if ( passed == allelements ) {
 #ifdef VERYVERBOSE
             printf ( "emergency, once round!\n" );
 #endif
@@ -697,8 +694,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
 #ifdef VERYVERBOSE
     printf ( "active = %d\n", active->chunk->id );
 #endif
-    preemptiveBytesStill = preemptiveBytes;
-    activeReached = false;
+    passed = 0;
     while ( unload_size2 < unload_size ) {
         ++passed;
         if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) && ( fromPos->chunk->useCnt == 0 ) ) {
@@ -718,11 +714,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
                 }
             }
         }
-        preemptiveBytesStill -= fromPos->chunk->preemptiveLoaded ? fromPos->chunk->size : 0;
-        if ( fromPos == active ) {
-            activeReached = true;
-        }
-        if ( preemptiveBytesStill == 0 && activeReached ) {
+        if ( passed == allelements ) {
 #ifdef VERYVERBOSE
             printf ( "emergency, once round!\n" );
 #endif
