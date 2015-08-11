@@ -174,12 +174,12 @@ $(document).ready(function(){initNavTree('a00071_source.html','');});
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            temp.close();</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            stringstream gp_name, gp_exec;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            gp_name &lt;&lt; name &lt;&lt; param &lt;&lt; <span class="stringliteral">&quot;.gnuplot&quot;</span>;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            ofstream gnutemp ( gp_name.str() );</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            ofstream gnuplot ( gp_name.str() );</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            gp_exec &lt;&lt; <span class="stringliteral">&quot;gnuplot &quot;</span> &lt;&lt; gp_name.str();</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            cout &lt;&lt; <span class="stringliteral">&quot;Generating output file &quot;</span> &lt;&lt; outname.str() &lt;&lt; endl;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            gnutemp &lt;&lt; generateGnuplotScript ( outname.str(), outname.str(), parameters[param]-&gt;name, <span class="stringliteral">&quot;Execution time [ms]&quot;</span>, name, parameters[param]-&gt;deltaLog, parameters.size() - param );</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            gnutemp.close();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            gnuplot &lt;&lt; generateGnuplotScript ( outname.str(), outname.str(), parameters[param]-&gt;name, <span class="stringliteral">&quot;Execution time [ms]&quot;</span>, name, parameters[param]-&gt;deltaLog, parameters.size() - param );</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            gnuplot.close();</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            cout &lt;&lt; <span class="stringliteral">&quot;Calling gnuplot and displaying result&quot;</span> &lt;&lt; endl;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            dummy |= system ( gp_exec.str().c_str() );</div>
@@ -406,15 +406,15 @@ $(document).ready(function(){initNavTree('a00071_source.html','');});
 <div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;    timingTruncFile.close();</div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <span class="comment">// Plot that thing</span></div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    ofstream gnutemp1 ( <span class="stringliteral">&quot;temp.gnuplot&quot;</span> ), gnutemp2 ( <span class="stringliteral">&quot;temp2.gnuplot&quot;</span> );</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    ofstream gnuplot1 ( timingFile + <span class="stringliteral">&quot;.gnuplot&quot;</span> ), gnuplot2 ( hitMissFile + <span class="stringliteral">&quot;.gnuplot&quot;</span> );</div>
 <div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;Generating output files &quot;</span> &lt;&lt; timingFile &lt;&lt; <span class="stringliteral">&quot; and &quot;</span> &lt;&lt; hitMissFile &lt;&lt; endl;</div>
 <div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
 <div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> maxDataPoints = 50 * repetitions;</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    plotTimingInfos ( gnutemp1, timingFile, tempFile, measurements, repetitions, dataPoints &lt;= maxDataPoints );</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    plotTimingHitMissInfos ( gnutemp2, hitMissFile, tempFile, measurements, repetitions, dataPoints &lt;= maxDataPoints );</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    plotTimingInfos ( gnuplot1, timingFile, tempFile, measurements, repetitions, dataPoints &lt;= maxDataPoints );</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    plotTimingHitMissInfos ( gnuplot2, hitMissFile, tempFile, measurements, repetitions, dataPoints &lt;= maxDataPoints );</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    gnutemp1.close();</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    gnutemp2.close();</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    gnuplot1.close();</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;    gnuplot2.close();</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;Calling gnuplot and displaying result&quot;</span> &lt;&lt; endl;</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keywordtype">int</span> dummy = 0;</div>
@@ -2099,7 +2099,7 @@ $(document).ready(function(){initNavTree('a00071_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00071.html">performanceTestClasses.cpp</a></li>
-    <li class="footer">Generated on Tue Aug 11 2015 01:23:04 for rambrain by
+    <li class="footer">Generated on Wed Aug 12 2015 01:22:37 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
