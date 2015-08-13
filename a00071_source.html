@@ -418,13 +418,13 @@ $(document).ready(function(){initNavTree('a00071_source.html','');});
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;</div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;Calling gnuplot and displaying result&quot;</span> &lt;&lt; endl;</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    <span class="keywordtype">int</span> dummy = 0;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    dummy |= system ( <span class="stringliteral">&quot;gnuplot temp.gnuplot&quot;</span> );</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    dummy |= system ( ( <span class="stringliteral">&quot;gnuplot &quot;</span> + timingFile + <span class="stringliteral">&quot;.gnuplot&quot;</span> ).c_str() );</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    dummy |= system ( ( <span class="stringliteral">&quot;convert -density 300 -resize 1920x &quot;</span> + timingFile + <span class="stringliteral">&quot;.eps -flatten &quot;</span> + timingFile + <span class="stringliteral">&quot;.png&quot;</span> ).c_str() );</div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keywordflow">if</span> ( displayPlots ) {</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;        dummy |= system ( ( <span class="stringliteral">&quot;display &quot;</span> + timingFile + <span class="stringliteral">&quot;.png &amp;&quot;</span> ).c_str() );</div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    }</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    dummy |= system ( <span class="stringliteral">&quot;gnuplot temp2.gnuplot&quot;</span> );</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    dummy |= system ( ( <span class="stringliteral">&quot;gnuplot &quot;</span> + hitMissFile + <span class="stringliteral">&quot;.gnuplot&quot;</span> ).c_str() );</div>
 <div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    dummy |= system ( ( <span class="stringliteral">&quot;convert -density 300 -resize 1920x &quot;</span> + hitMissFile + <span class="stringliteral">&quot;.eps -flatten &quot;</span> + hitMissFile + <span class="stringliteral">&quot;.png&quot;</span> ).c_str() );</div>
 <div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="keywordflow">if</span> ( displayPlots ) {</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;        dummy |= system ( ( <span class="stringliteral">&quot;display &quot;</span> + hitMissFile + <span class="stringliteral">&quot;.png &amp;&quot;</span> ).c_str() );</div>
@@ -2099,7 +2099,7 @@ $(document).ready(function(){initNavTree('a00071_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00071.html">performanceTestClasses.cpp</a></li>
-    <li class="footer">Generated on Thu Aug 13 2015 01:22:55 for rambrain by
+    <li class="footer">Generated on Fri Aug 14 2015 01:22:48 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
