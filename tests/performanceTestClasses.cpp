@@ -308,13 +308,13 @@ void performanceTest<>::handleTimingInfos ( int varryParam, unsigned int step, u
 
     cout << "Calling gnuplot and displaying result" << endl;
     int dummy = 0;
-    dummy |= system ( "gnuplot temp.gnuplot" );
+    dummy |= system ( ( "gnuplot " + timingFile + ".gnuplot" ).c_str() );
     dummy |= system ( ( "convert -density 300 -resize 1920x " + timingFile + ".eps -flatten " + timingFile + ".png" ).c_str() );
     if ( displayPlots ) {
         dummy |= system ( ( "display " + timingFile + ".png &" ).c_str() );
     }
 
-    dummy |= system ( "gnuplot temp2.gnuplot" );
+    dummy |= system ( ( "gnuplot " + hitMissFile + ".gnuplot" ).c_str() );
     dummy |= system ( ( "convert -density 300 -resize 1920x " + hitMissFile + ".eps -flatten " + hitMissFile + ".png" ).c_str() );
     if ( displayPlots ) {
         dummy |= system ( ( "display " + hitMissFile + ".png &" ).c_str() );
