@@ -170,8 +170,9 @@ public:
                 rambrain_pthread_mutex_unlock ( &mutex );
                 return false;
             }
-        bool result = managedMemory::defaultManager->setUse ( *chunk , writable );
         rambrain_pthread_mutex_unlock ( &mutex );
+        bool result = managedMemory::defaultManager->setUse ( *chunk , writable );
+
         return result;
     }
 

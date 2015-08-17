@@ -289,6 +289,9 @@ bool managedMemory::prepareUse ( managedMemoryChunk &chunk, bool acquireLock )
     switch ( chunk.status ) {
     case MEM_SWAPOUT: // Object is about to be swapped out.
         if ( !waitForSwapout ( chunk, true ) ) {
+            if ( acquireLock ) {
+                rambrain_pthread_mutex_unlock ( &stateChangeMutex );
+            }
             return true;
         }
     case MEM_SWAPPED:
@@ -324,6 +327,7 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
 
     case MEM_SWAPPED:
         if ( !prepareUse ( chunk, false ) ) {
+            rambrain_pthread_mutex_unlock ( &stateChangeMutex );
             return false;
         }
         --chunk.useCnt;//prepareUse sets additional usage, but we want to end up with +1 only
@@ -356,6 +360,7 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
         return false;
 
     }
+    rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     return false;
 }
 
@@ -741,13 +746,17 @@ bool managedMemory::waitForSwapin ( managedMemoryChunk &chunk, bool keepSwapLock
         }
         return false;
     }
-    while ( ! ( chunk.status & MEM_ALLOCATED ) ) {
+    while ( chunk.status == MEM_SWAPIN ) {
         waitForAIO();
     }
     if ( !keepSwapLock ) {
         rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     }
-    return true;
+    if ( chunk.status & MEM_ALLOCATED ) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
@@ -759,13 +768,18 @@ bool managedMemory::waitForSwapout ( managedMemoryChunk &chunk, bool keepSwapLoc
         }
         return false;
     }
-    while ( ! ( chunk.status == MEM_SWAPPED ) ) {
+    while ( chunk.status == MEM_SWAPOUT ) {
         waitForAIO();
     }
+
     if ( !keepSwapLock ) {
         rambrain_pthread_mutex_unlock ( &stateChangeMutex );
     }
-    return true;
+    if ( chunk.status == MEM_SWAPPED ) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
