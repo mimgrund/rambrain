@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 2.8)
 
-project (membrain)
+project (rambrain)
 
 option (BUILD_TESTS "Build tests" ON)
 option (PTEST_CHECKS "Include correctness checks in performance tests" OFF)
