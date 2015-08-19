@@ -239,7 +239,7 @@ private:
     string getApplicationName() const;
 
     const string globalConfigPath = "/etc/rambrain.conf";
-    const string localConfigPath = "~/.rambrain.conf";
+    string localConfigPath = "";
     string customConfigPath = "";
 
     const regexMatcher regex;

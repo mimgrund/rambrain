@@ -81,7 +81,7 @@ string regexMatcher::createRegexMatching ( int type ) const
             ss << "0-9";
         }
         if ( type & text ) {
-            ss << "a-zA-Z-_\\%";
+            ss << "\\/a-zA-Z-_\\%";
         }
         ss << "]+";
         if ( type & floating ) {

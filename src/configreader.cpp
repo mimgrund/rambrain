@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <sys/types.h>
+#include <pwd.h>
 #include <unistd.h>
 #include <cstdlib>
 #include <sys/statvfs.h>
@@ -150,6 +151,11 @@ configuration::configuration() : memoryManager ( "memoryManager", "cyclicManaged
 
 configReader::configReader()
 {
+    struct passwd *pw = getpwuid ( getuid() );
+
+    const char *homedir = pw->pw_dir;
+    localConfigPath += homedir;
+    localConfigPath += "/.rambrain.conf";
 }
 
 bool configReader::readConfig()
@@ -177,9 +183,9 @@ bool configReader::reopenStreams()
         }
     }
     bool readAConfig = false;
-    streams[0].open ( customConfigPath );
+    streams[0].open ( globalConfigPath );
     if ( streams[0].is_open() ) {
-        infomsgf ( "Rambrain was initialized using custom config file: %s\n", customConfigPath.c_str() );
+        infomsgf ( "Rambrain was initialized using system wide config file: %s\n", globalConfigPath.c_str() );
         readAConfig = true;
     }
     streams[1].open ( localConfigPath );
@@ -187,11 +193,13 @@ bool configReader::reopenStreams()
         infomsgf ( "Rambrain was initialized using user's config file: %s\n", localConfigPath.c_str() );
         readAConfig = true;
     }
-    streams[2].open ( globalConfigPath );
+    streams[2].open ( customConfigPath );
     if ( streams[2].is_open() ) {
-        infomsgf ( "Rambrain was initialized using system wide config file: %s\n", globalConfigPath.c_str() );
+        infomsgf ( "Rambrain was initialized using custom config file: %s\n", customConfigPath.c_str() );
         readAConfig = true;
     }
+
+
     if ( !readAConfig ) {
         infomsg ( "Rambrain was initialized using default settings." );
     }
