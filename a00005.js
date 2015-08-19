@@ -13,7 +13,7 @@ var a00005 =
     [ "config", "a00005.html#a4a8db69407e604d2ea6b18e8ae2e40ce", null ],
     [ "customConfigPath", "a00005.html#a145f0d48de3953c9f188a6f8dee8e51f", null ],
     [ "globalConfigPath", "a00005.html#abed30805ad77a7c29e92f40432152be7", null ],
-    [ "localConfigPath", "a00005.html#a9bd1ecde5776a028d278a680d87bac4f", null ],
+    [ "localConfigPath", "a00005.html#a0af5a1590cdcf1a04aafe7ba3d56bed7", null ],
     [ "readSuccess", "a00005.html#a5362f882add89772f902c8700b0f1986", null ],
     [ "regex", "a00005.html#a78ab5e3dcf141f66f4916d9a84ec6566", null ],
     [ "streams", "a00005.html#a4cc1b1f7392af7deafaa9a42dc9859fc", null ]
