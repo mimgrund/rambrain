@@ -32,7 +32,7 @@
 namespace rambrain
 {
 #ifdef VERYVERBOSE
-global_bytesize min_elements = 100000;
+global_bytesize min_elements = 0;
 
 #define VERBOSEPRINT(x) printf("\n<--%s\n",x); if (memChunks.size()>=min_elements) printCycle();printf("\n%s---->\n",x);
 #else
@@ -325,6 +325,9 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             }
 
         }
+#ifdef VERYVERBOSE
+        printf ( "endSwapin is at %lu", chunks[numberSelected - 1]->id );
+#endif
 
 
         VERBOSEPRINT ( "Before reordering" );
@@ -374,10 +377,13 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 
                     else { //...and its anyways where we sit at
                         endSwapin = endSwapin->prev;
+                        curel = curel->prev;
                     }
 
+                } else {
+                    curel = curel->prev;
                 }
-                curel = curel->prev;
+
             }
 
             preemptiveBytes += selectedReadinVol - actual_obj_size;
@@ -488,6 +494,7 @@ bool cyclicManagedMemory::checkCycle() const
         if ( no_reg == 0 && counterActive == NULL ) {
             return true;
         } else {
+            errmsg ( "No active element found" );
             return false;
         }
     }
