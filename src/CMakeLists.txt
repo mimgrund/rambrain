@@ -21,6 +21,15 @@ add_custom_command(TARGET rambrain PRE_BUILD COMMAND ../scripts/create-definitio
 add_custom_command(TARGET rambrain PRE_BUILD COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 install (CODE "MESSAGE(\"Installing shared library and headers (into rambrain subdir)\")")
-install (TARGETS rambrain DESTINATION lib)
+
+get_property(LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS)
+
+if ("${LIB64}" STREQUAL "TRUE")
+    set(LIBSUFFIX 64)
+else()
+    set(LIBSUFFIX "")
+endif()
+
+install (TARGETS rambrain DESTINATION lib${LIBSUFFIX})
 install (DIRECTORY ${CMAKE_SOURCE_DIR}/src/ DESTINATION include/rambrain FILES_MATCHING PATTERN "*.h")
 install (FILES ${LIBRARY_OUTPUT_PATH}/rambrainDefinitionsHeader.h DESTINATION include/rambrain)
