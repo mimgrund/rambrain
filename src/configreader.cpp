@@ -183,9 +183,10 @@ bool configReader::reopenStreams()
         }
     }
     bool readAConfig = false;
-    streams[0].open ( globalConfigPath );
+
+    streams[0].open ( customConfigPath );
     if ( streams[0].is_open() ) {
-        infomsgf ( "Rambrain was initialized using system wide config file: %s\n", globalConfigPath.c_str() );
+        infomsgf ( "Rambrain was initialized using custom config file: %s\n", customConfigPath.c_str() );
         readAConfig = true;
     }
     streams[1].open ( localConfigPath );
@@ -193,9 +194,9 @@ bool configReader::reopenStreams()
         infomsgf ( "Rambrain was initialized using user's config file: %s\n", localConfigPath.c_str() );
         readAConfig = true;
     }
-    streams[2].open ( customConfigPath );
+    streams[2].open ( globalConfigPath );
     if ( streams[2].is_open() ) {
-        infomsgf ( "Rambrain was initialized using custom config file: %s\n", customConfigPath.c_str() );
+        infomsgf ( "Rambrain was initialized using system wide config file: %s\n", globalConfigPath.c_str() );
         readAConfig = true;
     }
 
