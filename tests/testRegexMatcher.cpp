@@ -78,8 +78,8 @@ TEST ( regexMatcher, Unit_KeyEqualsValue )
     EXPECT_EQ ( "", kv.second );
 
     kv = regex.matchKeyEqualsValue ( "key = 12345" );
-    EXPECT_EQ ( "", kv.first );
-    EXPECT_EQ ( "", kv.second );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "12345", kv.second );
 
     kv = regex.matchKeyEqualsValue ( " key = val%due " );
     EXPECT_EQ ( "key", kv.first );
