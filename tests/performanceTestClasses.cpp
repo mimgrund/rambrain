@@ -1754,7 +1754,10 @@ void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize
     rambrainglobals::config.resizeMemory ( numel / 2 * bytesize );
     rambrainglobals::config.resizeSwap ( numel * bytesize );
 
-    managedPtr<char> ptr[numel] ( bytesize );
+    managedPtr<char> *ptr[numel];
+    for ( int n = 0; n < numel; ++n ) {
+        ptr[n] = new managedPtr<char> ( bytesize );
+    }
 
     float rewritetimes = load < 0 ? 1 : ( float ) load / 100.;
     int iterations = 10230;
@@ -1857,6 +1860,9 @@ void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize
     test.addExternalTime ( allPrepare2 );
     test.addExternalTime ( allCalc2 );
 
+    for ( int n = 0; n < numel; ++n ) {
+        delete ptr[n];
+    }
 }
 
 string measurePreemptiveSpeedupTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
@@ -1894,7 +1900,10 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
     rambrainglobals::config.resizeMemory ( numel / 2 * bytesize );
     rambrainglobals::config.resizeSwap ( numel * bytesize );
 
-    managedPtr<char> ptr[numel] ( bytesize );
+    managedPtr<char> *ptr[numel];
+    for ( int n = 0; n < numel; ++n ) {
+        ptr[n] = new managedPtr<char> ( bytesize );
+    }
 
     float rewritetimes = load < 0 ? 1 : ( float ) load / 100.;
     int iterations = 10230;
@@ -1916,7 +1925,7 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
 
         //Important: First say what you will use, then say, what you will use next!
         high_resolution_clock::time_point t0 = high_resolution_clock::now();
-        adhereTo<char> glue ( ptr[use] );
+        adhereTo<char> glue ( *ptr[use] );
         high_resolution_clock::time_point t1 = high_resolution_clock::now();
         char *loc = glue; //Actually use the stuff.
         high_resolution_clock::time_point t2 = high_resolution_clock::now();
@@ -1950,7 +1959,7 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
     ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveLoading ( false );
     ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveUnloading ( false );
     adhereTo <char> *adharr[numel];
-    adharr[0] = new adhereTo<char> ( ptr[0] );
+    adharr[0] = new adhereTo<char> ( *ptr[0] );
 
     for ( int i = 0; i < iterations; ++i ) {
         unsigned int use = ( i % numel );
@@ -1960,7 +1969,7 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
         //Important: First say what you will use, then say, what you will use next!
         high_resolution_clock::time_point t0 = high_resolution_clock::now();
         if ( i != iterations - 1 ) {
-            adharr[prepare] = new adhereTo<char> ( ptr[prepare] );
+            adharr[prepare] = new adhereTo<char> ( *ptr[prepare] );
         }
         high_resolution_clock::time_point t1 = high_resolution_clock::now();
         char *loc = *adharr[use]; //Actually use the stuff.
@@ -1991,7 +2000,7 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
 
 #ifdef PTEST_CHECKS
     for ( int x = 0; x < numel; ++x ) {
-        adhereTo<char> glue ( ptr[x] );
+        adhereTo<char> glue ( *ptr[x] );
         char *loc = glue;
         for ( int r = 0; r < rewritetimesmin * bytesize; r++ )
             if ( loc[r % bytesize] != ( char ) ( r * iter[x] ) ) {
@@ -2003,6 +2012,10 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
     test.addExternalTime ( allPrepare2 );
     test.addExternalTime ( allCalc2 );
     test.addExternalTime ( allDel );
+
+    for ( int n = 0; n < numel; ++n ) {
+        delete ptr[n];
+    }
 
 }
 
