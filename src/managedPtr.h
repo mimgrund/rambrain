@@ -315,6 +315,7 @@ public:
         }
     };
 
+
     adhereTo ( const managedPtr<T> &data, bool loadImidiately = true ) : data ( &data ) {
         if ( loadImidiately ) {
             loadedImmediately = true;
@@ -322,6 +323,8 @@ public:
         }
 
     }
+
+    adhereTo ( const managedPtr<T> *data, bool loadImidiately = true ) : adhereTo ( *data, loadedImmediately ) {};
 
     adhereTo<T> &operator= ( const adhereTo<T> &ref ) {
         if ( loadedReadable ) {
