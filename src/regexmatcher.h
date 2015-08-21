@@ -93,6 +93,14 @@ public:
      */
     pair<long long int, string> splitIntegerValueUnit ( const string &str ) const;
 
+    /**
+     * @brief Replace all occurences of a ~ by the absolute home directory
+     * @param source The input string
+     * @param homedir The home directory
+     * @return The new string
+     */
+    string substituteHomeDir ( const string &source, const string &homedir ) const;
+
 private:
     /**
      * @brief Create a matching regex for a certain type

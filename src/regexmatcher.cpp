@@ -135,5 +135,14 @@ pair<long long, string> regexMatcher::splitIntegerValueUnit ( const string &str 
     return res;
 }
 
+string regexMatcher::substituteHomeDir ( const string &source, const string &homedir ) const
+{
+    const COMPILE_RGX ( rgx, "~" );
+
+    string res = regex_replace ( source, rgx, homedir );
+
+    return res;
+}
+
 }
 

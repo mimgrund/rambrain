@@ -293,3 +293,15 @@ TEST ( regexMatcher, Unit_IntegerValueUnitSplitting )
     EXPECT_EQ ( "kb", vu.second );
 }
 
+/**
+ * @test Checks if the home directory replacing works properly
+ */
+TEST ( regexMatcher, Unit_SubstituteHomeDir )
+{
+    regexMatcher regex;
+
+    EXPECT_EQ ( "/no/home/dir", regex.substituteHomeDir ( "/no/home/dir", "/home/user" ) );
+    EXPECT_EQ ( "/home/user", regex.substituteHomeDir ( "~", "/home/user" ) );
+    EXPECT_EQ ( "/home/user/bla", regex.substituteHomeDir ( "~/bla", "/home/user" ) );
+    EXPECT_EQ ( "/home/user/bla//home/user/blup", regex.substituteHomeDir ( "~/bla/~/blup", "/home/user" ) );
+}

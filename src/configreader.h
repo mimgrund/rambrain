@@ -44,7 +44,8 @@ namespace rambrain
  * Can either keep the boundary fixed, extend it automatically as it needs or start an interactive shell to ask the user for advice
  * @warning Currently not used
  */
-enum class swapPolicy {
+enum class swapPolicy
+{
     fixed,
     autoextendable,
     interactive
@@ -237,6 +238,12 @@ private:
      * @return The name
      */
     string getApplicationName() const;
+
+    /**
+     * @brief Look up the home directory of the current user
+     * @return The home dir
+     */
+    string getHomeDir() const;
 
     const string globalConfigPath = "/etc/rambrain.conf";
     string localConfigPath = "";
