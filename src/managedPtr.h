@@ -302,28 +302,23 @@ public:
     adhereTo ( const adhereTo<T> &ref ) : data ( ref.data ) {
         loadedReadable = ref.loadedReadable;
         loadedWritable = ref.loadedWritable;
-        loadedImmediately = ref.loadedImmediately;
         if ( loadedWritable ) {
             data->setUse ( loadedWritable );
         }
         if ( loadedReadable ) {
             data->setUse ( loadedReadable );
         }
-        if ( loadedImmediately ) {
-            data->prepareUse ();
-        }
     };
 
 
-    adhereTo ( const managedPtr<T> &data, bool loadImidiately = true ) : data ( &data ) {
-        if ( loadImidiately ) {
-            loadedImmediately = true;
+    adhereTo ( const managedPtr<T> &data, bool loadImmediately = true ) : data ( &data ) {
+        if ( loadImmediately ) {
             data.prepareUse();
         }
 
     }
 
-    adhereTo ( const managedPtr<T> *data, bool loadImidiately = true ) : adhereTo ( *data, loadedImmediately ) {};
+    adhereTo ( const managedPtr<T> *data, bool loadImmediately = true ) : adhereTo ( *data, loadImmediately ) {};
 
     adhereTo<T> &operator= ( const adhereTo<T> &ref ) {
         if ( loadedReadable ) {
@@ -332,21 +327,15 @@ public:
         if ( loadedWritable ) {
             data->unsetUse();
         }
-        if ( loadedImmediately ) {
-            data->unsetUse();
-        }
         this->data = ref.data;
         loadedReadable = ref.loadedReadble;
         loadedWritable = ref.loadedWritable;
-        loadedImmediately = ref.loadedImmediately;
+
         if ( loadedWritable ) {
             data->setUse ( loadedWritable );
         }
         if ( loadedReadable ) {
             data->setUse ( loadedReadable );
-        }
-        if ( loadedImmediately ) {
-            data->prepareUse ();
         }
         return *this;
     }
@@ -369,7 +358,7 @@ public:
 
     ~adhereTo() {
         unsigned char loaded = 0;
-        loaded = ( loadedReadable ? 1 : 0 ) + ( loadedWritable ? 1 : 0 ) + ( loadedImmediately ? 1 : 0 );
+        loaded = ( loadedReadable ? 1 : 0 ) + ( loadedWritable ? 1 : 0 );
         if ( loaded > 0 ) {
             data->unsetUse ( loaded );
         }
@@ -382,7 +371,6 @@ private:
 
     mutable bool loadedWritable = false;
     mutable bool loadedReadable = false;
-    mutable bool loadedImmediately = false;
 
     //Test classes
 #ifdef BUILD_TESTS
