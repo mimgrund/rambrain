@@ -53,6 +53,11 @@ if(BUILD_TESTS)
     add_definitions(-DBUILD_TESTS)
 endif()
 
+if(PTEST_CHECKS)
+    add_definitions(-DPTEST_CHECKS)
+endif()
+
+
 if(USE_XPRESSIVE)
     add_definitions(-DUSE_XPRESSIVE)
     find_package(Boost REQUIRED)
