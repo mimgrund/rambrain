@@ -262,7 +262,7 @@ private:
         if ( ! ( chunk->status & MEM_ALLOCATED ) ) { // We may savely check against this as use will be set by other adhereTo thread and cannot be undone as long as calling adhereTo exists
             rambrain_pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
             //We will burn a little bit of power here, eventually, but this is a very rare case.
-            while ( managedMemory::defaultManager->waitForSwapin ( *chunk, true ) ) {};
+            while ( ! managedMemory::defaultManager->waitForSwapin ( *chunk, true ) ) {};
             rambrain_pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
         }
     }
