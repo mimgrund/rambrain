@@ -1496,8 +1496,9 @@ void matrixDoubleCopyTest::actualTestMethod ( tester &test, int param1, int para
 #ifdef PTEST_CHECKS
     for ( global_bytesize i = 0; i < size; ++i ) {
         adhereTo<double> adhB ( *B[i] );
-
+        adhereTo<double> adhA ( *A[i] );
         double *b = adhB;
+        double *a = adhA;
 
         for ( global_bytesize j = 0; j < size; ++j ) {
             if ( a[j] != j || b[j] != j ) {
@@ -1603,10 +1604,10 @@ void matrixDoubleCopyOpenMPTest::actualTestMethod ( tester &test, int param1, in
 #ifdef PTEST_CHECKS
     #pragma omp parallel for
     for ( global_bytesize i = 0; i < size; ++i ) {
+        adhereTo<double> adhA ( *A[i] );
         adhereTo<double> adhB ( *B[i] );
-
+        double *a = adhA;
         double *b = adhB;
-
         for ( global_bytesize j = 0; j < size; ++j ) {
             if ( a[j] != j || b[j] != j ) {
                 printf ( "Failed check!\n" );
@@ -1647,7 +1648,7 @@ measureThroughputTest::measureThroughputTest() : performanceTest<int, int> ( "Me
     plotTimingStats = false;
 }
 
-/// @todo PTEST_CHECKS is missing in this test
+
 void measureThroughputTest::actualTestMethod ( tester &test, int bytesize , int load )
 {
     rambrainglobals::config.resizeMemory ( bytesize * 2 );
@@ -1666,6 +1667,11 @@ void measureThroughputTest::actualTestMethod ( tester &test, int bytesize , int 
     std::chrono::duration<double> allCalc ( 0 );
 
     using namespace std::chrono;
+#ifdef PTEST_CHECKS
+    double rewritetimesmin = rewritetimes;
+    unsigned int iter[3];
+#endif
+
     for ( int i = 0; i < iterations; ++i ) {
         unsigned int use = ( i % 3 );
         unsigned int prepare = ( ( i + 1 ) % 3 );
@@ -1693,11 +1699,26 @@ void measureThroughputTest::actualTestMethod ( tester &test, int bytesize , int 
             rewritetimes *= ( preparet + setuse ) > calc ? 1.01 : .99;
         }
 
+#ifdef PTEST_CHECKS
+        rewritetimesmin = rewritetimes < rewritetimesmin ? rewritetimes : rewritetimesmin;
+        iter[use] = i;
+#endif
         allSetuse += setuse;
         allPrepare += preparet;
         allCalc += calc;
         delete adh[use];
     }
+
+#ifdef PTEST_CHECKS
+    for ( int x = 0; x < 3; ++x ) {
+        adhereTo<char> glue ( ptr[x] );
+        char *loc = glue;
+        for ( int r = 0; r < rewritetimesmin * bytesize; r++ )
+            if ( loc[r % bytesize] != ( char ) ( r * iter[x] ) ) {
+                errmsgf ( "Failed check! %d %d %d", x, iter[x], loc[r % bytesize] );
+            }
+    }
+#endif
     test.addExternalTime ( allSetuse );
     test.addExternalTime ( allPrepare );
     test.addExternalTime ( allCalc );
@@ -1727,18 +1748,21 @@ measurePreemptiveSpeedupTest::measurePreemptiveSpeedupTest() : performanceTest<i
     plotTimingStats = false;
 }
 
-/// @todo PTEST_CHECKS is missing in this test
 void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize , int load )
 {
     unsigned int numel = 1024;
     rambrainglobals::config.resizeMemory ( numel / 2 * bytesize );
     rambrainglobals::config.resizeSwap ( numel * bytesize );
 
-    managedPtr<managedPtr<char>> arr ( numel, bytesize );
-    ADHERETOLOC ( managedPtr<char>, arr, ptr );
+    managedPtr<char> ptr[numel] ( bytesize );
 
     float rewritetimes = load < 0 ? 1 : ( float ) load / 100.;
     int iterations = 10230;
+
+#ifdef PTEST_CHECKS
+    double rewritetimesmin = rewritetimes;
+    unsigned int iter[numel];
+#endif
 
     std::chrono::duration<double> allSetuse ( 0 );
     std::chrono::duration<double> allPrepare ( 0 );
@@ -1770,7 +1794,10 @@ void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize
         if ( load < 0 ) {
             rewritetimes *= ( preparet + setuse ) > calc ? 1.01 : .99;
         }
-
+#ifdef PTEST_CHECKS
+        rewritetimesmin = rewritetimes < rewritetimesmin ? rewritetimes : rewritetimesmin;
+        iter[use] = i;
+#endif
         allSetuse += setuse;
         allPrepare += preparet;
         allCalc += calc;
@@ -1807,12 +1834,25 @@ void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize
         if ( load < 0 ) {
             rewritetimes *= ( preparet + setuse ) > calc ? 1.01 : .99;
         }
-
+#ifdef PTEST_CHECKS
+        rewritetimesmin = rewritetimes < rewritetimesmin ? rewritetimes : rewritetimesmin;
+        iter[use] = i;
+#endif
         allSetuse2 += setuse;
         allPrepare2 += preparet;
         allCalc2 += calc;
     }
 
+#ifdef PTEST_CHECKS
+    for ( int x = 0; x < numel; ++x ) {
+        adhereTo<char> glue ( ptr[x] );
+        char *loc = glue;
+        for ( int r = 0; r < rewritetimesmin * bytesize; r++ )
+            if ( loc[r % bytesize] != ( char ) ( r * iter[x] ) ) {
+                errmsgf ( "Failed check! %d %d %d", x, iter[x], loc[r % bytesize] );
+            }
+    }
+#endif
     test.addExternalTime ( allSetuse2 );
     test.addExternalTime ( allPrepare2 );
     test.addExternalTime ( allCalc2 );
@@ -1848,18 +1888,21 @@ measureExplicitAsyncSpeedupTest::measureExplicitAsyncSpeedupTest() : performance
     plotTimingStats = false;
 }
 
-/// @todo PTEST_CHECKS is missing in this test
 void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytesize , int load )
 {
     unsigned int numel = 1024;
     rambrainglobals::config.resizeMemory ( numel / 2 * bytesize );
     rambrainglobals::config.resizeSwap ( numel * bytesize );
 
-    managedPtr<managedPtr<char>> arr ( numel, bytesize );
-    ADHERETOLOC ( managedPtr<char>, arr, ptr );
+    managedPtr<char> ptr[numel] ( bytesize );
 
     float rewritetimes = load < 0 ? 1 : ( float ) load / 100.;
     int iterations = 10230;
+
+#ifdef PTEST_CHECKS
+    double rewritetimesmin = rewritetimes;
+    unsigned int iter[numel];
+#endif
 
     std::chrono::duration<double> allSetuse ( 0 );
     std::chrono::duration<double> allPrepare ( 0 );
@@ -1916,7 +1959,9 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
 
         //Important: First say what you will use, then say, what you will use next!
         high_resolution_clock::time_point t0 = high_resolution_clock::now();
-        adharr[prepare] = new adhereTo<char> ( ptr[prepare] );
+        if ( i != iterations - 1 ) {
+            adharr[prepare] = new adhereTo<char> ( ptr[prepare] );
+        }
         high_resolution_clock::time_point t1 = high_resolution_clock::now();
         char *loc = *adharr[use]; //Actually use the stuff.
         high_resolution_clock::time_point t2 = high_resolution_clock::now();
@@ -1934,13 +1979,26 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
         if ( load < 0 ) {
             rewritetimes *= ( preparet + setuse ) > calc ? 1.01 : .99;
         }
-
+#ifdef PTEST_CHECKS
+        rewritetimesmin = rewritetimes < rewritetimesmin ? rewritetimes : rewritetimesmin;
+        iter[use] = i;
+#endif
         allSetuse2 += setuse;
         allPrepare2 += preparet;
         allCalc2 += calc;
         allDel += del;
     }
 
+#ifdef PTEST_CHECKS
+    for ( int x = 0; x < numel; ++x ) {
+        adhereTo<char> glue ( ptr[x] );
+        char *loc = glue;
+        for ( int r = 0; r < rewritetimesmin * bytesize; r++ )
+            if ( loc[r % bytesize] != ( char ) ( r * iter[x] ) ) {
+                errmsgf ( "Failed check! %d %d %d", x, iter[x], loc[r % bytesize] );
+            }
+    }
+#endif
     test.addExternalTime ( allSetuse2 );
     test.addExternalTime ( allPrepare2 );
     test.addExternalTime ( allCalc2 );
