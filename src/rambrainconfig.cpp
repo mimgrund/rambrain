@@ -25,6 +25,7 @@
 #include "cyclicManagedMemory.h"
 #include "dummyManagedMemory.h"
 #include "exceptions.h"
+#include "git_info.h"
 
 namespace rambrain
 {
@@ -33,6 +34,7 @@ namespace rambrainglobals
 
 rambrainConfig::rambrainConfig ()
 {
+    infomsgf ( "Greetings from Rambrain!\n\tRambrain is still in an early stage of development. Please report any strange behaviour!\n\tRambrain was compiled from git %s\tWhen reporting problens, please include this commit number.", gitCommit );
     init();
 }
 
@@ -45,11 +47,7 @@ void rambrainConfig::reinit ( bool reread )
 {
     clean();
     if ( reread ) {
-        bool ok = config.readConfig();
-
-        if ( !ok ) {
-            warnmsg ( "Could not read config file!" );
-        }
+        config.setReread();
     }
     init();
 }

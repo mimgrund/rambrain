@@ -285,7 +285,6 @@ bool managedMemory::prepareUse ( managedMemoryChunk &chunk, bool acquireLock )
     if ( acquireLock ) {
         rambrain_pthread_mutex_lock ( &stateChangeMutex );
     }
-    ++chunk.useCnt;//This protects element from being swapped out by somebody else if it was swapped in.
     switch ( chunk.status ) {
     case MEM_SWAPOUT: // Object is about to be swapped out.
         if ( !waitForSwapout ( chunk, true ) ) {
@@ -295,6 +294,10 @@ bool managedMemory::prepareUse ( managedMemoryChunk &chunk, bool acquireLock )
             return true;
         }
     case MEM_SWAPPED:
+#ifdef SWAPSTATS
+        ++swap_misses;
+        --swap_hits;
+#endif
         if ( !swapIn ( chunk ) ) {
             errmsgf ( "Could not swap in chunk %lu", chunk.id );
             if ( acquireLock ) {
@@ -302,10 +305,6 @@ bool managedMemory::prepareUse ( managedMemoryChunk &chunk, bool acquireLock )
             }
             return false;
         }
-#ifdef SWAPSTATS
-        ++swap_misses;
-        --swap_hits;
-#endif
     default:
         ;
     }
@@ -330,7 +329,6 @@ bool managedMemory::setUse ( managedMemoryChunk &chunk, bool writeAccess = false
             rambrain_pthread_mutex_unlock ( &stateChangeMutex );
             return false;
         }
-        --chunk.useCnt;//prepareUse sets additional usage, but we want to end up with +1 only
     case MEM_SWAPIN: // Wait for object to appear
         if ( !waitForSwapin ( chunk, true ) ) {
             if ( ! ( chunk.status & MEM_ALLOCATED ) ) {

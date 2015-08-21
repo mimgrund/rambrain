@@ -68,7 +68,6 @@ class adhereTo;
  * * Do not pass pointers/references to this object over thread boundaries
  * @note _thread-safety_
  * * The object itself may be passed over thread boundary
- * @todo Make project compile with ICC
  *
  * **/
 template <class T>
@@ -164,13 +163,11 @@ public:
 
     //Atomically sets use if tracker is not already set to true. returns whether we set use or not.
     bool setUse ( bool writable = true, bool *tracker = NULL ) const {
-        rambrain_pthread_mutex_lock ( &mutex );
         if ( tracker )
             if ( !rambrain_atomic_bool_compare_and_swap ( tracker, false, true ) ) {
-                rambrain_pthread_mutex_unlock ( &mutex );
+                waitForSwapin();
                 return false;
             }
-        rambrain_pthread_mutex_unlock ( &mutex );
         bool result = managedMemory::defaultManager->setUse ( *chunk , writable );
 
         return result;
@@ -205,28 +202,30 @@ public:
         return loc[i];
     }
 
+    /** @brief returns local pointer to object
+     *  @note when called, you have to care for setting use to the chunk, first
+     * */
     T *getLocPtr() const {
-        if ( chunk->status == MEM_ALLOCATED_INUSE_WRITE ) {
-            return ( T * ) chunk->locPtr;
-        } else {
-            throw unexpectedStateException ( "Can not get local pointer without setting usage first" );
-            return NULL;
+        if ( chunk->status != MEM_ALLOCATED_INUSE_WRITE ) {
+            waitForSwapin();
         }
+        return ( T * ) chunk->locPtr;
     }
 
+    /** @brief returns const local pointer to object
+     *  @note when called, you have to care for setting use to the chunk, first
+     * */
     const T *getConstLocPtr() const {
-        if ( chunk->status & MEM_ALLOCATED_INUSE_READ ) {
-            return ( T * ) chunk->locPtr;
-        } else {
-            throw unexpectedStateException ( "Can not get local pointer without setting usage first" );
+        if ( ! ( chunk->status & MEM_ALLOCATED_INUSE_READ ) ) {
+            waitForSwapin();
         }
+        return ( T * ) chunk->locPtr;
     }
 
 private:
     managedMemoryChunk *chunk;
     unsigned int *tracker;
     unsigned int n_elem;
-    mutable pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
     template <class G>
     typename std::enable_if<std::is_class<G>::value>::type
@@ -251,7 +250,21 @@ private:
         delete tracker;
     }
 
-
+    /** @brief: indefinitely waits for swapin of the chunk
+     *  While it would have been desirable to throw exceptions when chunk is not available,
+     *  checking this in a save way would produce lots of overhead. Thus, it is better to wait
+     *  indefinitely in this case, as under normal use, the chunk will become available.
+    **/
+    void waitForSwapin() const {
+        //While in this case, we are not the guy who actually enforce the swapin, we never the less have to wait
+        //for the chunk to become ready. This is done in the following way:
+        if ( ! ( chunk->status & MEM_ALLOCATED ) ) { // We may savely check against this as use will be set by other adhereTo thread and cannot be undone as long as calling adhereTo exists
+            rambrain_pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+            //We will burn a little bit of power here, eventually, but this is a very rare case.
+            while ( ! managedMemory::defaultManager->waitForSwapin ( *chunk, true ) ) {};
+            rambrain_pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
+        }
+    }
 
 
 
@@ -289,25 +302,23 @@ public:
     adhereTo ( const adhereTo<T> &ref ) : data ( ref.data ) {
         loadedReadable = ref.loadedReadable;
         loadedWritable = ref.loadedWritable;
-        loadedImmediately = ref.loadedImmediately;
         if ( loadedWritable ) {
             data->setUse ( loadedWritable );
         }
         if ( loadedReadable ) {
             data->setUse ( loadedReadable );
         }
-        if ( loadedImmediately ) {
-            data->prepareUse ();
-        }
     };
 
-    adhereTo ( const managedPtr<T> &data, bool loadImidiately = true ) : data ( &data ) {
-        if ( loadImidiately ) {
-            loadedImmediately = true;
+
+    adhereTo ( const managedPtr<T> &data, bool loadImmediately = true ) : data ( &data ) {
+        if ( loadImmediately ) {
             data.prepareUse();
         }
 
     }
+
+    adhereTo ( const managedPtr<T> *data, bool loadImmediately = true ) : adhereTo ( *data, loadImmediately ) {};
 
     adhereTo<T> &operator= ( const adhereTo<T> &ref ) {
         if ( loadedReadable ) {
@@ -316,21 +327,15 @@ public:
         if ( loadedWritable ) {
             data->unsetUse();
         }
-        if ( loadedImmediately ) {
-            data->unsetUse();
-        }
         this->data = ref.data;
         loadedReadable = ref.loadedReadble;
         loadedWritable = ref.loadedWritable;
-        loadedImmediately = ref.loadedImmediately;
+
         if ( loadedWritable ) {
             data->setUse ( loadedWritable );
         }
         if ( loadedReadable ) {
             data->setUse ( loadedReadable );
-        }
-        if ( loadedImmediately ) {
-            data->prepareUse ();
         }
         return *this;
     }
@@ -353,7 +358,7 @@ public:
 
     ~adhereTo() {
         unsigned char loaded = 0;
-        loaded = ( loadedReadable ? 1 : 0 ) + ( loadedWritable ? 1 : 0 ) + ( loadedImmediately ? 1 : 0 );
+        loaded = ( loadedReadable ? 1 : 0 ) + ( loadedWritable ? 1 : 0 );
         if ( loaded > 0 ) {
             data->unsetUse ( loaded );
         }
@@ -366,7 +371,6 @@ private:
 
     mutable bool loadedWritable = false;
     mutable bool loadedReadable = false;
-    mutable bool loadedImmediately = false;
 
     //Test classes
 #ifdef BUILD_TESTS

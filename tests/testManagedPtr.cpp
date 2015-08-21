@@ -104,10 +104,11 @@ TEST ( managedPtr, Unit_GetLocPointer )
 {
     managedDummySwap swap ( 100 );
     cyclicManagedMemory managedMemory ( &swap, 100 );
+    managedMemory.setPreemptiveUnloading ( false );
+
     managedPtr<double> ptr ( 10 );
 
     EXPECT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
-    EXPECT_THROW ( ptr.getLocPtr(), unexpectedStateException );
 
     ptr.setUse();
 
@@ -117,7 +118,6 @@ TEST ( managedPtr, Unit_GetLocPointer )
     ptr.unsetUse();
 
     EXPECT_EQ ( MEM_ALLOCATED, ptr.chunk->status );
-    EXPECT_THROW ( ptr.getLocPtr(), unexpectedStateException );
 }
 
 
