@@ -202,6 +202,12 @@ public:
     inline bool readSuccessfully() const {
         return readSuccess;
     }
+    /**
+     * @brief Simple setter
+     */
+    inline void setReread() {
+        readSuccess = false;
+    }
 
 private:
     /**

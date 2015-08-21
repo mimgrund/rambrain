@@ -47,11 +47,7 @@ void rambrainConfig::reinit ( bool reread )
 {
     clean();
     if ( reread ) {
-        bool ok = config.readConfig();
-
-        if ( !ok ) {
-            warnmsg ( "Could not read config file!" );
-        }
+        config.setReread();
     }
     init();
 }
