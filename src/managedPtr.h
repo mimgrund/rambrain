@@ -68,7 +68,6 @@ class adhereTo;
  * * Do not pass pointers/references to this object over thread boundaries
  * @note _thread-safety_
  * * The object itself may be passed over thread boundary
- * @todo Make project compile with ICC
  *
  * **/
 template <class T>
