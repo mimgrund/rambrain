@@ -164,14 +164,11 @@ public:
 
     //Atomically sets use if tracker is not already set to true. returns whether we set use or not.
     bool setUse ( bool writable = true, bool *tracker = NULL ) const {
-        rambrain_pthread_mutex_lock ( &mutex );
         if ( tracker )
             if ( !rambrain_atomic_bool_compare_and_swap ( tracker, false, true ) ) {
-                rambrain_pthread_mutex_unlock ( &mutex );
                 waitForSwapin();
                 return false;
             }
-        rambrain_pthread_mutex_unlock ( &mutex );
         bool result = managedMemory::defaultManager->setUse ( *chunk , writable );
 
         return result;
@@ -230,7 +227,6 @@ private:
     managedMemoryChunk *chunk;
     unsigned int *tracker;
     unsigned int n_elem;
-    mutable pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
     template <class G>
     typename std::enable_if<std::is_class<G>::value>::type
