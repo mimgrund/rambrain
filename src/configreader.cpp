@@ -91,8 +91,8 @@ void configLine<swapPolicy>::setValue ( const string &str )
 
 configuration::configuration() : memoryManager ( "memoryManager", "cyclicManagedMemory", regexMatcher::text ),
     swap ( "swap", "managedFileSwap", regexMatcher::text ),
-    /** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
-    swapfiles ( "swapfiles", "rambrainswap-%d-%d", regexMatcher::text ),
+/** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
+    swapfiles ( "swapfiles", "rambrainswap-%d-%d", regexMatcher::swapfilename ),
     memory ( "memory", 0, regexMatcher::floating | regexMatcher::units ),
     swapMemory ( "swapMemory", 0, regexMatcher::floating | regexMatcher::units ),
     enableDMA ( "enableDMA", false, regexMatcher::integer | regexMatcher::boolean ),
@@ -151,11 +151,7 @@ configuration::configuration() : memoryManager ( "memoryManager", "cyclicManaged
 
 configReader::configReader()
 {
-    struct passwd *pw = getpwuid ( getuid() );
-
-    const char *homedir = pw->pw_dir;
-    localConfigPath += homedir;
-    localConfigPath += "/.rambrain.conf";
+    localConfigPath = getHomeDir() + "/.rambrain.conf";
 }
 
 bool configReader::readConfig()
@@ -172,6 +168,9 @@ bool configReader::readConfig()
             readSuccess &= parseConfigFile ( streams[i], readLines );
         }
     }
+
+    config.swapfiles.setValue ( regex.substituteHomeDir ( config.swapfiles.value, getHomeDir() ) );
+
     return readSuccess;
 }
 
@@ -287,5 +286,10 @@ string configReader::getApplicationName() const
     return fullName.substr ( found + 1 );
 }
 
+string configReader::getHomeDir() const
+{
+    struct passwd *pw = getpwuid ( getuid() );
+    return pw->pw_dir;
+}
 }
 

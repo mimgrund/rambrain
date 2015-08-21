@@ -70,25 +70,33 @@ string regexMatcher::createRegexMatching ( int type ) const
 {
     stringstream ss;
 
-    if ( type & boolean ) {
-        ss  << "true|True|TRUE|false|False|FALSE";
-        if ( type & integer ) {
-            ss << "|\\d+";
-        }
+    if ( type & swapfilename ) {
+        string ant = "[\\/\\.0-9a-zA-Z-_\\\\]";
+        ss << "~?" << ant << "+\\%d" << ant << "*\\%d" << ant << "*";
     } else {
-        ss << "[";
-        if ( type & integer || type & floating ) {
-            ss << "0-9";
-        }
-        if ( type & text ) {
-            ss << "\\/\\.0-9a-zA-Z-_\\%";
-        }
-        ss << "]+";
-        if ( type & floating ) {
-            ss << "\\.?\\d*f?";
-        }
-        if ( type & units ) {
-            ss << "\\s*[a-zA-Z]*";
+        if ( type & boolean ) {
+            ss  << "true|True|TRUE|false|False|FALSE";
+            if ( type & integer ) {
+                ss << "|\\d+";
+            }
+        } else {
+            ss << "[";
+            if ( type & integer || type & floating ) {
+                ss << "0-9";
+            }
+            if ( type & text ) {
+                ss << "a-zA-Z";
+            }
+            if ( type & alphanumtext ) {
+                ss << "\\/\\.0-9a-zA-Z-_\\%\\\\";
+            }
+            ss << "]+";
+            if ( type & floating ) {
+                ss << "\\.?\\d*f?";
+            }
+            if ( type & units ) {
+                ss << "\\s*[a-zA-Z]*";
+            }
         }
     }
 
@@ -123,6 +131,15 @@ pair<long long, string> regexMatcher::splitIntegerValueUnit ( const string &str 
             res.second = match[2];
         }
     }
+
+    return res;
+}
+
+string regexMatcher::substituteHomeDir ( const string &source, const string &homedir ) const
+{
+    const COMPILE_RGX ( rgx, "~" );
+
+    string res = regex_replace ( source, rgx, homedir );
 
     return res;
 }

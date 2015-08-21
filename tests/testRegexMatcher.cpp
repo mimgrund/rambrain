@@ -166,6 +166,14 @@ TEST ( regexMatcher, Unit_KeyEqualsSpecialValue )
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "h4x", kv.second );
 
+    kv = regex.matchKeyEqualsValue ( "key = h4x", regexMatcher::alphanumtext );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "h4x", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = h4x", regexMatcher::integer | regexMatcher::alphanumtext );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "h4x", kv.second );
+
     kv = regex.matchKeyEqualsValue ( "key = true", regexMatcher::boolean );
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "true", kv.second );
@@ -193,6 +201,66 @@ TEST ( regexMatcher, Unit_KeyEqualsSpecialValue )
     kv = regex.matchKeyEqualsValue ( "key = TRUE", regexMatcher::boolean );
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "TRUE", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = /bla", regexMatcher::text );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = /bla", regexMatcher::alphanumtext );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "/bla", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = \\bla", regexMatcher::text );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = \\bla", regexMatcher::alphanumtext );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "\\bla", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = ~/bla", regexMatcher::text );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = ~/bla", regexMatcher::alphanumtext );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = bla", regexMatcher::swapfilename );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = bla-%d", regexMatcher::swapfilename );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = bla_%d-%d", regexMatcher::swapfilename );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "bla_%d-%d", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = /bla/blup/.swap23_%d-%d", regexMatcher::swapfilename );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "/bla/blup/.swap23_%d-%d", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = ~/bla/blup/.swap_%d-%d", regexMatcher::swapfilename );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "~/bla/blup/.swap_%d-%d", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = ~/bla/blup/.swap_%d-%g", regexMatcher::swapfilename );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = ~/bla/blup/.swap_%d-%d-%d", regexMatcher::swapfilename );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = ~/bla/blup/.swap_%d-%d-%g", regexMatcher::swapfilename );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = /bla/~/blup/.swap_%d-%d", regexMatcher::swapfilename );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
 }
 
 /**
@@ -237,3 +305,15 @@ TEST ( regexMatcher, Unit_IntegerValueUnitSplitting )
     EXPECT_EQ ( "kb", vu.second );
 }
 
+/**
+ * @test Checks if the home directory replacing works properly
+ */
+TEST ( regexMatcher, Unit_SubstituteHomeDir )
+{
+    regexMatcher regex;
+
+    EXPECT_EQ ( "/no/home/dir", regex.substituteHomeDir ( "/no/home/dir", "/home/user" ) );
+    EXPECT_EQ ( "/home/user", regex.substituteHomeDir ( "~", "/home/user" ) );
+    EXPECT_EQ ( "/home/user/bla", regex.substituteHomeDir ( "~/bla", "/home/user" ) );
+    EXPECT_EQ ( "/home/user/bla//home/user/blup", regex.substituteHomeDir ( "~/bla/~/blup", "/home/user" ) );
+}
