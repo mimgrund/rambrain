@@ -47,7 +47,8 @@ public:
         units = 1 << 2,
         text = 1 << 3,
         alphanumtext = 1 << 4,
-        boolean = 1 << 5
+        boolean = 1 << 5,
+        swapfilename = 1 << 6 /// @note not flaggy
     };
 
     /**
