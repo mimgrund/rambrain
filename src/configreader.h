@@ -44,8 +44,7 @@ namespace rambrain
  * Can either keep the boundary fixed, extend it automatically as it needs or start an interactive shell to ask the user for advice
  * @warning Currently not used
  */
-enum class swapPolicy
-{
+enum class swapPolicy {
     fixed,
     autoextendable,
     interactive
@@ -244,6 +243,12 @@ private:
      * @return The home dir
      */
     string getHomeDir() const;
+
+    /**
+     * @brief Strips any leading and trailing whitespace from a given string
+     * @param str The string to be stripped
+     */
+    void stripLeadingTrailingWhitespace ( string &str ) const;
 
     const string globalConfigPath = "/etc/rambrain.conf";
     string localConfigPath = "";
