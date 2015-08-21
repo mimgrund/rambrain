@@ -246,6 +246,18 @@ TEST ( regexMatcher, Unit_KeyEqualsSpecialValue )
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "~/bla/blup/.swap_%d-%d", kv.second );
 
+    kv = regex.matchKeyEqualsValue ( "key = ~/bla/blup/.swap_%d-%g", regexMatcher::swapfilename );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = ~/bla/blup/.swap_%d-%d-%d", regexMatcher::swapfilename );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = ~/bla/blup/.swap_%d-%d-%g", regexMatcher::swapfilename );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
     kv = regex.matchKeyEqualsValue ( "key = /bla/~/blup/.swap_%d-%d", regexMatcher::swapfilename );
     EXPECT_EQ ( "", kv.first );
     EXPECT_EQ ( "", kv.second );
