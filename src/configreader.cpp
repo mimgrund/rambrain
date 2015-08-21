@@ -91,8 +91,8 @@ void configLine<swapPolicy>::setValue ( const string &str )
 
 configuration::configuration() : memoryManager ( "memoryManager", "cyclicManagedMemory", regexMatcher::text ),
     swap ( "swap", "managedFileSwap", regexMatcher::text ),
-    /** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
-    swapfiles ( "swapfiles", "rambrainswap-%d-%d", regexMatcher::text ),
+/** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
+    swapfiles ( "swapfiles", "rambrainswap-%d-%d", regexMatcher::alphanumtext ),
     memory ( "memory", 0, regexMatcher::floating | regexMatcher::units ),
     swapMemory ( "swapMemory", 0, regexMatcher::floating | regexMatcher::units ),
     enableDMA ( "enableDMA", false, regexMatcher::integer | regexMatcher::boolean ),

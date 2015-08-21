@@ -166,6 +166,14 @@ TEST ( regexMatcher, Unit_KeyEqualsSpecialValue )
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "h4x", kv.second );
 
+    kv = regex.matchKeyEqualsValue ( "key = h4x", regexMatcher::alphanumtext );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "h4x", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = h4x", regexMatcher::integer | regexMatcher::alphanumtext );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "h4x", kv.second );
+
     kv = regex.matchKeyEqualsValue ( "key = true", regexMatcher::boolean );
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "true", kv.second );
@@ -193,6 +201,31 @@ TEST ( regexMatcher, Unit_KeyEqualsSpecialValue )
     kv = regex.matchKeyEqualsValue ( "key = TRUE", regexMatcher::boolean );
     EXPECT_EQ ( "key", kv.first );
     EXPECT_EQ ( "TRUE", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = /bla", regexMatcher::text );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = /bla", regexMatcher::alphanumtext );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "/bla", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = \\bla", regexMatcher::text );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = \\bla", regexMatcher::alphanumtext );
+    EXPECT_EQ ( "key", kv.first );
+    EXPECT_EQ ( "\\bla", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = ~/bla", regexMatcher::text );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
+    kv = regex.matchKeyEqualsValue ( "key = ~/bla", regexMatcher::alphanumtext );
+    EXPECT_EQ ( "", kv.first );
+    EXPECT_EQ ( "", kv.second );
+
 }
 
 /**

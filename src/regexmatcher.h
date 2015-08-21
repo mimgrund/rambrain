@@ -46,7 +46,8 @@ public:
         floating = 1 << 1,
         units = 1 << 2,
         text = 1 << 3,
-        boolean = 1 << 4
+        alphanumtext = 1 << 4,
+        boolean = 1 << 5
     };
 
     /**
@@ -68,7 +69,7 @@ public:
      * @param valueType Which matchType the value should be, does not match otherwise
      * @return Result key and value
      */
-    pair<string, string> matchKeyEqualsValue ( const string &str, int valueType = text ) const;
+    pair<string, string> matchKeyEqualsValue ( const string &str, int valueType = alphanumtext ) const;
     /**
      * @brief Checks if a string matches something like key = value
      * @param str The source string
@@ -76,7 +77,7 @@ public:
      * @param valueType Which matchType the value should be, does not match otherwise
      * @return Result key and value
      */
-    pair<string, string> matchKeyEqualsValue ( const string &str, const string &key, int valueType = text ) const;
+    pair<string, string> matchKeyEqualsValue ( const string &str, const string &key, int valueType = alphanumtext ) const;
 
     /**
      * @brief Split a string containing value and possibly unit into both parts
