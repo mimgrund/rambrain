@@ -91,7 +91,7 @@ void configLine<swapPolicy>::setValue ( const string &str )
 
 configuration::configuration() : memoryManager ( "memoryManager", "cyclicManagedMemory", regexMatcher::text ),
     swap ( "swap", "managedFileSwap", regexMatcher::text ),
-/** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
+    /** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
     swapfiles ( "swapfiles", "rambrainswap-%d-%d", regexMatcher::swapfilename ),
     memory ( "memory", 0, regexMatcher::floating | regexMatcher::units ),
     swapMemory ( "swapMemory", 0, regexMatcher::floating | regexMatcher::units ),
@@ -185,23 +185,22 @@ bool configReader::reopenStreams()
 
     streams[0].open ( customConfigPath );
     if ( streams[0].is_open() ) {
-        infomsgf ( "Rambrain was initialized using custom config file: %s\n", customConfigPath.c_str() );
+        infomsgf ( "Rambrain is initialized using custom config file: %s\n", customConfigPath.c_str() );
         readAConfig = true;
     }
     streams[1].open ( localConfigPath );
     if ( streams[1].is_open() ) {
-        infomsgf ( "Rambrain was initialized using user's config file: %s\n", localConfigPath.c_str() );
+        infomsgf ( "Rambrain is initialized using user's config file: %s\n", localConfigPath.c_str() );
         readAConfig = true;
     }
     streams[2].open ( globalConfigPath );
     if ( streams[2].is_open() ) {
-        infomsgf ( "Rambrain was initialized using system wide config file: %s\n", globalConfigPath.c_str() );
+        infomsgf ( "Rambrain is initialized using system wide config file: %s\n", globalConfigPath.c_str() );
         readAConfig = true;
     }
 
-
     if ( !readAConfig ) {
-        infomsg ( "Rambrain was initialized using default settings." );
+        infomsg ( "Rambrain is initialized using default settings." );
     }
 
     return streams[0].is_open() || streams[1].is_open() || streams[2].is_open();
@@ -216,6 +215,11 @@ bool configReader::parseConfigFile ( istream &stream, vector<configLineBase *> &
 
     while ( stream.good() && ! ( defaultDone && specificDone ) ) {
         getline ( stream, line );
+        stripLeadingTrailingWhitespace ( line );
+        if ( line.empty() ) {
+            continue;
+        }
+
         unsigned int current = stream.tellg();
 
         if ( regex.matchConfigBlock ( line ) ) {
@@ -246,22 +250,35 @@ bool configReader::parseConfigBlock ( istream &stream, vector<configLineBase *> 
 
     while ( stream.good() ) {
         getline ( stream, line );
+        stripLeadingTrailingWhitespace ( line );
+        if ( line.empty() ) {
+            continue;
+        }
+
         first = line.substr ( 0, 1 );
         if ( first == "[" ) {
             break;
         } else if ( first == "#" ) {
             continue;
         } else {
+            bool matched = false;
+
             for ( auto it = config.configOptions.begin(); it != config.configOptions.end(); ++it ) {
                 configLineBase *cl = *it;
-                if ( find ( readLines.begin(), readLines.end(), cl ) == readLines.end() ) { // Only if this config option has not been read yet
-                    std::pair<string, string> match = regex.matchKeyEqualsValue ( line, cl->name, cl->matchType );
-                    if ( match.first == cl->name ) {
+                std::pair<string, string> match = regex.matchKeyEqualsValue ( line, cl->name, cl->matchType );
+                if ( match.first == cl->name ) {
+                    matched = true;
+
+                    if ( find ( readLines.begin(), readLines.end(), cl ) == readLines.end() ) { // Only if this config option has not been read yet
                         readLines.push_back ( cl );
                         cl->setValue ( match.second );
                         break;
                     }
                 }
+            }
+
+            if ( !matched ) {
+                warnmsgf ( "Could not parse config line: %s\n", line.c_str() );
             }
         }
     }
@@ -291,5 +308,10 @@ string configReader::getHomeDir() const
     struct passwd *pw = getpwuid ( getuid() );
     return pw->pw_dir;
 }
-}
 
+void configReader::stripLeadingTrailingWhitespace ( string &str ) const
+{
+    str.erase ( str.begin(), std::find_if ( str.begin(), str.end(), std::not1 ( std::ptr_fun<int, int> ( std::isspace ) ) ) );
+    str.erase ( std::find_if ( str.rbegin(), str.rend(), std::not1 ( std::ptr_fun<int, int> ( std::isspace ) ) ).base(), str.end() );
+}
+}
