@@ -1,7 +1,7 @@
 var searchData=
 [
   ['id',['id',['../a00016.html#a969f806af9b4f51d947bfd57fe484a4a',1,'rambrain::managedMemoryChunk']]],
-  ['ignore_5ftest_5fwarnings',['IGNORE_TEST_WARNINGS',['../a00076.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testAdhereTo.cpp'],['../a00086.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testManagedFileSwap.cpp'],['../a00088.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testManagedPtr.cpp']]],
+  ['ignore_5ftest_5fwarnings',['IGNORE_TEST_WARNINGS',['../a00073.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testAdhereTo.cpp'],['../a00083.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testManagedFileSwap.cpp'],['../a00085.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testManagedPtr.cpp']]],
   ['initialised',['initialised',['../a00031.html#ac6ba857b6f43eb3998d15b78f505b312',1,'rambrain::Timer']]],
   ['instance',['instance',['../a00014.html#a0da0fb0093407ecf03b65557ffa357a5',1,'rambrain::managedFileSwap']]],
   ['invalid',['invalid',['../a00015.html#a708e2307727c5a2d710b3c15dfcc6978',1,'rambrain::managedMemory']]],

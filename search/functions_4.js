@@ -10,6 +10,7 @@ var searchData=
   ['getfreediskspace',['getFreeDiskSpace',['../a00014.html#a71b7a2d56b87737c92e559e2ca1cc79c',1,'rambrain::managedFileSwap']]],
   ['getfreeswap',['getFreeSwap',['../a00018.html#a27d19d6eec2becdf80a805ee69a121df',1,'rambrain::managedSwap']]],
   ['gethitsovermisses',['getHitsOverMisses',['../a00015.html#a24e3c85157bebe35c89e2140c17b4eae',1,'rambrain::managedMemory']]],
+  ['gethomedir',['getHomeDir',['../a00005.html#ae8449af2304dd8fec6cad2d9835e8205',1,'rambrain::configReader']]],
   ['getlocptr',['getLocPtr',['../a00017.html#a9b96f8d979019bf3f86c8e614696238d',1,'rambrain::managedPtr']]],
   ['getmemoryalignment',['getMemoryAlignment',['../a00014.html#a11a1d8b10d3733a266a309f5f00f24f1',1,'rambrain::managedFileSwap::getMemoryAlignment()'],['../a00018.html#abc889b9fc93abbbac963c6dffef6e27a',1,'rambrain::managedSwap::getMemoryAlignment()']]],
   ['getmemorylimit',['getMemoryLimit',['../a00015.html#aea4a0f411615e719685e999a51565f46',1,'rambrain::managedMemory']]],

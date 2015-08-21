@@ -13,8 +13,7 @@ var searchData=
   ['memory_5fused',['memory_used',['../a00015.html#aef5adf85cd78d5de48654f3c16ae4cf5',1,'rambrain::managedMemory']]],
   ['memoryalignment',['memoryAlignment',['../a00015.html#a38f530245a6614262d2f26cb39d123b9',1,'rambrain::managedMemory::memoryAlignment()'],['../a00018.html#a7973e5ced5c82836f5fb57337f357b19',1,'rambrain::managedSwap::memoryAlignment()']]],
   ['memorymanager',['memoryManager',['../a00006.html#ae86fcffce8339717271022be71e95815',1,'rambrain::configuration']]],
-  ['mib',['mib',['../a00092.html#a8526efa365cdb0cb597351c2671af168',1,'rambrain']]],
+  ['mib',['mib',['../a00089.html#a8526efa365cdb0cb597351c2671af168',1,'rambrain']]],
   ['min',['min',['../a00029.html#ad9c145df95de9bbffba57074034c2d91',1,'testParameter']]],
-  ['min_5felements',['min_elements',['../a00092.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc',1,'rambrain']]],
-  ['mutex',['mutex',['../a00017.html#a422b62d7b68f81be72536ccda11556fc',1,'rambrain::managedPtr']]]
+  ['min_5felements',['min_elements',['../a00089.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc',1,'rambrain']]]
 ];

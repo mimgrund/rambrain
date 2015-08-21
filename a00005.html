@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('a00005.html','');});
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
-<a href="a00110.html">List of all members</a>  </div>
+<a href="a00107.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">rambrain::configReader Class Reference</div>  </div>
 </div><!--header-->
@@ -139,6 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af1a0883e35fe8aae3c49631bc848508e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#af1a0883e35fe8aae3c49631bc848508e">readSuccessfully</a> () const </td></tr>
 <tr class="memdesc:af1a0883e35fe8aae3c49631bc848508e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple getter.  <a href="#af1a0883e35fe8aae3c49631bc848508e">More...</a><br /></td></tr>
 <tr class="separator:af1a0883e35fe8aae3c49631bc848508e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1a9755154dabd51a70427669a1cce7f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#ad1a9755154dabd51a70427669a1cce7f">setReread</a> ()</td></tr>
+<tr class="memdesc:ad1a9755154dabd51a70427669a1cce7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple setter.  <a href="#ad1a9755154dabd51a70427669a1cce7f">More...</a><br /></td></tr>
+<tr class="separator:ad1a9755154dabd51a70427669a1cce7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -154,6 +157,12 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:aa2aee2bca7966d89aae6d822e829de71"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#aa2aee2bca7966d89aae6d822e829de71">getApplicationName</a> () const </td></tr>
 <tr class="memdesc:aa2aee2bca7966d89aae6d822e829de71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the current binary's name out of the /proc file system.  <a href="#aa2aee2bca7966d89aae6d822e829de71">More...</a><br /></td></tr>
 <tr class="separator:aa2aee2bca7966d89aae6d822e829de71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8449af2304dd8fec6cad2d9835e8205"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#ae8449af2304dd8fec6cad2d9835e8205">getHomeDir</a> () const </td></tr>
+<tr class="memdesc:ae8449af2304dd8fec6cad2d9835e8205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Look up the home directory of the current user.  <a href="#ae8449af2304dd8fec6cad2d9835e8205">More...</a><br /></td></tr>
+<tr class="separator:ae8449af2304dd8fec6cad2d9835e8205"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a845d458a102985a9721ebb322cbb5346"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html#a845d458a102985a9721ebb322cbb5346">stripLeadingTrailingWhitespace</a> (string &amp;str) const </td></tr>
+<tr class="memdesc:a845d458a102985a9721ebb322cbb5346"><td class="mdescLeft">&#160;</td><td class="mdescRight">Strips any leading and trailing whitespace from a given string.  <a href="#a845d458a102985a9721ebb322cbb5346">More...</a><br /></td></tr>
+<tr class="separator:a845d458a102985a9721ebb322cbb5346"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -235,7 +244,7 @@ While keys are exactly the names of members of the configuration struct There ar
 <p>Extract the current binary's name out of the /proc file system. </p>
 <dl class="section return"><dt>Returns</dt><dd>The name </dd></dl>
 
-<p>Definition at line <a class="el" href="a00035_source.html#l00273">273</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00035_source.html#l00289">289</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -263,6 +272,34 @@ While keys are exactly the names of members of the configuration struct There ar
 <p>Simple getter. </p>
 
 <p>Definition at line <a class="el" href="a00036_source.html#l00192">192</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae8449af2304dd8fec6cad2d9835e8205"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string rambrain::configReader::getHomeDir </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Look up the home directory of the current user. </p>
+<dl class="section return"><dt>Returns</dt><dd>The home dir </dd></dl>
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00306">306</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -310,7 +347,7 @@ While keys are exactly the names of members of the configuration struct There ar
 <dl class="section warning"><dt>Warning</dt><dd>Does not check for unknown variables or typos, every unknown thing is simply ignored </dd></dl>
 <dl class="section see"><dt>See also</dt><dd>parseConfigLine </dd></dl>
 
-<p>Definition at line <a class="el" href="a00035_source.html#l00244">244</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00035_source.html#l00247">247</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -357,7 +394,7 @@ While keys are exactly the names of members of the configuration struct There ar
 <dl class="section return"><dt>Returns</dt><dd>Success </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00005.html#a89ebde62397d8fdda601543eb2eb110a" title="Parse an identified configuration block and extract all matching variables. ">parseConfigBlock()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="a00035_source.html#l00211">211</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00035_source.html#l00209">209</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -382,7 +419,7 @@ openStream </dd>
 <dd>
 <a class="el" href="a00005.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f" title="Parse config file. ">parseConfigFile</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="a00035_source.html#l00161">161</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00035_source.html#l00157">157</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -437,7 +474,7 @@ openStream </dd>
 <p>(Re)Open streams to config files </p>
 <p>Order is Custom location &gt; Local user space &gt; Global config </p><dl class="section return"><dt>Returns</dt><dd>Success </dd></dl>
 
-<p>Definition at line <a class="el" href="a00035_source.html#l00178">178</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00035_source.html#l00177">177</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -469,6 +506,67 @@ openStream </dd>
 
 </div>
 </div>
+<a class="anchor" id="ad1a9755154dabd51a70427669a1cce7f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::configReader::setReread </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Simple setter. </p>
+
+<p>Definition at line <a class="el" href="a00036_source.html#l00208">208</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a845d458a102985a9721ebb322cbb5346"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::configReader::stripLeadingTrailingWhitespace </td>
+          <td>(</td>
+          <td class="paramtype">string &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Strips any leading and trailing whitespace from a given string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>The string to be stripped </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00035_source.html#l00312">312</a> of file <a class="el" href="a00035_source.html">configreader.cpp</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
 <a class="anchor" id="a9d31013c3be15dca42575f695b4e033f"></a>
 <div class="memitem">
@@ -488,7 +586,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00255">255</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00273">273</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -511,7 +609,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00249">249</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00267">267</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -533,7 +631,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00243">243</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00261">261</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -555,7 +653,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00241">241</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00259">259</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -577,7 +675,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00242">242</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00260">260</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -599,7 +697,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00251">251</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00269">269</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -621,7 +719,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00245">245</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00263">263</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -643,7 +741,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00036_source.html#l00247">247</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00036_source.html#l00265">265</a> of file <a class="el" href="a00036_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -656,8 +754,8 @@ openStream </dd>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00092.html">rambrain</a></li><li class="navelem"><a class="el" href="a00005.html">configReader</a></li>
-    <li class="footer">Generated on Fri Aug 21 2015 01:22:49 for rambrain by
+    <li class="navelem"><a class="el" href="a00089.html">rambrain</a></li><li class="navelem"><a class="el" href="a00005.html">configReader</a></li>
+    <li class="footer">Generated on Sat Aug 22 2015 01:23:04 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

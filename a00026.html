@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('a00026.html','');});
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="a00126.html">List of all members</a>  </div>
+<a href="a00123.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">rambrain::regexMatcher Class Reference</div>  </div>
 </div><!--header-->
@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('a00026.html','');});
 <p>Class to handle regex matching used for parsing configuration files.  
  <a href="a00026.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00063_source.html">regexmatcher.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00060_source.html">regexmatcher.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -129,7 +129,9 @@ Public Types</h2></td></tr>
 <a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229a2b6e9b3cb4427fe84fcf45206b171541">units</a> = 1 &lt;&lt; 2, 
 <a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2">text</a> = 1 &lt;&lt; 3, 
 <br />
-&#160;&#160;<a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137">boolean</a> = 1 &lt;&lt; 4
+&#160;&#160;<a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418">alphanumtext</a> = 1 &lt;&lt; 4, 
+<a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137">boolean</a> = 1 &lt;&lt; 5, 
+<a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74">swapfilename</a> = 1 &lt;&lt; 6
 <br />
  }</td></tr>
 <tr class="memdesc:acf6754e0f0df10007f5494899ed31229"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum to caracterise what shall be matched in a specific case; flaggy.  <a href="a00026.html#acf6754e0f0df10007f5494899ed31229">More...</a><br /></td></tr>
@@ -143,18 +145,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a952ca26ade04a532e24f85dbb2c748e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a952ca26ade04a532e24f85dbb2c748e4">matchConfigBlock</a> (const string &amp;str, const string &amp;blockname=&quot;default&quot;) const </td></tr>
 <tr class="memdesc:a952ca26ade04a532e24f85dbb2c748e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a string matches the header of a configuration block.  <a href="#a952ca26ade04a532e24f85dbb2c748e4">More...</a><br /></td></tr>
 <tr class="separator:a952ca26ade04a532e24f85dbb2c748e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15ac0ea9dd610a7218ba619da9616039"><td class="memItemLeft" align="right" valign="top">pair&lt; string, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a15ac0ea9dd610a7218ba619da9616039">matchKeyEqualsValue</a> (const string &amp;str, int valueType=<a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2">text</a>) const </td></tr>
-<tr class="memdesc:a15ac0ea9dd610a7218ba619da9616039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a string matches something like key = value.  <a href="#a15ac0ea9dd610a7218ba619da9616039">More...</a><br /></td></tr>
-<tr class="separator:a15ac0ea9dd610a7218ba619da9616039"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80e45803e2fcdbdfc031e5accf695752"><td class="memItemLeft" align="right" valign="top">pair&lt; string, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a80e45803e2fcdbdfc031e5accf695752">matchKeyEqualsValue</a> (const string &amp;str, const string &amp;key, int valueType=<a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2">text</a>) const </td></tr>
-<tr class="memdesc:a80e45803e2fcdbdfc031e5accf695752"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a string matches something like key = value.  <a href="#a80e45803e2fcdbdfc031e5accf695752">More...</a><br /></td></tr>
-<tr class="separator:a80e45803e2fcdbdfc031e5accf695752"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c3ce2c7a2beff16c71fbf5c33396356"><td class="memItemLeft" align="right" valign="top">pair&lt; string, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a4c3ce2c7a2beff16c71fbf5c33396356">matchKeyEqualsValue</a> (const string &amp;str, int valueType=<a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418">alphanumtext</a>) const </td></tr>
+<tr class="memdesc:a4c3ce2c7a2beff16c71fbf5c33396356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a string matches something like key = value.  <a href="#a4c3ce2c7a2beff16c71fbf5c33396356">More...</a><br /></td></tr>
+<tr class="separator:a4c3ce2c7a2beff16c71fbf5c33396356"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7fa4bee7ced8140de8cea27640cfc09"><td class="memItemLeft" align="right" valign="top">pair&lt; string, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#ac7fa4bee7ced8140de8cea27640cfc09">matchKeyEqualsValue</a> (const string &amp;str, const string &amp;key, int valueType=<a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418">alphanumtext</a>) const </td></tr>
+<tr class="memdesc:ac7fa4bee7ced8140de8cea27640cfc09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a string matches something like key = value.  <a href="#ac7fa4bee7ced8140de8cea27640cfc09">More...</a><br /></td></tr>
+<tr class="separator:ac7fa4bee7ced8140de8cea27640cfc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addb28ec0da837148b315a76d3e86d3dc"><td class="memItemLeft" align="right" valign="top">pair&lt; double, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#addb28ec0da837148b315a76d3e86d3dc">splitDoubleValueUnit</a> (const string &amp;str) const </td></tr>
 <tr class="memdesc:addb28ec0da837148b315a76d3e86d3dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split a string containing value and possibly unit into both parts.  <a href="#addb28ec0da837148b315a76d3e86d3dc">More...</a><br /></td></tr>
 <tr class="separator:addb28ec0da837148b315a76d3e86d3dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05b70b65e3965866b3d9dfbdcacad5d6"><td class="memItemLeft" align="right" valign="top">pair&lt; long long int, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a05b70b65e3965866b3d9dfbdcacad5d6">splitIntegerValueUnit</a> (const string &amp;str) const </td></tr>
 <tr class="memdesc:a05b70b65e3965866b3d9dfbdcacad5d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split a string containing value and possibly unit into both parts.  <a href="#a05b70b65e3965866b3d9dfbdcacad5d6">More...</a><br /></td></tr>
 <tr class="separator:a05b70b65e3965866b3d9dfbdcacad5d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fe1eeb1a8a33964f7211daeeaf12891"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#a2fe1eeb1a8a33964f7211daeeaf12891">substituteHomeDir</a> (const string &amp;source, const string &amp;homedir) const </td></tr>
+<tr class="memdesc:a2fe1eeb1a8a33964f7211daeeaf12891"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace all occurences of a ~ by the absolute home directory.  <a href="#a2fe1eeb1a8a33964f7211daeeaf12891">More...</a><br /></td></tr>
+<tr class="separator:a2fe1eeb1a8a33964f7211daeeaf12891"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -165,7 +170,7 @@ Private Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to handle regex matching used for parsing configuration files. </p>
 
-<p>Definition at line <a class="el" href="a00063_source.html#l00035">35</a> of file <a class="el" href="a00063_source.html">regexmatcher.h</a>.</p>
+<p>Definition at line <a class="el" href="a00060_source.html#l00035">35</a> of file <a class="el" href="a00060_source.html">regexmatcher.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="acf6754e0f0df10007f5494899ed31229"></a>
 <div class="memitem">
@@ -188,11 +193,15 @@ Private Member Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2"></a>text&#160;</td><td class="fielddoc">
 </td></tr>
+<tr><td class="fieldname"><a class="anchor" id="acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418"></a>alphanumtext&#160;</td><td class="fielddoc">
+</td></tr>
 <tr><td class="fieldname"><a class="anchor" id="acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137"></a>boolean&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74"></a>swapfilename&#160;</td><td class="fielddoc">
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="a00063_source.html#l00044">44</a> of file <a class="el" href="a00063_source.html">regexmatcher.h</a>.</p>
+<p>Definition at line <a class="el" href="a00060_source.html#l00044">44</a> of file <a class="el" href="a00060_source.html">regexmatcher.h</a>.</p>
 
 </div>
 </div>
@@ -212,7 +221,7 @@ Private Member Functions</h2></td></tr>
 
 <p>Create a new regex handler, basically a dummy. </p>
 
-<p>Definition at line <a class="el" href="a00062_source.html#l00040">40</a> of file <a class="el" href="a00062_source.html">regexmatcher.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00059_source.html#l00040">40</a> of file <a class="el" href="a00059_source.html">regexmatcher.cpp</a>.</p>
 
 </div>
 </div>
@@ -248,7 +257,7 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The partial regex to match the type </dd></dl>
 
-<p>Definition at line <a class="el" href="a00062_source.html#l00069">69</a> of file <a class="el" href="a00062_source.html">regexmatcher.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00059_source.html#l00069">69</a> of file <a class="el" href="a00059_source.html">regexmatcher.cpp</a>.</p>
 
 </div>
 </div>
@@ -286,11 +295,11 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Result of matching </dd></dl>
 
-<p>Definition at line <a class="el" href="a00062_source.html#l00044">44</a> of file <a class="el" href="a00062_source.html">regexmatcher.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00059_source.html#l00044">44</a> of file <a class="el" href="a00059_source.html">regexmatcher.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a15ac0ea9dd610a7218ba619da9616039"></a>
+<a class="anchor" id="a4c3ce2c7a2beff16c71fbf5c33396356"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -304,7 +313,7 @@ Private Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>valueType</em> = <code><a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2">text</a></code>&#160;</td>
+          <td class="paramname"><em>valueType</em> = <code><a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418">alphanumtext</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -326,7 +335,7 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a80e45803e2fcdbdfc031e5accf695752"></a>
+<a class="anchor" id="ac7fa4bee7ced8140de8cea27640cfc09"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -346,7 +355,7 @@ Private Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>valueType</em> = <code><a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2">text</a></code>&#160;</td>
+          <td class="paramname"><em>valueType</em> = <code><a class="el" href="a00026.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418">alphanumtext</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -392,7 +401,7 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Value and unit </dd></dl>
 
-<p>Definition at line <a class="el" href="a00062_source.html#l00098">98</a> of file <a class="el" href="a00062_source.html">regexmatcher.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00059_source.html#l00106">106</a> of file <a class="el" href="a00059_source.html">regexmatcher.cpp</a>.</p>
 
 </div>
 </div>
@@ -419,21 +428,59 @@ Private Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Value and unit </dd></dl>
 
-<p>Definition at line <a class="el" href="a00062_source.html#l00114">114</a> of file <a class="el" href="a00062_source.html">regexmatcher.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00059_source.html#l00122">122</a> of file <a class="el" href="a00059_source.html">regexmatcher.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2fe1eeb1a8a33964f7211daeeaf12891"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string rambrain::regexMatcher::substituteHomeDir </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>homedir</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Replace all occurences of a ~ by the absolute home directory. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>The input string </td></tr>
+    <tr><td class="paramname">homedir</td><td>The home directory </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new string </dd></dl>
+
+<p>Definition at line <a class="el" href="a00059_source.html#l00138">138</a> of file <a class="el" href="a00059_source.html">regexmatcher.cpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00063_source.html">regexmatcher.h</a></li>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00062_source.html">regexmatcher.cpp</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00060_source.html">regexmatcher.h</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00059_source.html">regexmatcher.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00092.html">rambrain</a></li><li class="navelem"><a class="el" href="a00026.html">regexMatcher</a></li>
-    <li class="footer">Generated on Fri Aug 21 2015 01:22:51 for rambrain by
+    <li class="navelem"><a class="el" href="a00089.html">rambrain</a></li><li class="navelem"><a class="el" href="a00026.html">regexMatcher</a></li>
+    <li class="footer">Generated on Sat Aug 22 2015 01:23:07 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -14,6 +14,7 @@ var a00017 =
     [ "prepareUse", "a00017.html#a84635bcc9865d9b638aeab5bac93e463", null ],
     [ "setUse", "a00017.html#afc4112d3c16edcb7172e7f35030f435a", null ],
     [ "unsetUse", "a00017.html#a5e27a4cf25fdeb82501a617e86f8f7fc", null ],
+    [ "waitForSwapin", "a00017.html#a856e6d1325c98c1ca0ab6063797f1c7e", null ],
     [ "::adhereTo_Unit_TwiceAdheredOnceUsed_Test", "a00017.html#a33afc5203b7ef7a8e11fdb48df25c101", null ],
     [ "::managedFileSwap_Unit_SwapNextAndSingleIsland_Test", "a00017.html#a4a034e3521493115d83a646399927cd5", null ],
     [ "::managedFileSwap_Unit_SwapSingleIsland_Test", "a00017.html#aae258c729b59134b27cd14a7604387d5", null ],
@@ -23,7 +24,6 @@ var a00017 =
     [ "adhereTo", "a00017.html#a9f095e8e7b098019dd5a80fe57bc2d68", null ],
     [ "adhereToConst", "a00017.html#a707a18d5c07014e1cc68a52d519204ff", null ],
     [ "chunk", "a00017.html#acebeebd2c7ab841f7bf6577e599ecc03", null ],
-    [ "mutex", "a00017.html#a422b62d7b68f81be72536ccda11556fc", null ],
     [ "n_elem", "a00017.html#aaf92dc39c40a08ee727ef549be40dec8", null ],
     [ "tracker", "a00017.html#a5c62007f8d10f2a5a051a739338f454d", null ]
 ];

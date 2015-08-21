@@ -13,6 +13,7 @@ var searchData=
   ['setoutofswapisfatal',['setOutOfSwapIsFatal',['../a00015.html#a4158747bb03019659afc34d0120be28c',1,'rambrain::managedMemory']]],
   ['setpreemptiveloading',['setPreemptiveLoading',['../a00008.html#a9ada2bb9e24e1f1508e9a91fbf1b093c',1,'rambrain::cyclicManagedMemory']]],
   ['setpreemptiveunloading',['setPreemptiveUnloading',['../a00008.html#aff64a33ffa6d2b3f0044fefd15c97294',1,'rambrain::cyclicManagedMemory']]],
+  ['setreread',['setReread',['../a00005.html#ad1a9755154dabd51a70427669a1cce7f',1,'rambrain::configReader']]],
   ['setseed',['setSeed',['../a00028.html#a902049984a5425407a2a8aafffec0669',1,'tester']]],
   ['setswappolicy',['setSwapPolicy',['../a00018.html#a41dc53dc333f562413dc8b9a1241da0c',1,'rambrain::managedSwap']]],
   ['setuse',['setUse',['../a00015.html#ae3f93d73321b0df2685347e0b4e1a194',1,'rambrain::managedMemory::setUse(memoryID id)'],['../a00015.html#a2b9b148789b84dda7fa6a176bf193bf3',1,'rambrain::managedMemory::setUse(managedMemoryChunk &amp;chunk, bool writeAccess)'],['../a00017.html#afc4112d3c16edcb7172e7f35030f435a',1,'rambrain::managedPtr::setUse()']]],
@@ -33,6 +34,8 @@ var searchData=
   ['steps',['steps',['../a00030.html#a261f867bce5dacd6697c2bb035ad72d2',1,'testParameterBase']]],
   ['stoptimer',['stopTimer',['../a00031.html#ad432a370227d8794c716e252d615c9d9',1,'rambrain::Timer']]],
   ['streams',['streams',['../a00005.html#a4cc1b1f7392af7deafaa9a42dc9859fc',1,'rambrain::configReader']]],
+  ['stripleadingtrailingwhitespace',['stripLeadingTrailingWhitespace',['../a00005.html#a845d458a102985a9721ebb322cbb5346',1,'rambrain::configReader']]],
+  ['substitutehomedir',['substituteHomeDir',['../a00026.html#a2fe1eeb1a8a33964f7211daeeaf12891',1,'rambrain::regexMatcher']]],
   ['swap',['swap',['../a00006.html#a3ab38df7f6bf215f8101f4f914f67b14',1,'rambrain::configuration::swap()'],['../a00015.html#a0c06638da1cf9f0d828f1af4000dbe68',1,'rambrain::managedMemory::swap()'],['../a00024.html#a8352178ea447b0e8551dc40c5fccd002',1,'rambrain::rambrainglobals::rambrainConfig::swap()']]],
   ['swap_5fhits',['swap_hits',['../a00015.html#ada4a382368248e0838a0df30572d3966',1,'rambrain::managedMemory']]],
   ['swap_5fin_5fbytes',['swap_in_bytes',['../a00015.html#af26cc5ecbc4a1fcb4ee2c17932cc2549',1,'rambrain::managedMemory']]],
@@ -46,6 +49,7 @@ var searchData=
   ['swapdelete',['swapDelete',['../a00013.html#adf2ae06ec74196be21414fa9d3aab3b9',1,'rambrain::managedDummySwap::swapDelete()'],['../a00014.html#a9530307dab903b746f39a2d69466fca8',1,'rambrain::managedFileSwap::swapDelete()'],['../a00018.html#ad3a4e905e42d16c0fdccf49d384a0050',1,'rambrain::managedSwap::swapDelete()']]],
   ['swaperrorcode',['swapErrorCode',['../a00015.html#a06da9a259c539347727783ee01d49c30',1,'rambrain::managedMemory']]],
   ['swapfiledesc',['swapFileDesc',['../a00027.html',1,'rambrain']]],
+  ['swapfilename',['swapfilename',['../a00026.html#acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74',1,'rambrain::regexMatcher']]],
   ['swapfileresizefrac',['swapFileResizeFrac',['../a00014.html#a15571f6e41e70372c94702f8bc52a78e',1,'rambrain::managedFileSwap']]],
   ['swapfiles',['swapFiles',['../a00014.html#a79c21c46326f58b98c4779885e0061e9',1,'rambrain::managedFileSwap::swapFiles()'],['../a00006.html#a9d5a43a22122e628b749c18b48cedfc4',1,'rambrain::configuration::swapfiles()']]],
   ['swapfree',['swapFree',['../a00018.html#a89fe4124cabf967c8c56b1975c43eb2c',1,'rambrain::managedSwap']]],
@@ -55,7 +59,7 @@ var searchData=
   ['swapout',['swapOut',['../a00008.html#ae8cd02152e84886d3a9a933585f13483',1,'rambrain::cyclicManagedMemory::swapOut()'],['../a00010.html#a87f2c23257398f23c77e6a24eed8a0f6',1,'rambrain::dummyManagedMemory::swapOut()'],['../a00013.html#a68f0a0932f20d582f34609d7501d2540',1,'rambrain::managedDummySwap::swapOut(managedMemoryChunk **chunklist, unsigned int nchunks)'],['../a00013.html#ab8309f8bee2baf4cb692529fc22c33b6',1,'rambrain::managedDummySwap::swapOut(managedMemoryChunk *chunk)'],['../a00014.html#ae530fab28abcdc84cb1f1d2443563381',1,'rambrain::managedFileSwap::swapOut(managedMemoryChunk **chunklist, unsigned int nchunks)'],['../a00014.html#a25e9fb3ee26fbfa9cad60ee1b12e971d',1,'rambrain::managedFileSwap::swapOut(managedMemoryChunk *chunk)'],['../a00015.html#aab9561e5aa8cc910a85e26f55d843347',1,'rambrain::managedMemory::swapOut()'],['../a00018.html#ae2465c640d36569adca09b8410a5f0dd',1,'rambrain::managedSwap::swapOut(managedMemoryChunk **chunklist, unsigned int nchunks)=0'],['../a00018.html#a99d0d9de682cbe8e26951b041f883a34',1,'rambrain::managedSwap::swapOut(managedMemoryChunk *chunk)=0']]],
   ['swapoutfrac',['swapOutFrac',['../a00008.html#aa6463fe9fd7f3ee56f21c17800111aa6',1,'rambrain::cyclicManagedMemory']]],
   ['swappingcond',['swappingCond',['../a00015.html#ad0875327e12aa47af2a2ac280a99ec96',1,'rambrain::managedMemory']]],
-  ['swappolicy',['swapPolicy',['../a00092.html#a7d53dd1748d5012cafa91aa982c7cd35',1,'rambrain']]],
+  ['swappolicy',['swapPolicy',['../a00089.html#a7d53dd1748d5012cafa91aa982c7cd35',1,'rambrain']]],
   ['swapsize',['swapSize',['../a00018.html#abe55c951613974220ed60f58f83c6a64',1,'rambrain::managedSwap']]],
   ['swapused',['swapUsed',['../a00018.html#a62729471b92115a93e0d8eae5f240293',1,'rambrain::managedSwap']]]
 ];

@@ -7,7 +7,7 @@ var searchData=
   ['addparameter',['addParameter',['../a00028.html#a1a61f18468c143dbd7c18c599fc1b695',1,'tester']]],
   ['addtimemeasurement',['addTimeMeasurement',['../a00028.html#a01d742f1f0fe5d55766cb3c256b999d7',1,'tester']]],
   ['adhereto',['adhereTo',['../a00001.html',1,'rambrain']]],
-  ['adhereto',['adhereTo',['../a00017.html#a9f095e8e7b098019dd5a80fe57bc2d68',1,'rambrain::managedPtr::adhereTo()'],['../a00001.html#a0cc6fda5677ecda5c6b367e863e27b3e',1,'rambrain::adhereTo::adhereTo(const adhereTo&lt; T &gt; &amp;ref)'],['../a00001.html#aa01b94bcd8dc60948dc01435f798419b',1,'rambrain::adhereTo::adhereTo(const managedPtr&lt; T &gt; &amp;data, bool loadImidiately=true)']]],
+  ['adhereto',['adhereTo',['../a00017.html#a9f095e8e7b098019dd5a80fe57bc2d68',1,'rambrain::managedPtr::adhereTo()'],['../a00001.html#a0cc6fda5677ecda5c6b367e863e27b3e',1,'rambrain::adhereTo::adhereTo(const adhereTo&lt; T &gt; &amp;ref)'],['../a00001.html#afbc94c868ff3e5732474e5014bb67783',1,'rambrain::adhereTo::adhereTo(const managedPtr&lt; T &gt; &amp;data, bool loadImmediately=true)'],['../a00001.html#a22961a3d06e3c302837e7c469d06e398',1,'rambrain::adhereTo::adhereTo(const managedPtr&lt; T &gt; *data, bool loadImmediately=true)']]],
   ['adheretoconst',['adhereToConst',['../a00017.html#a707a18d5c07014e1cc68a52d519204ff',1,'rambrain::managedPtr']]],
   ['aio',['aio',['../a00002.html#a84e1e9e1423f48e05d0ff6f80ac9e176',1,'rambrain::aiotracker']]],
   ['aio_5fcontext',['aio_context',['../a00014.html#a74e0f3fbe643926c0eb1b81ae7671f97',1,'rambrain::managedFileSwap']]],
@@ -20,9 +20,10 @@ var searchData=
   ['aiowaiterlock',['aioWaiterLock',['../a00014.html#a5536811bd19b2ddbe741de66ae86ab5b',1,'rambrain::managedFileSwap']]],
   ['all_5fspace',['all_space',['../a00014.html#aeb56813f80fa069df45e47a78422a4dd',1,'rambrain::managedFileSwap']]],
   ['allocinfree',['allocInFree',['../a00014.html#aea76751b1960003252bb07fd45df948f',1,'rambrain::managedFileSwap']]],
-  ['alltests_2ecpp',['allTests.cpp',['../a00066.html',1,'']]],
+  ['alltests_2ecpp',['allTests.cpp',['../a00063.html',1,'']]],
+  ['alphanumtext',['alphanumtext',['../a00026.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418',1,'rambrain::regexMatcher']]],
   ['arr',['arr',['../a00009.html#ab22b67c578f8d64f8aa8aedd968da207',1,'destructorTracker']]],
   ['asyncioarrived',['asyncIoArrived',['../a00014.html#a8a79f6d2ec9f5d6b85e1dfe7756b61e2',1,'rambrain::managedFileSwap']]],
   ['atime',['atime',['../a00015.html#a9f965f10d2dc7301621fa2e5cf4805c8',1,'rambrain::managedMemory']]],
-  ['autoextendable',['autoextendable',['../a00092.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04',1,'rambrain']]]
+  ['autoextendable',['autoextendable',['../a00089.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04',1,'rambrain']]]
 ];

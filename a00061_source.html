@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: /home/rambrainbuild/docubrain/src/rambrainconfig.h Source File</title>
+<title>rambrain: /home/rambrainbuild/docubrain/src/timer.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('a00061_source.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">rambrainconfig.h</div>  </div>
+<div class="title">timer.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00061.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*   rambrain - a dynamical physical memory extender</span></div>
@@ -127,91 +127,82 @@ $(document).ready(function(){initNavTree('a00061_source.html','');});
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> *   along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef INITIALISATION_H</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define INITIALISATION_H</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00036.html">configreader.h</a>&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00055.html">managedSwap.h</a>&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00049.html">managedMemory.h</a>&quot;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00034.html">common.h</a>&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00092.html">rambrain</a></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>rambrainglobals</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="a00024.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00024.html">rambrainConfig</a></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="a00024.html#adf79cce9ad6dde113f1a25c7f28978cc">rambrainConfig</a>();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="a00024.html#a50356f5e6333c5094970bf201bcca578">~rambrainConfig</a>();</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00024.html#ad149f44c7ec45aa83d741fd0a08e7811">reinit</a> ( <span class="keywordtype">bool</span> reread = <span class="keyword">true</span> );</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="a00024.html#a61be05dcf94bd052199b719c0d3efc81">   62</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="a00024.html#a61be05dcf94bd052199b719c0d3efc81">setCustomConfigPath</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;path ) {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="a00024.html#a48f1f953b1c2c97c7a2a9864bcd6935d">config</a>.<a class="code" href="a00005.html#aaa1bed466c323f77900c34dc435a6aef">setCustomConfigPath</a> ( path );</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00062.html">timer.h</a>&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00089.html">rambrain</a></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;timer_t <a class="code" href="a00031.html#a59277ee2347b98ad2b255ee898079da7">Timer::timerid</a>;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">struct </span>sigevent Timer::sev;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;struct itimerspec <a class="code" href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">Timer::its</a>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;bool <a class="code" href="a00031.html#ac6ba857b6f43eb3998d15b78f505b312">Timer::initialised</a> = false;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;bool <a class="code" href="a00031.html#aa17bc507bfb17a2978f80bf8228c5c7f">Timer::running</a> = false;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="a00031.html#a2c383399b9ca73789a3bb5625632b9dd">   32</a></span>&#160;<a class="code" href="a00031.html#a2c383399b9ca73789a3bb5625632b9dd">Timer::Timer</a>()</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="a00031.html#a2b4fa3e4a1e2ef1b1edeffa577717d5d">   36</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00031.html#a2b4fa3e4a1e2ef1b1edeffa577717d5d">Timer::startTimer</a> ( <span class="keywordtype">long</span> seconds, <span class="keywordtype">long</span> nanoseconds )</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">if</span> ( !<a class="code" href="a00031.html#ac6ba857b6f43eb3998d15b78f505b312">initialised</a> ) {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <a class="code" href="a00031.html#ab9c2a3fb72f25c0ee936c4023cb55ffa">initialiseTimer</a>();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="a00031.html#aa17bc507bfb17a2978f80bf8228c5c7f">running</a> ) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <a class="code" href="a00031.html#ad432a370227d8794c716e252d615c9d9">stopTimer</a>();</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_value.tv_sec = seconds;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_value.tv_nsec = nanoseconds;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_interval.tv_sec = <a class="code" href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_value.tv_sec;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_interval.tv_nsec = <a class="code" href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_value.tv_nsec;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    timer_settime ( <a class="code" href="a00031.html#a59277ee2347b98ad2b255ee898079da7">timerid</a>, 0, &amp;<a class="code" href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>, NULL );</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="a00031.html#aa17bc507bfb17a2978f80bf8228c5c7f">running</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00031.html#ad432a370227d8794c716e252d615c9d9">   56</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00031.html#ad432a370227d8794c716e252d615c9d9">Timer::stopTimer</a>()</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="a00031.html#aa17bc507bfb17a2978f80bf8228c5c7f">running</a> ) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        memset ( ( <span class="keywordtype">void</span> * ) &amp;<a class="code" href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>, 0, <span class="keyword">sizeof</span> ( <a class="code" href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a> ) );</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        timer_settime ( <a class="code" href="a00031.html#a59277ee2347b98ad2b255ee898079da7">timerid</a>, 0, &amp;<a class="code" href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>, NULL );</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="a00031.html#aa17bc507bfb17a2978f80bf8228c5c7f">running</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00024.html#aa7f91003d897ef82e6b255c4affb9f00">   69</a></span>&#160;    <span class="keyword">inline</span> <span class="keyword">const</span> <a class="code" href="a00006.html">configuration</a> &amp;<a class="code" href="a00024.html#aa7f91003d897ef82e6b255c4affb9f00">getConfig</a>() {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="a00024.html#a48f1f953b1c2c97c7a2a9864bcd6935d">config</a>.<a class="code" href="a00005.html#aa9d982624f5495cdb3af2e4a216f4ecd">getConfig</a>();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="a00031.html#ab9c2a3fb72f25c0ee936c4023cb55ffa">   66</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00031.html#ab9c2a3fb72f25c0ee936c4023cb55ffa">Timer::initialiseTimer</a>()</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="a00031.html#aa01c05838ff7a702f7509fe45e8a6c87">sev</a>.sigev_notify = SIGEV_SIGNAL;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="a00031.html#aa01c05838ff7a702f7509fe45e8a6c87">sev</a>.sigev_signo = SIGUSR1;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="a00031.html#aa01c05838ff7a702f7509fe45e8a6c87">sev</a>.sigev_value.sival_ptr = &amp;<a class="code" href="a00031.html#a59277ee2347b98ad2b255ee898079da7">timerid</a>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    timer_create ( CLOCK_REALTIME, &amp;<a class="code" href="a00031.html#aa01c05838ff7a702f7509fe45e8a6c87">sev</a>, &amp;<a class="code" href="a00031.html#a59277ee2347b98ad2b255ee898079da7">timerid</a> );</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00024.html#a55f24943ba147e71eee649812bec31e3">resizeMemory</a> ( <a class="code" href="a00092.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> memory );</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00024.html#a33b6e5764cb838b06e0cb624f47bdf67">resizeSwap</a> ( <a class="code" href="a00092.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> memory );</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00024.html#a8e0134e8c212da14a0fb6b60611ee2d7">init</a>();</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00024.html#a3e4485000b2a061fb75d85f68d06017d">clean</a>();</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="a00024.html#a48f1f953b1c2c97c7a2a9864bcd6935d">   93</a></span>&#160;    <a class="code" href="a00005.html">configReader</a> <a class="code" href="a00024.html#a48f1f953b1c2c97c7a2a9864bcd6935d">config</a>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="a00024.html#a8352178ea447b0e8551dc40c5fccd002">   94</a></span>&#160;    <a class="code" href="a00018.html">managedSwap</a> *<a class="code" href="a00024.html#a8352178ea447b0e8551dc40c5fccd002">swap</a>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="a00024.html#a5eb6bc46d8a484fbc983476bef89e74f">   95</a></span>&#160;    <a class="code" href="a00015.html">managedMemory</a> *<a class="code" href="a00024.html#a5eb6bc46d8a484fbc983476bef89e74f">manager</a>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">extern</span> <a class="code" href="a00024.html">rambrainConfig</a> <a class="code" href="a00093.html#ad02508d72047bc55a38eda857e4816c1">config</a>;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#endif // INITIALISATION_H</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
-<div class="ttc" id="a00005_html_aa9d982624f5495cdb3af2e4a216f4ecd"><div class="ttname"><a href="a00005.html#aa9d982624f5495cdb3af2e4a216f4ecd">rambrain::configReader::getConfig</a></div><div class="ttdeci">configuration &amp; getConfig()</div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00036_source.html#l00192">configreader.h:192</a></div></div>
-<div class="ttc" id="a00024_html"><div class="ttname"><a href="a00024.html">rambrain::rambrainglobals::rambrainConfig</a></div><div class="ttdoc">Main class for handling configuration throughout the library and for the user. </div><div class="ttdef"><b>Definition:</b> <a href="a00061_source.html#l00037">rambrainconfig.h:37</a></div></div>
-<div class="ttc" id="a00015_html"><div class="ttname"><a href="a00015.html">rambrain::managedMemory</a></div><div class="ttdoc">Backend class to handle raw memory and interaction/storage with managedSwap. </div><div class="ttdef"><b>Definition:</b> <a href="a00049_source.html#l00067">managedMemory.h:67</a></div></div>
-<div class="ttc" id="a00005_html_aaa1bed466c323f77900c34dc435a6aef"><div class="ttname"><a href="a00005.html#aaa1bed466c323f77900c34dc435a6aef">rambrain::configReader::setCustomConfigPath</a></div><div class="ttdeci">void setCustomConfigPath(const string &amp;path)</div><div class="ttdoc">Simple setter. </div><div class="ttdef"><b>Definition:</b> <a href="a00036_source.html#l00185">configreader.h:185</a></div></div>
-<div class="ttc" id="a00093_html_ad02508d72047bc55a38eda857e4816c1"><div class="ttname"><a href="a00093.html#ad02508d72047bc55a38eda857e4816c1">rambrain::rambrainglobals::config</a></div><div class="ttdeci">rambrainConfig config</div><div class="ttdoc">You will find the object in managedMemory.cpp as we have to define it in some &#39;used&#39; file in the link...</div><div class="ttdef"><b>Definition:</b> <a href="a00048_source.html#l00035">managedMemory.cpp:35</a></div></div>
-<div class="ttc" id="a00055_html"><div class="ttname"><a href="a00055.html">managedSwap.h</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">rambrain::managedSwap</a></div><div class="ttdoc">Class that serves as a backend to managedMemory to actual write/read managedMemoryChunks to/from hard...</div><div class="ttdef"><b>Definition:</b> <a href="a00055_source.html#l00035">managedSwap.h:35</a></div></div>
-<div class="ttc" id="a00024_html_a5eb6bc46d8a484fbc983476bef89e74f"><div class="ttname"><a href="a00024.html#a5eb6bc46d8a484fbc983476bef89e74f">rambrain::rambrainglobals::rambrainConfig::manager</a></div><div class="ttdeci">managedMemory * manager</div><div class="ttdef"><b>Definition:</b> <a href="a00061_source.html#l00095">rambrainconfig.h:95</a></div></div>
-<div class="ttc" id="a00006_html"><div class="ttname"><a href="a00006.html">rambrain::configuration</a></div><div class="ttdoc">Main struct to save configuration variables. </div><div class="ttdef"><b>Definition:</b> <a href="a00036_source.html#l00131">configreader.h:131</a></div></div>
-<div class="ttc" id="a00024_html_a3e4485000b2a061fb75d85f68d06017d"><div class="ttname"><a href="a00024.html#a3e4485000b2a061fb75d85f68d06017d">rambrain::rambrainglobals::rambrainConfig::clean</a></div><div class="ttdeci">void clean()</div><div class="ttdef"><b>Definition:</b> <a href="a00060_source.html#l00090">rambrainconfig.cpp:90</a></div></div>
-<div class="ttc" id="a00024_html_ad149f44c7ec45aa83d741fd0a08e7811"><div class="ttname"><a href="a00024.html#ad149f44c7ec45aa83d741fd0a08e7811">rambrain::rambrainglobals::rambrainConfig::reinit</a></div><div class="ttdeci">void reinit(bool reread=true)</div><div class="ttdoc">Reinitialises the system. </div><div class="ttdef"><b>Definition:</b> <a href="a00060_source.html#l00044">rambrainconfig.cpp:44</a></div></div>
-<div class="ttc" id="a00024_html_a61be05dcf94bd052199b719c0d3efc81"><div class="ttname"><a href="a00024.html#a61be05dcf94bd052199b719c0d3efc81">rambrain::rambrainglobals::rambrainConfig::setCustomConfigPath</a></div><div class="ttdeci">void setCustomConfigPath(const string &amp;path)</div><div class="ttdoc">Simple setter. </div><div class="ttdef"><b>Definition:</b> <a href="a00061_source.html#l00062">rambrainconfig.h:62</a></div></div>
-<div class="ttc" id="a00024_html_a8352178ea447b0e8551dc40c5fccd002"><div class="ttname"><a href="a00024.html#a8352178ea447b0e8551dc40c5fccd002">rambrain::rambrainglobals::rambrainConfig::swap</a></div><div class="ttdeci">managedSwap * swap</div><div class="ttdef"><b>Definition:</b> <a href="a00061_source.html#l00094">rambrainconfig.h:94</a></div></div>
-<div class="ttc" id="a00024_html_a50356f5e6333c5094970bf201bcca578"><div class="ttname"><a href="a00024.html#a50356f5e6333c5094970bf201bcca578">rambrain::rambrainglobals::rambrainConfig::~rambrainConfig</a></div><div class="ttdeci">~rambrainConfig()</div><div class="ttdoc">Destructs the throught the config initiated swap and manager. </div><div class="ttdef"><b>Definition:</b> <a href="a00060_source.html#l00039">rambrainconfig.cpp:39</a></div></div>
-<div class="ttc" id="a00024_html_adf79cce9ad6dde113f1a25c7f28978cc"><div class="ttname"><a href="a00024.html#adf79cce9ad6dde113f1a25c7f28978cc">rambrain::rambrainglobals::rambrainConfig::rambrainConfig</a></div><div class="ttdeci">rambrainConfig()</div><div class="ttdoc">Construct a new config handling class. </div><div class="ttdef"><b>Definition:</b> <a href="a00060_source.html#l00034">rambrainconfig.cpp:34</a></div></div>
-<div class="ttc" id="a00034_html"><div class="ttname"><a href="a00034.html">common.h</a></div></div>
-<div class="ttc" id="a00005_html"><div class="ttname"><a href="a00005.html">rambrain::configReader</a></div><div class="ttdoc">Reader class to read in and properly parse config files. </div><div class="ttdef"><b>Definition:</b> <a href="a00036_source.html#l00163">configreader.h:163</a></div></div>
-<div class="ttc" id="a00049_html"><div class="ttname"><a href="a00049.html">managedMemory.h</a></div></div>
-<div class="ttc" id="a00024_html_a55f24943ba147e71eee649812bec31e3"><div class="ttname"><a href="a00024.html#a55f24943ba147e71eee649812bec31e3">rambrain::rambrainglobals::rambrainConfig::resizeMemory</a></div><div class="ttdeci">void resizeMemory(global_bytesize memory)</div><div class="ttdoc">Simple setter. </div><div class="ttdef"><b>Definition:</b> <a href="a00060_source.html#l00057">rambrainconfig.cpp:57</a></div></div>
-<div class="ttc" id="a00092_html_abe2d051306a69fb21f8a17946b4e93ed"><div class="ttname"><a href="a00092.html#abe2d051306a69fb21f8a17946b4e93ed">rambrain::global_bytesize</a></div><div class="ttdeci">uint64_t global_bytesize</div><div class="ttdef"><b>Definition:</b> <a href="a00034_source.html#l00065">common.h:65</a></div></div>
-<div class="ttc" id="a00024_html_aa7f91003d897ef82e6b255c4affb9f00"><div class="ttname"><a href="a00024.html#aa7f91003d897ef82e6b255c4affb9f00">rambrain::rambrainglobals::rambrainConfig::getConfig</a></div><div class="ttdeci">const configuration &amp; getConfig()</div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00061_source.html#l00069">rambrainconfig.h:69</a></div></div>
-<div class="ttc" id="a00024_html_a8e0134e8c212da14a0fb6b60611ee2d7"><div class="ttname"><a href="a00024.html#a8e0134e8c212da14a0fb6b60611ee2d7">rambrain::rambrainglobals::rambrainConfig::init</a></div><div class="ttdeci">void init()</div><div class="ttdef"><b>Definition:</b> <a href="a00060_source.html#l00071">rambrainconfig.cpp:71</a></div></div>
-<div class="ttc" id="a00092_html"><div class="ttname"><a href="a00092.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00034_source.html#l00026">common.h:26</a></div></div>
-<div class="ttc" id="a00024_html_a48f1f953b1c2c97c7a2a9864bcd6935d"><div class="ttname"><a href="a00024.html#a48f1f953b1c2c97c7a2a9864bcd6935d">rambrain::rambrainglobals::rambrainConfig::config</a></div><div class="ttdeci">configReader config</div><div class="ttdef"><b>Definition:</b> <a href="a00061_source.html#l00093">rambrainconfig.h:93</a></div></div>
-<div class="ttc" id="a00024_html_a33b6e5764cb838b06e0cb624f47bdf67"><div class="ttname"><a href="a00024.html#a33b6e5764cb838b06e0cb624f47bdf67">rambrain::rambrainglobals::rambrainConfig::resizeSwap</a></div><div class="ttdeci">void resizeSwap(global_bytesize memory)</div><div class="ttdoc">Simple setter. </div><div class="ttdef"><b>Definition:</b> <a href="a00060_source.html#l00064">rambrainconfig.cpp:64</a></div></div>
-<div class="ttc" id="a00036_html"><div class="ttname"><a href="a00036.html">configreader.h</a></div></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="a00031.html#ac6ba857b6f43eb3998d15b78f505b312">initialised</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="ttc" id="a00031_html_aa17bc507bfb17a2978f80bf8228c5c7f"><div class="ttname"><a href="a00031.html#aa17bc507bfb17a2978f80bf8228c5c7f">rambrain::Timer::running</a></div><div class="ttdeci">static bool running</div><div class="ttdef"><b>Definition:</b> <a href="a00062_source.html#l00074">timer.h:74</a></div></div>
+<div class="ttc" id="a00031_html_aa01c05838ff7a702f7509fe45e8a6c87"><div class="ttname"><a href="a00031.html#aa01c05838ff7a702f7509fe45e8a6c87">rambrain::Timer::sev</a></div><div class="ttdeci">static struct sigevent sev</div><div class="ttdef"><b>Definition:</b> <a href="a00062_source.html#l00071">timer.h:71</a></div></div>
+<div class="ttc" id="a00031_html_a2c383399b9ca73789a3bb5625632b9dd"><div class="ttname"><a href="a00031.html#a2c383399b9ca73789a3bb5625632b9dd">rambrain::Timer::Timer</a></div><div class="ttdeci">Timer()</div><div class="ttdoc">Create a new timer. </div><div class="ttdef"><b>Definition:</b> <a href="a00061_source.html#l00032">timer.cpp:32</a></div></div>
+<div class="ttc" id="a00062_html"><div class="ttname"><a href="a00062.html">timer.h</a></div></div>
+<div class="ttc" id="a00031_html_a2b4fa3e4a1e2ef1b1edeffa577717d5d"><div class="ttname"><a href="a00031.html#a2b4fa3e4a1e2ef1b1edeffa577717d5d">rambrain::Timer::startTimer</a></div><div class="ttdeci">static void startTimer(long seconds, long nanoseconds)</div><div class="ttdoc">Start the timer. </div><div class="ttdef"><b>Definition:</b> <a href="a00061_source.html#l00036">timer.cpp:36</a></div></div>
+<div class="ttc" id="a00031_html_a59277ee2347b98ad2b255ee898079da7"><div class="ttname"><a href="a00031.html#a59277ee2347b98ad2b255ee898079da7">rambrain::Timer::timerid</a></div><div class="ttdeci">static timer_t timerid</div><div class="ttdef"><b>Definition:</b> <a href="a00062_source.html#l00070">timer.h:70</a></div></div>
+<div class="ttc" id="a00031_html_ac6ba857b6f43eb3998d15b78f505b312"><div class="ttname"><a href="a00031.html#ac6ba857b6f43eb3998d15b78f505b312">rambrain::Timer::initialised</a></div><div class="ttdeci">static bool initialised</div><div class="ttdef"><b>Definition:</b> <a href="a00062_source.html#l00074">timer.h:74</a></div></div>
+<div class="ttc" id="a00031_html_ab9c2a3fb72f25c0ee936c4023cb55ffa"><div class="ttname"><a href="a00031.html#ab9c2a3fb72f25c0ee936c4023cb55ffa">rambrain::Timer::initialiseTimer</a></div><div class="ttdeci">static void initialiseTimer()</div><div class="ttdoc">Set up the timer. </div><div class="ttdef"><b>Definition:</b> <a href="a00061_source.html#l00066">timer.cpp:66</a></div></div>
+<div class="ttc" id="a00031_html_a05d8a8b45ca6ca0fc8586dc45e397eb6"><div class="ttname"><a href="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">rambrain::Timer::its</a></div><div class="ttdeci">static struct itimerspec its</div><div class="ttdef"><b>Definition:</b> <a href="a00062_source.html#l00072">timer.h:72</a></div></div>
+<div class="ttc" id="a00089_html"><div class="ttname"><a href="a00089.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00034_source.html#l00026">common.h:26</a></div></div>
+<div class="ttc" id="a00031_html_ad432a370227d8794c716e252d615c9d9"><div class="ttname"><a href="a00031.html#ad432a370227d8794c716e252d615c9d9">rambrain::Timer::stopTimer</a></div><div class="ttdeci">static void stopTimer()</div><div class="ttdoc">Stop the timer. </div><div class="ttdef"><b>Definition:</b> <a href="a00061_source.html#l00056">timer.cpp:56</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00061.html">rambrainconfig.h</a></li>
-    <li class="footer">Generated on Fri Aug 21 2015 01:22:47 for rambrain by
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00061.html">timer.cpp</a></li>
+    <li class="footer">Generated on Sat Aug 22 2015 01:23:02 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

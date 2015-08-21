@@ -1,7 +1,8 @@
 var a00001 =
 [
     [ "adhereTo", "a00001.html#a0cc6fda5677ecda5c6b367e863e27b3e", null ],
-    [ "adhereTo", "a00001.html#aa01b94bcd8dc60948dc01435f798419b", null ],
+    [ "adhereTo", "a00001.html#afbc94c868ff3e5732474e5014bb67783", null ],
+    [ "adhereTo", "a00001.html#a22961a3d06e3c302837e7c469d06e398", null ],
     [ "~adhereTo", "a00001.html#aa7f09ba9f6f4010a6ecce82ce644a0c1", null ],
     [ "operator const T *", "a00001.html#a5fc196105e2f3c180883cadb8c9482b9", null ],
     [ "operator const T *", "a00001.html#ade7231943a2d0e397719a4081b8d0c69", null ],
@@ -12,7 +13,6 @@ var a00001 =
     [ "::adhereTo_Unit_TwiceAdhered_Test", "a00001.html#aede63b93552fafc55cfba340555d0902", null ],
     [ "::adhereTo_Unit_TwiceAdheredOnceUsed_Test", "a00001.html#a33afc5203b7ef7a8e11fdb48df25c101", null ],
     [ "data", "a00001.html#aaa6dbb98a31a73a6bcd7609b9e576a0b", null ],
-    [ "loadedImmediately", "a00001.html#a87f95dfb98bdeabd44be43ead1122745", null ],
     [ "loadedReadable", "a00001.html#ab3e4380b00ff3aeb0223f5ea76855f01", null ],
     [ "loadedWritable", "a00001.html#a4aa173fa41b3dd2f9b944f6952de0790", null ]
 ];
