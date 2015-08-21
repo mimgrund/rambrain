@@ -168,6 +168,7 @@ public:
         if ( tracker )
             if ( !rambrain_atomic_bool_compare_and_swap ( tracker, false, true ) ) {
                 rambrain_pthread_mutex_unlock ( &mutex );
+                waitForSwapin();
                 return false;
             }
         rambrain_pthread_mutex_unlock ( &mutex );
@@ -205,21 +206,24 @@ public:
         return loc[i];
     }
 
+    /** @brief returns local pointer to object
+     *  @note when called, you have to care for setting use to the chunk, first
+     * */
     T *getLocPtr() const {
-        if ( chunk->status == MEM_ALLOCATED_INUSE_WRITE ) {
-            return ( T * ) chunk->locPtr;
-        } else {
-            throw unexpectedStateException ( "Can not get local pointer without setting usage first" );
-            return NULL;
+        if ( chunk->status != MEM_ALLOCATED_INUSE_WRITE ) {
+            waitForSwapin();
         }
+        return ( T * ) chunk->locPtr;
     }
 
+    /** @brief returns const local pointer to object
+     *  @note when called, you have to care for setting use to the chunk, first
+     * */
     const T *getConstLocPtr() const {
-        if ( chunk->status & MEM_ALLOCATED_INUSE_READ ) {
-            return ( T * ) chunk->locPtr;
-        } else {
-            throw unexpectedStateException ( "Can not get local pointer without setting usage first" );
+        if ( ! ( chunk->status & MEM_ALLOCATED_INUSE_READ ) ) {
+            waitForSwapin();
         }
+        return ( T * ) chunk->locPtr;
     }
 
 private:
@@ -251,7 +255,21 @@ private:
         delete tracker;
     }
 
-
+    /** @brief: indefinitely waits for swapin of the chunk
+     *  While it would have been desirable to throw exceptions when chunk is not available,
+     *  checking this in a save way would produce lots of overhead. Thus, it is better to wait
+     *  indefinitely in this case, as under normal use, the chunk will become available.
+    **/
+    void waitForSwapin() const {
+        //While in this case, we are not the guy who actually enforce the swapin, we never the less have to wait
+        //for the chunk to become ready. This is done in the following way:
+        if ( ! ( chunk->status & MEM_ALLOCATED ) ) { // We may savely check against this as use will be set by other adhereTo thread and cannot be undone as long as calling adhereTo exists
+            rambrain_pthread_mutex_lock ( &managedMemory::defaultManager->stateChangeMutex );
+            //We will burn a little bit of power here, eventually, but this is a very rare case.
+            while ( managedMemory::defaultManager->waitForSwapin ( *chunk, true ) ) {};
+            rambrain_pthread_mutex_unlock ( &managedMemory::defaultManager->stateChangeMutex );
+        }
+    }
 
 
 
