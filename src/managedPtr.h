@@ -49,12 +49,16 @@ class adhereTo;
 
 
 //Convenience macros
+///@brief adheres to a class member 'instance' shadowing it and making available the data under *instance
 #define ADHERETO(class,instance) adhereTo<class> instance##_glue(instance);\
                  class* instance = instance##_glue;
+///const version of @see ADHERETO
 #define ADHERETOCONST(class,instance) const adhereTo<class> instance##_glue(instance);\
                  const class* instance = instance##_glue;
+///@brief adheres to instance of type managedPtr< class > and name data pointer locinstance
 #define ADHERETOLOC(class,instance,locinstance) adhereTo<class> instance##_glue(instance);\
                  class* locinstance = instance##_glue;
+///const version of @see ADHERETOLOC
 #define ADHERETOLOCCONST(class,instance,locinstance) const adhereTo<class> instance##_glue(instance);\
                  const class* locinstance = instance##_glue;
 
@@ -74,13 +78,16 @@ template <class T>
 class managedPtr
 {
 public:
+    ///@brief copy ctor
     managedPtr ( const managedPtr<T> &ref ) : chunk ( ref.chunk ), tracker ( ref.tracker ), n_elem ( ref.n_elem ) {
         rambrain_atomic_add_fetch ( tracker, 1 );
     }
 
 
+    ///@brief with no arguments given, instantiates an array with one element
     managedPtr() : managedPtr ( 1 ) {}
 
+    ///@brief instantiates managedPtr containing n_elem elements and passes Args as arguments to the constructor of these
     template <typename... ctor_args>
     managedPtr ( unsigned int n_elem , ctor_args... Args ) {
         this->n_elem = n_elem;
@@ -148,7 +155,7 @@ public:
 #endif
     }
 
-
+    ///@brief destructor
     ~managedPtr() {
         int trackerold = rambrain_atomic_sub_fetch ( tracker, 1 );
         if ( trackerold  == 0 ) {//Ensure destructor to be called only once.
@@ -156,12 +163,13 @@ public:
         }
     }
 
+    ///@brief tells the memory manager to possibly swap in chunk for near future use
     bool prepareUse() const {
         managedMemory::defaultManager->prepareUse ( *chunk, true );
         return true;
     }
 
-    //Atomically sets use if tracker is not already set to true. returns whether we set use or not.
+    ///@brief Atomically sets use to a chunk if tracker is not already set to true. returns whether we set use or not.
     bool setUse ( bool writable = true, bool *tracker = NULL ) const {
         if ( tracker )
             if ( !rambrain_atomic_bool_compare_and_swap ( tracker, false, true ) ) {
@@ -173,10 +181,12 @@ public:
         return result;
     }
 
+    ///@brief unsets use count on memory chunk
     bool unsetUse ( unsigned int loaded = 1 ) const {
         return managedMemory::defaultManager->unsetUse ( *chunk , loaded );
     }
 
+    ///@brief assignment operator
     managedPtr<T> &operator= ( const managedPtr<T> &ref ) {
         if ( ref.chunk == chunk ) {
             return *this;
@@ -191,11 +201,13 @@ public:
         return *this;
     }
 
+    ///@note This operator can only be called safely in single threaded situations when preemptive swapOut actions have been disabled
     DEPRECATED T &operator[] ( int i ) {
         managedPtr<T> &self = *this;
         ADHERETOLOC ( T, self, loc );
         return loc[i];
     }
+    ///@note This operator can only be called safely in single threaded situations when preemptive swapOut actions have been disabled
     DEPRECATED const T &operator[] ( int i ) const {
         const managedPtr<T> &self = *this;
         ADHERETOLOCCONST ( T, self, loc );
@@ -227,6 +239,7 @@ private:
     unsigned int *tracker;
     unsigned int n_elem;
 
+    ///@brief This function manages correct deallocation for array elements having a destructor
     template <class G>
     typename std::enable_if<std::is_class<G>::value>::type
     mDelete (  ) const {
@@ -241,6 +254,7 @@ private:
         }
         delete tracker;
     }
+    ///@brief This function manages correct deallocation for array elements lacking a destructor
     template <class G>
     typename std::enable_if < !std::is_class<G>::value >::type
     mDelete (  ) {
@@ -293,12 +307,13 @@ private:
  * * Do not pass pointers/references to this object over thread boundaries
  *
  * \note _thread-safety_
- * * The object itself may be passed over thread boundaries
+ * * The object itself may be copied over thread boundaries
  * **/
 template <class T>
 class adhereTo
 {
 public:
+    ///@brief copy constructor
     adhereTo ( const adhereTo<T> &ref ) : data ( ref.data ) {
         loadedReadable = ref.loadedReadable;
         loadedWritable = ref.loadedWritable;
@@ -310,7 +325,10 @@ public:
         }
     };
 
-
+    /**@brief constructor fetching data
+     * \param loadImmediately set this to false if you want to load the element when pulling the pointer and not beforehands
+     * \param data the managedPtr that is to be used in near future
+    **/
     adhereTo ( const managedPtr<T> &data, bool loadImmediately = true ) : data ( &data ) {
         if ( loadImmediately ) {
             data.prepareUse();
@@ -318,8 +336,10 @@ public:
 
     }
 
+    /// Provides the same functionality as the other constructor but accepts a managedPtr pointer as argument. @see adhereTo ( const managedPtr<T> &data, bool loadImmediately = true )
     adhereTo ( const managedPtr<T> *data, bool loadImmediately = true ) : adhereTo ( *data, loadImmediately ) {};
 
+    ///Simple assignment operator
     adhereTo<T> &operator= ( const adhereTo<T> &ref ) {
         if ( loadedReadable ) {
             data->unsetUse();
@@ -340,22 +360,25 @@ public:
         return *this;
     }
 
+    ///@brief This operator can be used to pull the data to a const pointer. Use this whenever possible.
     operator const T *() { //This one is needed as c++ refuses to pick operator const T *() const as a default in this case
         return * ( ( const adhereTo * ) this );
     }
+    ///@brief This operator can be used to pull the data to a const pointer. Use this whenever possible.
     operator const T *() const {
         if ( !loadedReadable ) {
             data->setUse ( false, &loadedReadable );
         }
         return data->getConstLocPtr();
     }
+    ///@brief This operator can be used to pull the data to a non-const pointer. If you only read the data, pull the const version, as this saves execution time.
     operator  T *() {
         if ( !loadedWritable ) {
             data->setUse ( true, &loadedWritable );
         }
         return data->getLocPtr();
     }
-
+    ///@brief destructor
     ~adhereTo() {
         unsigned char loaded = 0;
         loaded = ( loadedReadable ? 1 : 0 ) + ( loadedWritable ? 1 : 0 );
@@ -396,9 +419,11 @@ public:
             stop();
         }
     }
+    /// stop pulling critical ingredients in a multithreaded situation
     void stop() {
         rambrain_pthread_mutex_unlock ( &mutex );
     }
+    /// start pulling of critical ingredients in a multithreaded situation
     void start() {
         rambrain_pthread_mutex_lock ( &mutex );
     }
