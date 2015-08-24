@@ -25,6 +25,7 @@
 #include "rambrainconfig.h"
 #include "rambrain_atomics.h"
 #include "git_info.h"
+#include "managedPtr.h"
 #include <time.h>
 #include <mm_malloc.h>
 
@@ -58,6 +59,7 @@ pthread_t managedMemory::creatingThread = 0;
 
 pthread_mutex_t managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t managedMemory::swappingCond = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t rambrainGlobalCriticalSectionControl::mutex = PTHREAD_MUTEX_INITIALIZER;
 
 managedMemory::managedMemory ( managedSwap *swap, global_bytesize size  )
 {

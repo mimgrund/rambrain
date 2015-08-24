@@ -362,9 +362,6 @@ public:
         if ( loaded > 0 ) {
             data->unsetUse ( loaded );
         }
-
-
-
     }
 private:
     const managedPtr<T> *data;
@@ -380,6 +377,39 @@ private:
     friend class ::adhereTo_Unit_TwiceAdheredOnceUsed_Test;
 #endif
 };
+
+/** @brief this class marks a section as globally critical. Only one thread can process any section where such an object is generated.
+ *
+ * if called with locksByUser set to true, the user has to unlock the mutex manually calling unlock.
+**/
+
+class rambrainGlobalCriticalSectionControl
+{
+public:
+    rambrainGlobalCriticalSectionControl ( bool locksByUser = false ) : locksByUser ( locksByUser ) {
+        if ( !locksByUser ) {
+            start();
+        }
+    };
+    ~rambrainGlobalCriticalSectionControl() {
+        if ( !locksByUser ) {
+            stop();
+        }
+    }
+    void stop() {
+        rambrain_pthread_mutex_unlock ( &mutex );
+    }
+    void start() {
+        rambrain_pthread_mutex_lock ( &mutex );
+    }
+private:
+    static pthread_mutex_t mutex; // is defined in managedMemory.cpp
+    bool locksByUser;
+
+};
+
+/// @brief put this macro in a scope and define what data your thread needs multithreading-safe
+#define LISTOFINGREDIENTS rambrainGlobalCriticalSectionControl rambrain_section_control;
 
 
 }

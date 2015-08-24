@@ -731,8 +731,10 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
                 for ( unsigned int i = 0; i < ( jj == ii ? j : i_lim ); i++ ) { //Inner block matrix transpose, vertical index in A
                     //Inner block matrxi transpose, horizontal index in A
                     double *Arowdb, *Browdb;
-                    #pragma omp critical
+
                     {
+                        LISTOFINGREDIENTS
+
                         Arowdb = *Arows[i]; //Fetch pointer for Element of A_ii+i
                         Browdb = *Brows[j];
                     }
