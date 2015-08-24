@@ -33,7 +33,9 @@
 #include <mm_malloc.h>
 #include <sys/statvfs.h>
 #include <iostream>
-
+#ifndef OpenMP_NOT_FOUND
+#include <omp.h>
+#endif
 namespace rambrain
 {
 
@@ -91,6 +93,13 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
     }
     memset ( &aio_template, 0, sizeof ( aio_template ) );
     aio_template.aio_reqprio = 0;
+
+#ifndef OpenMP_NOT_FOUND
+    io_submit_num_threads = omp_get_max_threads() / 2; //chosen by fair dice roll...
+#endif
+
+
+
     io_submit_threads = ( pthread_t * ) malloc ( sizeof ( pthread_t ) * io_submit_num_threads );
     for ( unsigned int n = 0; n < io_submit_num_threads; ++n )
         if ( pthread_create ( io_submit_threads + n, NULL, &io_submit_worker, this ) ) {

@@ -700,13 +700,13 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
     test.addTimeMeasurement();
 
     // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
-
-    unsigned int rows_fetch = memlines / ( 4 ) > size ? size : memlines / ( 4 );
+    unsigned int ompt = omp_get_max_threads();
+    unsigned int rows_fetch = memlines / ( 4 * ompt ) > size ? size : memlines / ( 4 * ompt );
     unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
 
     adhereTo<double> *Arows[rows_fetch];
     adhereTo<double> *Brows[rows_fetch];
-
+    #pragma omp parallel for
     for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
         for ( unsigned int ii = 0; ii <= jj; ii++ ) {
             //A_iijj <-> B_jjii
@@ -718,15 +718,13 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
             unsigned int j_off = jj * rows_fetch; // Block A, horizontal index
 
             //Get rows A_ii** and B_jj** into memory:
-            #pragma omp parallel for
+
             for ( unsigned int i = 0; i < i_lim; ++i ) {
                 Arows[i] = new adhereTo<double> ( *rows[i + i_off], true );
             }
-            #pragma omp parallel for
             for ( unsigned int j = 0; j < j_lim; ++j ) {
                 Brows[j] = new adhereTo<double> ( *rows[j + j_off], true );
             }
-            #pragma omp parallel for
             for ( unsigned int j = 0; j < j_lim; j++ ) {
                 for ( unsigned int i = 0; i < ( jj == ii ? j : i_lim ); i++ ) { //Inner block matrix transpose, vertical index in A
                     //Inner block matrxi transpose, horizontal index in A
@@ -744,11 +742,9 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
                     Browdb[i + i_off] = inter; //set B_ji to former val of A_ij
                 }
             }
-            #pragma omp parallel for
             for ( unsigned int i = 0; i < i_lim; ++i ) {
                 delete ( Arows[i] );
             }
-            #pragma omp parallel for
             for ( unsigned int j = 0; j < j_lim; ++j ) {
                 delete ( Brows[j] );
             }
@@ -813,7 +809,6 @@ void matrixCleverBlockTransposeTest::actualTestMethod ( tester &test, int param1
     test.addTimeMeasurement();
 
     // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
-
     unsigned int rows_fetch = sqrt ( memlines * size / 2 );
     unsigned int blocksize = rows_fetch * rows_fetch;
 
@@ -929,7 +924,8 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
 
     // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
 
-    unsigned int rows_fetch = sqrt ( memlines * size / 2 );
+    unsigned int ompt = omp_get_max_threads();
+    unsigned int rows_fetch = sqrt ( memlines * size / 2 / ompt );
     unsigned int blocksize = rows_fetch * rows_fetch;
 
     unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
@@ -942,6 +938,8 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
 #define inBlockIdx(x,y) (inBlockX(x,y)*rows_fetch+inBlockY(x,y))
     // Allocate and set
     managedPtr<double> *rows[n_blocks * n_blocks];
+
+    #pragma omp parallel for schedule(dynamic)
     for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
         for ( unsigned int ii = 0; ii < n_blocks; ii++ ) {
             rows[ii * n_blocks + jj] = new managedPtr<double> ( blocksize );
@@ -949,7 +947,6 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
             double *locPtr = adh;
             unsigned int i_lim = ( ii + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, vertical limit
             unsigned int j_lim = rows_fetch;//( jj + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, horizontal limit
-            #pragma omp parallel for
             for ( unsigned int i = 0; i < i_lim; i++ ) {
                 for ( unsigned int j = 0; j < j_lim; j++ ) {
                     locPtr[i * rows_fetch + j] = ( ii * rows_fetch + i ) * size + ( j + rows_fetch * jj );
@@ -959,7 +956,9 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
     }
     test.addTimeMeasurement();
 
+    #pragma omp parallel for ordered schedule(dynamic)
     for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
+
         for ( unsigned int ii = 0; ii <= jj; ii++ ) {
             //A_iijj <-> B_jjii
 
@@ -971,10 +970,12 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
             adhereTo<double> aBlock ( *rows[ii * n_blocks + jj] );
             adhereTo<double> bBlock ( *rows[jj * n_blocks + ii] );
 
-            double *aLoc = aBlock;
-            double *bLoc = bBlock;
-
-            #pragma omp parallel for
+            double *aLoc, *bLoc;
+            {
+                LISTOFINGREDIENTS;
+                aLoc = aBlock;
+                bLoc = bBlock;
+            }
             for ( unsigned int j = 0; j < j_lim; j++ ) {
                 for ( unsigned int i = 0; i < ( jj == ii ? j : i_lim ); i++ ) { //Inner block matrix transpose, vertical index in A
                     //Inner block matrxi transpose, horizontal index in A
