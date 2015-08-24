@@ -16,9 +16,10 @@ var searchData=
   ['_7eperformancetest',['~performanceTest',['../a00023.html#a1aa7ebeb97071e17de8319d001b54a78',1,'performanceTest&lt;&gt;::~performanceTest()'],['../a00022.html#a8c8ab2f1aea9a9d1fed6f5a929cc26e1',1,'performanceTest&lt; T, U...&gt;::~performanceTest()']]],
   ['_7erambrainconfig',['~rambrainConfig',['../a00024.html#a50356f5e6333c5094970bf201bcca578',1,'rambrain::rambrainglobals::rambrainConfig']]],
   ['_7erambrainexception',['~rambrainException',['../a00025.html#adc8b99eedc8c84ace511f44dbd46d531',1,'rambrain::rambrainException']]],
-  ['_7etester',['~tester',['../a00028.html#ab79e99149907bf96d75d929f1dc49410',1,'tester']]],
-  ['_7etestparameter',['~testParameter',['../a00029.html#af0c5f6ffc72748d4e85ff709f4edab62',1,'testParameter']]],
-  ['_7etestparameterbase',['~testParameterBase',['../a00030.html#a1b0dcec6718d1f89841ac4f1fb2d4310',1,'testParameterBase']]],
-  ['_7eunexpectedstateexception',['~unexpectedStateException',['../a00032.html#aab535ff3feaae830646297b16969dc04',1,'rambrain::unexpectedStateException']]],
-  ['_7eunfinishedcodeexception',['~unfinishedCodeException',['../a00033.html#ae9bf6925fa2e8d40aab176fe4d3d6bcd',1,'rambrain::unfinishedCodeException']]]
+  ['_7erambrainglobalcriticalsectioncontrol',['~rambrainGlobalCriticalSectionControl',['../a00026.html#ae4e628e1cade22e5e3ad1de7f34127bb',1,'rambrain::rambrainGlobalCriticalSectionControl']]],
+  ['_7etester',['~tester',['../a00029.html#ab79e99149907bf96d75d929f1dc49410',1,'tester']]],
+  ['_7etestparameter',['~testParameter',['../a00030.html#af0c5f6ffc72748d4e85ff709f4edab62',1,'testParameter']]],
+  ['_7etestparameterbase',['~testParameterBase',['../a00031.html#a1b0dcec6718d1f89841ac4f1fb2d4310',1,'testParameterBase']]],
+  ['_7eunexpectedstateexception',['~unexpectedStateException',['../a00033.html#aab535ff3feaae830646297b16969dc04',1,'rambrain::unexpectedStateException']]],
+  ['_7eunfinishedcodeexception',['~unfinishedCodeException',['../a00034.html#ae9bf6925fa2e8d40aab176fe4d3d6bcd',1,'rambrain::unfinishedCodeException']]]
 ];

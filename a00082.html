@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: /home/rambrainbuild/docubrain/tests/testManagedDummySwap.cpp File Reference</title>
+<title>rambrain: /home/rambrainbuild/docubrain/tests/testFilterHandling.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('a00082.html','');});
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">testManagedDummySwap.cpp File Reference</div>  </div>
+<div class="title">testFilterHandling.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -115,62 +115,26 @@ $(document).ready(function(){initNavTree('a00082.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3c889a158897141b6a22b22dce7b0624"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00082.html#a3c889a158897141b6a22b22dce7b0624">TEST</a> (<a class="el" href="a00013.html">managedDummySwap</a>, Unit_ManualSwapping)</td></tr>
-<tr class="separator:a3c889a158897141b6a22b22dce7b0624"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48b8d09f310a5993ee0b858268554a66"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00082.html#a48b8d09f310a5993ee0b858268554a66">TEST</a> (<a class="el" href="a00013.html">managedDummySwap</a>, Unit_ManualMultiSwapping)</td></tr>
-<tr class="memdesc:a48b8d09f310a5993ee0b858268554a66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extended manual swapping test.  <a href="#a48b8d09f310a5993ee0b858268554a66">More...</a><br /></td></tr>
-<tr class="separator:a48b8d09f310a5993ee0b858268554a66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac915c82710e977f2390fca9a07a0810f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00082.html#ac915c82710e977f2390fca9a07a0810f">TEST</a> (<a class="el" href="a00013.html">managedDummySwap</a>, Unit_ManualSwappingDelete)</td></tr>
-<tr class="separator:ac915c82710e977f2390fca9a07a0810f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0855c443c53c36b2d8dfcc9d78f4ab58"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00082.html#a0855c443c53c36b2d8dfcc9d78f4ab58">TEST</a> (<a class="el" href="a00013.html">managedDummySwap</a>, Unit_SwapSize)</td></tr>
-<tr class="separator:a0855c443c53c36b2d8dfcc9d78f4ab58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76a5c70a77dbaf343c31e03122a4b5f8"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00082.html#a76a5c70a77dbaf343c31e03122a4b5f8">combineFilter</a> (const string &amp;generalFilter, const string &amp;customFilter)</td></tr>
+<tr class="memdesc:a76a5c70a77dbaf343c31e03122a4b5f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to combine test filters for gtest.  <a href="#a76a5c70a77dbaf343c31e03122a4b5f8">More...</a><br /></td></tr>
+<tr class="separator:a76a5c70a77dbaf343c31e03122a4b5f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a3c889a158897141b6a22b22dce7b0624"></a>
+<a class="anchor" id="a76a5c70a77dbaf343c31e03122a4b5f8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">TEST </td>
+          <td class="memname">string combineFilter </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00013.html">managedDummySwap</a>&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>generalFilter</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Unit_ManualSwapping&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="a00092.html#_test000033">Test:</a></b></dt><dd>Checks if swapping works when triggered manually <dl class="section note"><dt>Note</dt><dd>This is not supposed to be used by the user, just for checking internals </dd></dl>
-</dd></dl>
-
-<p>Definition at line <a class="el" href="a00082_source.html#l00032">32</a> of file <a class="el" href="a00082_source.html">testManagedDummySwap.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a48b8d09f310a5993ee0b858268554a66"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TEST </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00013.html">managedDummySwap</a>&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Unit_ManualMultiSwapping&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>customFilter</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -180,70 +144,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Extended manual swapping test. </p>
-<dl class="section note"><dt>Note</dt><dd>Again testing internals, not for use like this </dd></dl>
-
-<p>Definition at line <a class="el" href="a00082_source.html#l00069">69</a> of file <a class="el" href="a00082_source.html">testManagedDummySwap.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac915c82710e977f2390fca9a07a0810f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TEST </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00013.html">managedDummySwap</a>&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Unit_ManualSwappingDelete&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="a00092.html#_test000034">Test:</a></b></dt><dd>Checks if swap delete works manually <dl class="section note"><dt>Note</dt><dd>Again testing internals, not for use like this </dd></dl>
-</dd></dl>
-
-<p>Definition at line <a class="el" href="a00082_source.html#l00117">117</a> of file <a class="el" href="a00082_source.html">testManagedDummySwap.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a0855c443c53c36b2d8dfcc9d78f4ab58"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TEST </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00013.html">managedDummySwap</a>&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Unit_SwapSize&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="a00092.html#_test000035">Test:</a></b></dt><dd>Checks if the swap size is adjusted when setUse and unsetUse are called <dl class="section note"><dt>Note</dt><dd>Again for testing internals, not thought for use like this </dd></dl>
-</dd></dl>
-
-<p>Definition at line <a class="el" href="a00082_source.html#l00152">152</a> of file <a class="el" href="a00082_source.html">testManagedDummySwap.cpp</a>.</p>
+<p>Helper function to combine test filters for gtest. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">generalFilter</td><td>The general filter for the current test setup </td></tr>
+    <tr><td class="paramname">customFilter</td><td>A user set custom filter to be applied together with the general one </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The total filter </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Despite the file name this is not a test itself! </dd></dl>
 
 </div>
 </div>
@@ -252,8 +162,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00082.html">testManagedDummySwap.cpp</a></li>
-    <li class="footer">Generated on Mon Aug 24 2015 01:23:06 for rambrain by
+    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00082.html">testFilterHandling.h</a></li>
+    <li class="footer">Generated on Tue Aug 25 2015 01:22:59 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

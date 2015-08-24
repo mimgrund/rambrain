@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: rambrain::unexpectedStateException Class Reference</title>
+<title>rambrain: rambrain::Timer Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,58 +107,65 @@ $(document).ready(function(){initNavTree('a00032.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="a00126.html">List of all members</a>  </div>
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
+<a href="a00127.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">rambrain::unexpectedStateException Class Reference</div>  </div>
+<div class="title">rambrain::Timer Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>An exception for when something totally unexpected happened.  
+<p>Provides an interface to a timer which periodically sends SIGUSR1 signals.  
  <a href="a00032.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00040_source.html">exceptions.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for rambrain::unexpectedStateException:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="a00032.png" usemap="#rambrain::unexpectedStateException_map" alt=""/>
-  <map id="rambrain::unexpectedStateException_map" name="rambrain::unexpectedStateException_map">
-<area href="a00025.html" title="Exception base class for this library. " alt="rambrain::rambrainException" shape="rect" coords="0,0,216,24"/>
-</map>
- </div></div>
+<p><code>#include &lt;<a class="el" href="a00063_source.html">timer.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:af3dd85dc4cdd2dfd57605e256829b87b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#af3dd85dc4cdd2dfd57605e256829b87b">unexpectedStateException</a> (const string &amp;<a class="el" href="a00032.html#a1a60b532d24243eec8cdbafd381fd1c2">details</a>)</td></tr>
-<tr class="memdesc:af3dd85dc4cdd2dfd57605e256829b87b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new exception.  <a href="#af3dd85dc4cdd2dfd57605e256829b87b">More...</a><br /></td></tr>
-<tr class="separator:af3dd85dc4cdd2dfd57605e256829b87b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab535ff3feaae830646297b16969dc04"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#aab535ff3feaae830646297b16969dc04">~unexpectedStateException</a> ()</td></tr>
-<tr class="memdesc:aab535ff3feaae830646297b16969dc04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the exception.  <a href="#aab535ff3feaae830646297b16969dc04">More...</a><br /></td></tr>
-<tr class="separator:aab535ff3feaae830646297b16969dc04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f676aed82c376c35d2b5bc04b989b6c"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a3f676aed82c376c35d2b5bc04b989b6c">what</a> () const   throw ()</td></tr>
-<tr class="memdesc:a3f676aed82c376c35d2b5bc04b989b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report what has gone wrong.  <a href="#a3f676aed82c376c35d2b5bc04b989b6c">More...</a><br /></td></tr>
-<tr class="separator:a3f676aed82c376c35d2b5bc04b989b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a2b4fa3e4a1e2ef1b1edeffa577717d5d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a2b4fa3e4a1e2ef1b1edeffa577717d5d">startTimer</a> (long seconds, long nanoseconds)</td></tr>
+<tr class="memdesc:a2b4fa3e4a1e2ef1b1edeffa577717d5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the timer.  <a href="#a2b4fa3e4a1e2ef1b1edeffa577717d5d">More...</a><br /></td></tr>
+<tr class="separator:a2b4fa3e4a1e2ef1b1edeffa577717d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad432a370227d8794c716e252d615c9d9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#ad432a370227d8794c716e252d615c9d9">stopTimer</a> ()</td></tr>
+<tr class="memdesc:ad432a370227d8794c716e252d615c9d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the timer.  <a href="#ad432a370227d8794c716e252d615c9d9">More...</a><br /></td></tr>
+<tr class="separator:ad432a370227d8794c716e252d615c9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ad88b5e08c6ac3c4353ff96f9a00b17"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a4ad88b5e08c6ac3c4353ff96f9a00b17">isRunning</a> ()</td></tr>
+<tr class="memdesc:a4ad88b5e08c6ac3c4353ff96f9a00b17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple getter.  <a href="#a4ad88b5e08c6ac3c4353ff96f9a00b17">More...</a><br /></td></tr>
+<tr class="separator:a4ad88b5e08c6ac3c4353ff96f9a00b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a1a60b532d24243eec8cdbafd381fd1c2"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a1a60b532d24243eec8cdbafd381fd1c2">details</a></td></tr>
-<tr class="separator:a1a60b532d24243eec8cdbafd381fd1c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a2c383399b9ca73789a3bb5625632b9dd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a2c383399b9ca73789a3bb5625632b9dd">Timer</a> ()</td></tr>
+<tr class="memdesc:a2c383399b9ca73789a3bb5625632b9dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new timer.  <a href="#a2c383399b9ca73789a3bb5625632b9dd">More...</a><br /></td></tr>
+<tr class="separator:a2c383399b9ca73789a3bb5625632b9dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_methods_a00025"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00025')"><img src="closed.png" alt="-"/>&#160;Private Member Functions inherited from <a class="el" href="a00025.html">rambrain::rambrainException</a></td></tr>
-<tr class="memitem:adc8b99eedc8c84ace511f44dbd46d531 inherit pub_methods_a00025"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#adc8b99eedc8c84ace511f44dbd46d531">~rambrainException</a> ()</td></tr>
-<tr class="memdesc:adc8b99eedc8c84ace511f44dbd46d531 inherit pub_methods_a00025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the exception.  <a href="#adc8b99eedc8c84ace511f44dbd46d531">More...</a><br /></td></tr>
-<tr class="separator:adc8b99eedc8c84ace511f44dbd46d531 inherit pub_methods_a00025"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr class="memitem:ab9c2a3fb72f25c0ee936c4023cb55ffa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#ab9c2a3fb72f25c0ee936c4023cb55ffa">initialiseTimer</a> ()</td></tr>
+<tr class="memdesc:ab9c2a3fb72f25c0ee936c4023cb55ffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up the timer.  <a href="#ab9c2a3fb72f25c0ee936c4023cb55ffa">More...</a><br /></td></tr>
+<tr class="separator:ab9c2a3fb72f25c0ee936c4023cb55ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a59277ee2347b98ad2b255ee898079da7"><td class="memItemLeft" align="right" valign="top">static timer_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a59277ee2347b98ad2b255ee898079da7">timerid</a></td></tr>
+<tr class="separator:a59277ee2347b98ad2b255ee898079da7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa01c05838ff7a702f7509fe45e8a6c87"><td class="memItemLeft" align="right" valign="top">static struct sigevent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#aa01c05838ff7a702f7509fe45e8a6c87">sev</a></td></tr>
+<tr class="separator:aa01c05838ff7a702f7509fe45e8a6c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05d8a8b45ca6ca0fc8586dc45e397eb6"><td class="memItemLeft" align="right" valign="top">static struct itimerspec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a></td></tr>
+<tr class="separator:a05d8a8b45ca6ca0fc8586dc45e397eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6ba857b6f43eb3998d15b78f505b312"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#ac6ba857b6f43eb3998d15b78f505b312">initialised</a> = false</td></tr>
+<tr class="separator:ac6ba857b6f43eb3998d15b78f505b312"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa17bc507bfb17a2978f80bf8228c5c7f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00032.html#aa17bc507bfb17a2978f80bf8228c5c7f">running</a> = false</td></tr>
+<tr class="separator:aa17bc507bfb17a2978f80bf8228c5c7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>An exception for when something totally unexpected happened. </p>
+<div class="textblock"><p>Provides an interface to a timer which periodically sends SIGUSR1 signals. </p>
+<dl class="section note"><dt>Note</dt><dd>There can always be only one timer in place since it is regulated via static methods </dd></dl>
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00118">118</a> of file <a class="el" href="a00040_source.html">exceptions.h</a>.</p>
+<p>Definition at line <a class="el" href="a00063_source.html#l00035">35</a> of file <a class="el" href="a00063_source.html">timer.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="af3dd85dc4cdd2dfd57605e256829b87b"></a>
+<a class="anchor" id="a2c383399b9ca73789a3bb5625632b9dd"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -166,104 +173,10 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">rambrain::unexpectedStateException::unexpectedStateException </td>
-          <td>(</td>
-          <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>details</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create a new exception. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">details</td><td>Optionally provided details about the current state of affairs </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Definition at line <a class="el" href="a00040_source.html#l00126">126</a> of file <a class="el" href="a00040_source.html">exceptions.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aab535ff3feaae830646297b16969dc04"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual rambrain::unexpectedStateException::~unexpectedStateException </td>
+          <td class="memname">rambrain::Timer::Timer </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Destroy the exception. </p>
-
-<p>Definition at line <a class="el" href="a00040_source.html#l00130">130</a> of file <a class="el" href="a00040_source.html">exceptions.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a3f676aed82c376c35d2b5bc04b989b6c"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual const char* rambrain::unexpectedStateException::what </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-        <tr>
-          <td align="right">throw </td><td>(</td><td colspan="2"></td>
-        </tr>
-        <tr>
-          <td align="right"></td><td>)</td><td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Report what has gone wrong. </p>
-<dl class="section return"><dt>Returns</dt><dd>The report </dd></dl>
-
-<p>Definition at line <a class="el" href="a00040_source.html#l00136">136</a> of file <a class="el" href="a00040_source.html">exceptions.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a1a60b532d24243eec8cdbafd381fd1c2"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">string rambrain::unexpectedStateException::details</td>
         </tr>
       </table>
   </td>
@@ -273,20 +186,262 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00141">141</a> of file <a class="el" href="a00040_source.html">exceptions.h</a>.</p>
+<p>Create a new timer. </p>
+<dl class="section note"><dt>Note</dt><dd>Unused </dd></dl>
+
+<p>Definition at line <a class="el" href="a00062_source.html#l00032">32</a> of file <a class="el" href="a00062_source.html">timer.cpp</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00040_source.html">exceptions.h</a></li>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ab9c2a3fb72f25c0ee936c4023cb55ffa"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::Timer::initialiseTimer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set up the timer. </p>
+
+<p>Definition at line <a class="el" href="a00062_source.html#l00066">66</a> of file <a class="el" href="a00062_source.html">timer.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4ad88b5e08c6ac3c4353ff96f9a00b17"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool rambrain::Timer::isRunning </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Simple getter. </p>
+
+<p>Definition at line <a class="el" href="a00063_source.html#l00054">54</a> of file <a class="el" href="a00063_source.html">timer.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2b4fa3e4a1e2ef1b1edeffa577717d5d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::Timer::startTimer </td>
+          <td>(</td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>seconds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>nanoseconds</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Start the timer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">seconds</td><td>How many seconds until it fires a signal </td></tr>
+    <tr><td class="paramname">nanoseconds</td><td>How many nanoseconds on top of the seconds until it fires </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00062_source.html#l00036">36</a> of file <a class="el" href="a00062_source.html">timer.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad432a370227d8794c716e252d615c9d9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::Timer::stopTimer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stop the timer. </p>
+
+<p>Definition at line <a class="el" href="a00062_source.html#l00056">56</a> of file <a class="el" href="a00062_source.html">timer.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ac6ba857b6f43eb3998d15b78f505b312"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::Timer::initialised = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00063_source.html#l00074">74</a> of file <a class="el" href="a00063_source.html">timer.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a05d8a8b45ca6ca0fc8586dc45e397eb6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct itimerspec rambrain::Timer::its</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00063_source.html#l00072">72</a> of file <a class="el" href="a00063_source.html">timer.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa17bc507bfb17a2978f80bf8228c5c7f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::Timer::running = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00063_source.html#l00074">74</a> of file <a class="el" href="a00063_source.html">timer.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa01c05838ff7a702f7509fe45e8a6c87"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct sigevent rambrain::Timer::sev</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00063_source.html#l00071">71</a> of file <a class="el" href="a00063_source.html">timer.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a59277ee2347b98ad2b255ee898079da7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">timer_t rambrain::Timer::timerid</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00063_source.html#l00070">70</a> of file <a class="el" href="a00063_source.html">timer.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00063_source.html">timer.h</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00062_source.html">timer.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00089.html">rambrain</a></li><li class="navelem"><a class="el" href="a00032.html">unexpectedStateException</a></li>
-    <li class="footer">Generated on Mon Aug 24 2015 01:23:08 for rambrain by
+    <li class="navelem"><a class="el" href="a00090.html">rambrain</a></li><li class="navelem"><a class="el" href="a00032.html">Timer</a></li>
+    <li class="footer">Generated on Tue Aug 25 2015 01:23:03 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

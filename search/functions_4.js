@@ -6,7 +6,7 @@ var searchData=
   ['getcomment',['getComment',['../a00023.html#a5b6096462a0afb17f57bcae34e654c9b',1,'performanceTest&lt;&gt;']]],
   ['getconfig',['getConfig',['../a00005.html#aa9d982624f5495cdb3af2e4a216f4ecd',1,'rambrain::configReader::getConfig()'],['../a00024.html#aa7f91003d897ef82e6b255c4affb9f00',1,'rambrain::rambrainglobals::rambrainConfig::getConfig()']]],
   ['getconstlocptr',['getConstLocPtr',['../a00017.html#ab84d0780b62769d5f14fe791b14940b0',1,'rambrain::managedPtr']]],
-  ['getdurationsforcurrentcycle',['getDurationsForCurrentCycle',['../a00028.html#ab1b14519c719b0f70b204ecbd5468ff4',1,'tester']]],
+  ['getdurationsforcurrentcycle',['getDurationsForCurrentCycle',['../a00029.html#ab1b14519c719b0f70b204ecbd5468ff4',1,'tester']]],
   ['getfreediskspace',['getFreeDiskSpace',['../a00014.html#a71b7a2d56b87737c92e559e2ca1cc79c',1,'rambrain::managedFileSwap']]],
   ['getfreeswap',['getFreeSwap',['../a00018.html#a27d19d6eec2becdf80a805ee69a121df',1,'rambrain::managedSwap']]],
   ['gethitsovermisses',['getHitsOverMisses',['../a00015.html#a24e3c85157bebe35c89e2140c17b4eae',1,'rambrain::managedMemory']]],

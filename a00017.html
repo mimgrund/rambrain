@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('a00017.html','');});
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
-<a href="a00118.html">List of all members</a>  </div>
+<a href="a00119.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">rambrain::managedPtr&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
@@ -120,26 +120,34 @@ $(document).ready(function(){initNavTree('a00017.html','');});
 <p>Main class to allocate memory that is managed by the rambrain memory defaultManager.  
  <a href="a00017.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00049_source.html">managedMemory.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00050_source.html">managedMemory.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a70120a3e9fcb2b3fd79033860888e877"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#a70120a3e9fcb2b3fd79033860888e877">managedPtr</a> (const <a class="el" href="a00017.html">managedPtr</a>&lt; T &gt; &amp;ref)</td></tr>
+<tr class="memdesc:a70120a3e9fcb2b3fd79033860888e877"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy ctor  <a href="#a70120a3e9fcb2b3fd79033860888e877">More...</a><br /></td></tr>
 <tr class="separator:a70120a3e9fcb2b3fd79033860888e877"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf190b0d5a8c6832a0be401a1d283d81"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#acf190b0d5a8c6832a0be401a1d283d81">managedPtr</a> ()</td></tr>
+<tr class="memdesc:acf190b0d5a8c6832a0be401a1d283d81"><td class="mdescLeft">&#160;</td><td class="mdescRight">with no arguments given, instantiates an array with one element  <a href="#acf190b0d5a8c6832a0be401a1d283d81">More...</a><br /></td></tr>
 <tr class="separator:acf190b0d5a8c6832a0be401a1d283d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a697ea6e9ed885f00fa2d2486e904b436"><td class="memTemplParams" colspan="2">template&lt;typename... ctor_args&gt; </td></tr>
 <tr class="memitem:a697ea6e9ed885f00fa2d2486e904b436"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00017.html#a697ea6e9ed885f00fa2d2486e904b436">managedPtr</a> (unsigned int <a class="el" href="a00017.html#aaf92dc39c40a08ee727ef549be40dec8">n_elem</a>, ctor_args...Args)</td></tr>
+<tr class="memdesc:a697ea6e9ed885f00fa2d2486e904b436"><td class="mdescLeft">&#160;</td><td class="mdescRight">instantiates <a class="el" href="a00017.html" title="Main class to allocate memory that is managed by the rambrain memory defaultManager. ">managedPtr</a> containing n_elem elements and passes Args as arguments to the constructor of these  <a href="#a697ea6e9ed885f00fa2d2486e904b436">More...</a><br /></td></tr>
 <tr class="separator:a697ea6e9ed885f00fa2d2486e904b436"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fec909a40fc615870c49ecd710660ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#a7fec909a40fc615870c49ecd710660ec">~managedPtr</a> ()</td></tr>
+<tr class="memdesc:a7fec909a40fc615870c49ecd710660ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">destructor  <a href="#a7fec909a40fc615870c49ecd710660ec">More...</a><br /></td></tr>
 <tr class="separator:a7fec909a40fc615870c49ecd710660ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84635bcc9865d9b638aeab5bac93e463"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#a84635bcc9865d9b638aeab5bac93e463">prepareUse</a> () const </td></tr>
+<tr class="memdesc:a84635bcc9865d9b638aeab5bac93e463"><td class="mdescLeft">&#160;</td><td class="mdescRight">tells the memory manager to possibly swap in chunk for near future use  <a href="#a84635bcc9865d9b638aeab5bac93e463">More...</a><br /></td></tr>
 <tr class="separator:a84635bcc9865d9b638aeab5bac93e463"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc4112d3c16edcb7172e7f35030f435a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#afc4112d3c16edcb7172e7f35030f435a">setUse</a> (bool writable=true, bool *<a class="el" href="a00017.html#a5c62007f8d10f2a5a051a739338f454d">tracker</a>=NULL) const </td></tr>
+<tr class="memdesc:afc4112d3c16edcb7172e7f35030f435a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Atomically sets use to a chunk if tracker is not already set to true. returns whether we set use or not.  <a href="#afc4112d3c16edcb7172e7f35030f435a">More...</a><br /></td></tr>
 <tr class="separator:afc4112d3c16edcb7172e7f35030f435a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e27a4cf25fdeb82501a617e86f8f7fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#a5e27a4cf25fdeb82501a617e86f8f7fc">unsetUse</a> (unsigned int loaded=1) const </td></tr>
+<tr class="memdesc:a5e27a4cf25fdeb82501a617e86f8f7fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">unsets use count on memory chunk  <a href="#a5e27a4cf25fdeb82501a617e86f8f7fc">More...</a><br /></td></tr>
 <tr class="separator:a5e27a4cf25fdeb82501a617e86f8f7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab70dc6fbaf758bc0380e72017e1b2ff1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00017.html">managedPtr</a>&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#ab70dc6fbaf758bc0380e72017e1b2ff1">operator=</a> (const <a class="el" href="a00017.html">managedPtr</a>&lt; T &gt; &amp;ref)</td></tr>
+<tr class="memdesc:ab70dc6fbaf758bc0380e72017e1b2ff1"><td class="mdescLeft">&#160;</td><td class="mdescRight">assignment operator  <a href="#ab70dc6fbaf758bc0380e72017e1b2ff1">More...</a><br /></td></tr>
 <tr class="separator:ab70dc6fbaf758bc0380e72017e1b2ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1472e84fc142f26fb9ee5774efc0b91f"><td class="memItemLeft" align="right" valign="top">DEPRECATED T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#a1472e84fc142f26fb9ee5774efc0b91f">operator[]</a> (int i)</td></tr>
 <tr class="separator:a1472e84fc142f26fb9ee5774efc0b91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,9 +164,11 @@ Public Member Functions</h2></td></tr>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ab216790fe3b8a755fda83f1a4eb7247b"><td class="memTemplParams" colspan="2">template&lt;class G &gt; </td></tr>
 <tr class="memitem:ab216790fe3b8a755fda83f1a4eb7247b"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_class&lt; G &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00017.html#ab216790fe3b8a755fda83f1a4eb7247b">mDelete</a> () const </td></tr>
+<tr class="memdesc:ab216790fe3b8a755fda83f1a4eb7247b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function manages correct deallocation for array elements having a destructor.  <a href="#ab216790fe3b8a755fda83f1a4eb7247b">More...</a><br /></td></tr>
 <tr class="separator:ab216790fe3b8a755fda83f1a4eb7247b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcf79fc1b4dd016c8ea2b8f99aad57fe"><td class="memTemplParams" colspan="2">template&lt;class G &gt; </td></tr>
 <tr class="memitem:afcf79fc1b4dd016c8ea2b8f99aad57fe"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; !std::is_class&lt; G &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00017.html#afcf79fc1b4dd016c8ea2b8f99aad57fe">mDelete</a> ()</td></tr>
+<tr class="memdesc:afcf79fc1b4dd016c8ea2b8f99aad57fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function manages correct deallocation for array elements lacking a destructor.  <a href="#afcf79fc1b4dd016c8ea2b8f99aad57fe">More...</a><br /></td></tr>
 <tr class="separator:afcf79fc1b4dd016c8ea2b8f99aad57fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a856e6d1325c98c1ca0ab6063797f1c7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#a856e6d1325c98c1ca0ab6063797f1c7e">waitForSwapin</a> () const </td></tr>
 <tr class="memdesc:a856e6d1325c98c1ca0ab6063797f1c7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">: indefinitely waits for swapin of the chunk While it would have been desirable to throw exceptions when chunk is not available, checking this in a save way would produce lots of overhead. Thus, it is better to wait indefinitely in this case, as under normal use, the chunk will become available.  <a href="#a856e6d1325c98c1ca0ab6063797f1c7e">More...</a><br /></td></tr>
@@ -209,7 +219,7 @@ class rambrain::managedPtr&lt; T &gt;</h3>
 </ul>
 </dd></dl>
 
-<p>Definition at line <a class="el" href="a00049_source.html#l00053">53</a> of file <a class="el" href="a00049_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00050_source.html#l00053">53</a> of file <a class="el" href="a00050_source.html">managedMemory.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a70120a3e9fcb2b3fd79033860888e877"></a>
 <div class="memitem">
@@ -235,7 +245,9 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00077">77</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>copy ctor </p>
+
+<p>Definition at line <a class="el" href="a00054_source.html#l00082">82</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -262,7 +274,9 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00082">82</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>with no arguments given, instantiates an array with one element </p>
+
+<p>Definition at line <a class="el" href="a00054_source.html#l00088">88</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -301,9 +315,11 @@ template&lt;typename... ctor_args&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>instantiates <a class="el" href="a00017.html" title="Main class to allocate memory that is managed by the rambrain memory defaultManager. ">managedPtr</a> containing n_elem elements and passes Args as arguments to the constructor of these </p>
 <p>I admit, this is a bit complicated. as we do not want users to carry around information about object parenthood into their classes, we have to ensure that our 'memoryManager::parent' attribute is carried down the hierarchy correctly. As this code part is accessed recursively throughout creation, we have to make sure that we do not lock twice (deadlock) we only continue if we're called by the currently active creation process the following is not very elegant, but works. The idea behind this is that we admit one thread at a time to create an object class hierarchy. In this way, the parent argument from below is correct. This is synced by basically checking wether we should be a master or not based on a possibly setted threadID...</p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00085">85</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00092">92</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -330,7 +346,9 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00152">152</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>destructor </p>
+
+<p>Definition at line <a class="el" href="a00054_source.html#l00159">159</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -361,7 +379,7 @@ template&lt;class T&gt; </div>
 <p>returns const local pointer to object </p>
 <dl class="section note"><dt>Note</dt><dd>when called, you have to care for setting use to the chunk, first </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00218">218</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00230">230</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -391,7 +409,7 @@ template&lt;class T&gt; </div>
 <p>returns local pointer to object </p>
 <dl class="section note"><dt>Note</dt><dd>when called, you have to care for setting use to the chunk, first </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00208">208</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00220">220</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -420,7 +438,9 @@ template&lt;class G &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00232">232</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>This function manages correct deallocation for array elements having a destructor. </p>
+
+<p>Definition at line <a class="el" href="a00054_source.html#l00245">245</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -449,7 +469,9 @@ template&lt;class G &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00246">246</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>This function manages correct deallocation for array elements lacking a destructor. </p>
+
+<p>Definition at line <a class="el" href="a00054_source.html#l00260">260</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -477,7 +499,9 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00180">180</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>assignment operator </p>
+
+<p>Definition at line <a class="el" href="a00054_source.html#l00190">190</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -504,8 +528,9 @@ template&lt;class T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>This operator can only be called safely in single threaded situations when preemptive swapOut actions have been disabled </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00194">194</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00205">205</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -532,8 +557,9 @@ template&lt;class T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+<dl class="section note"><dt>Note</dt><dd>This operator can only be called safely in single threaded situations when preemptive swapOut actions have been disabled </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00199">199</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00211">211</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -560,7 +586,9 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00159">159</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>tells the memory manager to possibly swap in chunk for near future use </p>
+
+<p>Definition at line <a class="el" href="a00054_source.html#l00167">167</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -598,7 +626,9 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00165">165</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Atomically sets use to a chunk if tracker is not already set to true. returns whether we set use or not. </p>
+
+<p>Definition at line <a class="el" href="a00054_source.html#l00173">173</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -626,7 +656,9 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00176">176</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>unsets use count on memory chunk </p>
+
+<p>Definition at line <a class="el" href="a00054_source.html#l00185">185</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -655,7 +687,7 @@ template&lt;class T&gt; </div>
 
 <p>: indefinitely waits for swapin of the chunk While it would have been desirable to throw exceptions when chunk is not available, checking this in a save way would produce lots of overhead. Thus, it is better to wait indefinitely in this case, as under normal use, the chunk will become available. </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00258">258</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00272">272</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -680,7 +712,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00284">284</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00298">298</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -704,7 +736,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00283">283</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00297">297</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -728,7 +760,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00282">282</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00296">296</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -752,7 +784,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00279">279</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00293">293</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -776,7 +808,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00280">280</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00294">294</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -800,7 +832,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00281">281</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00295">295</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -826,7 +858,7 @@ template&lt;class G &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00273">273</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00287">287</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -852,7 +884,7 @@ template&lt;class G &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00275">275</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00289">289</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -877,7 +909,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00226">226</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00238">238</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -901,7 +933,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00228">228</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00240">240</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -925,21 +957,21 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00227">227</a> of file <a class="el" href="a00053_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00239">239</a> of file <a class="el" href="a00054_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00049_source.html">managedMemory.h</a></li>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00053_source.html">managedPtr.h</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00050_source.html">managedMemory.h</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00054_source.html">managedPtr.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00089.html">rambrain</a></li><li class="navelem"><a class="el" href="a00017.html">managedPtr</a></li>
-    <li class="footer">Generated on Mon Aug 24 2015 01:23:08 for rambrain by
+    <li class="navelem"><a class="el" href="a00090.html">rambrain</a></li><li class="navelem"><a class="el" href="a00017.html">managedPtr</a></li>
+    <li class="footer">Generated on Tue Aug 25 2015 01:23:02 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

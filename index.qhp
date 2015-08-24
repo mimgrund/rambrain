@@ -6,12 +6,12 @@
     <filterAttribute>doxygen</filterAttribute>
     <toc>
       <section title="rambrain" ref="index.html">
-        <section title="Test List" ref="a00093.html" />
-        <section title="Todo List" ref="a00095.html" />
+        <section title="Test List" ref="a00094.html" />
+        <section title="Todo List" ref="a00096.html" />
         <section title="Namespaces">
           <section title="Namespace List" ref="namespaces.html">
-            <section title="rambrain" ref="a00089.html">
-              <section title="rambrainglobals" ref="a00090.html" />
+            <section title="rambrain" ref="a00090.html">
+              <section title="rambrainglobals" ref="a00091.html" />
             </section>
           </section>
           <section title="Namespace Members" ref="namespacemembers.html">
@@ -25,8 +25,8 @@
         </section>
         <section title="Classes">
           <section title="Class List" ref="annotated.html">
-            <section title="rambrain" ref="a00089.html">
-              <section title="rambrainglobals" ref="a00090.html">
+            <section title="rambrain" ref="a00090.html">
+              <section title="rambrainglobals" ref="a00091.html">
                 <section title="rambrainConfig" ref="a00024.html">
                   <section title="rambrainConfig" ref="a00024.html#adf79cce9ad6dde113f1a25c7f28978cc" />
                   <section title="~rambrainConfig" ref="a00024.html#a50356f5e6333c5094970bf201bcca578" />
@@ -397,43 +397,50 @@
               <section title="rambrainException" ref="a00025.html">
                 <section title="~rambrainException" ref="a00025.html#adc8b99eedc8c84ace511f44dbd46d531" />
               </section>
-              <section title="regexMatcher" ref="a00026.html">
-                <section title="matchType" ref="a00026.html#acf6754e0f0df10007f5494899ed31229">
-                  <section title="integer" ref="a00026.html#acf6754e0f0df10007f5494899ed31229afa1a394563a55a77a4ac5b8541014aae" />
-                  <section title="floating" ref="a00026.html#acf6754e0f0df10007f5494899ed31229a4afe10bda6318109694a35c63aff6548" />
-                  <section title="units" ref="a00026.html#acf6754e0f0df10007f5494899ed31229a2b6e9b3cb4427fe84fcf45206b171541" />
-                  <section title="text" ref="a00026.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2" />
-                  <section title="alphanumtext" ref="a00026.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418" />
-                  <section title="boolean" ref="a00026.html#acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137" />
-                  <section title="swapfilename" ref="a00026.html#acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74" />
+              <section title="rambrainGlobalCriticalSectionControl" ref="a00026.html">
+                <section title="rambrainGlobalCriticalSectionControl" ref="a00026.html#a2eba336227be329754d0cbfad1fa7fb9" />
+                <section title="~rambrainGlobalCriticalSectionControl" ref="a00026.html#ae4e628e1cade22e5e3ad1de7f34127bb" />
+                <section title="start" ref="a00026.html#a92057e6db5750cd9b730e415ab56cbd6" />
+                <section title="stop" ref="a00026.html#a0df23dfab5cf05d28b27de79dad30dd1" />
+                <section title="locksByUser" ref="a00026.html#a6c7b5ba71d0137485e5149986e562807" />
+              </section>
+              <section title="regexMatcher" ref="a00027.html">
+                <section title="matchType" ref="a00027.html#acf6754e0f0df10007f5494899ed31229">
+                  <section title="integer" ref="a00027.html#acf6754e0f0df10007f5494899ed31229afa1a394563a55a77a4ac5b8541014aae" />
+                  <section title="floating" ref="a00027.html#acf6754e0f0df10007f5494899ed31229a4afe10bda6318109694a35c63aff6548" />
+                  <section title="units" ref="a00027.html#acf6754e0f0df10007f5494899ed31229a2b6e9b3cb4427fe84fcf45206b171541" />
+                  <section title="text" ref="a00027.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2" />
+                  <section title="alphanumtext" ref="a00027.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418" />
+                  <section title="boolean" ref="a00027.html#acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137" />
+                  <section title="swapfilename" ref="a00027.html#acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74" />
                 </section>
-                <section title="regexMatcher" ref="a00026.html#a85bbcde8ed2102552f5aa6fc521594da" />
-                <section title="createRegexMatching" ref="a00026.html#a9c7cf7261cd1af242d3792cb622f34e4" />
-                <section title="matchConfigBlock" ref="a00026.html#a952ca26ade04a532e24f85dbb2c748e4" />
-                <section title="matchKeyEqualsValue" ref="a00026.html#a4c3ce2c7a2beff16c71fbf5c33396356" />
-                <section title="matchKeyEqualsValue" ref="a00026.html#ac7fa4bee7ced8140de8cea27640cfc09" />
-                <section title="splitDoubleValueUnit" ref="a00026.html#addb28ec0da837148b315a76d3e86d3dc" />
-                <section title="splitIntegerValueUnit" ref="a00026.html#a05b70b65e3965866b3d9dfbdcacad5d6" />
-                <section title="substituteHomeDir" ref="a00026.html#a2fe1eeb1a8a33964f7211daeeaf12891" />
+                <section title="regexMatcher" ref="a00027.html#a85bbcde8ed2102552f5aa6fc521594da" />
+                <section title="createRegexMatching" ref="a00027.html#a9c7cf7261cd1af242d3792cb622f34e4" />
+                <section title="matchConfigBlock" ref="a00027.html#a952ca26ade04a532e24f85dbb2c748e4" />
+                <section title="matchKeyEqualsValue" ref="a00027.html#a4c3ce2c7a2beff16c71fbf5c33396356" />
+                <section title="matchKeyEqualsValue" ref="a00027.html#ac7fa4bee7ced8140de8cea27640cfc09" />
+                <section title="splitDoubleValueUnit" ref="a00027.html#addb28ec0da837148b315a76d3e86d3dc" />
+                <section title="splitIntegerValueUnit" ref="a00027.html#a05b70b65e3965866b3d9dfbdcacad5d6" />
+                <section title="substituteHomeDir" ref="a00027.html#a2fe1eeb1a8a33964f7211daeeaf12891" />
               </section>
-              <section title="swapFileDesc" ref="a00027.html">
-                <section title="currentSize" ref="a00027.html#a38f03520f7cfe57187d74667dd9ed768" />
-                <section title="fileno" ref="a00027.html#ad1e2f059bfcb37b60e2f0aea45d7b6a3" />
+              <section title="swapFileDesc" ref="a00028.html">
+                <section title="currentSize" ref="a00028.html#a38f03520f7cfe57187d74667dd9ed768" />
+                <section title="fileno" ref="a00028.html#ad1e2f059bfcb37b60e2f0aea45d7b6a3" />
               </section>
-              <section title="Timer" ref="a00031.html">
-                <section title="Timer" ref="a00031.html#a2c383399b9ca73789a3bb5625632b9dd" />
+              <section title="Timer" ref="a00032.html">
+                <section title="Timer" ref="a00032.html#a2c383399b9ca73789a3bb5625632b9dd" />
               </section>
-              <section title="unexpectedStateException" ref="a00032.html">
-                <section title="unexpectedStateException" ref="a00032.html#af3dd85dc4cdd2dfd57605e256829b87b" />
-                <section title="~unexpectedStateException" ref="a00032.html#aab535ff3feaae830646297b16969dc04" />
-                <section title="what" ref="a00032.html#a3f676aed82c376c35d2b5bc04b989b6c" />
-                <section title="details" ref="a00032.html#a1a60b532d24243eec8cdbafd381fd1c2" />
+              <section title="unexpectedStateException" ref="a00033.html">
+                <section title="unexpectedStateException" ref="a00033.html#af3dd85dc4cdd2dfd57605e256829b87b" />
+                <section title="~unexpectedStateException" ref="a00033.html#aab535ff3feaae830646297b16969dc04" />
+                <section title="what" ref="a00033.html#a3f676aed82c376c35d2b5bc04b989b6c" />
+                <section title="details" ref="a00033.html#a1a60b532d24243eec8cdbafd381fd1c2" />
               </section>
-              <section title="unfinishedCodeException" ref="a00033.html">
-                <section title="unfinishedCodeException" ref="a00033.html#af1b49f7d43d56cf9a9189be11b364fa0" />
-                <section title="~unfinishedCodeException" ref="a00033.html#ae9bf6925fa2e8d40aab176fe4d3d6bcd" />
-                <section title="what" ref="a00033.html#a4acaf40b4b0754e00ef79247eb95424a" />
-                <section title="details" ref="a00033.html#a0adbdd6384b7cdb3e8576be34a99c76f" />
+              <section title="unfinishedCodeException" ref="a00034.html">
+                <section title="unfinishedCodeException" ref="a00034.html#af1b49f7d43d56cf9a9189be11b364fa0" />
+                <section title="~unfinishedCodeException" ref="a00034.html#ae9bf6925fa2e8d40aab176fe4d3d6bcd" />
+                <section title="what" ref="a00034.html#a4acaf40b4b0754e00ef79247eb95424a" />
+                <section title="details" ref="a00034.html#a0adbdd6384b7cdb3e8576be34a99c76f" />
               </section>
             </section>
             <section title="destructorTracker" ref="a00009.html">
@@ -471,46 +478,46 @@
               <section title="plotParts" ref="a00023.html#aa41228b97e1b171503ca8032057bb41c" />
               <section title="plotTimingStats" ref="a00023.html#aebef6431ba821a8476cf4322add3bcf0" />
             </section>
-            <section title="tester" ref="a00028.html">
-              <section title="tester" ref="a00028.html#a6cc05095bf2aa614542fb0f533d474e2" />
-              <section title="~tester" ref="a00028.html#ab79e99149907bf96d75d929f1dc49410" />
-              <section title="addComment" ref="a00028.html#aa6c57421952ed233d62f46c7c3363dd6" />
-              <section title="addExternalTime" ref="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4" />
-              <section title="addParameter" ref="a00028.html#a1a61f18468c143dbd7c18c599fc1b695" />
-              <section title="addTimeMeasurement" ref="a00028.html#a01d742f1f0fe5d55766cb3c256b999d7" />
-              <section title="getDurationsForCurrentCycle" ref="a00028.html#ab1b14519c719b0f70b204ecbd5468ff4" />
-              <section title="random" ref="a00028.html#a3abaa7021bf1e7c8181d98e6dc78ae40" />
-              <section title="random" ref="a00028.html#a6a5d94f44bdd173c8dc11bbabadb441d" />
-              <section title="random" ref="a00028.html#aa852d2f21dc44ad214047a37ca9b9d06" />
-              <section title="setSeed" ref="a00028.html#a902049984a5425407a2a8aafffec0669" />
-              <section title="startNewRNGCycle" ref="a00028.html#ad6e6c8cec7d43a252009f13a9b0ee601" />
-              <section title="startNewTimeCycle" ref="a00028.html#a3427b96d1b0517d8b71b2c89c26943ea" />
-              <section title="writeToFile" ref="a00028.html#a76875804de961f7d87b9de2ebee1957c" />
-              <section title="comment" ref="a00028.html#afe62e0886e6b23252681d9ec14f87855" />
-              <section title="name" ref="a00028.html#a928dadceb4d75dc7cf3bb216874dcc6b" />
-              <section title="parameters" ref="a00028.html#a0cc29d4b76a800395dc61c96f7a03554" />
-              <section title="seeded" ref="a00028.html#a3901e2e2875b3eb883413713f0451c2a" />
-              <section title="seeds" ref="a00028.html#a073c37859297abdc2cba42fd06232e9d" />
-              <section title="timeMeasures" ref="a00028.html#a91d92ce07c979f993af063c372351b36" />
+            <section title="tester" ref="a00029.html">
+              <section title="tester" ref="a00029.html#a6cc05095bf2aa614542fb0f533d474e2" />
+              <section title="~tester" ref="a00029.html#ab79e99149907bf96d75d929f1dc49410" />
+              <section title="addComment" ref="a00029.html#aa6c57421952ed233d62f46c7c3363dd6" />
+              <section title="addExternalTime" ref="a00029.html#a67a7cd03f1356bb3e5c1cef32fded3e4" />
+              <section title="addParameter" ref="a00029.html#a1a61f18468c143dbd7c18c599fc1b695" />
+              <section title="addTimeMeasurement" ref="a00029.html#a01d742f1f0fe5d55766cb3c256b999d7" />
+              <section title="getDurationsForCurrentCycle" ref="a00029.html#ab1b14519c719b0f70b204ecbd5468ff4" />
+              <section title="random" ref="a00029.html#a3abaa7021bf1e7c8181d98e6dc78ae40" />
+              <section title="random" ref="a00029.html#a6a5d94f44bdd173c8dc11bbabadb441d" />
+              <section title="random" ref="a00029.html#aa852d2f21dc44ad214047a37ca9b9d06" />
+              <section title="setSeed" ref="a00029.html#a902049984a5425407a2a8aafffec0669" />
+              <section title="startNewRNGCycle" ref="a00029.html#ad6e6c8cec7d43a252009f13a9b0ee601" />
+              <section title="startNewTimeCycle" ref="a00029.html#a3427b96d1b0517d8b71b2c89c26943ea" />
+              <section title="writeToFile" ref="a00029.html#a76875804de961f7d87b9de2ebee1957c" />
+              <section title="comment" ref="a00029.html#afe62e0886e6b23252681d9ec14f87855" />
+              <section title="name" ref="a00029.html#a928dadceb4d75dc7cf3bb216874dcc6b" />
+              <section title="parameters" ref="a00029.html#a0cc29d4b76a800395dc61c96f7a03554" />
+              <section title="seeded" ref="a00029.html#a3901e2e2875b3eb883413713f0451c2a" />
+              <section title="seeds" ref="a00029.html#a073c37859297abdc2cba42fd06232e9d" />
+              <section title="timeMeasures" ref="a00029.html#a91d92ce07c979f993af063c372351b36" />
             </section>
-            <section title="testParameter" ref="a00029.html">
-              <section title="~testParameter" ref="a00029.html#af0c5f6ffc72748d4e85ff709f4edab62" />
-              <section title="toString" ref="a00029.html#ac4a4584e5b0658d84e209a20160c82cb" />
-              <section title="valueAsString" ref="a00029.html#ab52b58a5f2a820ecc0137ecd0da43053" />
-              <section title="valueAsString" ref="a00029.html#afb95c4c38bff20d5d7c629cfa8b13ed8" />
-              <section title="valueAtStep" ref="a00029.html#aa253722487cce7de5e4c40a2f4c7c3a9" />
-              <section title="max" ref="a00029.html#ab9b7a26b9cfd7679c39c56b107d66a3a" />
-              <section title="mean" ref="a00029.html#a32240ebb4edba8ac0bf8601a376c38b1" />
-              <section title="min" ref="a00029.html#ad9c145df95de9bbffba57074034c2d91" />
+            <section title="testParameter" ref="a00030.html">
+              <section title="~testParameter" ref="a00030.html#af0c5f6ffc72748d4e85ff709f4edab62" />
+              <section title="toString" ref="a00030.html#ac4a4584e5b0658d84e209a20160c82cb" />
+              <section title="valueAsString" ref="a00030.html#ab52b58a5f2a820ecc0137ecd0da43053" />
+              <section title="valueAsString" ref="a00030.html#afb95c4c38bff20d5d7c629cfa8b13ed8" />
+              <section title="valueAtStep" ref="a00030.html#aa253722487cce7de5e4c40a2f4c7c3a9" />
+              <section title="max" ref="a00030.html#ab9b7a26b9cfd7679c39c56b107d66a3a" />
+              <section title="mean" ref="a00030.html#a32240ebb4edba8ac0bf8601a376c38b1" />
+              <section title="min" ref="a00030.html#ad9c145df95de9bbffba57074034c2d91" />
             </section>
-            <section title="testParameterBase" ref="a00030.html">
-              <section title="~testParameterBase" ref="a00030.html#a1b0dcec6718d1f89841ac4f1fb2d4310" />
-              <section title="valueAsString" ref="a00030.html#a2514f1bc1f004ffd6d545c2044b26166" />
-              <section title="valueAsString" ref="a00030.html#a31a6857782aa664cce378a6a87b67593" />
-              <section title="deltaLog" ref="a00030.html#afc2046a28e4b318c3644aa2492cae56b" />
-              <section title="enabled" ref="a00030.html#a153ada4196d884c2aa8b3188d2457db5" />
-              <section title="name" ref="a00030.html#afc05d7f3106d20f69c6ef6242c31a844" />
-              <section title="steps" ref="a00030.html#a261f867bce5dacd6697c2bb035ad72d2" />
+            <section title="testParameterBase" ref="a00031.html">
+              <section title="~testParameterBase" ref="a00031.html#a1b0dcec6718d1f89841ac4f1fb2d4310" />
+              <section title="valueAsString" ref="a00031.html#a2514f1bc1f004ffd6d545c2044b26166" />
+              <section title="valueAsString" ref="a00031.html#a31a6857782aa664cce378a6a87b67593" />
+              <section title="deltaLog" ref="a00031.html#afc2046a28e4b318c3644aa2492cae56b" />
+              <section title="enabled" ref="a00031.html#a153ada4196d884c2aa8b3188d2457db5" />
+              <section title="name" ref="a00031.html#afc05d7f3106d20f69c6ef6242c31a844" />
+              <section title="steps" ref="a00031.html#a261f867bce5dacd6697c2bb035ad72d2" />
             </section>
           </section>
           <section title="Class Index" ref="classes.html" />
@@ -532,8 +539,8 @@
               <section title="rambrain::rambrainException" ref="a00025.html">
                 <section title="rambrain::incompleteSetupException" ref="a00012.html" />
                 <section title="rambrain::memoryException" ref="a00019.html" />
-                <section title="rambrain::unexpectedStateException" ref="a00032.html" />
-                <section title="rambrain::unfinishedCodeException" ref="a00033.html" />
+                <section title="rambrain::unexpectedStateException" ref="a00033.html" />
+                <section title="rambrain::unfinishedCodeException" ref="a00034.html" />
               </section>
             </section>
             <section title="rambrain::glob_off_union" ref="a00011.html" />
@@ -554,13 +561,14 @@
             </section>
             <section title="performanceTest&lt;&gt;" ref="a00023.html" />
             <section title="rambrain::rambrainglobals::rambrainConfig" ref="a00024.html" />
-            <section title="rambrain::regexMatcher" ref="a00026.html" />
-            <section title="rambrain::swapFileDesc" ref="a00027.html" />
-            <section title="tester" ref="a00028.html" />
-            <section title="testParameterBase" ref="a00030.html">
-              <section title="testParameter&lt; T &gt;" ref="a00029.html" />
+            <section title="rambrain::rambrainGlobalCriticalSectionControl" ref="a00026.html" />
+            <section title="rambrain::regexMatcher" ref="a00027.html" />
+            <section title="rambrain::swapFileDesc" ref="a00028.html" />
+            <section title="tester" ref="a00029.html" />
+            <section title="testParameterBase" ref="a00031.html">
+              <section title="testParameter&lt; T &gt;" ref="a00030.html" />
             </section>
-            <section title="rambrain::Timer" ref="a00031.html" />
+            <section title="rambrain::Timer" ref="a00032.html" />
           </section>
           <section title="Class Members" ref="functions.html">
             <section title="All" ref="functions.html">
@@ -616,15 +624,15 @@
         <section title="Files">
           <section title="File List" ref="files.html">
             <section title="src" ref="dir_68267d1309a1af8e8297ef4c3efbcdba.html">
-              <section title="common.h" ref="a00034.html">
-                <section title="global_bytesize" ref="a00034.html#abe2d051306a69fb21f8a17946b4e93ed" />
-                <section title="myScalar" ref="a00034.html#a750e2504f6799746989c6d76107bf7c1" />
-                <section title="gig" ref="a00034.html#a8525b8b73c3e1ec62bd571b3cffd1742" />
-                <section title="kib" ref="a00034.html#ac2c0fb2cc8161166cbd060cb2b85aaf1" />
-                <section title="mib" ref="a00034.html#a8526efa365cdb0cb597351c2671af168" />
+              <section title="common.h" ref="a00035.html">
+                <section title="global_bytesize" ref="a00035.html#abe2d051306a69fb21f8a17946b4e93ed" />
+                <section title="myScalar" ref="a00035.html#a750e2504f6799746989c6d76107bf7c1" />
+                <section title="gig" ref="a00035.html#a8525b8b73c3e1ec62bd571b3cffd1742" />
+                <section title="kib" ref="a00035.html#ac2c0fb2cc8161166cbd060cb2b85aaf1" />
+                <section title="mib" ref="a00035.html#a8526efa365cdb0cb597351c2671af168" />
               </section>
-              <section title="configreader.cpp" ref="a00035.html" />
-              <section title="configreader.h" ref="a00036.html">
+              <section title="configreader.cpp" ref="a00036.html" />
+              <section title="configreader.h" ref="a00037.html">
                 <section title="configLineBase" ref="a00004.html">
                   <section title="configLineBase" ref="a00004.html#a1bb597262fec80005a8e2152100a02e4" />
                   <section title="~configLineBase" ref="a00004.html#aa8ba56751a3967ffda56cef490012d0e" />
@@ -677,16 +685,16 @@
                   <section title="regex" ref="a00005.html#a78ab5e3dcf141f66f4916d9a84ec6566" />
                   <section title="streams" ref="a00005.html#a4cc1b1f7392af7deafaa9a42dc9859fc" />
                 </section>
-                <section title="swapPolicy" ref="a00036.html#a7d53dd1748d5012cafa91aa982c7cd35">
-                  <section title="fixed" ref="a00036.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149" />
-                  <section title="autoextendable" ref="a00036.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04" />
-                  <section title="interactive" ref="a00036.html#a7d53dd1748d5012cafa91aa982c7cd35afe88c03a1958b4259f0c51d68eed3213" />
+                <section title="swapPolicy" ref="a00037.html#a7d53dd1748d5012cafa91aa982c7cd35">
+                  <section title="fixed" ref="a00037.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149" />
+                  <section title="autoextendable" ref="a00037.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04" />
+                  <section title="interactive" ref="a00037.html#a7d53dd1748d5012cafa91aa982c7cd35afe88c03a1958b4259f0c51d68eed3213" />
                 </section>
               </section>
-              <section title="cyclicManagedMemory.cpp" ref="a00037.html">
-                <section title="min_elements" ref="a00037.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc" />
+              <section title="cyclicManagedMemory.cpp" ref="a00038.html">
+                <section title="min_elements" ref="a00038.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc" />
               </section>
-              <section title="cyclicManagedMemory.h" ref="a00038.html">
+              <section title="cyclicManagedMemory.h" ref="a00039.html">
                 <section title="cyclicAtime" ref="a00007.html">
                   <section title="chunk" ref="a00007.html#a710db2d46d07a035dc5e84e8f0561171" />
                   <section title="next" ref="a00007.html#a29a53c1bf4afcae6db2317ee1fc0b258" />
@@ -716,7 +724,7 @@
                   <section title="swapOutFrac" ref="a00008.html#aa6463fe9fd7f3ee56f21c17800111aa6" />
                 </section>
               </section>
-              <section title="dummyManagedMemory.h" ref="a00039.html">
+              <section title="dummyManagedMemory.h" ref="a00040.html">
                 <section title="dummyManagedMemory" ref="a00010.html">
                   <section title="dummyManagedMemory" ref="a00010.html#a404d8914ad88111d175a3607081589a0" />
                   <section title="~dummyManagedMemory" ref="a00010.html#aac2af094485c7dcd53115453a16f5159" />
@@ -728,7 +736,7 @@
                   <section title="untouch" ref="a00010.html#a72d803d7d063c828205e675b9780a294" />
                 </section>
               </section>
-              <section title="exceptions.h" ref="a00040.html">
+              <section title="exceptions.h" ref="a00041.html">
                 <section title="rambrainException" ref="a00025.html">
                   <section title="~rambrainException" ref="a00025.html#adc8b99eedc8c84ace511f44dbd46d531" />
                 </section>
@@ -744,27 +752,27 @@
                   <section title="what" ref="a00019.html#af55ac69654f5294cbec693b9d4e2b5be" />
                   <section title="details" ref="a00019.html#a6f8196d1429a6bc768600e378984ed0f" />
                 </section>
-                <section title="unexpectedStateException" ref="a00032.html">
-                  <section title="unexpectedStateException" ref="a00032.html#af3dd85dc4cdd2dfd57605e256829b87b" />
-                  <section title="~unexpectedStateException" ref="a00032.html#aab535ff3feaae830646297b16969dc04" />
-                  <section title="what" ref="a00032.html#a3f676aed82c376c35d2b5bc04b989b6c" />
-                  <section title="details" ref="a00032.html#a1a60b532d24243eec8cdbafd381fd1c2" />
+                <section title="unexpectedStateException" ref="a00033.html">
+                  <section title="unexpectedStateException" ref="a00033.html#af3dd85dc4cdd2dfd57605e256829b87b" />
+                  <section title="~unexpectedStateException" ref="a00033.html#aab535ff3feaae830646297b16969dc04" />
+                  <section title="what" ref="a00033.html#a3f676aed82c376c35d2b5bc04b989b6c" />
+                  <section title="details" ref="a00033.html#a1a60b532d24243eec8cdbafd381fd1c2" />
                 </section>
-                <section title="unfinishedCodeException" ref="a00033.html">
-                  <section title="unfinishedCodeException" ref="a00033.html#af1b49f7d43d56cf9a9189be11b364fa0" />
-                  <section title="~unfinishedCodeException" ref="a00033.html#ae9bf6925fa2e8d40aab176fe4d3d6bcd" />
-                  <section title="what" ref="a00033.html#a4acaf40b4b0754e00ef79247eb95424a" />
-                  <section title="details" ref="a00033.html#a0adbdd6384b7cdb3e8576be34a99c76f" />
+                <section title="unfinishedCodeException" ref="a00034.html">
+                  <section title="unfinishedCodeException" ref="a00034.html#af1b49f7d43d56cf9a9189be11b364fa0" />
+                  <section title="~unfinishedCodeException" ref="a00034.html#ae9bf6925fa2e8d40aab176fe4d3d6bcd" />
+                  <section title="what" ref="a00034.html#a4acaf40b4b0754e00ef79247eb95424a" />
+                  <section title="details" ref="a00034.html#a0adbdd6384b7cdb3e8576be34a99c76f" />
                 </section>
               </section>
-              <section title="git_info.h" ref="a00041.html">
-                <section title="gitCommit" ref="a00041.html#a7f5007ab114a0895060f2e6437200ea9" />
-                <section title="gitDiff" ref="a00041.html#a73155ddd51dc782d33249917cd27ae19" />
+              <section title="git_info.h" ref="a00042.html">
+                <section title="gitCommit" ref="a00042.html#a7f5007ab114a0895060f2e6437200ea9" />
+                <section title="gitDiff" ref="a00042.html#a73155ddd51dc782d33249917cd27ae19" />
               </section>
-              <section title="initialisation.cpp" ref="a00042.html" />
-              <section title="initialisation.h" ref="a00043.html" />
-              <section title="managedDummySwap.cpp" ref="a00044.html" />
-              <section title="managedDummySwap.h" ref="a00045.html">
+              <section title="initialisation.cpp" ref="a00043.html" />
+              <section title="initialisation.h" ref="a00044.html" />
+              <section title="managedDummySwap.cpp" ref="a00045.html" />
+              <section title="managedDummySwap.h" ref="a00046.html">
                 <section title="managedDummySwap" ref="a00013.html">
                   <section title="managedDummySwap" ref="a00013.html#a9bebce00e8e8a69acae98feb30c50530" />
                   <section title="~managedDummySwap" ref="a00013.html#a014fdfbac0989338a9412fa1f6cfb1bb" />
@@ -775,11 +783,11 @@
                   <section title="swapOut" ref="a00013.html#ab8309f8bee2baf4cb692529fc22c33b6" />
                 </section>
               </section>
-              <section title="managedFileSwap.cpp" ref="a00046.html" />
-              <section title="managedFileSwap.h" ref="a00047.html">
-                <section title="swapFileDesc" ref="a00027.html">
-                  <section title="currentSize" ref="a00027.html#a38f03520f7cfe57187d74667dd9ed768" />
-                  <section title="fileno" ref="a00027.html#ad1e2f059bfcb37b60e2f0aea45d7b6a3" />
+              <section title="managedFileSwap.cpp" ref="a00047.html" />
+              <section title="managedFileSwap.h" ref="a00048.html">
+                <section title="swapFileDesc" ref="a00028.html">
+                  <section title="currentSize" ref="a00028.html#a38f03520f7cfe57187d74667dd9ed768" />
+                  <section title="fileno" ref="a00028.html#ad1e2f059bfcb37b60e2f0aea45d7b6a3" />
                 </section>
                 <section title="aiotracker" ref="a00002.html">
                   <section title="aio" ref="a00002.html#a84e1e9e1423f48e05d0ff6f80ac9e176" />
@@ -858,19 +866,19 @@
                   <section title="swapFileResizeFrac" ref="a00014.html#a15571f6e41e70372c94702f8bc52a78e" />
                   <section title="swapFiles" ref="a00014.html#a79c21c46326f58b98c4779885e0061e9" />
                 </section>
-                <section title="global_offset" ref="a00047.html#a72b644584fab6ba1add401162788507b" />
-                <section title="pageChunkStatus" ref="a00047.html#a631233f0a428f73b49c774cf84b49c15">
-                  <section title="PAGE_FREE" ref="a00047.html#a631233f0a428f73b49c774cf84b49c15aa924f4aa2de3b0d29198f2845cbb0e18" />
-                  <section title="PAGE_PART" ref="a00047.html#a631233f0a428f73b49c774cf84b49c15a0d8281d3b827ce8c96ea2fed70135c44" />
-                  <section title="PAGE_END" ref="a00047.html#a631233f0a428f73b49c774cf84b49c15a2c28acb7053bf3047cc823c444613ec6" />
-                  <section title="PAGE_WASREAD" ref="a00047.html#a631233f0a428f73b49c774cf84b49c15ab21098f1711ad1dff422b74bf201144c" />
-                  <section title="PAGE_UNKNOWN_STATE" ref="a00047.html#a631233f0a428f73b49c774cf84b49c15a7b8646de401eda8a0bfbb5c8f0a3e887" />
+                <section title="global_offset" ref="a00048.html#a72b644584fab6ba1add401162788507b" />
+                <section title="pageChunkStatus" ref="a00048.html#a631233f0a428f73b49c774cf84b49c15">
+                  <section title="PAGE_FREE" ref="a00048.html#a631233f0a428f73b49c774cf84b49c15aa924f4aa2de3b0d29198f2845cbb0e18" />
+                  <section title="PAGE_PART" ref="a00048.html#a631233f0a428f73b49c774cf84b49c15a0d8281d3b827ce8c96ea2fed70135c44" />
+                  <section title="PAGE_END" ref="a00048.html#a631233f0a428f73b49c774cf84b49c15a2c28acb7053bf3047cc823c444613ec6" />
+                  <section title="PAGE_WASREAD" ref="a00048.html#a631233f0a428f73b49c774cf84b49c15ab21098f1711ad1dff422b74bf201144c" />
+                  <section title="PAGE_UNKNOWN_STATE" ref="a00048.html#a631233f0a428f73b49c774cf84b49c15a7b8646de401eda8a0bfbb5c8f0a3e887" />
                 </section>
               </section>
-              <section title="managedMemory.cpp" ref="a00048.html">
-                <section title="config" ref="a00048.html#ad02508d72047bc55a38eda857e4816c1" />
+              <section title="managedMemory.cpp" ref="a00049.html">
+                <section title="config" ref="a00049.html#ad02508d72047bc55a38eda857e4816c1" />
               </section>
-              <section title="managedMemory.h" ref="a00049.html">
+              <section title="managedMemory.h" ref="a00050.html">
                 <section title="managedPtr" ref="a00017.html">
                   <section title="managedPtr" ref="a00017.html#a70120a3e9fcb2b3fd79033860888e877" />
                   <section title="managedPtr" ref="a00017.html#acf190b0d5a8c6832a0be401a1d283d81" />
@@ -976,8 +984,8 @@
                   <section title="swap_out_scheduled_bytes" ref="a00015.html#ab88d08812cd4ac88d5fc7ce8dd358d93" />
                 </section>
               </section>
-              <section title="managedMemoryChunk.cpp" ref="a00050.html" />
-              <section title="managedMemoryChunk.h" ref="a00051.html">
+              <section title="managedMemoryChunk.cpp" ref="a00051.html" />
+              <section title="managedMemoryChunk.h" ref="a00052.html">
                 <section title="managedMemoryChunk" ref="a00016.html">
                   <section title="managedMemoryChunk" ref="a00016.html#a7dd543c33ae52938801cf2071ca087ca" />
                   <section title="managedMemoryChunk" ref="a00016.html#abe796a36e96c24fbf51ae1088a624711" />
@@ -993,21 +1001,21 @@
                   <section title="swapBuf" ref="a00016.html#a1b41888b2048d7cf6cad4089e3f85b2d" />
                   <section title="useCnt" ref="a00016.html#a0464c7125ccfd3a3b5760bf9c67d86eb" />
                 </section>
-                <section title="memoryAtime" ref="a00051.html#a7ac90afa0cd2573bc0a73c6e4c439f81" />
-                <section title="memoryID" ref="a00051.html#a44865184cd1937b742c135666f0460cd" />
-                <section title="memoryStatus" ref="a00051.html#a2aa4b6f9186dc50dad74cf1abd3799c2">
-                  <section title="MEM_ROOT" ref="a00051.html#a2aa4b6f9186dc50dad74cf1abd3799c2ae3335597107739bf9a94567aa64a11c5" />
-                  <section title="MEM_ALLOCATED_INUSE_READ" ref="a00051.html#a2aa4b6f9186dc50dad74cf1abd3799c2a610971eb8090b2a006cab2a9d0b23e1a" />
-                  <section title="MEM_ALLOCATED_INUSE_WRITE" ref="a00051.html#a2aa4b6f9186dc50dad74cf1abd3799c2a153517e34aa29157bc4d3263790a2dc7" />
-                  <section title="MEM_ALLOCATED_INUSE" ref="a00051.html#a2aa4b6f9186dc50dad74cf1abd3799c2a8a15f59a65c3041122f569a366a70df7" />
-                  <section title="MEM_ALLOCATED" ref="a00051.html#a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9" />
-                  <section title="MEM_SWAPPED" ref="a00051.html#a2aa4b6f9186dc50dad74cf1abd3799c2af195d1470572e586d7a445d4675dc831" />
-                  <section title="MEM_SWAPIN" ref="a00051.html#a2aa4b6f9186dc50dad74cf1abd3799c2a43e2d4c7a961e990380e6d0f4e5b526d" />
-                  <section title="MEM_SWAPOUT" ref="a00051.html#a2aa4b6f9186dc50dad74cf1abd3799c2ad850c17c7f18c71613429c217998c013" />
+                <section title="memoryAtime" ref="a00052.html#a7ac90afa0cd2573bc0a73c6e4c439f81" />
+                <section title="memoryID" ref="a00052.html#a44865184cd1937b742c135666f0460cd" />
+                <section title="memoryStatus" ref="a00052.html#a2aa4b6f9186dc50dad74cf1abd3799c2">
+                  <section title="MEM_ROOT" ref="a00052.html#a2aa4b6f9186dc50dad74cf1abd3799c2ae3335597107739bf9a94567aa64a11c5" />
+                  <section title="MEM_ALLOCATED_INUSE_READ" ref="a00052.html#a2aa4b6f9186dc50dad74cf1abd3799c2a610971eb8090b2a006cab2a9d0b23e1a" />
+                  <section title="MEM_ALLOCATED_INUSE_WRITE" ref="a00052.html#a2aa4b6f9186dc50dad74cf1abd3799c2a153517e34aa29157bc4d3263790a2dc7" />
+                  <section title="MEM_ALLOCATED_INUSE" ref="a00052.html#a2aa4b6f9186dc50dad74cf1abd3799c2a8a15f59a65c3041122f569a366a70df7" />
+                  <section title="MEM_ALLOCATED" ref="a00052.html#a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9" />
+                  <section title="MEM_SWAPPED" ref="a00052.html#a2aa4b6f9186dc50dad74cf1abd3799c2af195d1470572e586d7a445d4675dc831" />
+                  <section title="MEM_SWAPIN" ref="a00052.html#a2aa4b6f9186dc50dad74cf1abd3799c2a43e2d4c7a961e990380e6d0f4e5b526d" />
+                  <section title="MEM_SWAPOUT" ref="a00052.html#a2aa4b6f9186dc50dad74cf1abd3799c2ad850c17c7f18c71613429c217998c013" />
                 </section>
               </section>
-              <section title="managedPtr.cpp" ref="a00052.html" />
-              <section title="managedPtr.h" ref="a00053.html">
+              <section title="managedPtr.cpp" ref="a00053.html" />
+              <section title="managedPtr.h" ref="a00054.html">
                 <section title="adhereTo" ref="a00001.html">
                   <section title="adhereTo" ref="a00001.html#a0cc6fda5677ecda5c6b367e863e27b3e" />
                   <section title="adhereTo" ref="a00001.html#afbc94c868ff3e5732474e5014bb67783" />
@@ -1070,9 +1078,16 @@
                   <section title="loadedReadable" ref="a00001.html#ab3e4380b00ff3aeb0223f5ea76855f01" />
                   <section title="loadedWritable" ref="a00001.html#a4aa173fa41b3dd2f9b944f6952de0790" />
                 </section>
+                <section title="rambrainGlobalCriticalSectionControl" ref="a00026.html">
+                  <section title="rambrainGlobalCriticalSectionControl" ref="a00026.html#a2eba336227be329754d0cbfad1fa7fb9" />
+                  <section title="~rambrainGlobalCriticalSectionControl" ref="a00026.html#ae4e628e1cade22e5e3ad1de7f34127bb" />
+                  <section title="start" ref="a00026.html#a92057e6db5750cd9b730e415ab56cbd6" />
+                  <section title="stop" ref="a00026.html#a0df23dfab5cf05d28b27de79dad30dd1" />
+                  <section title="locksByUser" ref="a00026.html#a6c7b5ba71d0137485e5149986e562807" />
+                </section>
               </section>
-              <section title="managedSwap.cpp" ref="a00054.html" />
-              <section title="managedSwap.h" ref="a00055.html">
+              <section title="managedSwap.cpp" ref="a00055.html" />
+              <section title="managedSwap.h" ref="a00056.html">
                 <section title="managedSwap" ref="a00018.html">
                   <section title="managedSwap" ref="a00018.html#a52dfde8045a75f9e9fcdc1d2d5d237d1" />
                   <section title="~managedSwap" ref="a00018.html#a70fa001b0161095d2298620ecc5d5838" />
@@ -1102,9 +1117,9 @@
                   <section title="totalSwapActionsQueued" ref="a00018.html#a4d0644a5dc6b03baaf1bc8ae3c4bfee9" />
                 </section>
               </section>
-              <section title="rambrain_atomics.h" ref="a00056.html" />
-              <section title="rambrainconfig.cpp" ref="a00057.html" />
-              <section title="rambrainconfig.h" ref="a00058.html">
+              <section title="rambrain_atomics.h" ref="a00057.html" />
+              <section title="rambrainconfig.cpp" ref="a00058.html" />
+              <section title="rambrainconfig.h" ref="a00059.html">
                 <section title="rambrainConfig" ref="a00024.html">
                   <section title="rambrainConfig" ref="a00024.html#adf79cce9ad6dde113f1a25c7f28978cc" />
                   <section title="~rambrainConfig" ref="a00024.html#a50356f5e6333c5094970bf201bcca578" />
@@ -1120,87 +1135,87 @@
                   <section title="swap" ref="a00024.html#a8352178ea447b0e8551dc40c5fccd002" />
                 </section>
               </section>
-              <section title="regexmatcher.cpp" ref="a00059.html" />
-              <section title="regexmatcher.h" ref="a00060.html">
-                <section title="regexMatcher" ref="a00026.html">
-                  <section title="matchType" ref="a00026.html#acf6754e0f0df10007f5494899ed31229">
-                    <section title="integer" ref="a00026.html#acf6754e0f0df10007f5494899ed31229afa1a394563a55a77a4ac5b8541014aae" />
-                    <section title="floating" ref="a00026.html#acf6754e0f0df10007f5494899ed31229a4afe10bda6318109694a35c63aff6548" />
-                    <section title="units" ref="a00026.html#acf6754e0f0df10007f5494899ed31229a2b6e9b3cb4427fe84fcf45206b171541" />
-                    <section title="text" ref="a00026.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2" />
-                    <section title="alphanumtext" ref="a00026.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418" />
-                    <section title="boolean" ref="a00026.html#acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137" />
-                    <section title="swapfilename" ref="a00026.html#acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74" />
+              <section title="regexmatcher.cpp" ref="a00060.html" />
+              <section title="regexmatcher.h" ref="a00061.html">
+                <section title="regexMatcher" ref="a00027.html">
+                  <section title="matchType" ref="a00027.html#acf6754e0f0df10007f5494899ed31229">
+                    <section title="integer" ref="a00027.html#acf6754e0f0df10007f5494899ed31229afa1a394563a55a77a4ac5b8541014aae" />
+                    <section title="floating" ref="a00027.html#acf6754e0f0df10007f5494899ed31229a4afe10bda6318109694a35c63aff6548" />
+                    <section title="units" ref="a00027.html#acf6754e0f0df10007f5494899ed31229a2b6e9b3cb4427fe84fcf45206b171541" />
+                    <section title="text" ref="a00027.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2" />
+                    <section title="alphanumtext" ref="a00027.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418" />
+                    <section title="boolean" ref="a00027.html#acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137" />
+                    <section title="swapfilename" ref="a00027.html#acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74" />
                   </section>
-                  <section title="regexMatcher" ref="a00026.html#a85bbcde8ed2102552f5aa6fc521594da" />
-                  <section title="createRegexMatching" ref="a00026.html#a9c7cf7261cd1af242d3792cb622f34e4" />
-                  <section title="matchConfigBlock" ref="a00026.html#a952ca26ade04a532e24f85dbb2c748e4" />
-                  <section title="matchKeyEqualsValue" ref="a00026.html#a4c3ce2c7a2beff16c71fbf5c33396356" />
-                  <section title="matchKeyEqualsValue" ref="a00026.html#ac7fa4bee7ced8140de8cea27640cfc09" />
-                  <section title="splitDoubleValueUnit" ref="a00026.html#addb28ec0da837148b315a76d3e86d3dc" />
-                  <section title="splitIntegerValueUnit" ref="a00026.html#a05b70b65e3965866b3d9dfbdcacad5d6" />
-                  <section title="substituteHomeDir" ref="a00026.html#a2fe1eeb1a8a33964f7211daeeaf12891" />
+                  <section title="regexMatcher" ref="a00027.html#a85bbcde8ed2102552f5aa6fc521594da" />
+                  <section title="createRegexMatching" ref="a00027.html#a9c7cf7261cd1af242d3792cb622f34e4" />
+                  <section title="matchConfigBlock" ref="a00027.html#a952ca26ade04a532e24f85dbb2c748e4" />
+                  <section title="matchKeyEqualsValue" ref="a00027.html#a4c3ce2c7a2beff16c71fbf5c33396356" />
+                  <section title="matchKeyEqualsValue" ref="a00027.html#ac7fa4bee7ced8140de8cea27640cfc09" />
+                  <section title="splitDoubleValueUnit" ref="a00027.html#addb28ec0da837148b315a76d3e86d3dc" />
+                  <section title="splitIntegerValueUnit" ref="a00027.html#a05b70b65e3965866b3d9dfbdcacad5d6" />
+                  <section title="substituteHomeDir" ref="a00027.html#a2fe1eeb1a8a33964f7211daeeaf12891" />
                 </section>
               </section>
-              <section title="timer.cpp" ref="a00061.html" />
-              <section title="timer.h" ref="a00062.html">
-                <section title="Timer" ref="a00031.html">
-                  <section title="Timer" ref="a00031.html#a2c383399b9ca73789a3bb5625632b9dd" />
+              <section title="timer.cpp" ref="a00062.html" />
+              <section title="timer.h" ref="a00063.html">
+                <section title="Timer" ref="a00032.html">
+                  <section title="Timer" ref="a00032.html#a2c383399b9ca73789a3bb5625632b9dd" />
                 </section>
               </section>
             </section>
             <section title="tests" ref="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">
-              <section title="allTests.cpp" ref="a00063.html">
-                <section title="main" ref="a00063.html#a3c04138a5bfe5d72780bb7e82a18e627" />
-              </section>
-              <section title="configTest.cpp" ref="a00064.html">
-                <section title="configTestGetSwap" ref="a00064.html#a304fe942b42713ebcebb2aba88028bb5" />
+              <section title="allTests.cpp" ref="a00064.html">
                 <section title="main" ref="a00064.html#a3c04138a5bfe5d72780bb7e82a18e627" />
               </section>
-              <section title="integrationTests.cpp" ref="a00065.html">
+              <section title="configTest.cpp" ref="a00065.html">
+                <section title="configTestGetSwap" ref="a00065.html#a304fe942b42713ebcebb2aba88028bb5" />
                 <section title="main" ref="a00065.html#a3c04138a5bfe5d72780bb7e82a18e627" />
               </section>
-              <section title="memeater.cpp" ref="a00066.html">
+              <section title="integrationTests.cpp" ref="a00066.html">
                 <section title="main" ref="a00066.html#a3c04138a5bfe5d72780bb7e82a18e627" />
               </section>
-              <section title="mpitest.cpp" ref="a00067.html">
+              <section title="memeater.cpp" ref="a00067.html">
                 <section title="main" ref="a00067.html#a3c04138a5bfe5d72780bb7e82a18e627" />
               </section>
-              <section title="performanceTestClasses.cpp" ref="a00068.html">
-                <section title="TESTSTATICS" ref="a00068.html#a26ae4c36275297208e567385c2f52d9c" />
-                <section title="TESTSTATICS" ref="a00068.html#a40dbb801aa3ea387d7cdad8a055d9f6a" />
-                <section title="TESTSTATICS" ref="a00068.html#aa888f1306a8f53d34ac167fff944fe64" />
-                <section title="TESTSTATICS" ref="a00068.html#ad8c4e5016dd2f7cecf0cd7308ef5274e" />
-                <section title="TESTSTATICS" ref="a00068.html#a2e37c569c981f101ea16feb243ab9463" />
-                <section title="TESTSTATICS" ref="a00068.html#a631e0564d8b17b2ac6d95c81819a872e" />
-                <section title="TESTSTATICS" ref="a00068.html#ae8f4918b56515b7a9c25ff10e4429021" />
-                <section title="TESTSTATICS" ref="a00068.html#ac655a3a668c2ed56ebe3b59c695e6697" />
-                <section title="TESTSTATICS" ref="a00068.html#a672f43927e3e75987447438229edc50c" />
-                <section title="TESTSTATICS" ref="a00068.html#a60941ebedab2e69540164bc8f18e1161" />
-                <section title="TESTSTATICS" ref="a00068.html#a2156a0b5b8120f96a8159b162dceaec5" />
-                <section title="TESTSTATICS" ref="a00068.html#a156b148adb86e8d87b1eee751138122f" />
-                <section title="TESTSTATICS" ref="a00068.html#ad61556d383378ff650f8df086737136f" />
-                <section title="TESTSTATICS" ref="a00068.html#a96405547710ead8b3030a73ee6d82002" />
+              <section title="mpitest.cpp" ref="a00068.html">
+                <section title="main" ref="a00068.html#a3c04138a5bfe5d72780bb7e82a18e627" />
               </section>
-              <section title="performanceTestClasses.h" ref="a00069.html">
-                <section title="testParameterBase" ref="a00030.html">
-                  <section title="~testParameterBase" ref="a00030.html#a1b0dcec6718d1f89841ac4f1fb2d4310" />
-                  <section title="valueAsString" ref="a00030.html#a2514f1bc1f004ffd6d545c2044b26166" />
-                  <section title="valueAsString" ref="a00030.html#a31a6857782aa664cce378a6a87b67593" />
-                  <section title="deltaLog" ref="a00030.html#afc2046a28e4b318c3644aa2492cae56b" />
-                  <section title="enabled" ref="a00030.html#a153ada4196d884c2aa8b3188d2457db5" />
-                  <section title="name" ref="a00030.html#afc05d7f3106d20f69c6ef6242c31a844" />
-                  <section title="steps" ref="a00030.html#a261f867bce5dacd6697c2bb035ad72d2" />
+              <section title="performanceTestClasses.cpp" ref="a00069.html">
+                <section title="TESTSTATICS" ref="a00069.html#a26ae4c36275297208e567385c2f52d9c" />
+                <section title="TESTSTATICS" ref="a00069.html#a40dbb801aa3ea387d7cdad8a055d9f6a" />
+                <section title="TESTSTATICS" ref="a00069.html#aa888f1306a8f53d34ac167fff944fe64" />
+                <section title="TESTSTATICS" ref="a00069.html#ad8c4e5016dd2f7cecf0cd7308ef5274e" />
+                <section title="TESTSTATICS" ref="a00069.html#a2e37c569c981f101ea16feb243ab9463" />
+                <section title="TESTSTATICS" ref="a00069.html#a631e0564d8b17b2ac6d95c81819a872e" />
+                <section title="TESTSTATICS" ref="a00069.html#ae8f4918b56515b7a9c25ff10e4429021" />
+                <section title="TESTSTATICS" ref="a00069.html#ac655a3a668c2ed56ebe3b59c695e6697" />
+                <section title="TESTSTATICS" ref="a00069.html#a672f43927e3e75987447438229edc50c" />
+                <section title="TESTSTATICS" ref="a00069.html#a60941ebedab2e69540164bc8f18e1161" />
+                <section title="TESTSTATICS" ref="a00069.html#a2156a0b5b8120f96a8159b162dceaec5" />
+                <section title="TESTSTATICS" ref="a00069.html#a156b148adb86e8d87b1eee751138122f" />
+                <section title="TESTSTATICS" ref="a00069.html#ad61556d383378ff650f8df086737136f" />
+                <section title="TESTSTATICS" ref="a00069.html#a96405547710ead8b3030a73ee6d82002" />
+              </section>
+              <section title="performanceTestClasses.h" ref="a00070.html">
+                <section title="testParameterBase" ref="a00031.html">
+                  <section title="~testParameterBase" ref="a00031.html#a1b0dcec6718d1f89841ac4f1fb2d4310" />
+                  <section title="valueAsString" ref="a00031.html#a2514f1bc1f004ffd6d545c2044b26166" />
+                  <section title="valueAsString" ref="a00031.html#a31a6857782aa664cce378a6a87b67593" />
+                  <section title="deltaLog" ref="a00031.html#afc2046a28e4b318c3644aa2492cae56b" />
+                  <section title="enabled" ref="a00031.html#a153ada4196d884c2aa8b3188d2457db5" />
+                  <section title="name" ref="a00031.html#afc05d7f3106d20f69c6ef6242c31a844" />
+                  <section title="steps" ref="a00031.html#a261f867bce5dacd6697c2bb035ad72d2" />
                 </section>
-                <section title="testParameter" ref="a00029.html">
-                  <section title="~testParameter" ref="a00029.html#af0c5f6ffc72748d4e85ff709f4edab62" />
-                  <section title="toString" ref="a00029.html#ac4a4584e5b0658d84e209a20160c82cb" />
-                  <section title="valueAsString" ref="a00029.html#ab52b58a5f2a820ecc0137ecd0da43053" />
-                  <section title="valueAsString" ref="a00029.html#afb95c4c38bff20d5d7c629cfa8b13ed8" />
-                  <section title="valueAtStep" ref="a00029.html#aa253722487cce7de5e4c40a2f4c7c3a9" />
-                  <section title="max" ref="a00029.html#ab9b7a26b9cfd7679c39c56b107d66a3a" />
-                  <section title="mean" ref="a00029.html#a32240ebb4edba8ac0bf8601a376c38b1" />
-                  <section title="min" ref="a00029.html#ad9c145df95de9bbffba57074034c2d91" />
+                <section title="testParameter" ref="a00030.html">
+                  <section title="~testParameter" ref="a00030.html#af0c5f6ffc72748d4e85ff709f4edab62" />
+                  <section title="toString" ref="a00030.html#ac4a4584e5b0658d84e209a20160c82cb" />
+                  <section title="valueAsString" ref="a00030.html#ab52b58a5f2a820ecc0137ecd0da43053" />
+                  <section title="valueAsString" ref="a00030.html#afb95c4c38bff20d5d7c629cfa8b13ed8" />
+                  <section title="valueAtStep" ref="a00030.html#aa253722487cce7de5e4c40a2f4c7c3a9" />
+                  <section title="max" ref="a00030.html#ab9b7a26b9cfd7679c39c56b107d66a3a" />
+                  <section title="mean" ref="a00030.html#a32240ebb4edba8ac0bf8601a376c38b1" />
+                  <section title="min" ref="a00030.html#ad9c145df95de9bbffba57074034c2d91" />
                 </section>
                 <section title="performanceTest" ref="a00021.html" />
                 <section title="performanceTest&lt;&gt;" ref="a00023.html">
@@ -1232,170 +1247,170 @@
                   <section title="~performanceTest" ref="a00022.html#a8c8ab2f1aea9a9d1fed6f5a929cc26e1" />
                   <section title="parameter" ref="a00022.html#ace2b7b732cc8bfdc7e41750d6cbd17ba" />
                 </section>
-                <section title="TWOPARAMTEST" ref="a00069.html#af5ca33e1ddc335f5e8438d775535b0d0" />
-                <section title="TWOPARAMTEST" ref="a00069.html#a5663d51d4b9c8c9988ff8cbd8780d018" />
-                <section title="TWOPARAMTEST" ref="a00069.html#adc7ed635696750ca3486225a7ef3a209" />
-                <section title="TWOPARAMTEST" ref="a00069.html#a03eea53352624c0351908236da8b000b" />
-                <section title="TWOPARAMTEST" ref="a00069.html#ac1c16114d84f6de4765ad12bcdcdfc80" />
-                <section title="TWOPARAMTEST" ref="a00069.html#aca0ebc1cda2a1ba2247892992b9b2598" />
-                <section title="TWOPARAMTEST" ref="a00069.html#a65459be39ba8a03c70cd618b8584ef11" />
-                <section title="TWOPARAMTEST" ref="a00069.html#a9ece3a428d0bf18985f9439f0733f6c7" />
-                <section title="TWOPARAMTEST" ref="a00069.html#a4da2972944384639cd317c406af1a560" />
-                <section title="TWOPARAMTEST" ref="a00069.html#ae38158b9042e7071d1ab73a9a8f91f3e" />
-                <section title="TWOPARAMTEST" ref="a00069.html#a369f3619b3958e07bfd0e92c31d9b19f" />
-                <section title="TWOPARAMTEST" ref="a00069.html#a1fa05a65451ce4beadfe79f2ad6ec8f9" />
-                <section title="TWOPARAMTEST" ref="a00069.html#a0715fad62e359b618fa3b2c347ae95d1" />
-                <section title="TWOPARAMTEST" ref="a00069.html#a0487402c9462101d58322eaf729423b6" />
+                <section title="TWOPARAMTEST" ref="a00070.html#af5ca33e1ddc335f5e8438d775535b0d0" />
+                <section title="TWOPARAMTEST" ref="a00070.html#a5663d51d4b9c8c9988ff8cbd8780d018" />
+                <section title="TWOPARAMTEST" ref="a00070.html#adc7ed635696750ca3486225a7ef3a209" />
+                <section title="TWOPARAMTEST" ref="a00070.html#a03eea53352624c0351908236da8b000b" />
+                <section title="TWOPARAMTEST" ref="a00070.html#ac1c16114d84f6de4765ad12bcdcdfc80" />
+                <section title="TWOPARAMTEST" ref="a00070.html#aca0ebc1cda2a1ba2247892992b9b2598" />
+                <section title="TWOPARAMTEST" ref="a00070.html#a65459be39ba8a03c70cd618b8584ef11" />
+                <section title="TWOPARAMTEST" ref="a00070.html#a9ece3a428d0bf18985f9439f0733f6c7" />
+                <section title="TWOPARAMTEST" ref="a00070.html#a4da2972944384639cd317c406af1a560" />
+                <section title="TWOPARAMTEST" ref="a00070.html#ae38158b9042e7071d1ab73a9a8f91f3e" />
+                <section title="TWOPARAMTEST" ref="a00070.html#a369f3619b3958e07bfd0e92c31d9b19f" />
+                <section title="TWOPARAMTEST" ref="a00070.html#a1fa05a65451ce4beadfe79f2ad6ec8f9" />
+                <section title="TWOPARAMTEST" ref="a00070.html#a0715fad62e359b618fa3b2c347ae95d1" />
+                <section title="TWOPARAMTEST" ref="a00070.html#a0487402c9462101d58322eaf729423b6" />
               </section>
-              <section title="performanceTests.cpp" ref="a00070.html">
-                <section title="main" ref="a00070.html#a3c04138a5bfe5d72780bb7e82a18e627" />
+              <section title="performanceTests.cpp" ref="a00071.html">
+                <section title="main" ref="a00071.html#a3c04138a5bfe5d72780bb7e82a18e627" />
               </section>
-              <section title="performanceTests.h" ref="a00071.html" />
-              <section title="performanceTestsWrapper.cpp" ref="a00072.html">
-                <section title="main" ref="a00072.html#a3c04138a5bfe5d72780bb7e82a18e627" />
+              <section title="performanceTests.h" ref="a00072.html" />
+              <section title="performanceTestsWrapper.cpp" ref="a00073.html">
+                <section title="main" ref="a00073.html#a3c04138a5bfe5d72780bb7e82a18e627" />
               </section>
-              <section title="testAdhereTo.cpp" ref="a00073.html">
-                <section title="TEST" ref="a00073.html#a0f8a4b5152ab8f3909aba53869627a74" />
-                <section title="TEST" ref="a00073.html#a22f5f265ef307ae746928c430c1b1e30" />
-                <section title="TEST" ref="a00073.html#a28fdac7bfa7e91512d09eb9c3b139ce5" />
-                <section title="TEST" ref="a00073.html#a137db832b9dda1490897e32b13059a24" />
-                <section title="TEST" ref="a00073.html#a339f6fd734be72abd42afa17a4345d85" />
-                <section title="TEST" ref="a00073.html#a3013c4ff517165d2aa7466667c3ce4d3" />
-                <section title="TEST" ref="a00073.html#a1364e79218a2e6616939b86512053b16" />
-                <section title="TEST" ref="a00073.html#aaf3f56b616e96dfd62e1739c84622b3c" />
-                <section title="IGNORE_TEST_WARNINGS" ref="a00073.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
-                <section title="RESTORE_WARNINGS" ref="a00073.html#a3d9512de8648bd4680902a4999028b5f" />
+              <section title="testAdhereTo.cpp" ref="a00074.html">
+                <section title="TEST" ref="a00074.html#a0f8a4b5152ab8f3909aba53869627a74" />
+                <section title="TEST" ref="a00074.html#a22f5f265ef307ae746928c430c1b1e30" />
+                <section title="TEST" ref="a00074.html#a28fdac7bfa7e91512d09eb9c3b139ce5" />
+                <section title="TEST" ref="a00074.html#a137db832b9dda1490897e32b13059a24" />
+                <section title="TEST" ref="a00074.html#a339f6fd734be72abd42afa17a4345d85" />
+                <section title="TEST" ref="a00074.html#a3013c4ff517165d2aa7466667c3ce4d3" />
+                <section title="TEST" ref="a00074.html#a1364e79218a2e6616939b86512053b16" />
+                <section title="TEST" ref="a00074.html#aaf3f56b616e96dfd62e1739c84622b3c" />
+                <section title="IGNORE_TEST_WARNINGS" ref="a00074.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
+                <section title="RESTORE_WARNINGS" ref="a00074.html#a3d9512de8648bd4680902a4999028b5f" />
               </section>
-              <section title="testConfigLine.cpp" ref="a00074.html">
-                <section title="TEST" ref="a00074.html#a6847c350faa701a37d439ec277e1c08e" />
-                <section title="TEST" ref="a00074.html#ac3fa8757f098717986ea32d04cebceec" />
+              <section title="testConfigLine.cpp" ref="a00075.html">
+                <section title="TEST" ref="a00075.html#a6847c350faa701a37d439ec277e1c08e" />
+                <section title="TEST" ref="a00075.html#ac3fa8757f098717986ea32d04cebceec" />
               </section>
-              <section title="testConfigReader.cpp" ref="a00075.html">
-                <section title="TEST" ref="a00075.html#a7e9890c6706de981c9a1e00a8e2cd5e0" />
-                <section title="TEST" ref="a00075.html#a018867a1020a0ae4a70a5af2cbe85996" />
-                <section title="TEST" ref="a00075.html#a31e3a7d2d39be82a5f37a992da830b2a" />
-                <section title="TEST" ref="a00075.html#a57687a32c126170c4377dd1ef6dab08c" />
-                <section title="TEST" ref="a00075.html#a049adfaa98fafe4a9df14761b5a876a7" />
-                <section title="TEST" ref="a00075.html#a7427d91881af4e2a48665507d80a4d26" />
-                <section title="TEST" ref="a00075.html#a9f0b95e46171bd5b9ba1b36d05d200f1" />
-                <section title="TEST" ref="a00075.html#add1d3d306a5c059a3b3ac82d148fa390" />
-                <section title="TEST" ref="a00075.html#a9ebf36b8971bb04221889ab2435e581c" />
-                <section title="TEST" ref="a00075.html#ac6a417da4062c14c515333d8efe1da38" />
+              <section title="testConfigReader.cpp" ref="a00076.html">
+                <section title="TEST" ref="a00076.html#a7e9890c6706de981c9a1e00a8e2cd5e0" />
+                <section title="TEST" ref="a00076.html#a018867a1020a0ae4a70a5af2cbe85996" />
+                <section title="TEST" ref="a00076.html#a31e3a7d2d39be82a5f37a992da830b2a" />
+                <section title="TEST" ref="a00076.html#a57687a32c126170c4377dd1ef6dab08c" />
+                <section title="TEST" ref="a00076.html#a049adfaa98fafe4a9df14761b5a876a7" />
+                <section title="TEST" ref="a00076.html#a7427d91881af4e2a48665507d80a4d26" />
+                <section title="TEST" ref="a00076.html#a9f0b95e46171bd5b9ba1b36d05d200f1" />
+                <section title="TEST" ref="a00076.html#add1d3d306a5c059a3b3ac82d148fa390" />
+                <section title="TEST" ref="a00076.html#a9ebf36b8971bb04221889ab2435e581c" />
+                <section title="TEST" ref="a00076.html#ac6a417da4062c14c515333d8efe1da38" />
               </section>
-              <section title="testCyclicManagedMemory.cpp" ref="a00076.html">
-                <section title="TEST" ref="a00076.html#ae26a8dc89c67485afd5798e31648e8dc" />
-                <section title="TEST" ref="a00076.html#a39f43fbea06dadaad8c91d05b82f7f7e" />
-                <section title="TEST" ref="a00076.html#aa3d6fa1f4f00348a9dc05c7dc02e18f1" />
-                <section title="TEST" ref="a00076.html#aef1549b42a0b81171f81a38ddc9f0940" />
-                <section title="TEST" ref="a00076.html#aab480b10843a72f5c2cd306cd3d2da29" />
-                <section title="TEST" ref="a00076.html#afa4e53c44647626de579c993ff223d3e" />
-                <section title="TEST" ref="a00076.html#a56caf2da431c0a280c68e0b05b533bbb" />
-                <section title="TEST" ref="a00076.html#ae75ff94ede15ce350e66fab6a7b96b09" />
-                <section title="TEST" ref="a00076.html#a6970bd18461f7e88ea1212d99ee24eb1" />
-                <section title="TEST" ref="a00076.html#a304bbbaabd40cb7b7adf3a3deaca7e83" />
-                <section title="TEST" ref="a00076.html#a7230dc750bac0b41fb284194896355d0" />
-                <section title="TEST" ref="a00076.html#a4a2da3b3a961e28d382426b7082431b7" />
-                <section title="TEST" ref="a00076.html#afb8411b23759277133580c6ef28a14c4" />
+              <section title="testCyclicManagedMemory.cpp" ref="a00077.html">
+                <section title="TEST" ref="a00077.html#ae26a8dc89c67485afd5798e31648e8dc" />
+                <section title="TEST" ref="a00077.html#a39f43fbea06dadaad8c91d05b82f7f7e" />
+                <section title="TEST" ref="a00077.html#aa3d6fa1f4f00348a9dc05c7dc02e18f1" />
+                <section title="TEST" ref="a00077.html#aef1549b42a0b81171f81a38ddc9f0940" />
+                <section title="TEST" ref="a00077.html#aab480b10843a72f5c2cd306cd3d2da29" />
+                <section title="TEST" ref="a00077.html#afa4e53c44647626de579c993ff223d3e" />
+                <section title="TEST" ref="a00077.html#a56caf2da431c0a280c68e0b05b533bbb" />
+                <section title="TEST" ref="a00077.html#ae75ff94ede15ce350e66fab6a7b96b09" />
+                <section title="TEST" ref="a00077.html#a6970bd18461f7e88ea1212d99ee24eb1" />
+                <section title="TEST" ref="a00077.html#a304bbbaabd40cb7b7adf3a3deaca7e83" />
+                <section title="TEST" ref="a00077.html#a7230dc750bac0b41fb284194896355d0" />
+                <section title="TEST" ref="a00077.html#a4a2da3b3a961e28d382426b7082431b7" />
+                <section title="TEST" ref="a00077.html#afb8411b23759277133580c6ef28a14c4" />
               </section>
-              <section title="testDummyManagedMemory.cpp" ref="a00077.html">
-                <section title="TEST" ref="a00077.html#a471504f84a9877370297a2fabd6d6e3e" />
+              <section title="testDummyManagedMemory.cpp" ref="a00078.html">
+                <section title="TEST" ref="a00078.html#a471504f84a9877370297a2fabd6d6e3e" />
               </section>
-              <section title="tester.cpp" ref="a00078.html" />
-              <section title="tester.h" ref="a00079.html">
-                <section title="tester" ref="a00028.html">
-                  <section title="tester" ref="a00028.html#a6cc05095bf2aa614542fb0f533d474e2" />
-                  <section title="~tester" ref="a00028.html#ab79e99149907bf96d75d929f1dc49410" />
-                  <section title="addComment" ref="a00028.html#aa6c57421952ed233d62f46c7c3363dd6" />
-                  <section title="addExternalTime" ref="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4" />
-                  <section title="addParameter" ref="a00028.html#a1a61f18468c143dbd7c18c599fc1b695" />
-                  <section title="addTimeMeasurement" ref="a00028.html#a01d742f1f0fe5d55766cb3c256b999d7" />
-                  <section title="getDurationsForCurrentCycle" ref="a00028.html#ab1b14519c719b0f70b204ecbd5468ff4" />
-                  <section title="random" ref="a00028.html#a3abaa7021bf1e7c8181d98e6dc78ae40" />
-                  <section title="random" ref="a00028.html#a6a5d94f44bdd173c8dc11bbabadb441d" />
-                  <section title="random" ref="a00028.html#aa852d2f21dc44ad214047a37ca9b9d06" />
-                  <section title="setSeed" ref="a00028.html#a902049984a5425407a2a8aafffec0669" />
-                  <section title="startNewRNGCycle" ref="a00028.html#ad6e6c8cec7d43a252009f13a9b0ee601" />
-                  <section title="startNewTimeCycle" ref="a00028.html#a3427b96d1b0517d8b71b2c89c26943ea" />
-                  <section title="writeToFile" ref="a00028.html#a76875804de961f7d87b9de2ebee1957c" />
-                  <section title="comment" ref="a00028.html#afe62e0886e6b23252681d9ec14f87855" />
-                  <section title="name" ref="a00028.html#a928dadceb4d75dc7cf3bb216874dcc6b" />
-                  <section title="parameters" ref="a00028.html#a0cc29d4b76a800395dc61c96f7a03554" />
-                  <section title="seeded" ref="a00028.html#a3901e2e2875b3eb883413713f0451c2a" />
-                  <section title="seeds" ref="a00028.html#a073c37859297abdc2cba42fd06232e9d" />
-                  <section title="timeMeasures" ref="a00028.html#a91d92ce07c979f993af063c372351b36" />
+              <section title="tester.cpp" ref="a00079.html" />
+              <section title="tester.h" ref="a00080.html">
+                <section title="tester" ref="a00029.html">
+                  <section title="tester" ref="a00029.html#a6cc05095bf2aa614542fb0f533d474e2" />
+                  <section title="~tester" ref="a00029.html#ab79e99149907bf96d75d929f1dc49410" />
+                  <section title="addComment" ref="a00029.html#aa6c57421952ed233d62f46c7c3363dd6" />
+                  <section title="addExternalTime" ref="a00029.html#a67a7cd03f1356bb3e5c1cef32fded3e4" />
+                  <section title="addParameter" ref="a00029.html#a1a61f18468c143dbd7c18c599fc1b695" />
+                  <section title="addTimeMeasurement" ref="a00029.html#a01d742f1f0fe5d55766cb3c256b999d7" />
+                  <section title="getDurationsForCurrentCycle" ref="a00029.html#ab1b14519c719b0f70b204ecbd5468ff4" />
+                  <section title="random" ref="a00029.html#a3abaa7021bf1e7c8181d98e6dc78ae40" />
+                  <section title="random" ref="a00029.html#a6a5d94f44bdd173c8dc11bbabadb441d" />
+                  <section title="random" ref="a00029.html#aa852d2f21dc44ad214047a37ca9b9d06" />
+                  <section title="setSeed" ref="a00029.html#a902049984a5425407a2a8aafffec0669" />
+                  <section title="startNewRNGCycle" ref="a00029.html#ad6e6c8cec7d43a252009f13a9b0ee601" />
+                  <section title="startNewTimeCycle" ref="a00029.html#a3427b96d1b0517d8b71b2c89c26943ea" />
+                  <section title="writeToFile" ref="a00029.html#a76875804de961f7d87b9de2ebee1957c" />
+                  <section title="comment" ref="a00029.html#afe62e0886e6b23252681d9ec14f87855" />
+                  <section title="name" ref="a00029.html#a928dadceb4d75dc7cf3bb216874dcc6b" />
+                  <section title="parameters" ref="a00029.html#a0cc29d4b76a800395dc61c96f7a03554" />
+                  <section title="seeded" ref="a00029.html#a3901e2e2875b3eb883413713f0451c2a" />
+                  <section title="seeds" ref="a00029.html#a073c37859297abdc2cba42fd06232e9d" />
+                  <section title="timeMeasures" ref="a00029.html#a91d92ce07c979f993af063c372351b36" />
                 </section>
               </section>
-              <section title="testFilterHandling.cpp" ref="a00080.html">
-                <section title="combineFilter" ref="a00080.html#a76a5c70a77dbaf343c31e03122a4b5f8" />
-              </section>
-              <section title="testFilterHandling.h" ref="a00081.html">
+              <section title="testFilterHandling.cpp" ref="a00081.html">
                 <section title="combineFilter" ref="a00081.html#a76a5c70a77dbaf343c31e03122a4b5f8" />
               </section>
-              <section title="testManagedDummySwap.cpp" ref="a00082.html">
-                <section title="TEST" ref="a00082.html#a3c889a158897141b6a22b22dce7b0624" />
-                <section title="TEST" ref="a00082.html#a48b8d09f310a5993ee0b858268554a66" />
-                <section title="TEST" ref="a00082.html#ac915c82710e977f2390fca9a07a0810f" />
-                <section title="TEST" ref="a00082.html#a0855c443c53c36b2d8dfcc9d78f4ab58" />
+              <section title="testFilterHandling.h" ref="a00082.html">
+                <section title="combineFilter" ref="a00082.html#a76a5c70a77dbaf343c31e03122a4b5f8" />
               </section>
-              <section title="testManagedFileSwap.cpp" ref="a00083.html">
-                <section title="TEST" ref="a00083.html#a3dd82cd5872087316e3d310574a008d4" />
-                <section title="TEST" ref="a00083.html#ae3d453aa77042913875ffbbe1a98e6bb" />
-                <section title="TEST" ref="a00083.html#a3ba3a6da4bb75358292f7d2e59029f1a" />
-                <section title="TEST" ref="a00083.html#aae0bfbb77b6c538c8db2c302d06d6122" />
-                <section title="TEST" ref="a00083.html#a9edb203c25182ae999e6df46e6c0d708" />
-                <section title="TEST" ref="a00083.html#ad559a9e97813c841982803dd7d12fe45" />
-                <section title="TEST" ref="a00083.html#a7f753f173d292ba1e5466cd0d41d21bd" />
-                <section title="TEST" ref="a00083.html#a4203740a3836336a01426613cd982e9c" />
-                <section title="TEST" ref="a00083.html#ad147ad01460c5c62bb0c3fbcd1e3e9d6" />
-                <section title="TEST" ref="a00083.html#a9cdd6dd900e7446b7262160a81b38163" />
-                <section title="TEST" ref="a00083.html#a8eea3cc15266ed04c916487168f3c1af" />
-                <section title="TEST" ref="a00083.html#a934338906b724941e205cce15e7c227d" />
-                <section title="TEST" ref="a00083.html#abde6e16f1ca8ec2a1f4f743b6f08f639" />
-                <section title="TEST" ref="a00083.html#a35475128dfe79205f3171cae9087a9dd" />
-                <section title="IGNORE_TEST_WARNINGS" ref="a00083.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
-                <section title="RESTORE_WARNINGS" ref="a00083.html#a3d9512de8648bd4680902a4999028b5f" />
+              <section title="testManagedDummySwap.cpp" ref="a00083.html">
+                <section title="TEST" ref="a00083.html#a3c889a158897141b6a22b22dce7b0624" />
+                <section title="TEST" ref="a00083.html#a48b8d09f310a5993ee0b858268554a66" />
+                <section title="TEST" ref="a00083.html#ac915c82710e977f2390fca9a07a0810f" />
+                <section title="TEST" ref="a00083.html#a0855c443c53c36b2d8dfcc9d78f4ab58" />
               </section>
-              <section title="testManagedMemory.cpp" ref="a00084.html">
-                <section title="TEST" ref="a00084.html#a5254f6138adaa67c630fa15dacd4fd2e" />
-                <section title="TEST" ref="a00084.html#a9a867597b002df64264c6a06dfe678fc" />
-                <section title="TEST" ref="a00084.html#a6d0807173265c512af3b119500c9ed4d" />
-                <section title="TEST" ref="a00084.html#aa7e18d854cdbfc4ebfe88d2cf09a20bf" />
+              <section title="testManagedFileSwap.cpp" ref="a00084.html">
+                <section title="TEST" ref="a00084.html#a3dd82cd5872087316e3d310574a008d4" />
+                <section title="TEST" ref="a00084.html#ae3d453aa77042913875ffbbe1a98e6bb" />
+                <section title="TEST" ref="a00084.html#a3ba3a6da4bb75358292f7d2e59029f1a" />
+                <section title="TEST" ref="a00084.html#aae0bfbb77b6c538c8db2c302d06d6122" />
+                <section title="TEST" ref="a00084.html#a9edb203c25182ae999e6df46e6c0d708" />
+                <section title="TEST" ref="a00084.html#ad559a9e97813c841982803dd7d12fe45" />
+                <section title="TEST" ref="a00084.html#a7f753f173d292ba1e5466cd0d41d21bd" />
+                <section title="TEST" ref="a00084.html#a4203740a3836336a01426613cd982e9c" />
+                <section title="TEST" ref="a00084.html#ad147ad01460c5c62bb0c3fbcd1e3e9d6" />
+                <section title="TEST" ref="a00084.html#a9cdd6dd900e7446b7262160a81b38163" />
+                <section title="TEST" ref="a00084.html#a8eea3cc15266ed04c916487168f3c1af" />
+                <section title="TEST" ref="a00084.html#a934338906b724941e205cce15e7c227d" />
+                <section title="TEST" ref="a00084.html#abde6e16f1ca8ec2a1f4f743b6f08f639" />
+                <section title="TEST" ref="a00084.html#a35475128dfe79205f3171cae9087a9dd" />
+                <section title="IGNORE_TEST_WARNINGS" ref="a00084.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
+                <section title="RESTORE_WARNINGS" ref="a00084.html#a3d9512de8648bd4680902a4999028b5f" />
               </section>
-              <section title="testManagedPtr.cpp" ref="a00085.html">
+              <section title="testManagedMemory.cpp" ref="a00085.html">
+                <section title="TEST" ref="a00085.html#a5254f6138adaa67c630fa15dacd4fd2e" />
+                <section title="TEST" ref="a00085.html#a9a867597b002df64264c6a06dfe678fc" />
+                <section title="TEST" ref="a00085.html#a6d0807173265c512af3b119500c9ed4d" />
+                <section title="TEST" ref="a00085.html#aa7e18d854cdbfc4ebfe88d2cf09a20bf" />
+              </section>
+              <section title="testManagedPtr.cpp" ref="a00086.html">
                 <section title="destructorTracker" ref="a00009.html">
                   <section title="destructorTracker" ref="a00009.html#aa98d43e4b83663ab754832c7ccb980cb" />
                   <section title="~destructorTracker" ref="a00009.html#a183466f7b2424c3e481b9c4687654573" />
                   <section title="arr" ref="a00009.html#ab22b67c578f8d64f8aa8aedd968da207" />
                 </section>
-                <section title="TEST" ref="a00085.html#a6a8bbea2d6377b6395df1b7800700e77" />
-                <section title="TEST" ref="a00085.html#af167be01d54cf7303f65ac4486b87529" />
-                <section title="TEST" ref="a00085.html#af2e990f2c9b5231ea8c2bd9de850d804" />
-                <section title="TEST" ref="a00085.html#a08529ec9d78b15437406f990ab5876e9" />
-                <section title="TEST" ref="a00085.html#a64b00deffca1ae5eedf3814c64e1997a" />
-                <section title="TEST" ref="a00085.html#a44e79c512beb352c2c2c4137f1d166f1" />
-                <section title="TEST" ref="a00085.html#a3f42947c57d5ae1adb673bfbfa57c1b7" />
-                <section title="TEST" ref="a00085.html#a26e001ea8d84301d9808b66b347983bd" />
-                <section title="TEST" ref="a00085.html#a0f170b54311fada0adde8928f2f84e27" />
-                <section title="TEST" ref="a00085.html#a886c4be387dcee928edcbae61f29cdcf" />
-                <section title="TEST" ref="a00085.html#aa7789c2424a515e4702a246ebccfd5d1" />
-                <section title="TEST" ref="a00085.html#ad3db2c8391de1e82bc69f30ed5047cc7" />
-                <section title="TEST" ref="a00085.html#a3d6134d96ddb180e53483fbd85c37c37" />
-                <section title="TEST" ref="a00085.html#a067e22900e51f12eea9f7d2bb2a7cf60" />
-                <section title="TEST" ref="a00085.html#aff5c003b8bedea425ce8ebf888f40830" />
-                <section title="TEST" ref="a00085.html#a635da180873b8e6e2adef12b7f204feb" />
-                <section title="IGNORE_TEST_WARNINGS" ref="a00085.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
-                <section title="RESTORE_WARNINGS" ref="a00085.html#a3d9512de8648bd4680902a4999028b5f" />
+                <section title="TEST" ref="a00086.html#a6a8bbea2d6377b6395df1b7800700e77" />
+                <section title="TEST" ref="a00086.html#af167be01d54cf7303f65ac4486b87529" />
+                <section title="TEST" ref="a00086.html#af2e990f2c9b5231ea8c2bd9de850d804" />
+                <section title="TEST" ref="a00086.html#a08529ec9d78b15437406f990ab5876e9" />
+                <section title="TEST" ref="a00086.html#a64b00deffca1ae5eedf3814c64e1997a" />
+                <section title="TEST" ref="a00086.html#a44e79c512beb352c2c2c4137f1d166f1" />
+                <section title="TEST" ref="a00086.html#a3f42947c57d5ae1adb673bfbfa57c1b7" />
+                <section title="TEST" ref="a00086.html#a26e001ea8d84301d9808b66b347983bd" />
+                <section title="TEST" ref="a00086.html#a0f170b54311fada0adde8928f2f84e27" />
+                <section title="TEST" ref="a00086.html#a886c4be387dcee928edcbae61f29cdcf" />
+                <section title="TEST" ref="a00086.html#aa7789c2424a515e4702a246ebccfd5d1" />
+                <section title="TEST" ref="a00086.html#ad3db2c8391de1e82bc69f30ed5047cc7" />
+                <section title="TEST" ref="a00086.html#a3d6134d96ddb180e53483fbd85c37c37" />
+                <section title="TEST" ref="a00086.html#a067e22900e51f12eea9f7d2bb2a7cf60" />
+                <section title="TEST" ref="a00086.html#aff5c003b8bedea425ce8ebf888f40830" />
+                <section title="TEST" ref="a00086.html#a635da180873b8e6e2adef12b7f204feb" />
+                <section title="IGNORE_TEST_WARNINGS" ref="a00086.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
+                <section title="RESTORE_WARNINGS" ref="a00086.html#a3d9512de8648bd4680902a4999028b5f" />
               </section>
-              <section title="testRegexMatcher.cpp" ref="a00086.html">
-                <section title="TEST" ref="a00086.html#afcbcb3d22a4ea7f6e5b773be4dcf1ae0" />
-                <section title="TEST" ref="a00086.html#ae1b773f62ba7636311bd54f3623bcdf1" />
-                <section title="TEST" ref="a00086.html#a49a696d7fae1d92d111b1ce60e7c0dfd" />
-                <section title="TEST" ref="a00086.html#afd8bfb36e82391a8461032a5f182b207" />
-                <section title="TEST" ref="a00086.html#ae8e2d9bb9bfae2ac4ac29a8ebcdfe01a" />
-                <section title="TEST" ref="a00086.html#adee0ca5670e50f234fe3b67cb81b5251" />
+              <section title="testRegexMatcher.cpp" ref="a00087.html">
+                <section title="TEST" ref="a00087.html#afcbcb3d22a4ea7f6e5b773be4dcf1ae0" />
+                <section title="TEST" ref="a00087.html#ae1b773f62ba7636311bd54f3623bcdf1" />
+                <section title="TEST" ref="a00087.html#a49a696d7fae1d92d111b1ce60e7c0dfd" />
+                <section title="TEST" ref="a00087.html#afd8bfb36e82391a8461032a5f182b207" />
+                <section title="TEST" ref="a00087.html#ae8e2d9bb9bfae2ac4ac29a8ebcdfe01a" />
+                <section title="TEST" ref="a00087.html#adee0ca5670e50f234fe3b67cb81b5251" />
               </section>
-              <section title="unitTests.cpp" ref="a00087.html">
-                <section title="main" ref="a00087.html#a3c04138a5bfe5d72780bb7e82a18e627" />
+              <section title="unitTests.cpp" ref="a00088.html">
+                <section title="main" ref="a00088.html#a3c04138a5bfe5d72780bb7e82a18e627" />
               </section>
             </section>
           </section>
@@ -1408,143 +1423,143 @@
       </section>
     </toc>
     <keywords>
-      <keyword name="myScalar" id="common.h::myScalar" ref="a00034.html#a750e2504f6799746989c6d76107bf7c1" />
-      <keyword name="global_bytesize" id="common.h::global_bytesize" ref="a00034.html#abe2d051306a69fb21f8a17946b4e93ed" />
-      <keyword name="kib" id="common.h::kib" ref="a00034.html#ac2c0fb2cc8161166cbd060cb2b85aaf1" />
-      <keyword name="mib" id="common.h::mib" ref="a00034.html#a8526efa365cdb0cb597351c2671af168" />
-      <keyword name="gig" id="common.h::gig" ref="a00034.html#a8525b8b73c3e1ec62bd571b3cffd1742" />
-      <keyword name="min_elements" id="cyclicManagedMemory.cpp::min_elements" ref="a00037.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc" />
-      <keyword name="gitCommit" id="git_info.h::gitCommit" ref="a00041.html#a7f5007ab114a0895060f2e6437200ea9" />
-      <keyword name="gitDiff" id="git_info.h::gitDiff" ref="a00041.html#a73155ddd51dc782d33249917cd27ae19" />
-      <keyword name="global_offset" id="managedFileSwap.h::global_offset" ref="a00047.html#a72b644584fab6ba1add401162788507b" />
-      <keyword name="config" id="managedMemory.cpp::config" ref="a00048.html#ad02508d72047bc55a38eda857e4816c1" />
-      <keyword name="memoryID" id="managedMemoryChunk.h::memoryID" ref="a00051.html#a44865184cd1937b742c135666f0460cd" />
-      <keyword name="memoryAtime" id="managedMemoryChunk.h::memoryAtime" ref="a00051.html#a7ac90afa0cd2573bc0a73c6e4c439f81" />
-      <keyword name="main" id="allTests.cpp::main" ref="a00063.html#a3c04138a5bfe5d72780bb7e82a18e627" />
-      <keyword name="configTestGetSwap" id="configTest.cpp::configTestGetSwap" ref="a00064.html#a304fe942b42713ebcebb2aba88028bb5" />
-      <keyword name="main" id="configTest.cpp::main" ref="a00064.html#a3c04138a5bfe5d72780bb7e82a18e627" />
-      <keyword name="main" id="integrationTests.cpp::main" ref="a00065.html#a3c04138a5bfe5d72780bb7e82a18e627" />
-      <keyword name="main" id="memeater.cpp::main" ref="a00066.html#a3c04138a5bfe5d72780bb7e82a18e627" />
-      <keyword name="main" id="mpitest.cpp::main" ref="a00067.html#a3c04138a5bfe5d72780bb7e82a18e627" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#a26ae4c36275297208e567385c2f52d9c" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#a40dbb801aa3ea387d7cdad8a055d9f6a" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#aa888f1306a8f53d34ac167fff944fe64" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#ad8c4e5016dd2f7cecf0cd7308ef5274e" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#a2e37c569c981f101ea16feb243ab9463" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#a631e0564d8b17b2ac6d95c81819a872e" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#ae8f4918b56515b7a9c25ff10e4429021" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#ac655a3a668c2ed56ebe3b59c695e6697" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#a672f43927e3e75987447438229edc50c" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#a60941ebedab2e69540164bc8f18e1161" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#a2156a0b5b8120f96a8159b162dceaec5" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#a156b148adb86e8d87b1eee751138122f" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#ad61556d383378ff650f8df086737136f" />
-      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00068.html#a96405547710ead8b3030a73ee6d82002" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#af5ca33e1ddc335f5e8438d775535b0d0" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#a5663d51d4b9c8c9988ff8cbd8780d018" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#adc7ed635696750ca3486225a7ef3a209" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#a03eea53352624c0351908236da8b000b" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#ac1c16114d84f6de4765ad12bcdcdfc80" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#aca0ebc1cda2a1ba2247892992b9b2598" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#a65459be39ba8a03c70cd618b8584ef11" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#a9ece3a428d0bf18985f9439f0733f6c7" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#a4da2972944384639cd317c406af1a560" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#ae38158b9042e7071d1ab73a9a8f91f3e" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#a369f3619b3958e07bfd0e92c31d9b19f" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#a1fa05a65451ce4beadfe79f2ad6ec8f9" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#a0715fad62e359b618fa3b2c347ae95d1" />
-      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00069.html#a0487402c9462101d58322eaf729423b6" />
-      <keyword name="main" id="performanceTests.cpp::main" ref="a00070.html#a3c04138a5bfe5d72780bb7e82a18e627" />
-      <keyword name="main" id="performanceTestsWrapper.cpp::main" ref="a00072.html#a3c04138a5bfe5d72780bb7e82a18e627" />
-      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00073.html#a0f8a4b5152ab8f3909aba53869627a74" />
-      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00073.html#a22f5f265ef307ae746928c430c1b1e30" />
-      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00073.html#a28fdac7bfa7e91512d09eb9c3b139ce5" />
-      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00073.html#a137db832b9dda1490897e32b13059a24" />
-      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00073.html#a339f6fd734be72abd42afa17a4345d85" />
-      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00073.html#a3013c4ff517165d2aa7466667c3ce4d3" />
-      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00073.html#a1364e79218a2e6616939b86512053b16" />
-      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00073.html#aaf3f56b616e96dfd62e1739c84622b3c" />
-      <keyword name="IGNORE_TEST_WARNINGS" id="testAdhereTo.cpp::IGNORE_TEST_WARNINGS" ref="a00073.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
-      <keyword name="RESTORE_WARNINGS" id="testAdhereTo.cpp::RESTORE_WARNINGS" ref="a00073.html#a3d9512de8648bd4680902a4999028b5f" />
-      <keyword name="TEST" id="testConfigLine.cpp::TEST" ref="a00074.html#a6847c350faa701a37d439ec277e1c08e" />
-      <keyword name="TEST" id="testConfigLine.cpp::TEST" ref="a00074.html#ac3fa8757f098717986ea32d04cebceec" />
-      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00075.html#a7e9890c6706de981c9a1e00a8e2cd5e0" />
-      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00075.html#a018867a1020a0ae4a70a5af2cbe85996" />
-      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00075.html#a31e3a7d2d39be82a5f37a992da830b2a" />
-      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00075.html#a57687a32c126170c4377dd1ef6dab08c" />
-      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00075.html#a049adfaa98fafe4a9df14761b5a876a7" />
-      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00075.html#a7427d91881af4e2a48665507d80a4d26" />
-      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00075.html#a9f0b95e46171bd5b9ba1b36d05d200f1" />
-      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00075.html#add1d3d306a5c059a3b3ac82d148fa390" />
-      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00075.html#a9ebf36b8971bb04221889ab2435e581c" />
-      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00075.html#ac6a417da4062c14c515333d8efe1da38" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#ae26a8dc89c67485afd5798e31648e8dc" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#a39f43fbea06dadaad8c91d05b82f7f7e" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#aa3d6fa1f4f00348a9dc05c7dc02e18f1" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#aef1549b42a0b81171f81a38ddc9f0940" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#aab480b10843a72f5c2cd306cd3d2da29" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#afa4e53c44647626de579c993ff223d3e" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#a56caf2da431c0a280c68e0b05b533bbb" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#ae75ff94ede15ce350e66fab6a7b96b09" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#a6970bd18461f7e88ea1212d99ee24eb1" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#a304bbbaabd40cb7b7adf3a3deaca7e83" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#a7230dc750bac0b41fb284194896355d0" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#a4a2da3b3a961e28d382426b7082431b7" />
-      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00076.html#afb8411b23759277133580c6ef28a14c4" />
-      <keyword name="TEST" id="testDummyManagedMemory.cpp::TEST" ref="a00077.html#a471504f84a9877370297a2fabd6d6e3e" />
-      <keyword name="combineFilter" id="testFilterHandling.cpp::combineFilter" ref="a00080.html#a76a5c70a77dbaf343c31e03122a4b5f8" />
-      <keyword name="combineFilter" id="testFilterHandling.h::combineFilter" ref="a00081.html#a76a5c70a77dbaf343c31e03122a4b5f8" />
-      <keyword name="TEST" id="testManagedDummySwap.cpp::TEST" ref="a00082.html#a3c889a158897141b6a22b22dce7b0624" />
-      <keyword name="TEST" id="testManagedDummySwap.cpp::TEST" ref="a00082.html#a48b8d09f310a5993ee0b858268554a66" />
-      <keyword name="TEST" id="testManagedDummySwap.cpp::TEST" ref="a00082.html#ac915c82710e977f2390fca9a07a0810f" />
-      <keyword name="TEST" id="testManagedDummySwap.cpp::TEST" ref="a00082.html#a0855c443c53c36b2d8dfcc9d78f4ab58" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#a3dd82cd5872087316e3d310574a008d4" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#ae3d453aa77042913875ffbbe1a98e6bb" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#a3ba3a6da4bb75358292f7d2e59029f1a" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#aae0bfbb77b6c538c8db2c302d06d6122" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#a9edb203c25182ae999e6df46e6c0d708" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#ad559a9e97813c841982803dd7d12fe45" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#a7f753f173d292ba1e5466cd0d41d21bd" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#a4203740a3836336a01426613cd982e9c" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#ad147ad01460c5c62bb0c3fbcd1e3e9d6" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#a9cdd6dd900e7446b7262160a81b38163" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#a8eea3cc15266ed04c916487168f3c1af" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#a934338906b724941e205cce15e7c227d" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#abde6e16f1ca8ec2a1f4f743b6f08f639" />
-      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00083.html#a35475128dfe79205f3171cae9087a9dd" />
-      <keyword name="IGNORE_TEST_WARNINGS" id="testManagedFileSwap.cpp::IGNORE_TEST_WARNINGS" ref="a00083.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
-      <keyword name="RESTORE_WARNINGS" id="testManagedFileSwap.cpp::RESTORE_WARNINGS" ref="a00083.html#a3d9512de8648bd4680902a4999028b5f" />
-      <keyword name="TEST" id="testManagedMemory.cpp::TEST" ref="a00084.html#a5254f6138adaa67c630fa15dacd4fd2e" />
-      <keyword name="TEST" id="testManagedMemory.cpp::TEST" ref="a00084.html#a9a867597b002df64264c6a06dfe678fc" />
-      <keyword name="TEST" id="testManagedMemory.cpp::TEST" ref="a00084.html#a6d0807173265c512af3b119500c9ed4d" />
-      <keyword name="TEST" id="testManagedMemory.cpp::TEST" ref="a00084.html#aa7e18d854cdbfc4ebfe88d2cf09a20bf" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#a6a8bbea2d6377b6395df1b7800700e77" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#af167be01d54cf7303f65ac4486b87529" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#af2e990f2c9b5231ea8c2bd9de850d804" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#a08529ec9d78b15437406f990ab5876e9" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#a64b00deffca1ae5eedf3814c64e1997a" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#a44e79c512beb352c2c2c4137f1d166f1" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#a3f42947c57d5ae1adb673bfbfa57c1b7" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#a26e001ea8d84301d9808b66b347983bd" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#a0f170b54311fada0adde8928f2f84e27" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#a886c4be387dcee928edcbae61f29cdcf" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#aa7789c2424a515e4702a246ebccfd5d1" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#ad3db2c8391de1e82bc69f30ed5047cc7" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#a3d6134d96ddb180e53483fbd85c37c37" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#a067e22900e51f12eea9f7d2bb2a7cf60" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#aff5c003b8bedea425ce8ebf888f40830" />
-      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00085.html#a635da180873b8e6e2adef12b7f204feb" />
-      <keyword name="IGNORE_TEST_WARNINGS" id="testManagedPtr.cpp::IGNORE_TEST_WARNINGS" ref="a00085.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
-      <keyword name="RESTORE_WARNINGS" id="testManagedPtr.cpp::RESTORE_WARNINGS" ref="a00085.html#a3d9512de8648bd4680902a4999028b5f" />
-      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00086.html#afcbcb3d22a4ea7f6e5b773be4dcf1ae0" />
-      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00086.html#ae1b773f62ba7636311bd54f3623bcdf1" />
-      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00086.html#a49a696d7fae1d92d111b1ce60e7c0dfd" />
-      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00086.html#afd8bfb36e82391a8461032a5f182b207" />
-      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00086.html#ae8e2d9bb9bfae2ac4ac29a8ebcdfe01a" />
-      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00086.html#adee0ca5670e50f234fe3b67cb81b5251" />
-      <keyword name="main" id="unitTests.cpp::main" ref="a00087.html#a3c04138a5bfe5d72780bb7e82a18e627" />
-      <keyword name="Test List" id="Test List" ref="a00093.html" />
-      <keyword name="Todo List" id="Todo List" ref="a00095.html" />
+      <keyword name="myScalar" id="common.h::myScalar" ref="a00035.html#a750e2504f6799746989c6d76107bf7c1" />
+      <keyword name="global_bytesize" id="common.h::global_bytesize" ref="a00035.html#abe2d051306a69fb21f8a17946b4e93ed" />
+      <keyword name="kib" id="common.h::kib" ref="a00035.html#ac2c0fb2cc8161166cbd060cb2b85aaf1" />
+      <keyword name="mib" id="common.h::mib" ref="a00035.html#a8526efa365cdb0cb597351c2671af168" />
+      <keyword name="gig" id="common.h::gig" ref="a00035.html#a8525b8b73c3e1ec62bd571b3cffd1742" />
+      <keyword name="min_elements" id="cyclicManagedMemory.cpp::min_elements" ref="a00038.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc" />
+      <keyword name="gitCommit" id="git_info.h::gitCommit" ref="a00042.html#a7f5007ab114a0895060f2e6437200ea9" />
+      <keyword name="gitDiff" id="git_info.h::gitDiff" ref="a00042.html#a73155ddd51dc782d33249917cd27ae19" />
+      <keyword name="global_offset" id="managedFileSwap.h::global_offset" ref="a00048.html#a72b644584fab6ba1add401162788507b" />
+      <keyword name="config" id="managedMemory.cpp::config" ref="a00049.html#ad02508d72047bc55a38eda857e4816c1" />
+      <keyword name="memoryID" id="managedMemoryChunk.h::memoryID" ref="a00052.html#a44865184cd1937b742c135666f0460cd" />
+      <keyword name="memoryAtime" id="managedMemoryChunk.h::memoryAtime" ref="a00052.html#a7ac90afa0cd2573bc0a73c6e4c439f81" />
+      <keyword name="main" id="allTests.cpp::main" ref="a00064.html#a3c04138a5bfe5d72780bb7e82a18e627" />
+      <keyword name="configTestGetSwap" id="configTest.cpp::configTestGetSwap" ref="a00065.html#a304fe942b42713ebcebb2aba88028bb5" />
+      <keyword name="main" id="configTest.cpp::main" ref="a00065.html#a3c04138a5bfe5d72780bb7e82a18e627" />
+      <keyword name="main" id="integrationTests.cpp::main" ref="a00066.html#a3c04138a5bfe5d72780bb7e82a18e627" />
+      <keyword name="main" id="memeater.cpp::main" ref="a00067.html#a3c04138a5bfe5d72780bb7e82a18e627" />
+      <keyword name="main" id="mpitest.cpp::main" ref="a00068.html#a3c04138a5bfe5d72780bb7e82a18e627" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#a26ae4c36275297208e567385c2f52d9c" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#a40dbb801aa3ea387d7cdad8a055d9f6a" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#aa888f1306a8f53d34ac167fff944fe64" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#ad8c4e5016dd2f7cecf0cd7308ef5274e" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#a2e37c569c981f101ea16feb243ab9463" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#a631e0564d8b17b2ac6d95c81819a872e" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#ae8f4918b56515b7a9c25ff10e4429021" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#ac655a3a668c2ed56ebe3b59c695e6697" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#a672f43927e3e75987447438229edc50c" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#a60941ebedab2e69540164bc8f18e1161" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#a2156a0b5b8120f96a8159b162dceaec5" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#a156b148adb86e8d87b1eee751138122f" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#ad61556d383378ff650f8df086737136f" />
+      <keyword name="TESTSTATICS" id="performanceTestClasses.cpp::TESTSTATICS" ref="a00069.html#a96405547710ead8b3030a73ee6d82002" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#af5ca33e1ddc335f5e8438d775535b0d0" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#a5663d51d4b9c8c9988ff8cbd8780d018" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#adc7ed635696750ca3486225a7ef3a209" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#a03eea53352624c0351908236da8b000b" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#ac1c16114d84f6de4765ad12bcdcdfc80" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#aca0ebc1cda2a1ba2247892992b9b2598" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#a65459be39ba8a03c70cd618b8584ef11" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#a9ece3a428d0bf18985f9439f0733f6c7" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#a4da2972944384639cd317c406af1a560" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#ae38158b9042e7071d1ab73a9a8f91f3e" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#a369f3619b3958e07bfd0e92c31d9b19f" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#a1fa05a65451ce4beadfe79f2ad6ec8f9" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#a0715fad62e359b618fa3b2c347ae95d1" />
+      <keyword name="TWOPARAMTEST" id="performanceTestClasses.h::TWOPARAMTEST" ref="a00070.html#a0487402c9462101d58322eaf729423b6" />
+      <keyword name="main" id="performanceTests.cpp::main" ref="a00071.html#a3c04138a5bfe5d72780bb7e82a18e627" />
+      <keyword name="main" id="performanceTestsWrapper.cpp::main" ref="a00073.html#a3c04138a5bfe5d72780bb7e82a18e627" />
+      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00074.html#a0f8a4b5152ab8f3909aba53869627a74" />
+      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00074.html#a22f5f265ef307ae746928c430c1b1e30" />
+      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00074.html#a28fdac7bfa7e91512d09eb9c3b139ce5" />
+      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00074.html#a137db832b9dda1490897e32b13059a24" />
+      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00074.html#a339f6fd734be72abd42afa17a4345d85" />
+      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00074.html#a3013c4ff517165d2aa7466667c3ce4d3" />
+      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00074.html#a1364e79218a2e6616939b86512053b16" />
+      <keyword name="TEST" id="testAdhereTo.cpp::TEST" ref="a00074.html#aaf3f56b616e96dfd62e1739c84622b3c" />
+      <keyword name="IGNORE_TEST_WARNINGS" id="testAdhereTo.cpp::IGNORE_TEST_WARNINGS" ref="a00074.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
+      <keyword name="RESTORE_WARNINGS" id="testAdhereTo.cpp::RESTORE_WARNINGS" ref="a00074.html#a3d9512de8648bd4680902a4999028b5f" />
+      <keyword name="TEST" id="testConfigLine.cpp::TEST" ref="a00075.html#a6847c350faa701a37d439ec277e1c08e" />
+      <keyword name="TEST" id="testConfigLine.cpp::TEST" ref="a00075.html#ac3fa8757f098717986ea32d04cebceec" />
+      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00076.html#a7e9890c6706de981c9a1e00a8e2cd5e0" />
+      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00076.html#a018867a1020a0ae4a70a5af2cbe85996" />
+      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00076.html#a31e3a7d2d39be82a5f37a992da830b2a" />
+      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00076.html#a57687a32c126170c4377dd1ef6dab08c" />
+      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00076.html#a049adfaa98fafe4a9df14761b5a876a7" />
+      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00076.html#a7427d91881af4e2a48665507d80a4d26" />
+      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00076.html#a9f0b95e46171bd5b9ba1b36d05d200f1" />
+      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00076.html#add1d3d306a5c059a3b3ac82d148fa390" />
+      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00076.html#a9ebf36b8971bb04221889ab2435e581c" />
+      <keyword name="TEST" id="testConfigReader.cpp::TEST" ref="a00076.html#ac6a417da4062c14c515333d8efe1da38" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#ae26a8dc89c67485afd5798e31648e8dc" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#a39f43fbea06dadaad8c91d05b82f7f7e" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#aa3d6fa1f4f00348a9dc05c7dc02e18f1" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#aef1549b42a0b81171f81a38ddc9f0940" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#aab480b10843a72f5c2cd306cd3d2da29" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#afa4e53c44647626de579c993ff223d3e" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#a56caf2da431c0a280c68e0b05b533bbb" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#ae75ff94ede15ce350e66fab6a7b96b09" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#a6970bd18461f7e88ea1212d99ee24eb1" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#a304bbbaabd40cb7b7adf3a3deaca7e83" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#a7230dc750bac0b41fb284194896355d0" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#a4a2da3b3a961e28d382426b7082431b7" />
+      <keyword name="TEST" id="testCyclicManagedMemory.cpp::TEST" ref="a00077.html#afb8411b23759277133580c6ef28a14c4" />
+      <keyword name="TEST" id="testDummyManagedMemory.cpp::TEST" ref="a00078.html#a471504f84a9877370297a2fabd6d6e3e" />
+      <keyword name="combineFilter" id="testFilterHandling.cpp::combineFilter" ref="a00081.html#a76a5c70a77dbaf343c31e03122a4b5f8" />
+      <keyword name="combineFilter" id="testFilterHandling.h::combineFilter" ref="a00082.html#a76a5c70a77dbaf343c31e03122a4b5f8" />
+      <keyword name="TEST" id="testManagedDummySwap.cpp::TEST" ref="a00083.html#a3c889a158897141b6a22b22dce7b0624" />
+      <keyword name="TEST" id="testManagedDummySwap.cpp::TEST" ref="a00083.html#a48b8d09f310a5993ee0b858268554a66" />
+      <keyword name="TEST" id="testManagedDummySwap.cpp::TEST" ref="a00083.html#ac915c82710e977f2390fca9a07a0810f" />
+      <keyword name="TEST" id="testManagedDummySwap.cpp::TEST" ref="a00083.html#a0855c443c53c36b2d8dfcc9d78f4ab58" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#a3dd82cd5872087316e3d310574a008d4" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#ae3d453aa77042913875ffbbe1a98e6bb" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#a3ba3a6da4bb75358292f7d2e59029f1a" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#aae0bfbb77b6c538c8db2c302d06d6122" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#a9edb203c25182ae999e6df46e6c0d708" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#ad559a9e97813c841982803dd7d12fe45" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#a7f753f173d292ba1e5466cd0d41d21bd" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#a4203740a3836336a01426613cd982e9c" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#ad147ad01460c5c62bb0c3fbcd1e3e9d6" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#a9cdd6dd900e7446b7262160a81b38163" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#a8eea3cc15266ed04c916487168f3c1af" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#a934338906b724941e205cce15e7c227d" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#abde6e16f1ca8ec2a1f4f743b6f08f639" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00084.html#a35475128dfe79205f3171cae9087a9dd" />
+      <keyword name="IGNORE_TEST_WARNINGS" id="testManagedFileSwap.cpp::IGNORE_TEST_WARNINGS" ref="a00084.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
+      <keyword name="RESTORE_WARNINGS" id="testManagedFileSwap.cpp::RESTORE_WARNINGS" ref="a00084.html#a3d9512de8648bd4680902a4999028b5f" />
+      <keyword name="TEST" id="testManagedMemory.cpp::TEST" ref="a00085.html#a5254f6138adaa67c630fa15dacd4fd2e" />
+      <keyword name="TEST" id="testManagedMemory.cpp::TEST" ref="a00085.html#a9a867597b002df64264c6a06dfe678fc" />
+      <keyword name="TEST" id="testManagedMemory.cpp::TEST" ref="a00085.html#a6d0807173265c512af3b119500c9ed4d" />
+      <keyword name="TEST" id="testManagedMemory.cpp::TEST" ref="a00085.html#aa7e18d854cdbfc4ebfe88d2cf09a20bf" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#a6a8bbea2d6377b6395df1b7800700e77" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#af167be01d54cf7303f65ac4486b87529" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#af2e990f2c9b5231ea8c2bd9de850d804" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#a08529ec9d78b15437406f990ab5876e9" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#a64b00deffca1ae5eedf3814c64e1997a" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#a44e79c512beb352c2c2c4137f1d166f1" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#a3f42947c57d5ae1adb673bfbfa57c1b7" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#a26e001ea8d84301d9808b66b347983bd" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#a0f170b54311fada0adde8928f2f84e27" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#a886c4be387dcee928edcbae61f29cdcf" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#aa7789c2424a515e4702a246ebccfd5d1" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#ad3db2c8391de1e82bc69f30ed5047cc7" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#a3d6134d96ddb180e53483fbd85c37c37" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#a067e22900e51f12eea9f7d2bb2a7cf60" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#aff5c003b8bedea425ce8ebf888f40830" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00086.html#a635da180873b8e6e2adef12b7f204feb" />
+      <keyword name="IGNORE_TEST_WARNINGS" id="testManagedPtr.cpp::IGNORE_TEST_WARNINGS" ref="a00086.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
+      <keyword name="RESTORE_WARNINGS" id="testManagedPtr.cpp::RESTORE_WARNINGS" ref="a00086.html#a3d9512de8648bd4680902a4999028b5f" />
+      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00087.html#afcbcb3d22a4ea7f6e5b773be4dcf1ae0" />
+      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00087.html#ae1b773f62ba7636311bd54f3623bcdf1" />
+      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00087.html#a49a696d7fae1d92d111b1ce60e7c0dfd" />
+      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00087.html#afd8bfb36e82391a8461032a5f182b207" />
+      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00087.html#ae8e2d9bb9bfae2ac4ac29a8ebcdfe01a" />
+      <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00087.html#adee0ca5670e50f234fe3b67cb81b5251" />
+      <keyword name="main" id="unitTests.cpp::main" ref="a00088.html#a3c04138a5bfe5d72780bb7e82a18e627" />
+      <keyword name="Test List" id="Test List" ref="a00094.html" />
+      <keyword name="Todo List" id="Todo List" ref="a00096.html" />
       <keyword name="destructorTracker" id="destructorTracker" ref="a00009.html" />
       <keyword name="destructorTracker" id="destructorTracker::destructorTracker" ref="a00009.html#aa98d43e4b83663ab754832c7ccb980cb" />
       <keyword name="~destructorTracker" id="destructorTracker::~destructorTracker" ref="a00009.html#a183466f7b2424c3e481b9c4687654573" />
@@ -1587,76 +1602,76 @@
       <keyword name="plotTimingStats" id="performanceTest&lt;&gt;::plotTimingStats" ref="a00023.html#aebef6431ba821a8476cf4322add3bcf0" />
       <keyword name="testClasses" id="performanceTest&lt;&gt;::testClasses" ref="a00023.html#a46c7d278bada9167cf57fa39c680f7ac" />
       <keyword name="displayPlots" id="performanceTest&lt;&gt;::displayPlots" ref="a00023.html#a74cccef6126a3c18b81d1fd36a8fe709" />
-      <keyword name="tester" id="tester" ref="a00028.html" />
-      <keyword name="tester" id="tester::tester" ref="a00028.html#a6cc05095bf2aa614542fb0f533d474e2" />
-      <keyword name="~tester" id="tester::~tester" ref="a00028.html#ab79e99149907bf96d75d929f1dc49410" />
-      <keyword name="addParameter" id="tester::addParameter" ref="a00028.html#a1a61f18468c143dbd7c18c599fc1b695" />
-      <keyword name="addTimeMeasurement" id="tester::addTimeMeasurement" ref="a00028.html#a01d742f1f0fe5d55766cb3c256b999d7" />
-      <keyword name="addExternalTime" id="tester::addExternalTime" ref="a00028.html#a67a7cd03f1356bb3e5c1cef32fded3e4" />
-      <keyword name="addComment" id="tester::addComment" ref="a00028.html#aa6c57421952ed233d62f46c7c3363dd6" />
-      <keyword name="setSeed" id="tester::setSeed" ref="a00028.html#a902049984a5425407a2a8aafffec0669" />
-      <keyword name="random" id="tester::random" ref="a00028.html#a3abaa7021bf1e7c8181d98e6dc78ae40" />
-      <keyword name="random" id="tester::random" ref="a00028.html#a6a5d94f44bdd173c8dc11bbabadb441d" />
-      <keyword name="random" id="tester::random" ref="a00028.html#aa852d2f21dc44ad214047a37ca9b9d06" />
-      <keyword name="startNewTimeCycle" id="tester::startNewTimeCycle" ref="a00028.html#a3427b96d1b0517d8b71b2c89c26943ea" />
-      <keyword name="startNewRNGCycle" id="tester::startNewRNGCycle" ref="a00028.html#ad6e6c8cec7d43a252009f13a9b0ee601" />
-      <keyword name="writeToFile" id="tester::writeToFile" ref="a00028.html#a76875804de961f7d87b9de2ebee1957c" />
-      <keyword name="getDurationsForCurrentCycle" id="tester::getDurationsForCurrentCycle" ref="a00028.html#ab1b14519c719b0f70b204ecbd5468ff4" />
-      <keyword name="name" id="tester::name" ref="a00028.html#a928dadceb4d75dc7cf3bb216874dcc6b" />
-      <keyword name="parameters" id="tester::parameters" ref="a00028.html#a0cc29d4b76a800395dc61c96f7a03554" />
-      <keyword name="timeMeasures" id="tester::timeMeasures" ref="a00028.html#a91d92ce07c979f993af063c372351b36" />
-      <keyword name="comment" id="tester::comment" ref="a00028.html#afe62e0886e6b23252681d9ec14f87855" />
-      <keyword name="seeds" id="tester::seeds" ref="a00028.html#a073c37859297abdc2cba42fd06232e9d" />
-      <keyword name="seeded" id="tester::seeded" ref="a00028.html#a3901e2e2875b3eb883413713f0451c2a" />
-      <keyword name="testParameter" id="testParameter" ref="a00029.html" />
-      <keyword name="~testParameter" id="testParameter::~testParameter" ref="a00029.html#af0c5f6ffc72748d4e85ff709f4edab62" />
-      <keyword name="valueAsString" id="testParameter::valueAsString" ref="a00029.html#ab52b58a5f2a820ecc0137ecd0da43053" />
-      <keyword name="valueAsString" id="testParameter::valueAsString" ref="a00029.html#afb95c4c38bff20d5d7c629cfa8b13ed8" />
-      <keyword name="~testParameterBase" id="testParameterBase::~testParameterBase" ref="a00030.html#a1b0dcec6718d1f89841ac4f1fb2d4310" />
-      <keyword name="min" id="testParameter::min" ref="a00029.html#ad9c145df95de9bbffba57074034c2d91" />
-      <keyword name="max" id="testParameter::max" ref="a00029.html#ab9b7a26b9cfd7679c39c56b107d66a3a" />
-      <keyword name="mean" id="testParameter::mean" ref="a00029.html#a32240ebb4edba8ac0bf8601a376c38b1" />
-      <keyword name="steps" id="testParameterBase::steps" ref="a00030.html#a261f867bce5dacd6697c2bb035ad72d2" />
-      <keyword name="deltaLog" id="testParameterBase::deltaLog" ref="a00030.html#afc2046a28e4b318c3644aa2492cae56b" />
-      <keyword name="name" id="testParameterBase::name" ref="a00030.html#afc05d7f3106d20f69c6ef6242c31a844" />
-      <keyword name="enabled" id="testParameterBase::enabled" ref="a00030.html#a153ada4196d884c2aa8b3188d2457db5" />
-      <keyword name="valueAtStep" id="testParameter::valueAtStep" ref="a00029.html#aa253722487cce7de5e4c40a2f4c7c3a9" />
-      <keyword name="toString" id="testParameter::toString" ref="a00029.html#ac4a4584e5b0658d84e209a20160c82cb" />
-      <keyword name="testParameterBase" id="testParameterBase" ref="a00030.html" />
-      <keyword name="~testParameterBase" id="testParameterBase::~testParameterBase" ref="a00030.html#a1b0dcec6718d1f89841ac4f1fb2d4310" />
-      <keyword name="valueAsString" id="testParameterBase::valueAsString" ref="a00030.html#a2514f1bc1f004ffd6d545c2044b26166" />
-      <keyword name="valueAsString" id="testParameterBase::valueAsString" ref="a00030.html#a31a6857782aa664cce378a6a87b67593" />
-      <keyword name="steps" id="testParameterBase::steps" ref="a00030.html#a261f867bce5dacd6697c2bb035ad72d2" />
-      <keyword name="deltaLog" id="testParameterBase::deltaLog" ref="a00030.html#afc2046a28e4b318c3644aa2492cae56b" />
-      <keyword name="name" id="testParameterBase::name" ref="a00030.html#afc05d7f3106d20f69c6ef6242c31a844" />
-      <keyword name="enabled" id="testParameterBase::enabled" ref="a00030.html#a153ada4196d884c2aa8b3188d2457db5" />
-      <keyword name="rambrain" id="rambrain" ref="a00089.html" />
-      <keyword name="myScalar" id="rambrain::myScalar" ref="a00089.html#a750e2504f6799746989c6d76107bf7c1" />
-      <keyword name="global_bytesize" id="rambrain::global_bytesize" ref="a00089.html#abe2d051306a69fb21f8a17946b4e93ed" />
-      <keyword name="global_offset" id="rambrain::global_offset" ref="a00089.html#a72b644584fab6ba1add401162788507b" />
-      <keyword name="memoryID" id="rambrain::memoryID" ref="a00089.html#a44865184cd1937b742c135666f0460cd" />
-      <keyword name="memoryAtime" id="rambrain::memoryAtime" ref="a00089.html#a7ac90afa0cd2573bc0a73c6e4c439f81" />
-      <keyword name="configTestGetSwap" id="rambrain::configTestGetSwap" ref="a00089.html#a304fe942b42713ebcebb2aba88028bb5" />
-      <keyword name="kib" id="rambrain::kib" ref="a00089.html#ac2c0fb2cc8161166cbd060cb2b85aaf1" />
-      <keyword name="mib" id="rambrain::mib" ref="a00089.html#a8526efa365cdb0cb597351c2671af168" />
-      <keyword name="gig" id="rambrain::gig" ref="a00089.html#a8525b8b73c3e1ec62bd571b3cffd1742" />
-      <keyword name="min_elements" id="rambrain::min_elements" ref="a00089.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc" />
-      <keyword name="MEM_ROOT" id="rambrain::MEM_ROOT" ref="a00089.html#a2aa4b6f9186dc50dad74cf1abd3799c2ae3335597107739bf9a94567aa64a11c5" />
-      <keyword name="MEM_ALLOCATED_INUSE_READ" id="rambrain::MEM_ALLOCATED_INUSE_READ" ref="a00089.html#a2aa4b6f9186dc50dad74cf1abd3799c2a610971eb8090b2a006cab2a9d0b23e1a" />
-      <keyword name="MEM_ALLOCATED_INUSE_WRITE" id="rambrain::MEM_ALLOCATED_INUSE_WRITE" ref="a00089.html#a2aa4b6f9186dc50dad74cf1abd3799c2a153517e34aa29157bc4d3263790a2dc7" />
-      <keyword name="MEM_ALLOCATED_INUSE" id="rambrain::MEM_ALLOCATED_INUSE" ref="a00089.html#a2aa4b6f9186dc50dad74cf1abd3799c2a8a15f59a65c3041122f569a366a70df7" />
-      <keyword name="MEM_ALLOCATED" id="rambrain::MEM_ALLOCATED" ref="a00089.html#a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9" />
-      <keyword name="MEM_SWAPPED" id="rambrain::MEM_SWAPPED" ref="a00089.html#a2aa4b6f9186dc50dad74cf1abd3799c2af195d1470572e586d7a445d4675dc831" />
-      <keyword name="MEM_SWAPIN" id="rambrain::MEM_SWAPIN" ref="a00089.html#a2aa4b6f9186dc50dad74cf1abd3799c2a43e2d4c7a961e990380e6d0f4e5b526d" />
-      <keyword name="MEM_SWAPOUT" id="rambrain::MEM_SWAPOUT" ref="a00089.html#a2aa4b6f9186dc50dad74cf1abd3799c2ad850c17c7f18c71613429c217998c013" />
-      <keyword name="PAGE_FREE" id="rambrain::PAGE_FREE" ref="a00089.html#a631233f0a428f73b49c774cf84b49c15aa924f4aa2de3b0d29198f2845cbb0e18" />
-      <keyword name="PAGE_PART" id="rambrain::PAGE_PART" ref="a00089.html#a631233f0a428f73b49c774cf84b49c15a0d8281d3b827ce8c96ea2fed70135c44" />
-      <keyword name="PAGE_END" id="rambrain::PAGE_END" ref="a00089.html#a631233f0a428f73b49c774cf84b49c15a2c28acb7053bf3047cc823c444613ec6" />
-      <keyword name="PAGE_WASREAD" id="rambrain::PAGE_WASREAD" ref="a00089.html#a631233f0a428f73b49c774cf84b49c15ab21098f1711ad1dff422b74bf201144c" />
-      <keyword name="PAGE_UNKNOWN_STATE" id="rambrain::PAGE_UNKNOWN_STATE" ref="a00089.html#a631233f0a428f73b49c774cf84b49c15a7b8646de401eda8a0bfbb5c8f0a3e887" />
-      <keyword name="fixed" id="rambrain::fixed" ref="a00089.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149" />
-      <keyword name="autoextendable" id="rambrain::autoextendable" ref="a00089.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04" />
-      <keyword name="interactive" id="rambrain::interactive" ref="a00089.html#a7d53dd1748d5012cafa91aa982c7cd35afe88c03a1958b4259f0c51d68eed3213" />
+      <keyword name="tester" id="tester" ref="a00029.html" />
+      <keyword name="tester" id="tester::tester" ref="a00029.html#a6cc05095bf2aa614542fb0f533d474e2" />
+      <keyword name="~tester" id="tester::~tester" ref="a00029.html#ab79e99149907bf96d75d929f1dc49410" />
+      <keyword name="addParameter" id="tester::addParameter" ref="a00029.html#a1a61f18468c143dbd7c18c599fc1b695" />
+      <keyword name="addTimeMeasurement" id="tester::addTimeMeasurement" ref="a00029.html#a01d742f1f0fe5d55766cb3c256b999d7" />
+      <keyword name="addExternalTime" id="tester::addExternalTime" ref="a00029.html#a67a7cd03f1356bb3e5c1cef32fded3e4" />
+      <keyword name="addComment" id="tester::addComment" ref="a00029.html#aa6c57421952ed233d62f46c7c3363dd6" />
+      <keyword name="setSeed" id="tester::setSeed" ref="a00029.html#a902049984a5425407a2a8aafffec0669" />
+      <keyword name="random" id="tester::random" ref="a00029.html#a3abaa7021bf1e7c8181d98e6dc78ae40" />
+      <keyword name="random" id="tester::random" ref="a00029.html#a6a5d94f44bdd173c8dc11bbabadb441d" />
+      <keyword name="random" id="tester::random" ref="a00029.html#aa852d2f21dc44ad214047a37ca9b9d06" />
+      <keyword name="startNewTimeCycle" id="tester::startNewTimeCycle" ref="a00029.html#a3427b96d1b0517d8b71b2c89c26943ea" />
+      <keyword name="startNewRNGCycle" id="tester::startNewRNGCycle" ref="a00029.html#ad6e6c8cec7d43a252009f13a9b0ee601" />
+      <keyword name="writeToFile" id="tester::writeToFile" ref="a00029.html#a76875804de961f7d87b9de2ebee1957c" />
+      <keyword name="getDurationsForCurrentCycle" id="tester::getDurationsForCurrentCycle" ref="a00029.html#ab1b14519c719b0f70b204ecbd5468ff4" />
+      <keyword name="name" id="tester::name" ref="a00029.html#a928dadceb4d75dc7cf3bb216874dcc6b" />
+      <keyword name="parameters" id="tester::parameters" ref="a00029.html#a0cc29d4b76a800395dc61c96f7a03554" />
+      <keyword name="timeMeasures" id="tester::timeMeasures" ref="a00029.html#a91d92ce07c979f993af063c372351b36" />
+      <keyword name="comment" id="tester::comment" ref="a00029.html#afe62e0886e6b23252681d9ec14f87855" />
+      <keyword name="seeds" id="tester::seeds" ref="a00029.html#a073c37859297abdc2cba42fd06232e9d" />
+      <keyword name="seeded" id="tester::seeded" ref="a00029.html#a3901e2e2875b3eb883413713f0451c2a" />
+      <keyword name="testParameter" id="testParameter" ref="a00030.html" />
+      <keyword name="~testParameter" id="testParameter::~testParameter" ref="a00030.html#af0c5f6ffc72748d4e85ff709f4edab62" />
+      <keyword name="valueAsString" id="testParameter::valueAsString" ref="a00030.html#ab52b58a5f2a820ecc0137ecd0da43053" />
+      <keyword name="valueAsString" id="testParameter::valueAsString" ref="a00030.html#afb95c4c38bff20d5d7c629cfa8b13ed8" />
+      <keyword name="~testParameterBase" id="testParameterBase::~testParameterBase" ref="a00031.html#a1b0dcec6718d1f89841ac4f1fb2d4310" />
+      <keyword name="min" id="testParameter::min" ref="a00030.html#ad9c145df95de9bbffba57074034c2d91" />
+      <keyword name="max" id="testParameter::max" ref="a00030.html#ab9b7a26b9cfd7679c39c56b107d66a3a" />
+      <keyword name="mean" id="testParameter::mean" ref="a00030.html#a32240ebb4edba8ac0bf8601a376c38b1" />
+      <keyword name="steps" id="testParameterBase::steps" ref="a00031.html#a261f867bce5dacd6697c2bb035ad72d2" />
+      <keyword name="deltaLog" id="testParameterBase::deltaLog" ref="a00031.html#afc2046a28e4b318c3644aa2492cae56b" />
+      <keyword name="name" id="testParameterBase::name" ref="a00031.html#afc05d7f3106d20f69c6ef6242c31a844" />
+      <keyword name="enabled" id="testParameterBase::enabled" ref="a00031.html#a153ada4196d884c2aa8b3188d2457db5" />
+      <keyword name="valueAtStep" id="testParameter::valueAtStep" ref="a00030.html#aa253722487cce7de5e4c40a2f4c7c3a9" />
+      <keyword name="toString" id="testParameter::toString" ref="a00030.html#ac4a4584e5b0658d84e209a20160c82cb" />
+      <keyword name="testParameterBase" id="testParameterBase" ref="a00031.html" />
+      <keyword name="~testParameterBase" id="testParameterBase::~testParameterBase" ref="a00031.html#a1b0dcec6718d1f89841ac4f1fb2d4310" />
+      <keyword name="valueAsString" id="testParameterBase::valueAsString" ref="a00031.html#a2514f1bc1f004ffd6d545c2044b26166" />
+      <keyword name="valueAsString" id="testParameterBase::valueAsString" ref="a00031.html#a31a6857782aa664cce378a6a87b67593" />
+      <keyword name="steps" id="testParameterBase::steps" ref="a00031.html#a261f867bce5dacd6697c2bb035ad72d2" />
+      <keyword name="deltaLog" id="testParameterBase::deltaLog" ref="a00031.html#afc2046a28e4b318c3644aa2492cae56b" />
+      <keyword name="name" id="testParameterBase::name" ref="a00031.html#afc05d7f3106d20f69c6ef6242c31a844" />
+      <keyword name="enabled" id="testParameterBase::enabled" ref="a00031.html#a153ada4196d884c2aa8b3188d2457db5" />
+      <keyword name="rambrain" id="rambrain" ref="a00090.html" />
+      <keyword name="myScalar" id="rambrain::myScalar" ref="a00090.html#a750e2504f6799746989c6d76107bf7c1" />
+      <keyword name="global_bytesize" id="rambrain::global_bytesize" ref="a00090.html#abe2d051306a69fb21f8a17946b4e93ed" />
+      <keyword name="global_offset" id="rambrain::global_offset" ref="a00090.html#a72b644584fab6ba1add401162788507b" />
+      <keyword name="memoryID" id="rambrain::memoryID" ref="a00090.html#a44865184cd1937b742c135666f0460cd" />
+      <keyword name="memoryAtime" id="rambrain::memoryAtime" ref="a00090.html#a7ac90afa0cd2573bc0a73c6e4c439f81" />
+      <keyword name="configTestGetSwap" id="rambrain::configTestGetSwap" ref="a00090.html#a304fe942b42713ebcebb2aba88028bb5" />
+      <keyword name="kib" id="rambrain::kib" ref="a00090.html#ac2c0fb2cc8161166cbd060cb2b85aaf1" />
+      <keyword name="mib" id="rambrain::mib" ref="a00090.html#a8526efa365cdb0cb597351c2671af168" />
+      <keyword name="gig" id="rambrain::gig" ref="a00090.html#a8525b8b73c3e1ec62bd571b3cffd1742" />
+      <keyword name="min_elements" id="rambrain::min_elements" ref="a00090.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc" />
+      <keyword name="MEM_ROOT" id="rambrain::MEM_ROOT" ref="a00090.html#a2aa4b6f9186dc50dad74cf1abd3799c2ae3335597107739bf9a94567aa64a11c5" />
+      <keyword name="MEM_ALLOCATED_INUSE_READ" id="rambrain::MEM_ALLOCATED_INUSE_READ" ref="a00090.html#a2aa4b6f9186dc50dad74cf1abd3799c2a610971eb8090b2a006cab2a9d0b23e1a" />
+      <keyword name="MEM_ALLOCATED_INUSE_WRITE" id="rambrain::MEM_ALLOCATED_INUSE_WRITE" ref="a00090.html#a2aa4b6f9186dc50dad74cf1abd3799c2a153517e34aa29157bc4d3263790a2dc7" />
+      <keyword name="MEM_ALLOCATED_INUSE" id="rambrain::MEM_ALLOCATED_INUSE" ref="a00090.html#a2aa4b6f9186dc50dad74cf1abd3799c2a8a15f59a65c3041122f569a366a70df7" />
+      <keyword name="MEM_ALLOCATED" id="rambrain::MEM_ALLOCATED" ref="a00090.html#a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9" />
+      <keyword name="MEM_SWAPPED" id="rambrain::MEM_SWAPPED" ref="a00090.html#a2aa4b6f9186dc50dad74cf1abd3799c2af195d1470572e586d7a445d4675dc831" />
+      <keyword name="MEM_SWAPIN" id="rambrain::MEM_SWAPIN" ref="a00090.html#a2aa4b6f9186dc50dad74cf1abd3799c2a43e2d4c7a961e990380e6d0f4e5b526d" />
+      <keyword name="MEM_SWAPOUT" id="rambrain::MEM_SWAPOUT" ref="a00090.html#a2aa4b6f9186dc50dad74cf1abd3799c2ad850c17c7f18c71613429c217998c013" />
+      <keyword name="PAGE_FREE" id="rambrain::PAGE_FREE" ref="a00090.html#a631233f0a428f73b49c774cf84b49c15aa924f4aa2de3b0d29198f2845cbb0e18" />
+      <keyword name="PAGE_PART" id="rambrain::PAGE_PART" ref="a00090.html#a631233f0a428f73b49c774cf84b49c15a0d8281d3b827ce8c96ea2fed70135c44" />
+      <keyword name="PAGE_END" id="rambrain::PAGE_END" ref="a00090.html#a631233f0a428f73b49c774cf84b49c15a2c28acb7053bf3047cc823c444613ec6" />
+      <keyword name="PAGE_WASREAD" id="rambrain::PAGE_WASREAD" ref="a00090.html#a631233f0a428f73b49c774cf84b49c15ab21098f1711ad1dff422b74bf201144c" />
+      <keyword name="PAGE_UNKNOWN_STATE" id="rambrain::PAGE_UNKNOWN_STATE" ref="a00090.html#a631233f0a428f73b49c774cf84b49c15a7b8646de401eda8a0bfbb5c8f0a3e887" />
+      <keyword name="fixed" id="rambrain::fixed" ref="a00090.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149" />
+      <keyword name="autoextendable" id="rambrain::autoextendable" ref="a00090.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04" />
+      <keyword name="interactive" id="rambrain::interactive" ref="a00090.html#a7d53dd1748d5012cafa91aa982c7cd35afe88c03a1958b4259f0c51d68eed3213" />
       <keyword name="rambrain::adhereTo" id="rambrain::adhereTo" ref="a00001.html" />
       <keyword name="adhereTo" id="rambrain::adhereTo::adhereTo" ref="a00001.html#a0cc6fda5677ecda5c6b367e863e27b3e" />
       <keyword name="adhereTo" id="rambrain::adhereTo::adhereTo" ref="a00001.html#afbc94c868ff3e5732474e5014bb67783" />
@@ -2191,50 +2206,57 @@
       <keyword name="aio_lock" id="rambrain::pageFileLocation::aio_lock" ref="a00020.html#af2479051e8d3d5ac26d19cfa61d7464a" />
       <keyword name="rambrain::rambrainException" id="rambrain::rambrainException" ref="a00025.html" />
       <keyword name="~rambrainException" id="rambrain::rambrainException::~rambrainException" ref="a00025.html#adc8b99eedc8c84ace511f44dbd46d531" />
-      <keyword name="rambrain::regexMatcher" id="rambrain::regexMatcher" ref="a00026.html" />
-      <keyword name="regexMatcher" id="rambrain::regexMatcher::regexMatcher" ref="a00026.html#a85bbcde8ed2102552f5aa6fc521594da" />
-      <keyword name="matchConfigBlock" id="rambrain::regexMatcher::matchConfigBlock" ref="a00026.html#a952ca26ade04a532e24f85dbb2c748e4" />
-      <keyword name="matchKeyEqualsValue" id="rambrain::regexMatcher::matchKeyEqualsValue" ref="a00026.html#a4c3ce2c7a2beff16c71fbf5c33396356" />
-      <keyword name="matchKeyEqualsValue" id="rambrain::regexMatcher::matchKeyEqualsValue" ref="a00026.html#ac7fa4bee7ced8140de8cea27640cfc09" />
-      <keyword name="splitDoubleValueUnit" id="rambrain::regexMatcher::splitDoubleValueUnit" ref="a00026.html#addb28ec0da837148b315a76d3e86d3dc" />
-      <keyword name="splitIntegerValueUnit" id="rambrain::regexMatcher::splitIntegerValueUnit" ref="a00026.html#a05b70b65e3965866b3d9dfbdcacad5d6" />
-      <keyword name="substituteHomeDir" id="rambrain::regexMatcher::substituteHomeDir" ref="a00026.html#a2fe1eeb1a8a33964f7211daeeaf12891" />
-      <keyword name="createRegexMatching" id="rambrain::regexMatcher::createRegexMatching" ref="a00026.html#a9c7cf7261cd1af242d3792cb622f34e4" />
-      <keyword name="integer" id="rambrain::regexMatcher::integer" ref="a00026.html#acf6754e0f0df10007f5494899ed31229afa1a394563a55a77a4ac5b8541014aae" />
-      <keyword name="floating" id="rambrain::regexMatcher::floating" ref="a00026.html#acf6754e0f0df10007f5494899ed31229a4afe10bda6318109694a35c63aff6548" />
-      <keyword name="units" id="rambrain::regexMatcher::units" ref="a00026.html#acf6754e0f0df10007f5494899ed31229a2b6e9b3cb4427fe84fcf45206b171541" />
-      <keyword name="text" id="rambrain::regexMatcher::text" ref="a00026.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2" />
-      <keyword name="alphanumtext" id="rambrain::regexMatcher::alphanumtext" ref="a00026.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418" />
-      <keyword name="boolean" id="rambrain::regexMatcher::boolean" ref="a00026.html#acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137" />
-      <keyword name="swapfilename" id="rambrain::regexMatcher::swapfilename" ref="a00026.html#acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74" />
-      <keyword name="rambrain::swapFileDesc" id="rambrain::swapFileDesc" ref="a00027.html" />
-      <keyword name="fileno" id="rambrain::swapFileDesc::fileno" ref="a00027.html#ad1e2f059bfcb37b60e2f0aea45d7b6a3" />
-      <keyword name="currentSize" id="rambrain::swapFileDesc::currentSize" ref="a00027.html#a38f03520f7cfe57187d74667dd9ed768" />
-      <keyword name="rambrain::Timer" id="rambrain::Timer" ref="a00031.html" />
-      <keyword name="startTimer" id="rambrain::Timer::startTimer" ref="a00031.html#a2b4fa3e4a1e2ef1b1edeffa577717d5d" />
-      <keyword name="stopTimer" id="rambrain::Timer::stopTimer" ref="a00031.html#ad432a370227d8794c716e252d615c9d9" />
-      <keyword name="isRunning" id="rambrain::Timer::isRunning" ref="a00031.html#a4ad88b5e08c6ac3c4353ff96f9a00b17" />
-      <keyword name="Timer" id="rambrain::Timer::Timer" ref="a00031.html#a2c383399b9ca73789a3bb5625632b9dd" />
-      <keyword name="initialiseTimer" id="rambrain::Timer::initialiseTimer" ref="a00031.html#ab9c2a3fb72f25c0ee936c4023cb55ffa" />
-      <keyword name="timerid" id="rambrain::Timer::timerid" ref="a00031.html#a59277ee2347b98ad2b255ee898079da7" />
-      <keyword name="sev" id="rambrain::Timer::sev" ref="a00031.html#aa01c05838ff7a702f7509fe45e8a6c87" />
-      <keyword name="its" id="rambrain::Timer::its" ref="a00031.html#a05d8a8b45ca6ca0fc8586dc45e397eb6" />
-      <keyword name="initialised" id="rambrain::Timer::initialised" ref="a00031.html#ac6ba857b6f43eb3998d15b78f505b312" />
-      <keyword name="running" id="rambrain::Timer::running" ref="a00031.html#aa17bc507bfb17a2978f80bf8228c5c7f" />
-      <keyword name="rambrain::unexpectedStateException" id="rambrain::unexpectedStateException" ref="a00032.html" />
-      <keyword name="unexpectedStateException" id="rambrain::unexpectedStateException::unexpectedStateException" ref="a00032.html#af3dd85dc4cdd2dfd57605e256829b87b" />
-      <keyword name="~unexpectedStateException" id="rambrain::unexpectedStateException::~unexpectedStateException" ref="a00032.html#aab535ff3feaae830646297b16969dc04" />
-      <keyword name="what" id="rambrain::unexpectedStateException::what" ref="a00032.html#a3f676aed82c376c35d2b5bc04b989b6c" />
-      <keyword name="details" id="rambrain::unexpectedStateException::details" ref="a00032.html#a1a60b532d24243eec8cdbafd381fd1c2" />
+      <keyword name="rambrain::rambrainGlobalCriticalSectionControl" id="rambrain::rambrainGlobalCriticalSectionControl" ref="a00026.html" />
+      <keyword name="rambrainGlobalCriticalSectionControl" id="rambrain::rambrainGlobalCriticalSectionControl::rambrainGlobalCriticalSectionControl" ref="a00026.html#a2eba336227be329754d0cbfad1fa7fb9" />
+      <keyword name="~rambrainGlobalCriticalSectionControl" id="rambrain::rambrainGlobalCriticalSectionControl::~rambrainGlobalCriticalSectionControl" ref="a00026.html#ae4e628e1cade22e5e3ad1de7f34127bb" />
+      <keyword name="stop" id="rambrain::rambrainGlobalCriticalSectionControl::stop" ref="a00026.html#a0df23dfab5cf05d28b27de79dad30dd1" />
+      <keyword name="start" id="rambrain::rambrainGlobalCriticalSectionControl::start" ref="a00026.html#a92057e6db5750cd9b730e415ab56cbd6" />
+      <keyword name="locksByUser" id="rambrain::rambrainGlobalCriticalSectionControl::locksByUser" ref="a00026.html#a6c7b5ba71d0137485e5149986e562807" />
+      <keyword name="mutex" id="rambrain::rambrainGlobalCriticalSectionControl::mutex" ref="a00026.html#aae04650afc3d10bdd52790d2cffcbbef" />
+      <keyword name="rambrain::regexMatcher" id="rambrain::regexMatcher" ref="a00027.html" />
+      <keyword name="regexMatcher" id="rambrain::regexMatcher::regexMatcher" ref="a00027.html#a85bbcde8ed2102552f5aa6fc521594da" />
+      <keyword name="matchConfigBlock" id="rambrain::regexMatcher::matchConfigBlock" ref="a00027.html#a952ca26ade04a532e24f85dbb2c748e4" />
+      <keyword name="matchKeyEqualsValue" id="rambrain::regexMatcher::matchKeyEqualsValue" ref="a00027.html#a4c3ce2c7a2beff16c71fbf5c33396356" />
+      <keyword name="matchKeyEqualsValue" id="rambrain::regexMatcher::matchKeyEqualsValue" ref="a00027.html#ac7fa4bee7ced8140de8cea27640cfc09" />
+      <keyword name="splitDoubleValueUnit" id="rambrain::regexMatcher::splitDoubleValueUnit" ref="a00027.html#addb28ec0da837148b315a76d3e86d3dc" />
+      <keyword name="splitIntegerValueUnit" id="rambrain::regexMatcher::splitIntegerValueUnit" ref="a00027.html#a05b70b65e3965866b3d9dfbdcacad5d6" />
+      <keyword name="substituteHomeDir" id="rambrain::regexMatcher::substituteHomeDir" ref="a00027.html#a2fe1eeb1a8a33964f7211daeeaf12891" />
+      <keyword name="createRegexMatching" id="rambrain::regexMatcher::createRegexMatching" ref="a00027.html#a9c7cf7261cd1af242d3792cb622f34e4" />
+      <keyword name="integer" id="rambrain::regexMatcher::integer" ref="a00027.html#acf6754e0f0df10007f5494899ed31229afa1a394563a55a77a4ac5b8541014aae" />
+      <keyword name="floating" id="rambrain::regexMatcher::floating" ref="a00027.html#acf6754e0f0df10007f5494899ed31229a4afe10bda6318109694a35c63aff6548" />
+      <keyword name="units" id="rambrain::regexMatcher::units" ref="a00027.html#acf6754e0f0df10007f5494899ed31229a2b6e9b3cb4427fe84fcf45206b171541" />
+      <keyword name="text" id="rambrain::regexMatcher::text" ref="a00027.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2" />
+      <keyword name="alphanumtext" id="rambrain::regexMatcher::alphanumtext" ref="a00027.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418" />
+      <keyword name="boolean" id="rambrain::regexMatcher::boolean" ref="a00027.html#acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137" />
+      <keyword name="swapfilename" id="rambrain::regexMatcher::swapfilename" ref="a00027.html#acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74" />
+      <keyword name="rambrain::swapFileDesc" id="rambrain::swapFileDesc" ref="a00028.html" />
+      <keyword name="fileno" id="rambrain::swapFileDesc::fileno" ref="a00028.html#ad1e2f059bfcb37b60e2f0aea45d7b6a3" />
+      <keyword name="currentSize" id="rambrain::swapFileDesc::currentSize" ref="a00028.html#a38f03520f7cfe57187d74667dd9ed768" />
+      <keyword name="rambrain::Timer" id="rambrain::Timer" ref="a00032.html" />
+      <keyword name="startTimer" id="rambrain::Timer::startTimer" ref="a00032.html#a2b4fa3e4a1e2ef1b1edeffa577717d5d" />
+      <keyword name="stopTimer" id="rambrain::Timer::stopTimer" ref="a00032.html#ad432a370227d8794c716e252d615c9d9" />
+      <keyword name="isRunning" id="rambrain::Timer::isRunning" ref="a00032.html#a4ad88b5e08c6ac3c4353ff96f9a00b17" />
+      <keyword name="Timer" id="rambrain::Timer::Timer" ref="a00032.html#a2c383399b9ca73789a3bb5625632b9dd" />
+      <keyword name="initialiseTimer" id="rambrain::Timer::initialiseTimer" ref="a00032.html#ab9c2a3fb72f25c0ee936c4023cb55ffa" />
+      <keyword name="timerid" id="rambrain::Timer::timerid" ref="a00032.html#a59277ee2347b98ad2b255ee898079da7" />
+      <keyword name="sev" id="rambrain::Timer::sev" ref="a00032.html#aa01c05838ff7a702f7509fe45e8a6c87" />
+      <keyword name="its" id="rambrain::Timer::its" ref="a00032.html#a05d8a8b45ca6ca0fc8586dc45e397eb6" />
+      <keyword name="initialised" id="rambrain::Timer::initialised" ref="a00032.html#ac6ba857b6f43eb3998d15b78f505b312" />
+      <keyword name="running" id="rambrain::Timer::running" ref="a00032.html#aa17bc507bfb17a2978f80bf8228c5c7f" />
+      <keyword name="rambrain::unexpectedStateException" id="rambrain::unexpectedStateException" ref="a00033.html" />
+      <keyword name="unexpectedStateException" id="rambrain::unexpectedStateException::unexpectedStateException" ref="a00033.html#af3dd85dc4cdd2dfd57605e256829b87b" />
+      <keyword name="~unexpectedStateException" id="rambrain::unexpectedStateException::~unexpectedStateException" ref="a00033.html#aab535ff3feaae830646297b16969dc04" />
+      <keyword name="what" id="rambrain::unexpectedStateException::what" ref="a00033.html#a3f676aed82c376c35d2b5bc04b989b6c" />
+      <keyword name="details" id="rambrain::unexpectedStateException::details" ref="a00033.html#a1a60b532d24243eec8cdbafd381fd1c2" />
       <keyword name="~rambrainException" id="rambrain::rambrainException::~rambrainException" ref="a00025.html#adc8b99eedc8c84ace511f44dbd46d531" />
-      <keyword name="rambrain::unfinishedCodeException" id="rambrain::unfinishedCodeException" ref="a00033.html" />
-      <keyword name="unfinishedCodeException" id="rambrain::unfinishedCodeException::unfinishedCodeException" ref="a00033.html#af1b49f7d43d56cf9a9189be11b364fa0" />
-      <keyword name="~unfinishedCodeException" id="rambrain::unfinishedCodeException::~unfinishedCodeException" ref="a00033.html#ae9bf6925fa2e8d40aab176fe4d3d6bcd" />
-      <keyword name="what" id="rambrain::unfinishedCodeException::what" ref="a00033.html#a4acaf40b4b0754e00ef79247eb95424a" />
-      <keyword name="details" id="rambrain::unfinishedCodeException::details" ref="a00033.html#a0adbdd6384b7cdb3e8576be34a99c76f" />
+      <keyword name="rambrain::unfinishedCodeException" id="rambrain::unfinishedCodeException" ref="a00034.html" />
+      <keyword name="unfinishedCodeException" id="rambrain::unfinishedCodeException::unfinishedCodeException" ref="a00034.html#af1b49f7d43d56cf9a9189be11b364fa0" />
+      <keyword name="~unfinishedCodeException" id="rambrain::unfinishedCodeException::~unfinishedCodeException" ref="a00034.html#ae9bf6925fa2e8d40aab176fe4d3d6bcd" />
+      <keyword name="what" id="rambrain::unfinishedCodeException::what" ref="a00034.html#a4acaf40b4b0754e00ef79247eb95424a" />
+      <keyword name="details" id="rambrain::unfinishedCodeException::details" ref="a00034.html#a0adbdd6384b7cdb3e8576be34a99c76f" />
       <keyword name="~rambrainException" id="rambrain::rambrainException::~rambrainException" ref="a00025.html#adc8b99eedc8c84ace511f44dbd46d531" />
-      <keyword name="rambrain::rambrainglobals" id="rambrain::rambrainglobals" ref="a00090.html" />
-      <keyword name="config" id="rambrain::rambrainglobals::config" ref="a00090.html#ad02508d72047bc55a38eda857e4816c1" />
+      <keyword name="rambrain::rambrainglobals" id="rambrain::rambrainglobals" ref="a00091.html" />
+      <keyword name="config" id="rambrain::rambrainglobals::config" ref="a00091.html#ad02508d72047bc55a38eda857e4816c1" />
       <keyword name="rambrain::rambrainglobals::rambrainConfig" id="rambrain::rambrainglobals::rambrainConfig" ref="a00024.html" />
       <keyword name="rambrainConfig" id="rambrain::rambrainglobals::rambrainConfig::rambrainConfig" ref="a00024.html#adf79cce9ad6dde113f1a25c7f28978cc" />
       <keyword name="~rambrainConfig" id="rambrain::rambrainglobals::rambrainConfig::~rambrainConfig" ref="a00024.html#a50356f5e6333c5094970bf201bcca578" />
@@ -2278,7 +2300,6 @@
       <file>search/mag_sel.png</file>
       <file>search/search.css</file>
       <file>search/search.js</file>
-      <file>a00034_source.html</file>
       <file>a00035_source.html</file>
       <file>a00036_source.html</file>
       <file>a00037_source.html</file>
@@ -2332,7 +2353,7 @@
       <file>a00085_source.html</file>
       <file>a00086_source.html</file>
       <file>a00087_source.html</file>
-      <file>a00034.html</file>
+      <file>a00088_source.html</file>
       <file>a00035.html</file>
       <file>a00036.html</file>
       <file>a00037.html</file>
@@ -2386,93 +2407,96 @@
       <file>a00085.html</file>
       <file>a00086.html</file>
       <file>a00087.html</file>
-      <file>a00093.html</file>
-      <file>a00095.html</file>
+      <file>a00088.html</file>
+      <file>a00094.html</file>
+      <file>a00096.html</file>
       <file>a00009.html</file>
-      <file>a00097.html</file>
+      <file>a00098.html</file>
       <file>a00021.html</file>
       <file>a00022.html</file>
       <file>a00022.png</file>
-      <file>a00098.html</file>
-      <file>a00023.html</file>
       <file>a00099.html</file>
-      <file>a00028.html</file>
+      <file>a00023.html</file>
       <file>a00100.html</file>
       <file>a00029.html</file>
-      <file>a00029.png</file>
       <file>a00101.html</file>
       <file>a00030.html</file>
       <file>a00030.png</file>
       <file>a00102.html</file>
-      <file>a00089.html</file>
-      <file>a00001.html</file>
+      <file>a00031.html</file>
+      <file>a00031.png</file>
       <file>a00103.html</file>
-      <file>a00002.html</file>
+      <file>a00090.html</file>
+      <file>a00001.html</file>
       <file>a00104.html</file>
+      <file>a00002.html</file>
+      <file>a00105.html</file>
       <file>a00003.html</file>
       <file>a00003.png</file>
-      <file>a00105.html</file>
+      <file>a00106.html</file>
       <file>a00004.html</file>
       <file>a00004.png</file>
-      <file>a00106.html</file>
-      <file>a00005.html</file>
       <file>a00107.html</file>
-      <file>a00006.html</file>
+      <file>a00005.html</file>
       <file>a00108.html</file>
-      <file>a00007.html</file>
+      <file>a00006.html</file>
       <file>a00109.html</file>
+      <file>a00007.html</file>
+      <file>a00110.html</file>
       <file>a00008.html</file>
       <file>a00008.png</file>
-      <file>a00110.html</file>
+      <file>a00111.html</file>
       <file>a00010.html</file>
       <file>a00010.png</file>
-      <file>a00111.html</file>
-      <file>a00011.html</file>
       <file>a00112.html</file>
+      <file>a00011.html</file>
+      <file>a00113.html</file>
       <file>a00012.html</file>
       <file>a00012.png</file>
-      <file>a00113.html</file>
+      <file>a00114.html</file>
       <file>a00013.html</file>
       <file>a00013.png</file>
-      <file>a00114.html</file>
+      <file>a00115.html</file>
       <file>a00014.html</file>
       <file>a00014.png</file>
-      <file>a00115.html</file>
+      <file>a00116.html</file>
       <file>a00015.html</file>
       <file>a00015.png</file>
-      <file>a00116.html</file>
+      <file>a00117.html</file>
       <file>a00016.html</file>
       <file>dot_chunkStatusScheme.png</file>
       <file>dot_chunkStatusScheme.png</file>
-      <file>a00117.html</file>
-      <file>a00017.html</file>
       <file>a00118.html</file>
+      <file>a00017.html</file>
+      <file>a00119.html</file>
       <file>a00018.html</file>
       <file>a00018.png</file>
-      <file>a00119.html</file>
+      <file>a00120.html</file>
       <file>a00019.html</file>
       <file>a00019.png</file>
-      <file>a00120.html</file>
-      <file>a00020.html</file>
       <file>a00121.html</file>
+      <file>a00020.html</file>
+      <file>a00122.html</file>
       <file>a00025.html</file>
       <file>a00025.png</file>
-      <file>a00122.html</file>
-      <file>a00026.html</file>
       <file>a00123.html</file>
-      <file>a00027.html</file>
+      <file>a00026.html</file>
       <file>a00124.html</file>
-      <file>a00031.html</file>
+      <file>a00027.html</file>
       <file>a00125.html</file>
-      <file>a00032.html</file>
-      <file>a00032.png</file>
+      <file>a00028.html</file>
       <file>a00126.html</file>
+      <file>a00032.html</file>
+      <file>a00127.html</file>
       <file>a00033.html</file>
       <file>a00033.png</file>
-      <file>a00127.html</file>
-      <file>a00090.html</file>
-      <file>a00024.html</file>
       <file>a00128.html</file>
+      <file>a00034.html</file>
+      <file>a00034.png</file>
+      <file>a00129.html</file>
+      <file>a00091.html</file>
+      <file>a00024.html</file>
+      <file>a00130.html</file>
       <file>dir_68267d1309a1af8e8297ef4c3efbcdba.html</file>
       <file>dir_59425e443f801f1f2fd8bbe4959a3ccf.html</file>
       <file>index.html</file>

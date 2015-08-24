@@ -17,8 +17,8 @@ var hierarchy =
       [ "rambrain::rambrainException", "a00025.html", [
         [ "rambrain::incompleteSetupException", "a00012.html", null ],
         [ "rambrain::memoryException", "a00019.html", null ],
-        [ "rambrain::unexpectedStateException", "a00032.html", null ],
-        [ "rambrain::unfinishedCodeException", "a00033.html", null ]
+        [ "rambrain::unexpectedStateException", "a00033.html", null ],
+        [ "rambrain::unfinishedCodeException", "a00034.html", null ]
       ] ]
     ] ],
     [ "rambrain::glob_off_union", "a00011.html", null ],
@@ -39,11 +39,12 @@ var hierarchy =
     ] ],
     [ "performanceTest<>", "a00023.html", null ],
     [ "rambrain::rambrainglobals::rambrainConfig", "a00024.html", null ],
-    [ "rambrain::regexMatcher", "a00026.html", null ],
-    [ "rambrain::swapFileDesc", "a00027.html", null ],
-    [ "tester", "a00028.html", null ],
-    [ "testParameterBase", "a00030.html", [
-      [ "testParameter< T >", "a00029.html", null ]
+    [ "rambrain::rambrainGlobalCriticalSectionControl", "a00026.html", null ],
+    [ "rambrain::regexMatcher", "a00027.html", null ],
+    [ "rambrain::swapFileDesc", "a00028.html", null ],
+    [ "tester", "a00029.html", null ],
+    [ "testParameterBase", "a00031.html", [
+      [ "testParameter< T >", "a00030.html", null ]
     ] ],
-    [ "rambrain::Timer", "a00031.html", null ]
+    [ "rambrain::Timer", "a00032.html", null ]
 ];
