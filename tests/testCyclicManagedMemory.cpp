@@ -642,3 +642,59 @@ TEST ( cyclicManagedMemory, Unit_CleanupOfForgottenPointers )
     rambrain::rambrainglobals::config.reinit();
 }
 
+/**
+* @test Checks recovery from random access to preemptive access
+* */
+TEST ( cyclicManagedMemory, Unit_RecoveryFromRandomAccess )
+{
+    const unsigned int n_el = 1024;
+    const unsigned int memsize = n_el * sizeof ( char ) / 2;
+    const unsigned int swapsize = 10 * memsize;
+
+    managedDummySwap swap ( swapsize );
+    cyclicManagedMemory manager ( &swap, memsize );
+
+    managedPtr<char> randomAccess[n_el];
+    managedPtr<char> consecutiveAccess[n_el];
+
+    tester test;
+    test.setSeed();
+
+    //Set consecutive order and check whether scheduler works correctly
+    for ( int n = 0; n < n_el * 10; ++n ) {
+        adhereTo<char> glue ( consecutiveAccess[n % n_el] );
+        char *loc = glue;
+        *loc = n % 256;
+    }
+    double homi_rate = manager.getHitsOverMisses();
+    infomsgf ( "HoMrate = %lf ", homi_rate );
+    EXPECT_TRUE ( homi_rate > 50 );
+    manager.resetSwapstats();
+    //Fill up preemptives with random access to object group randomAccess;
+    for ( int n = 0; n < n_el * 10; ++n ) {
+        unsigned int idx = test.random ( ( int ) n_el - 1 );
+        adhereTo<char> glue ( randomAccess[idx] );
+        char *loc = glue;
+        *loc = n % 256;
+    }
+    homi_rate = manager.getHitsOverMisses();
+    infomsgf ( "HoMrate = %lf", homi_rate );
+    EXPECT_TRUE ( homi_rate < 1 );
+    manager.resetSwapstats();
+
+    //Now, try to access consecutive object group again
+    for ( int n = 0; n < n_el * 10; ++n ) {
+        adhereTo<char> glue ( consecutiveAccess[n % n_el] );
+        char *loc = glue;
+        *loc = n % 256;
+    }
+    //And see if we recovered from preemptives:
+    homi_rate = manager.getHitsOverMisses();
+    infomsgf ( "HoMrate = %lf", homi_rate );
+    EXPECT_TRUE ( homi_rate > 50 );
+    manager.resetSwapstats();
+
+}
+
+
+
