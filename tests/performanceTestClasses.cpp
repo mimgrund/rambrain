@@ -1761,7 +1761,7 @@ void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize
     rambrainglobals::config.resizeSwap ( numel * bytesize );
 
     managedPtr<char> *ptr[numel];
-    for ( int n = 0; n < numel; ++n ) {
+    for ( unsigned int n = 0; n < numel; ++n ) {
         ptr[n] = new managedPtr<char> ( bytesize );
     }
 
@@ -1853,7 +1853,7 @@ void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize
     }
 
 #ifdef PTEST_CHECKS
-    for ( int x = 0; x < numel; ++x ) {
+    for ( unsigned int x = 0; x < numel; ++x ) {
         adhereTo<char> glue ( ptr[x] );
         char *loc = glue;
         for ( int r = 0; r < rewritetimesmin * bytesize; r++ )
@@ -1866,7 +1866,7 @@ void measurePreemptiveSpeedupTest::actualTestMethod ( tester &test, int bytesize
     test.addExternalTime ( allPrepare2 );
     test.addExternalTime ( allCalc2 );
 
-    for ( int n = 0; n < numel; ++n ) {
+    for ( unsigned int n = 0; n < numel; ++n ) {
         delete ptr[n];
     }
 }
@@ -1907,7 +1907,7 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
     rambrainglobals::config.resizeSwap ( numel * bytesize );
 
     managedPtr<char> *ptr[numel];
-    for ( int n = 0; n < numel; ++n ) {
+    for ( unsigned int n = 0; n < numel; ++n ) {
         ptr[n] = new managedPtr<char> ( bytesize );
     }
 
@@ -2019,7 +2019,7 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
     test.addExternalTime ( allCalc2 );
     test.addExternalTime ( allDel );
 
-    for ( int n = 0; n < numel; ++n ) {
+    for ( unsigned int n = 0; n < numel; ++n ) {
         delete ptr[n];
     }
 
