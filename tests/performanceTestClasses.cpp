@@ -704,8 +704,7 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
     unsigned int rows_fetch = memlines / ( 4 * ompt ) > size ? size : memlines / ( 4 * ompt );
     unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
 
-    adhereTo<double> *Arows[rows_fetch];
-    adhereTo<double> *Brows[rows_fetch];
+
     #pragma omp parallel for
     for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
         for ( unsigned int ii = 0; ii <= jj; ii++ ) {
@@ -718,7 +717,8 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
             unsigned int j_off = jj * rows_fetch; // Block A, horizontal index
 
             //Get rows A_ii** and B_jj** into memory:
-
+            adhereTo<double> *Arows[rows_fetch];
+            adhereTo<double> *Brows[rows_fetch];
             for ( unsigned int i = 0; i < i_lim; ++i ) {
                 Arows[i] = new adhereTo<double> ( *rows[i + i_off], true );
             }
