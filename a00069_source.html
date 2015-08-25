@@ -813,21 +813,21 @@ $(document).ready(function(){initNavTree('a00069_source.html','');});
 <div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rows_fetch = memlines / ( 4 * ompt ) &gt; size ? size : memlines / ( 4 * ompt );</div>
 <div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );</div>
 <div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;</div>
-<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;    adhereTo&lt;double&gt; *Arows[rows_fetch];</div>
-<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;    adhereTo&lt;double&gt; *Brows[rows_fetch];</div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;<span class="preprocessor">    #pragma omp parallel for</span></div>
-<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> jj = 0; jj &lt; n_blocks; jj++ ) {</div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ii = 0; ii &lt;= jj; ii++ ) {</div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;            <span class="comment">//A_iijj &lt;-&gt; B_jjii</span></div>
-<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;</div>
-<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;            <span class="comment">//Reserve rows ii and jj</span></div>
-<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i_lim = ( ii + 1 == n_blocks &amp;&amp; size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); <span class="comment">// Block A, vertical limit</span></div>
-<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j_lim = ( jj + 1 == n_blocks &amp;&amp; size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); <span class="comment">// Block A, horizontal limit</span></div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i_off = ii * rows_fetch; <span class="comment">// Block A, vertical index</span></div>
-<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j_off = jj * rows_fetch; <span class="comment">// Block A, horizontal index</span></div>
-<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;</div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;            <span class="comment">//Get rows A_ii** and B_jj** into memory:</span></div>
-<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;</div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;</div>
+<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;<span class="preprocessor">    #pragma omp parallel for</span></div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> jj = 0; jj &lt; n_blocks; jj++ ) {</div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> ii = 0; ii &lt;= jj; ii++ ) {</div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;            <span class="comment">//A_iijj &lt;-&gt; B_jjii</span></div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;</div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;            <span class="comment">//Reserve rows ii and jj</span></div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i_lim = ( ii + 1 == n_blocks &amp;&amp; size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); <span class="comment">// Block A, vertical limit</span></div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j_lim = ( jj + 1 == n_blocks &amp;&amp; size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); <span class="comment">// Block A, horizontal limit</span></div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i_off = ii * rows_fetch; <span class="comment">// Block A, vertical index</span></div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;            <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j_off = jj * rows_fetch; <span class="comment">// Block A, horizontal index</span></div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;            <span class="comment">//Get rows A_ii** and B_jj** into memory:</span></div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;            adhereTo&lt;double&gt; *Arows[rows_fetch];</div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;            adhereTo&lt;double&gt; *Brows[rows_fetch];</div>
 <div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;            <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; i_lim; ++i ) {</div>
 <div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;                Arows[i] = <span class="keyword">new</span> adhereTo&lt;double&gt; ( *rows[i + i_off], true );</div>
 <div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;            }</div>
@@ -2180,7 +2180,7 @@ $(document).ready(function(){initNavTree('a00069_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00069.html">performanceTestClasses.cpp</a></li>
-    <li class="footer">Generated on Tue Aug 25 2015 01:22:59 for rambrain by
+    <li class="footer">Generated on Wed Aug 26 2015 01:22:57 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
