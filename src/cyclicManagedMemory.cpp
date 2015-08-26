@@ -24,7 +24,7 @@
 #include "managedSwap.h"
 #include <pthread.h>
 #include <cmath>
-//#define VERYVERBOSE
+#define VERYVERBOSE
 
 
 
@@ -87,6 +87,9 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
         chunk.preemptiveLoaded = false;
     }
 
+    if ( &chunk == preemptiveStart->chunk ) {
+        preemptiveStart = ( preemptiveStart->next == active ? NULL : preemptiveStart->next );
+    }
 
     //Hook out element:
     if ( element->next == element ) {
@@ -206,6 +209,7 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
     global_bytesize swapleft = swap->getFreeSwap();
     bytes = min ( preemptiveBytes, bytes );
     bytes = min ( swapleft, bytes );
+    swapleft = min ( preemptiveBytes, swapleft ); //This makes the hard limit clear.
     cyclicAtime *cur = preemptiveStart;
     global_bytesize bytesselected = 0;
     unsigned int chunks = 0;
