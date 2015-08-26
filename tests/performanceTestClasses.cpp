@@ -938,7 +938,8 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
 #define inBlockIdx(x,y) (inBlockX(x,y)*rows_fetch+inBlockY(x,y))
     // Allocate and set
     managedPtr<double> *rows[n_blocks * n_blocks];
-
+    // Enable overcommiting:
+    managedMemory::defaultManager->setOutOfSwapIsFatal ( false );
     #pragma omp parallel for schedule(dynamic)
     for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
         for ( unsigned int ii = 0; ii < n_blocks; ii++ ) {
