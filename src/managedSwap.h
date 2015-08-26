@@ -38,7 +38,7 @@ public:
     managedSwap ( global_bytesize size );
     virtual ~managedSwap();
 
-    //Returns number of sucessfully swapped chunks
+    //Returns size of sucessfully swapped chunks
     /** @brief Trigger swap out of the chunks pointed to by chunklist
      *  @note this function must be called having stateChangeMutex acquired.
      **/

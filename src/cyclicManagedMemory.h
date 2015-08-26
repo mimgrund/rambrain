@@ -79,10 +79,14 @@ private:
     virtual void untouch ( managedMemoryChunk &chunk );
     virtual void schedulerRegister ( managedMemoryChunk &chunk );
     virtual void schedulerDelete ( managedMemoryChunk &chunk );
+    ///@brief: Tries to unload around bytes bytes of preemptive elements
+    void decay ( global_bytesize bytes );
+
 
     //loop pointers:
     cyclicAtime *active = NULL;
     cyclicAtime *counterActive = NULL;
+    cyclicAtime *preemptiveStart = NULL;
 
     float swapOutFrac = .8;
     float swapInFrac = .9;
@@ -90,6 +94,8 @@ private:
     bool preemtiveSwapIn = true;
     bool preemtiveSwapOut = true;
     global_bytesize preemptiveBytes = 0;
+    unsigned int consecutivePreemptiveTransactions = 0;
+    unsigned int preemptiveSinceLast = 0;
 
     static pthread_mutex_t cyclicTopoLock;
 

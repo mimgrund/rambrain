@@ -23,6 +23,7 @@
 #include "rambrain_atomics.h"
 #include "managedSwap.h"
 #include <pthread.h>
+#include <cmath>
 //#define VERYVERBOSE
 
 
@@ -121,8 +122,16 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
 {
     rambrain_pthread_mutex_lock ( &cyclicTopoLock );
     if ( chunk.preemptiveLoaded ) { //This chunk was preemptively loaded
-        preemptiveBytes -= chunk.size ;
+        ++consecutivePreemptiveTransactions;
+        preemptiveBytes -= chunk.size;
+
         chunk.preemptiveLoaded = false;
+        if ( preemptiveStart && preemptiveStart->chunk == &chunk )
+            if ( preemptiveStart->next == active ) {
+                preemptiveStart = NULL;
+            } else {
+                preemptiveStart = preemptiveStart->next;
+            }
     }
 
     //Put this object to begin of loop:
@@ -189,6 +198,49 @@ void cyclicManagedMemory::printMemUsage() const
     fprintf ( stderr, "%lu\t%lu=%lu\t%lu\n", memory_used, claimed_use, memory_swapped, preemptiveBytes );
 }
 
+void cyclicManagedMemory::decay ( global_bytesize bytes )
+{
+    if ( preemptiveStart == NULL ) {
+        return;
+    }
+    global_bytesize swapleft = swap->getFreeSwap();
+    bytes = min ( preemptiveBytes, bytes );
+    bytes = min ( swapleft, bytes );
+    cyclicAtime *cur = preemptiveStart;
+    global_bytesize bytesselected = 0;
+    unsigned int chunks = 0;
+    while ( cur != active && bytesselected < bytes ) {
+        if ( cur->chunk->size + bytesselected < swapleft ) {
+            bytesselected += cur->chunk->size;
+            ++chunks;
+            cur->chunk->preemptiveLoaded = false;
+        } else {
+            break;
+        }
+        cur = cur->next;
+    }
+    if ( cur == preemptiveStart ) {
+        return;
+    }
+    cyclicAtime *cur2 = preemptiveStart;
+    managedMemoryChunk *chunklist[chunks];
+    managedMemoryChunk **cursw = chunklist;
+    while ( cur2 != cur ) {
+        *cursw = cur2->chunk;
+        ++cursw;
+        cur2 = cur2->next;
+    }
+    if ( swap->swapOut ( chunklist, chunks ) != bytesselected ) {
+        Throw ( rambrain::memoryException ( "Could not swap out bytes even though swap claimed to be able to swap out this." ) );
+    }
+    preemptiveBytes -= bytesselected;
+    rambrain_pthread_mutex_lock ( &cyclicTopoLock );
+
+    preemptiveStart = ( cur == active ? NULL : cur );
+    rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
+
+}
+
 
 bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 {
@@ -203,6 +255,15 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         return true;
     }
 
+    global_bytesize max_preemptive = ( swapInFrac - swapOutFrac ) * memory_max;
+    double prob_random_preempt = pow ( swapInFrac - swapOutFrac, consecutivePreemptiveTransactions );
+
+    if ( 0.01 > prob_random_preempt || pow ( swapInFrac - swapOutFrac, preemptiveSinceLast ) > .01 ) {
+        global_bytesize preemptiveReduction = 2.* ( max_preemptive - preemptiveBytes ) + 1;
+        decay ( preemptiveReduction );
+    }
+    consecutivePreemptiveTransactions = 0;
+
     // We use the old border to ensure that sth is not swapped in again that was just swapped out.
     cyclicAtime *oldBorder = counterActive;
 
@@ -213,7 +274,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
     bool preemptiveAutoon = ( ( double ) swap->getFreeSwap() ) / swap->getSwapSize() > preemptiveTurnoffFraction;
 
     if ( preemtiveSwapIn && preemptiveAutoon ) {
-        global_bytesize max_preemptive = ( swapInFrac - swapOutFrac ) * memory_max;
 #ifdef VERYVERBOSE
         if ( preemptiveBytes > max_preemptive ) {
             warnmsg ( "Loaded more premptively than suggested!" );
@@ -280,15 +340,16 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 #ifdef VERYVERBOSE
             printf ( "Chunk %lu has %lu bytes, this is %ld over the top\n", cur->chunk->id, cur->chunk->size, selectedReadinVol + cur->chunk->size + memory_used - memory_max );
 #endif
-            if ( selectedReadinVol + cur->chunk->size + memory_used <= memory_max && cur->chunk->status == MEM_SWAPPED && ( selectedReadinVol == 0 || ( preemtivelySelected + cur->chunk->size < max_preemptive ) ) ) {
+            if ( selectedReadinVol + cur->chunk->size + memory_used <= memory_max && cur->chunk->status == MEM_SWAPPED && ( selectedReadinVol == 0 || ( preemtivelySelected + cur->chunk->size <= max_preemptive ) ) ) {
 
                 cur->chunk->preemptiveLoaded = ( selectedReadinVol > 0 ? true : false );
                 ++numberSelected;
 
-                selectedReadinVol += cur->chunk->size;
+
                 if ( selectedReadinVol > 0 ) {
                     preemtivelySelected += cur->chunk->size;
                 }
+                selectedReadinVol += cur->chunk->size;
                 if ( selectedReadinVol >= targetReadinVol || ( selectedReadinVol > 0 && preemtivelySelected == max_preemptive ) ) {
                     break;
                 }
@@ -304,18 +365,20 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         global_bytesize selectedReadinVol2 = 0;
         preemtivelySelected = 0;
         do {
-            if ( selectedReadinVol2 + readEl->chunk->size + memory_used <= memory_max && readEl->chunk->status == MEM_SWAPPED && ( selectedReadinVol2 == 0 || ( preemtivelySelected + readEl->chunk->size < max_preemptive ) ) ) {
+            if ( selectedReadinVol2 + readEl->chunk->size + memory_used <= memory_max && readEl->chunk->status == MEM_SWAPPED && ( selectedReadinVol2 == 0 || ( preemtivelySelected + readEl->chunk->size <= max_preemptive ) ) ) {
                 chunks[n++] = readEl->chunk;
-                selectedReadinVol2 += readEl->chunk->size;
-                if ( selectedReadinVol > 0 ) {
+                if ( selectedReadinVol2 > 0 ) {
                     preemtivelySelected += readEl->chunk->size;
                 }
+                selectedReadinVol2 += readEl->chunk->size;
                 if ( selectedReadinVol2 >= targetReadinVol || ( selectedReadinVol2 > 0 && preemtivelySelected == max_preemptive ) ) {
                     break;
                 }
             }
             readEl = readEl->prev;
         } while ( readEl != oldBorder );
+        preemptiveSinceLast = numberSelected - 1;
+
         global_bytesize swappedInBytes = swap->swapIn ( chunks, numberSelected );
         if ( (  swappedInBytes != selectedReadinVol ) ) {
             //Check if we at least have swapped in enough:
@@ -393,10 +456,10 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         curel = endSwapin;
         endSwapin = cleanSince2; //Now, everything is hanging before cleanSince2, and curel is the last preemtive element.
         //We need to insert the first element (which we had to swap in) making it the new active:
+        cyclicAtime *beforeActive = active->prev;
         if ( endSwapin != active->prev ) { //If we're not anyways correctly placed
             cyclicAtime *beforeIC = curel->prev;
             cyclicAtime *afterIC = endSwapin->next;
-            cyclicAtime *beforeActive = active->prev;
 #ifdef VERYVERBOSE
             printf ( "beforeIC = %lu , afterIC = %lu , afterActive = %lu \n", beforeIC->chunk->id, afterIC->chunk->id, beforeActive->chunk->id );
 #endif
@@ -404,7 +467,9 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             MUTUAL_CONNECT ( beforeActive, curel );
             MUTUAL_CONNECT ( endSwapin, active );
         }
-
+        if ( !preemptiveStart ) {
+            preemptiveStart = beforeActive->next;
+        }
 
         rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         touch ( chunk );
@@ -573,6 +638,9 @@ void cyclicManagedMemory::printCycle() const
         return;
     }
     printf ( "%lu (%s)<-counterActive\n", counterActive->chunk->id, ( counterActive->chunk->preemptiveLoaded ? "p" : " " ) );
+    if ( preemptiveStart ) {
+        printf ( "%lu (%s)<-preemptiveStart\n", preemptiveStart->chunk->id, ( preemptiveStart->chunk->preemptiveLoaded ? "p" : " " ) );
+    }
     printf ( "%lu => %lu => %lu\n", counterActive->prev->chunk->id, counterActive->chunk->id, counterActive->next->chunk->id );
     printf ( "%lu (%s)<-active\n", active->chunk->id, ( active->chunk->preemptiveLoaded ? "p" : " " ) );
     printf ( "%lu => %lu => %lu\n", active->prev->chunk->id, active->chunk->id, active->next->chunk->id );
@@ -621,6 +689,7 @@ void cyclicManagedMemory::printCycle() const
         }
         atime = atime->next;
     } while ( atime != active );
+    printf ( "In Preemptive: %lu ( of %lf )\n", preemptiveBytes , memory_max * ( swapInFrac - swapOutFrac ) );
     printf ( "\n" );
     printf ( "\n" );
 }
