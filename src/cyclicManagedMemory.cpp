@@ -24,7 +24,7 @@
 #include "managedSwap.h"
 #include <pthread.h>
 #include <cmath>
-#define VERYVERBOSE
+//#define VERYVERBOSE
 
 
 
@@ -87,7 +87,8 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
         chunk.preemptiveLoaded = false;
     }
 
-    if ( &chunk == preemptiveStart->chunk ) {
+
+    if ( preemptiveStart && &chunk == preemptiveStart->chunk ) {
         preemptiveStart = ( preemptiveStart->next == active ? NULL : preemptiveStart->next );
     }
 
@@ -129,12 +130,14 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
         preemptiveBytes -= chunk.size;
 
         chunk.preemptiveLoaded = false;
-        if ( preemptiveStart && preemptiveStart->chunk == &chunk )
-            if ( preemptiveStart->next == active ) {
-                preemptiveStart = NULL;
-            } else {
-                preemptiveStart = preemptiveStart->next;
-            }
+    }
+    // This can be the case even if chunk.preemptiveLoaded is false when we have just swapped in this one as active
+    if ( preemptiveStart && ( preemptiveStart->chunk == &chunk ) ) {
+        if ( preemptiveStart->next == active ) {
+            preemptiveStart = NULL;
+        } else {
+            preemptiveStart = preemptiveStart->next;
+        }
     }
 
     //Put this object to begin of loop:
@@ -460,20 +463,25 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         curel = endSwapin;
         endSwapin = cleanSince2; //Now, everything is hanging before cleanSince2, and curel is the last preemtive element.
         //We need to insert the first element (which we had to swap in) making it the new active:
-        cyclicAtime *beforeActive = active->prev;
         if ( endSwapin != active->prev ) { //If we're not anyways correctly placed
             cyclicAtime *beforeIC = curel->prev;
             cyclicAtime *afterIC = endSwapin->next;
+            cyclicAtime *beforeActive = active->prev;
 #ifdef VERYVERBOSE
             printf ( "beforeIC = %lu , afterIC = %lu , afterActive = %lu \n", beforeIC->chunk->id, afterIC->chunk->id, beforeActive->chunk->id );
 #endif
             MUTUAL_CONNECT ( beforeIC, afterIC );
             MUTUAL_CONNECT ( beforeActive, curel );
             MUTUAL_CONNECT ( endSwapin, active );
+            if ( !preemptiveStart ) {
+                preemptiveStart = beforeActive->next;
+            }
+        } else {
+            if ( !preemptiveStart ) {
+                preemptiveStart = curel;
+            }
         }
-        if ( !preemptiveStart ) {
-            preemptiveStart = beforeActive->next;
-        }
+
 
         rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         touch ( chunk );
@@ -571,10 +579,14 @@ bool cyclicManagedMemory::checkCycle() const
     bool inActiveOnlySection = ( active->chunk->status == MEM_SWAPPED || active->chunk->status == MEM_SWAPOUT ? false : true );
     bool inSwapsection = true;
     bool memerror = false;
+    bool hasPreemptives = false;
     do {
         ++encountered;
         oldcur = cur;
         cur = cur->next;
+        if ( cur->chunk->preemptiveLoaded ) {
+            hasPreemptives = true;
+        }
         if ( cur->chunk->status & MEM_ALLOCATED || cur->chunk->status == MEM_SWAPIN ) {
             usedBytes += cur->chunk->size;
         } else if ( cur->chunk->status == MEM_SWAPOUT ) {
@@ -608,7 +620,6 @@ bool cyclicManagedMemory::checkCycle() const
 
     } while ( cur != active );
 
-
     if ( usedBytes != memory_used ) {
         errmsgf ( "Used bytes are not counted correctly, claimed %lu but found %lu", memory_used, usedBytes );
         memerror = true;
@@ -616,6 +627,57 @@ bool cyclicManagedMemory::checkCycle() const
     if ( tobef != memory_tobefreed ) {
         errmsgf ( "To-Be-Freed bytes are not counted correctly, claimed %lu but found %lu", memory_used, usedBytes );
         memerror = true;
+    }
+
+    unsigned int illicit_count = 0;
+    if ( preemptiveStart ) {
+        cur = preemptiveStart;
+        hasPreemptives = true;
+        while ( cur != active ) {
+            if ( cur->chunk->preemptiveLoaded == false ) {
+                if ( illicit_count < 10 ) {
+                    errmsgf ( "Chunk %ld is a illicit non-preemptive.", cur->chunk->id );
+                } else {
+                    if ( illicit_count == 10 ) {
+                        errmsg ( "will not report further illicits" );
+                    }
+                }
+                ++illicit_count;
+                hasPreemptives = false;
+            }
+            cur = cur->next;
+        }
+        if ( !hasPreemptives ) {
+            errmsg ( "We encountered non-preemptive elements in section marked as preemptive" );
+            memerror = true;
+        }
+        hasPreemptives = false;
+        illicit_count = 0;
+        while ( cur != preemptiveStart ) {
+            if ( cur->chunk->preemptiveLoaded == true ) {
+                if ( illicit_count < 10 ) {
+                    errmsgf ( "Chunk %ld is a illicit preemptive.", cur->chunk->id );
+                } else {
+                    if ( illicit_count == 10 ) {
+                        errmsg ( "will not report further illicits" );
+                    }
+                }
+                ++illicit_count;
+                hasPreemptives = true;
+            }
+            cur = cur->next;
+        }
+        if ( hasPreemptives ) {
+            errmsg ( "We encountered preemptive elements in section marked as non-preemptive" );
+            memerror = true;
+        }
+
+    } else {
+        if ( hasPreemptives ) {
+            errmsg ( "We have preemptives but no preemptiveStart is assigned" );
+            memerror = true;
+        }
+
     }
 
     rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
@@ -775,6 +837,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     printf ( "active = %d\n", active->chunk->id );
 #endif
     passed = 0;
+    bool resetPreemptiveStart = false;
     while ( unload_size2 < unload_size ) {
         ++passed;
         if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) && ( fromPos->chunk->useCnt == 0 ) ) {
@@ -790,6 +853,9 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
                     ///@todo investigate if subtracting swapped out preemptive bytes is affecting performance ( too much preemptive action possible ). Naively testing, this is not the case.
                     fromPos->chunk->preemptiveLoaded = false;
                     preemptiveBytes -= fromPos->chunk->size;
+                }
+                if ( preemptiveStart && ( fromPos->chunk == preemptiveStart->chunk ) ) {
+                    resetPreemptiveStart = true;
                 }
             }
         }
@@ -906,6 +972,14 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
 #ifdef VERYVERBOSE
         printf ( "had to move active", fromPos->chunk->id );
 #endif
+    }
+    if ( resetPreemptiveStart ) { //Rare case!
+        cyclicAtime *cur = active;
+
+        while ( cur->prev->chunk->preemptiveLoaded ) {
+            cur = cur->prev;
+        }
+        preemptiveStart = ( cur == active ? NULL : cur );
     }
     rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
     VERBOSEPRINT ( "swapOutReturn" );
