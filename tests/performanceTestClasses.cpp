@@ -697,7 +697,10 @@ void matrixCleverTranspose2Test::actualTestMethod ( tester &test, int param1, in
     test.addTimeMeasurement();
 
     // Transpose blockwise
-    unsigned int ompt = omp_get_max_threads();
+    unsigned int ompt = 2;
+#ifndef OpenMP_NOT_FOUND
+    ompt = omp_get_max_threads();
+#endif
     unsigned int rows_fetch = memlines / ( 4 * ompt ) > size ? size : memlines / ( 4 * ompt );
     unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
 
@@ -813,7 +816,11 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
     test.addTimeMeasurement();
 
     // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
-    unsigned int ompt = omp_get_max_threads();
+
+    unsigned int ompt = 2;
+#ifndef OpenMP_NOT_FOUND
+    ompt = omp_get_max_threads();
+#endif
     unsigned int rows_fetch = memlines / ( 4 * ompt ) > size ? size : memlines / ( 4 * ompt );
     unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
 
@@ -1037,7 +1044,10 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
 
     // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
 
-    unsigned int ompt = omp_get_max_threads();
+    unsigned int ompt = 2;
+#ifndef OpenMP_NOT_FOUND
+    ompt = omp_get_max_threads();
+#endif
     unsigned int rows_fetch = sqrt ( memlines * size / 2 / ompt );
     unsigned int blocksize = rows_fetch * rows_fetch;
 
