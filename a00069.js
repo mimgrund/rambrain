@@ -2,6 +2,7 @@ var a00069 =
 [
     [ "TESTSTATICS", "a00069.html#a26ae4c36275297208e567385c2f52d9c", null ],
     [ "TESTSTATICS", "a00069.html#a40dbb801aa3ea387d7cdad8a055d9f6a", null ],
+    [ "TESTSTATICS", "a00069.html#a13c4e1634b91f58e715d356fc15656ab", null ],
     [ "TESTSTATICS", "a00069.html#aa888f1306a8f53d34ac167fff944fe64", null ],
     [ "TESTSTATICS", "a00069.html#ad8c4e5016dd2f7cecf0cd7308ef5274e", null ],
     [ "TESTSTATICS", "a00069.html#a2e37c569c981f101ea16feb243ab9463", null ],

@@ -7,6 +7,7 @@ var a00070 =
     [ "performanceTest< T, U...>", "a00022.html", "a00022" ],
     [ "TWOPARAMTEST", "a00070.html#af5ca33e1ddc335f5e8438d775535b0d0", null ],
     [ "TWOPARAMTEST", "a00070.html#a5663d51d4b9c8c9988ff8cbd8780d018", null ],
+    [ "TWOPARAMTEST", "a00070.html#afb5d773cfb5e11181afb7d9c6ffe69b6", null ],
     [ "TWOPARAMTEST", "a00070.html#adc7ed635696750ca3486225a7ef3a209", null ],
     [ "TWOPARAMTEST", "a00070.html#a03eea53352624c0351908236da8b000b", null ],
     [ "TWOPARAMTEST", "a00070.html#ac1c16114d84f6de4765ad12bcdcdfc80", null ],
