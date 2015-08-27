@@ -494,7 +494,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         n_swap_in += 1;
 #endif
         VERBOSEPRINT ( "swapInBeforeReturn" );
-        rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         return true;
 
     } else {
