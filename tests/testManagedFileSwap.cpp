@@ -294,7 +294,6 @@ TEST ( managedFileSwap, Integration_RandomAccess )
     global_bytesize oneswap = 1024 * 1024 * ( global_bytesize ) 16;
     global_bytesize totalswap = 16 * oneswap;
     tester test;
-    test.setSeed ( 1438754053 );
 
     managedFileSwap swap ( totalswap, "./rambrainswap-%d-%d", oneswap );
     cyclicManagedMemory manager ( &swap, oneswap );
