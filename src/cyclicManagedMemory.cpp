@@ -204,6 +204,64 @@ void cyclicManagedMemory::printMemUsage() const
     fprintf ( stderr, "%lu\t%lu=%lu\t%lu\n", memory_used, claimed_use, memory_swapped, preemptiveBytes );
 }
 
+cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( cyclicAtime *from, cyclicAtime *to, const memoryStatus *separateStatus, bool *preemptiveLoaded )
+{
+    cyclicAtime *cur = from;
+    cyclicAtime *sepaStart = NULL;
+    struct cyclicManagedMemory::chain separated = {NULL, NULL};
+    from = from->prev; // from is the last element not separated.
+
+    do {
+        //determine whether to separate this chunk:
+        bool separateThis = false;
+        for ( const memoryStatus *status = separateStatus; *status != MEM_ROOT; ++status ) {
+            separateThis |= cur->chunk->status == *status;
+        }
+        if ( preemptiveLoaded ) {
+            separateThis |= ! ( cur->chunk->preemptiveLoaded ^ *preemptiveLoaded );
+        }
+
+        if ( separateThis ) { // we should separate this element
+            if ( !sepaStart ) { // if its the first to separate, lets mark this as start
+                sepaStart = cur;
+            }
+
+        } else { // We should not separate this
+            if ( sepaStart ) { //We had started separating something, so lets cut these out
+                MUTUAL_CONNECT ( sepaStart->prev, cur );
+                if ( separated.from == NULL ) { // first separated element
+                    separated.from = sepaStart;
+
+                } else { //We had previously separated elements, lets chain the end of the formerly separated to this one:
+                    MUTUAL_CONNECT ( separated.to, sepaStart );
+                }
+                separated.to = cur->prev;
+
+                sepaStart = NULL;
+            } else {
+                //We are not in a separate region and do not have a chain to end, so nothing happens.
+            }
+        }
+        cur = cur->next;
+    } while ( cur != to );
+    //The cur==to element is by definition out of selection, thus we may close the separated area if it exists:
+    if ( sepaStart ) { //We had started separating something, so lets cut these out
+        MUTUAL_CONNECT ( sepaStart->prev, cur );
+        if ( separated.from = NULL ) { // first separated element
+            separated.from = sepaStart;
+
+        } else { //We had previously separated elements, lets chain the end of the formerly separated to this one:
+            MUTUAL_CONNECT ( separated.to, sepaStart );
+        }
+        separated.to = cur->prev;
+
+        sepaStart = NULL;
+    } else {
+        //We are not in a separate region and do not have a chain to end, so nothing happens.
+    }
+    return separated;
+}
+
 void cyclicManagedMemory::decay ( global_bytesize bytes )
 {
     if ( preemptiveStart == NULL ) {
@@ -216,13 +274,14 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
     cyclicAtime *cur = preemptiveStart;
     global_bytesize bytesselected = 0;
     unsigned int chunks = 0;
+    bool consecutive = true;
     while ( cur != active && bytesselected < bytes ) {
-        if ( cur->chunk->size + bytesselected < swapleft ) {
+        if ( cur->chunk->size + bytesselected < swapleft && cur->chunk->status & MEM_ALLOCATED ) {
             bytesselected += cur->chunk->size;
             ++chunks;
             cur->chunk->preemptiveLoaded = false;
         } else {
-            break;
+            consecutive = false;
         }
         cur = cur->next;
     }
@@ -232,9 +291,13 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
     cyclicAtime *cur2 = preemptiveStart;
     managedMemoryChunk *chunklist[chunks];
     managedMemoryChunk **cursw = chunklist;
-    while ( cur2 != cur ) {
-        *cursw = cur2->chunk;
-        ++cursw;
+    bytesselected = 0;
+    while ( cur2 != cur && bytesselected < bytes ) {
+        if ( cur2->chunk->size + bytesselected < swapleft && cur2->chunk->status & MEM_ALLOCATED ) {
+            *cursw = cur2->chunk;
+            ++cursw;
+            bytesselected += cur2->chunk->size;
+        }
         cur2 = cur2->next;
     }
     if ( swap->swapOut ( chunklist, chunks ) != bytesselected ) {
@@ -243,7 +306,26 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
     preemptiveBytes -= bytesselected;
     rambrain_pthread_mutex_lock ( &cyclicTopoLock );
 
-    preemptiveStart = ( cur == active ? NULL : cur );
+    if ( !consecutive ) {
+        //Take out all chunks that we have swapped out:
+        cyclicAtime *from = preemptiveStart;
+        preemptiveStart = preemptiveStart->prev;
+        memoryStatus filterMe[] = {MEM_SWAPPED, MEM_SWAPOUT, MEM_ROOT};
+
+        struct chain separated = filterChain ( from, cur2, filterMe ); // After this action, from->prev->next  to cur2 only holds preemtive stuff.
+        preemptiveStart = preemptiveStart->next;
+        if ( separated.from ) {
+            //Now, reinsert swapped elements right before the preemptiveStart into the still swapped section.
+            MUTUAL_CONNECT ( preemptiveStart->prev, separated.from );
+            MUTUAL_CONNECT ( separated.to, preemptiveStart );
+        }
+
+    } else {
+        preemptiveStart = ( cur == active ? NULL : cur );
+
+    }
+
+
     rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
 
 }

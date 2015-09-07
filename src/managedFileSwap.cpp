@@ -39,7 +39,7 @@
 namespace rambrain
 {
 
-//#define DBG_AIO
+// #define DBG_AIO
 managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile, bool enableDMA ) : managedSwap ( size ), pageSize ( sysconf ( _SC_PAGE_SIZE ) )
 {
     setDMA ( enableDMA );
@@ -480,8 +480,11 @@ void managedFileSwap::swapDelete ( managedMemoryChunk *chunk )
 
 global_bytesize managedFileSwap::swapIn ( managedMemoryChunk *chunk )
 {
+#ifdef DBG_AIO
+    printf ( "swapping in chunk %lu\n", chunk->id );
+#endif
     void *buf = _mm_malloc ( chunk->size, memoryAlignment );
-    if ( !chunk->swapBuf ) {
+    if ( !chunk->swapBuf || chunk->status == MEM_SWAPIN ) {
         return 0;
     }
     if ( buf ) {
@@ -509,6 +512,9 @@ global_bytesize managedFileSwap::swapIn ( managedMemoryChunk **chunklist, unsign
 
 global_bytesize managedFileSwap::swapOut ( managedMemoryChunk *chunk )
 {
+#ifdef DBG_AIO
+    printf ( "swapping out chunk %lu\n", chunk->id );
+#endif
     if ( chunk->size > swapFree ) {
         return 0;
     }
@@ -518,6 +524,9 @@ global_bytesize managedFileSwap::swapOut ( managedMemoryChunk *chunk )
     if ( chunk->swapBuf ) { //We already have a position to store to! (happens when read-only was triggered)
         //Nothing to do here, we have read the element and swapOut is trivial from our point of view
 
+#ifdef DBG_AIO
+        printf ( "chunks is cached, we have no need to schedule: %lu\n", chunk->id );
+#endif
         //We may just mark the chunk as swapped out.
         _mm_free ( chunk->locPtr );
         chunk->locPtr = NULL;
@@ -528,6 +537,9 @@ global_bytesize managedFileSwap::swapOut ( managedMemoryChunk *chunk )
         return chunk->size;
 
     } else {
+#ifdef DBG_AIO
+        printf ( "chunks will be scheduled: %lu\n", chunk->id );
+#endif
         pageFileLocation *newAlloced = pfmalloc ( chunk->size, chunk );
         if ( newAlloced ) {
             chunk->swapBuf = newAlloced;
@@ -651,10 +663,13 @@ void managedFileSwap::completeTransactionOn ( pageFileLocation *ref, bool lock )
         ref = ref->glob_off_next.glob_off_next;
     }
     managedMemoryChunk *chunk = ref->glob_off_next.chunk;
+#ifdef DBG_AIO
+    printf ( "Working on chunk %lu\n", chunk->id );
+#endif
     switch ( chunk->status ) {
     case MEM_SWAPIN:
 #ifdef DBG_AIO
-        printf ( "Accounting for a swapin\n" );
+        printf ( "Accounting for a swapin of chunk %lu\n", chunk->id );
 #endif
         if ( lock ) {
             rambrain_pthread_mutex_lock ( &managedMemory::stateChangeMutex );
@@ -799,8 +814,7 @@ void managedFileSwap::copyMem (  pageFileLocation &ref, void *ramBuf , bool reve
     pageFileLocation *cur = &ref;
     char *cramBuf = ( char * ) ramBuf;
     global_bytesize offset = 0;
-    int *tracker = new int;
-    *tracker = 1;
+    int *tracker = new int ( 1 );
     ++totalSwapActionsQueued;
     while ( true ) { //Sift through all pageChunks that have to be read
         scheduleCopy ( *cur, ( void * ) ( cramBuf + offset ), tracker, reverse );

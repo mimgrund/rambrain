@@ -31,7 +31,7 @@ enum memoryStatus {MEM_ROOT = 0,
                    MEM_ALLOCATED_INUSE = 1, //flaggy
                    MEM_ALLOCATED = 4, //flaggy
                    MEM_SWAPPED = 8, //flaggy
-                   MEM_SWAPIN = 16 + 8,
+                   MEM_SWAPIN = 16,
                    MEM_SWAPOUT = 32
                   };
 

@@ -61,6 +61,10 @@ public:
      */
     bool setPreemptiveUnloading ( bool preemptive );
 
+    struct chain {
+        cyclicAtime *from, *to;
+    };
+
 
 
 private:
@@ -101,6 +105,9 @@ private:
 
     double preemptiveTurnoffFraction = .01;
 
+
+    ///@brief: separates all chunks matching state in list separateStatus  or preeemptiveLoaded from the ring
+    struct cyclicManagedMemory::chain filterChain ( cyclicAtime *from, cyclicAtime *to, const memoryStatus *separateStatus, bool *preemptiveLoaded = NULL );
 
 };
 
