@@ -215,11 +215,19 @@ void cyclicManagedMemory::insertBefore ( cyclicAtime *pos, cyclicManagedMemory::
 }
 
 
-cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( cyclicAtime *from, cyclicAtime *to, const memoryStatus *separateStatus, bool *preemptiveLoaded )
+cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( chain &toFilter, const memoryStatus *separateStatus, bool *preemptiveLoaded )
 {
-    cyclicAtime *cur = from;
+    cyclicAtime *cur = toFilter.from;
     cyclicAtime *sepaStart = NULL;
     struct cyclicManagedMemory::chain separated = {NULL, NULL};
+
+    //First, insert an element at end to cope with all types (cyclic, noncyclic) at once:
+    cyclicAtime end;
+    cyclicAtime *after = toFilter.to->next;
+    cyclicAtime *before = toFilter.from->prev;
+    bool cyclic = ( after == toFilter.from );
+    cyclicAtime *firstValid = NULL, *lastValid = NULL;
+    MUTUAL_CONNECT ( toFilter.to, ( &end ) );
 
     do {
         //determine whether to separate this chunk:
@@ -237,6 +245,10 @@ cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( cyclicAtime *from,
             }
 
         } else { // We should not separate this
+            if ( !firstValid ) {
+                firstValid = cur;
+            }
+            lastValid = cur;
             if ( sepaStart ) { //We had started separating something, so lets cut these out
                 cyclicAtime *newTo = cur->prev;
                 MUTUAL_CONNECT ( sepaStart->prev, cur );
@@ -254,7 +266,8 @@ cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( cyclicAtime *from,
             }
         }
         cur = cur->next;
-    } while ( cur != to );
+    } while ( cur != &end );
+
     //The cur==to element is by definition out of selection, thus we may close the separated area if it exists:
     if ( sepaStart ) { //We had started separating something, so lets cut these out
         cyclicAtime *newTo = cur->prev;
@@ -267,6 +280,16 @@ cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( cyclicAtime *from,
         }
         separated.to = newTo;
     }
+    toFilter = {firstValid, lastValid};
+    if ( lastValid ) {
+        MUTUAL_CONNECT ( lastValid, after );
+    } else {
+        if ( !cyclic ) {
+            MUTUAL_CONNECT ( before, after );
+        }
+    }
+
+
     return separated;
 }
 
@@ -319,7 +342,8 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
         cyclicAtime *from = preemptiveStart;
         preemptiveStart = preemptiveStart->prev;
         const memoryStatus filterMe[] = {MEM_SWAPPED, MEM_SWAPOUT, MEM_ROOT};//Mem_root terminates list.
-        struct chain separated = filterChain ( from, cur, filterMe ); // After this action, from->prev->next  to cur2 only holds preemtive stuff.
+        chain area = {from, cur};
+        struct chain separated = filterChain ( area, filterMe ); // After this action, from->prev->next  to cur2 only holds preemtive stuff.
         preemptiveStart = preemptiveStart->next;//Lets move again into area that only holds preemptives now.
         insertBefore ( preemptiveStart, separated );
         preemptiveStart = ( preemptiveStart == active ? NULL : preemptiveStart );

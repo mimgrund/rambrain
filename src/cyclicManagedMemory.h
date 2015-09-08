@@ -107,7 +107,7 @@ private:
 
 
     ///@brief: separates all chunks matching state in list separateStatus  or preeemptiveLoaded from the ring
-    struct cyclicManagedMemory::chain filterChain ( cyclicAtime *from, cyclicAtime *to, const memoryStatus *separateStatus, bool *preemptiveLoaded = NULL );
+    struct cyclicManagedMemory::chain filterChain ( chain &toFilter, const memoryStatus *separateStatus, bool *preemptiveLoaded = NULL );
     static void insertBefore ( cyclicAtime *pos, chain separated );
 
 };
