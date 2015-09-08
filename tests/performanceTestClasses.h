@@ -422,6 +422,7 @@ protected:
 
 TWOPARAMTEST ( matrixTransposeTest, int, int );
 TWOPARAMTEST ( matrixCleverTransposeTest, int, int );
+TWOPARAMTEST ( matrixCleverTranspose2Test, int, int );
 #ifndef OpenMP_NOT_FOUND
 TWOPARAMTEST ( matrixCleverTransposeOpenMPTest, int, int );
 #endif

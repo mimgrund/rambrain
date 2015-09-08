@@ -662,6 +662,122 @@ string matrixCleverTransposeTest::generateMyGnuplotPlotPart ( const string &file
     return ss.str();
 }
 
+TESTSTATICS ( matrixCleverTranspose2Test, "Measurements of allocation and definition, transposition, deletion times, but with a clever transposition algorithm and same rows_fetch as openMP version" );
+
+matrixCleverTranspose2Test::matrixCleverTranspose2Test() : performanceTest<int, int> ( "MatrixCleverTranspose2" )
+{
+    TESTPARAM ( 1, 10, 8000, 20, true, 4000, "Matrix size per dimension" );
+    TESTPARAM ( 2, 1000, 10000, 20, true, 2000, "Matrix rows in main memory" );
+    plotParts = vector<string> ( {"Allocation \\\\& Definition", "Transposition", "Deletion"} );
+}
+
+void matrixCleverTranspose2Test::actualTestMethod ( tester &test, int param1, int param2 )
+{
+    const global_bytesize size = param1;
+    const global_bytesize memlines = param2;
+    const global_bytesize mem = size * sizeof ( double ) *  memlines;
+    const global_bytesize swapmem = size * size * sizeof ( double ) * 2;
+
+    rambrainglobals::config.resizeMemory ( mem );
+    rambrainglobals::config.resizeSwap ( swapmem );
+
+    test.addTimeMeasurement();
+
+    // Allocate and set
+    managedPtr<double> *rows[size];
+    for ( unsigned int i = 0; i < size; ++i ) {
+        rows[i] = new managedPtr<double> ( size );
+        adhereTo<double> rowloc ( *rows[i] );
+        double *rowdbl =  rowloc;
+        for ( unsigned int j = 0; j < size; ++j ) {
+            rowdbl[j] = i * size + j;
+        }
+    }
+
+    test.addTimeMeasurement();
+
+    // Transpose blockwise
+    unsigned int ompt = 2;
+#ifndef OpenMP_NOT_FOUND
+    ompt = omp_get_max_threads();
+#endif
+    unsigned int rows_fetch = memlines / ( 4 * ompt ) > size ? size : memlines / ( 4 * ompt );
+    unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
+
+    adhereTo<double> *Arows[rows_fetch];
+    adhereTo<double> *Brows[rows_fetch];
+
+    for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
+        for ( unsigned int ii = 0; ii <= jj; ii++ ) {
+            //A_iijj <-> B_jjii
+
+            //Reserve rows ii and jj
+            unsigned int i_lim = ( ii + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, vertical limit
+            unsigned int j_lim = ( jj + 1 == n_blocks && size % rows_fetch != 0 ? size % rows_fetch : rows_fetch ); // Block A, horizontal limit
+            unsigned int i_off = ii * rows_fetch; // Block A, vertical index
+            unsigned int j_off = jj * rows_fetch; // Block A, horizontal index
+
+            //Get rows A_ii** and B_jj** into memory:
+            for ( unsigned int i = 0; i < i_lim; ++i ) {
+                Arows[i] = new adhereTo<double> ( *rows[i + i_off] );
+            }
+            for ( unsigned int j = 0; j < j_lim; ++j ) {
+                Brows[j] = new adhereTo<double> ( *rows[j + j_off] );
+            }
+
+            for ( unsigned int j = 0; j < j_lim; j++ ) {
+                for ( unsigned int i = 0; i < ( jj == ii ? j : i_lim ); i++ ) { //Inner block matrix transpose, vertical index in A
+                    //Inner block matrxi transpose, horizontal index in A
+                    double *Arowdb = *Arows[i]; //Fetch pointer for Element of A_ii+i
+                    double *Browdb = *Brows[j];
+
+                    double inter = Arowdb[j_off + j]; //Store inner element A_ij
+                    Arowdb[j + j_off] = Browdb[ i + i_off]; //Override with element of B_ji
+                    Browdb[i + i_off] = inter; //set B_ji to former val of A_ij
+                }
+            }
+
+            for ( unsigned int i = 0; i < i_lim; ++i ) {
+                delete ( Arows[i] );
+            }
+            for ( unsigned int j = 0; j < j_lim; ++j ) {
+                delete ( Brows[j] );
+            }
+        }
+    }
+
+    test.addTimeMeasurement();
+
+#ifdef PTEST_CHECKS
+    for ( unsigned int i = 0; i < size; ++i ) {
+        adhereTo<double> rowloc ( *rows[i] );
+        double *rowdbl =  rowloc;
+        for ( unsigned int j = 0; j < size; ++j ) {
+            if ( rowdbl[j] != j * size + i ) {
+                printf ( "Failed check!\n" );
+            }
+        }
+    }
+#endif
+
+    // Delete
+    for ( unsigned int i = 0; i < size; ++i ) {
+        delete rows[i];
+    }
+
+    test.addTimeMeasurement();
+}
+
+string matrixCleverTranspose2Test::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Allocation \\\\& Definition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Transposition\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Deletion\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Total\"";
+    return ss.str();
+}
+
 
 #ifndef OpenMP_NOT_FOUND
 TESTSTATICS ( matrixCleverTransposeOpenMPTest, "Same as cleverTranspose, but with OpenMP" );
@@ -700,12 +816,15 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
     test.addTimeMeasurement();
 
     // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
-    unsigned int ompt = omp_get_max_threads();
+
+    unsigned int ompt = 2;
+#ifndef OpenMP_NOT_FOUND
+    ompt = omp_get_max_threads();
+#endif
     unsigned int rows_fetch = memlines / ( 4 * ompt ) > size ? size : memlines / ( 4 * ompt );
     unsigned int n_blocks = size / rows_fetch + ( size % rows_fetch == 0 ? 0 : 1 );
 
-    adhereTo<double> *Arows[rows_fetch];
-    adhereTo<double> *Brows[rows_fetch];
+
     #pragma omp parallel for
     for ( unsigned int jj = 0; jj < n_blocks; jj++ ) {
         for ( unsigned int ii = 0; ii <= jj; ii++ ) {
@@ -718,7 +837,8 @@ void matrixCleverTransposeOpenMPTest::actualTestMethod ( tester &test, int param
             unsigned int j_off = jj * rows_fetch; // Block A, horizontal index
 
             //Get rows A_ii** and B_jj** into memory:
-
+            adhereTo<double> *Arows[rows_fetch];
+            adhereTo<double> *Brows[rows_fetch];
             for ( unsigned int i = 0; i < i_lim; ++i ) {
                 Arows[i] = new adhereTo<double> ( *rows[i + i_off], true );
             }
@@ -924,7 +1044,10 @@ void matrixCleverBlockTransposeOpenMPTest::actualTestMethod ( tester &test, int 
 
     // Transpose blockwise, leave a bit free space, if not, we're stuck in the process...
 
-    unsigned int ompt = omp_get_max_threads();
+    unsigned int ompt = 2;
+#ifndef OpenMP_NOT_FOUND
+    ompt = omp_get_max_threads();
+#endif
     unsigned int rows_fetch = sqrt ( memlines * size / 2 / ompt );
     unsigned int blocksize = rows_fetch * rows_fetch;
 
