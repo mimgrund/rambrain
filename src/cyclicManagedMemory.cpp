@@ -217,9 +217,6 @@ void cyclicManagedMemory::insertBefore ( cyclicAtime *pos, cyclicManagedMemory::
 
 cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( cyclicAtime *from, cyclicAtime *to, const memoryStatus *separateStatus, bool *preemptiveLoaded )
 {
-    if ( from->next == to ) {
-        printf ( "Start and end same" );
-    }
     cyclicAtime *cur = from;
     cyclicAtime *sepaStart = NULL;
     struct cyclicManagedMemory::chain separated = {NULL, NULL};
