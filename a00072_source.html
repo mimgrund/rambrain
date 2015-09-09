@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: /home/rambrainbuild/docubrain/tests/performanceTests.h Source File</title>
+<title>rambrain: /home/rambrainbuild/docubrain/tests/performanceTests.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('a00072_source.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">performanceTests.h</div>  </div>
+<div class="title">performanceTests.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00072.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*   rambrain - a dynamical physical memory extender</span></div>
@@ -127,14 +127,68 @@ $(document).ready(function(){initNavTree('a00072_source.html','');});
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> *   along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00081.html">tester.h</a>&quot;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00071.html">performanceTestClasses.h</a>&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">using namespace </span><a class="code" href="a00093.html">std</a>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00072.html#a3c04138a5bfe5d72780bb7e82a18e627">   35</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="a00072.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> ( <span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv )</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;Starting performance tests&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;Called with: &quot;</span>;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; argc; ++i ) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        cout &lt;&lt; argv[i] &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    cout &lt;&lt; endl &lt;&lt; endl;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">int</span> i = 1;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">if</span> ( i &gt;= argc ) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        cerr &lt;&lt; <span class="stringliteral">&quot;Not enough arguments supplied, expected number of repetitions followed by test directives, exiting&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">return</span> 2;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">int</span> repetitions = atoi ( argv[i++] );</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">while</span> ( i &lt; argc ) {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;Attempting to run &quot;</span> &lt;&lt; argv[i] &lt;&lt; endl;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <a class="code" href="a00030.html">tester</a> myTester ( argv[i] );</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordtype">int</span> j;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">for</span> ( j = i + 1; j &lt; argc; ++j ) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            myTester.<a class="code" href="a00030.html#a1a61f18468c143dbd7c18c599fc1b695">addParameter</a> ( argv[j] );</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        ++i;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordtype">bool</span> success = <a class="code" href="a00022.html">performanceTest&lt;&gt;::runRespectiveTest</a> ( argv[i - 1], myTester, repetitions, argv, i, argc );</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">if</span> ( success ) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            myTester.<a class="code" href="a00030.html#a76875804de961f7d87b9de2ebee1957c">writeToFile</a>();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;Performance tests done&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="ttc" id="a00022_html"><div class="ttname"><a href="a00022.html">performanceTest</a></div><div class="ttdoc">Derived performance test classes which take parameter types as template arguments. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00136">performanceTestClasses.h:136</a></div></div>
+<div class="ttc" id="a00093_html"><div class="ttname"><a href="a00093.html">std</a></div><div class="ttdoc">STL namespace. </div></div>
+<div class="ttc" id="a00072_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="a00072.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdoc">Provides a binary to run performance tests. </div><div class="ttdef"><b>Definition:</b> <a href="a00072_source.html#l00035">performanceTests.cpp:35</a></div></div>
+<div class="ttc" id="a00030_html_a1a61f18468c143dbd7c18c599fc1b695"><div class="ttname"><a href="a00030.html#a1a61f18468c143dbd7c18c599fc1b695">tester::addParameter</a></div><div class="ttdeci">void addParameter(char *param)</div><div class="ttdoc">Add a new parameter to the list of parameters. </div><div class="ttdef"><b>Definition:</b> <a href="a00080_source.html#l00031">tester.cpp:31</a></div></div>
+<div class="ttc" id="a00030_html"><div class="ttname"><a href="a00030.html">tester</a></div><div class="ttdoc">A basic class to be used by tests. Provides helper methods and functionality e.g. time measurements...</div><div class="ttdef"><b>Definition:</b> <a href="a00081_source.html#l00032">tester.h:32</a></div></div>
+<div class="ttc" id="a00081_html"><div class="ttname"><a href="a00081.html">tester.h</a></div></div>
+<div class="ttc" id="a00030_html_a76875804de961f7d87b9de2ebee1957c"><div class="ttname"><a href="a00030.html#a76875804de961f7d87b9de2ebee1957c">tester::writeToFile</a></div><div class="ttdeci">void writeToFile()</div><div class="ttdoc">Write all collected information to file. </div><div class="ttdef"><b>Definition:</b> <a href="a00080_source.html#l00100">tester.cpp:100</a></div></div>
+<div class="ttc" id="a00071_html"><div class="ttname"><a href="a00071.html">performanceTestClasses.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00072.html">performanceTests.h</a></li>
-    <li class="footer">Generated on Tue Sep 8 2015 01:22:29 for rambrain by
+    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00072.html">performanceTests.cpp</a></li>
+    <li class="footer">Generated on Thu Sep 10 2015 01:40:27 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: rambrain::cyclicAtime Struct Reference</title>
+<title>rambrain: rambrain::configuration Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,90 +107,196 @@ $(document).ready(function(){initNavTree('a00007.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00110.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">rambrain::cyclicAtime Struct Reference</div>  </div>
+<div class="title">rambrain::configuration Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>structure created by scheduler to track access times of memoryChunks  
+<p>Main struct to save configuration variables.  
  <a href="a00007.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00039_source.html">cyclicManagedMemory.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00038_source.html">configreader.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a8ced069c9a706faa0db7e14e6ba4ca52"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a8ced069c9a706faa0db7e14e6ba4ca52">configuration</a> ()</td></tr>
+<tr class="memdesc:a8ced069c9a706faa0db7e14e6ba4ca52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init configuration with standard values using half the available memory and disk space where the binary lives.  <a href="#a8ced069c9a706faa0db7e14e6ba4ca52">More...</a><br /></td></tr>
+<tr class="separator:a8ced069c9a706faa0db7e14e6ba4ca52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a710db2d46d07a035dc5e84e8f0561171"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00016.html">managedMemoryChunk</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a710db2d46d07a035dc5e84e8f0561171">chunk</a></td></tr>
-<tr class="separator:a710db2d46d07a035dc5e84e8f0561171"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29a53c1bf4afcae6db2317ee1fc0b258"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00007.html">cyclicAtime</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a29a53c1bf4afcae6db2317ee1fc0b258">next</a></td></tr>
-<tr class="memdesc:a29a53c1bf4afcae6db2317ee1fc0b258"><td class="mdescLeft">&#160;</td><td class="mdescRight">The chunk.  <a href="#a29a53c1bf4afcae6db2317ee1fc0b258">More...</a><br /></td></tr>
-<tr class="separator:a29a53c1bf4afcae6db2317ee1fc0b258"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f410eb9297c3173ad123a2d646c15af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00007.html">cyclicAtime</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a6f410eb9297c3173ad123a2d646c15af">prev</a></td></tr>
-<tr class="memdesc:a6f410eb9297c3173ad123a2d646c15af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Next chunk in cycle.  <a href="#a6f410eb9297c3173ad123a2d646c15af">More...</a><br /></td></tr>
-<tr class="separator:a6f410eb9297c3173ad123a2d646c15af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae86fcffce8339717271022be71e95815"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#ae86fcffce8339717271022be71e95815">memoryManager</a></td></tr>
+<tr class="separator:ae86fcffce8339717271022be71e95815"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ab38df7f6bf215f8101f4f914f67b14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a3ab38df7f6bf215f8101f4f914f67b14">swap</a></td></tr>
+<tr class="separator:a3ab38df7f6bf215f8101f4f914f67b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d5a43a22122e628b749c18b48cedfc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a9d5a43a22122e628b749c18b48cedfc4">swapfiles</a></td></tr>
+<tr class="separator:a9d5a43a22122e628b749c18b48cedfc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa2458f8b0518cd8ecfbf0647f63d28d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; <a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#aaa2458f8b0518cd8ecfbf0647f63d28d">memory</a></td></tr>
+<tr class="separator:aaa2458f8b0518cd8ecfbf0647f63d28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d87d5533a56ffe09fcd095918df3795"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; <a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a0d87d5533a56ffe09fcd095918df3795">swapMemory</a></td></tr>
+<tr class="separator:a0d87d5533a56ffe09fcd095918df3795"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a549b17d67bef794af32a9ca86eedbdd5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a549b17d67bef794af32a9ca86eedbdd5">enableDMA</a></td></tr>
+<tr class="separator:a549b17d67bef794af32a9ca86eedbdd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44d5658ac2cbed42f40703780b8483bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; <a class="el" href="a00091.html#a7d53dd1748d5012cafa91aa982c7cd35">swapPolicy</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a44d5658ac2cbed42f40703780b8483bb">policy</a></td></tr>
+<tr class="separator:a44d5658ac2cbed42f40703780b8483bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60063ca6099263b106e5434bc0d5ed0b"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="a00005.html">configLineBase</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a></td></tr>
+<tr class="separator:a60063ca6099263b106e5434bc0d5ed0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>structure created by scheduler to track access times of memoryChunks </p>
+<div class="textblock"><p>Main struct to save configuration variables. </p>
+<dl class="section note"><dt>Note</dt><dd>Should not be instantiated by the user, this is done in <a class="el" href="a00060.html">rambrainconfig.h</a> and <a class="el" href="a00050.html">managedMemory.cpp</a> </dd>
+<dd>
+When extended don't forget to add the new options to configOptions </dd></dl>
 
-<p>Definition at line <a class="el" href="a00039_source.html#l00028">28</a> of file <a class="el" href="a00039_source.html">cyclicManagedMemory.h</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a710db2d46d07a035dc5e84e8f0561171"></a>
+<p>Definition at line <a class="el" href="a00038_source.html#l00131">131</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a8ced069c9a706faa0db7e14e6ba4ca52"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00016.html">managedMemoryChunk</a>* rambrain::cyclicAtime::chunk</td>
+          <td class="memname">rambrain::configuration::configuration </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00039_source.html#l00029">29</a> of file <a class="el" href="a00039_source.html">cyclicManagedMemory.h</a>.</p>
+<p>Init configuration with standard values using half the available memory and disk space where the binary lives. </p>
+<p>First d will be replaced by the process id, the second one will be replaced by the swapfile id </p>
+
+<p>Definition at line <a class="el" href="a00037_source.html#l00092">92</a> of file <a class="el" href="a00037_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a29a53c1bf4afcae6db2317ee1fc0b258"></a>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a60063ca6099263b106e5434bc0d5ed0b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00007.html">cyclicAtime</a>* rambrain::cyclicAtime::next</td>
+          <td class="memname">vector&lt;<a class="el" href="a00005.html">configLineBase</a> *&gt; rambrain::configuration::configOptions</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The chunk. </p>
-
-<p>Definition at line <a class="el" href="a00039_source.html#l00030">30</a> of file <a class="el" href="a00039_source.html">cyclicManagedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00038_source.html#l00143">143</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a6f410eb9297c3173ad123a2d646c15af"></a>
+<a class="anchor" id="a549b17d67bef794af32a9ca86eedbdd5"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00007.html">cyclicAtime</a>* rambrain::cyclicAtime::prev</td>
+          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;bool&gt; rambrain::configuration::enableDMA</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Next chunk in cycle. </p>
-
-<p>Definition at line <a class="el" href="a00039_source.html#l00031">31</a> of file <a class="el" href="a00039_source.html">cyclicManagedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00038_source.html#l00140">140</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00039_source.html">cyclicManagedMemory.h</a></li>
+<a class="anchor" id="aaa2458f8b0518cd8ecfbf0647f63d28d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;<a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&gt; rambrain::configuration::memory</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00038_source.html#l00139">139</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae86fcffce8339717271022be71e95815"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;string&gt; rambrain::configuration::memoryManager</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00038_source.html#l00138">138</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a44d5658ac2cbed42f40703780b8483bb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;<a class="el" href="a00091.html#a7d53dd1748d5012cafa91aa982c7cd35">swapPolicy</a>&gt; rambrain::configuration::policy</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00038_source.html#l00141">141</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3ab38df7f6bf215f8101f4f914f67b14"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;string&gt; rambrain::configuration::swap</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00038_source.html#l00138">138</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9d5a43a22122e628b749c18b48cedfc4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;string&gt; rambrain::configuration::swapfiles</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00038_source.html#l00138">138</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0d87d5533a56ffe09fcd095918df3795"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;<a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&gt; rambrain::configuration::swapMemory</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00038_source.html#l00139">139</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00038_source.html">configreader.h</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00037_source.html">configreader.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00090.html">rambrain</a></li><li class="navelem"><a class="el" href="a00007.html">cyclicAtime</a></li>
-    <li class="footer">Generated on Tue Sep 8 2015 01:22:30 for rambrain by
+    <li class="navelem"><a class="el" href="a00091.html">rambrain</a></li><li class="navelem"><a class="el" href="a00007.html">configuration</a></li>
+    <li class="footer">Generated on Thu Sep 10 2015 01:40:28 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

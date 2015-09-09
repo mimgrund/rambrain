@@ -1,6 +1,11 @@
 var a00011 =
 [
-    [ "glob_off_union", "a00011.html#a6b32d14be0e5643d166abc47d63dd9b7", null ],
-    [ "chunk", "a00011.html#ab8842cb0cb6905d4bf95df56c0fb9b50", null ],
-    [ "glob_off_next", "a00011.html#a5a23bd5f44dc2a374002ab81c12089b3", null ]
+    [ "dummyManagedMemory", "a00011.html#a404d8914ad88111d175a3607081589a0", null ],
+    [ "~dummyManagedMemory", "a00011.html#aac2af094485c7dcd53115453a16f5159", null ],
+    [ "schedulerDelete", "a00011.html#a655f874332b0aee85639bfe4ab812de3", null ],
+    [ "schedulerRegister", "a00011.html#adc7add60dc8976d05d31c0a3a2548922", null ],
+    [ "swapIn", "a00011.html#a4b4aa73d808bc21e9f28eb1f426d9f39", null ],
+    [ "swapOut", "a00011.html#a87f2c23257398f23c77e6a24eed8a0f6", null ],
+    [ "touch", "a00011.html#a429af5ee10f45c062da8a20ac860ae47", null ],
+    [ "untouch", "a00011.html#a72d803d7d063c828205e675b9780a294", null ]
 ];

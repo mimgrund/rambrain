@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['waitforaio',['waitForAIO',['../a00015.html#aefc0e17fcecc8ad92431e3888284006c',1,'rambrain::managedMemory']]],
-  ['waitforcleanexit',['waitForCleanExit',['../a00018.html#a6207b667ec6674831738a9e22f6b3b5e',1,'rambrain::managedSwap']]],
-  ['waitforswapin',['waitForSwapin',['../a00015.html#ad8309642f6f8847f5d80b80a0e5a90bc',1,'rambrain::managedMemory::waitForSwapin()'],['../a00017.html#a856e6d1325c98c1ca0ab6063797f1c7e',1,'rambrain::managedPtr::waitForSwapin()']]],
-  ['waitforswapout',['waitForSwapout',['../a00015.html#aa71bd5c33b1ee3c0e89e672f89c4d3f2',1,'rambrain::managedMemory']]],
-  ['what',['what',['../a00012.html#a6325f4e27d8dc500c63a91a0d7637d9a',1,'rambrain::incompleteSetupException::what()'],['../a00019.html#af55ac69654f5294cbec693b9d4e2b5be',1,'rambrain::memoryException::what()'],['../a00033.html#a3f676aed82c376c35d2b5bc04b989b6c',1,'rambrain::unexpectedStateException::what()'],['../a00034.html#a4acaf40b4b0754e00ef79247eb95424a',1,'rambrain::unfinishedCodeException::what()']]],
-  ['writetofile',['writeToFile',['../a00029.html#a76875804de961f7d87b9de2ebee1957c',1,'tester']]]
+  ['valueasstring',['valueAsString',['../a00032.html#a2514f1bc1f004ffd6d545c2044b26166',1,'testParameterBase::valueAsString()=0'],['../a00032.html#a31a6857782aa664cce378a6a87b67593',1,'testParameterBase::valueAsString(unsigned int step)=0'],['../a00031.html#ab52b58a5f2a820ecc0137ecd0da43053',1,'testParameter::valueAsString()'],['../a00031.html#afb95c4c38bff20d5d7c629cfa8b13ed8',1,'testParameter::valueAsString(unsigned int step)']]],
+  ['valueatstep',['valueAtStep',['../a00031.html#aa253722487cce7de5e4c40a2f4c7c3a9',1,'testParameter']]],
+  ['versioninfo',['versionInfo',['../a00016.html#ace0f33ae4d9875dba1652c13042186df',1,'rambrain::managedMemory']]]
 ];

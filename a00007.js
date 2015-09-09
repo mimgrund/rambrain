@@ -1,6 +1,12 @@
 var a00007 =
 [
-    [ "chunk", "a00007.html#a710db2d46d07a035dc5e84e8f0561171", null ],
-    [ "next", "a00007.html#a29a53c1bf4afcae6db2317ee1fc0b258", null ],
-    [ "prev", "a00007.html#a6f410eb9297c3173ad123a2d646c15af", null ]
+    [ "configuration", "a00007.html#a8ced069c9a706faa0db7e14e6ba4ca52", null ],
+    [ "configOptions", "a00007.html#a60063ca6099263b106e5434bc0d5ed0b", null ],
+    [ "enableDMA", "a00007.html#a549b17d67bef794af32a9ca86eedbdd5", null ],
+    [ "memory", "a00007.html#aaa2458f8b0518cd8ecfbf0647f63d28d", null ],
+    [ "memoryManager", "a00007.html#ae86fcffce8339717271022be71e95815", null ],
+    [ "policy", "a00007.html#a44d5658ac2cbed42f40703780b8483bb", null ],
+    [ "swap", "a00007.html#a3ab38df7f6bf215f8101f4f914f67b14", null ],
+    [ "swapfiles", "a00007.html#a9d5a43a22122e628b749c18b48cedfc4", null ],
+    [ "swapMemory", "a00007.html#a0d87d5533a56ffe09fcd095918df3795", null ]
 ];

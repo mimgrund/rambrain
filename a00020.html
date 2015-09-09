@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: rambrain::pageFileLocation Class Reference</title>
+<title>rambrain: rambrain::memoryException Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -108,46 +108,58 @@ $(document).ready(function(){initNavTree('a00020.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="a00122.html">List of all members</a>  </div>
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="a00123.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">rambrain::pageFileLocation Class Reference</div>  </div>
+<div class="title">rambrain::memoryException Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>tracks page file allocations while objects are preferably written continuous to page file, we may encounter the situation that the pagefiles are nearly full. In this case we take fragments of free space and use these to break up the consecutive memory of a chunk into parts, tracked by pageChunks.  
+<p>Exception for errors with the memory.  
  <a href="a00020.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00048_source.html">managedFileSwap.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00042_source.html">exceptions.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for rambrain::memoryException:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="a00020.png" usemap="#rambrain::memoryException_map" alt=""/>
+  <map id="rambrain::memoryException_map" name="rambrain::memoryException_map">
+<area href="a00026.html" title="Exception base class for this library. " alt="rambrain::rambrainException" shape="rect" coords="0,0,173,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a63f9ce789a7c5f351afed6acae0966ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a63f9ce789a7c5f351afed6acae0966ec">pageFileLocation</a> (unsigned int <a class="el" href="a00020.html#abb10204e66ac58e8db03950ec7fd8a5d">file</a>, <a class="el" href="a00090.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> <a class="el" href="a00020.html#a948cc9d04ac586651eaca32bfa59f11a">offset</a>, <a class="el" href="a00090.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> <a class="el" href="a00020.html#a64f7a832b3d8132ed453fc59c0be6dca">size</a>, <a class="el" href="a00090.html#a631233f0a428f73b49c774cf84b49c15">pageChunkStatus</a> <a class="el" href="a00020.html#a50f7d10a154969575897e87ae3ed539f">status</a>=<a class="el" href="a00090.html#a631233f0a428f73b49c774cf84b49c15aa924f4aa2de3b0d29198f2845cbb0e18">PAGE_FREE</a>)</td></tr>
-<tr class="separator:a63f9ce789a7c5f351afed6acae0966ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab95d58d39319d495e6eaf2200ee58e60"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#ab95d58d39319d495e6eaf2200ee58e60">memoryException</a> (const string &amp;<a class="el" href="a00020.html#a6f8196d1429a6bc768600e378984ed0f">details</a>)</td></tr>
+<tr class="memdesc:ab95d58d39319d495e6eaf2200ee58e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new exception.  <a href="#ab95d58d39319d495e6eaf2200ee58e60">More...</a><br /></td></tr>
+<tr class="separator:ab95d58d39319d495e6eaf2200ee58e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b7c072943dfc4739f96ccbd6de78a70"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a4b7c072943dfc4739f96ccbd6de78a70">~memoryException</a> ()</td></tr>
+<tr class="memdesc:a4b7c072943dfc4739f96ccbd6de78a70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the exception.  <a href="#a4b7c072943dfc4739f96ccbd6de78a70">More...</a><br /></td></tr>
+<tr class="separator:a4b7c072943dfc4739f96ccbd6de78a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af55ac69654f5294cbec693b9d4e2b5be"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#af55ac69654f5294cbec693b9d4e2b5be">what</a> () const   throw ()</td></tr>
+<tr class="memdesc:af55ac69654f5294cbec693b9d4e2b5be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report what has gone wrong.  <a href="#af55ac69654f5294cbec693b9d4e2b5be">More...</a><br /></td></tr>
+<tr class="separator:af55ac69654f5294cbec693b9d4e2b5be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:abb10204e66ac58e8db03950ec7fd8a5d"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#abb10204e66ac58e8db03950ec7fd8a5d">file</a></td></tr>
-<tr class="separator:abb10204e66ac58e8db03950ec7fd8a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a948cc9d04ac586651eaca32bfa59f11a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00090.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a948cc9d04ac586651eaca32bfa59f11a">offset</a></td></tr>
-<tr class="separator:a948cc9d04ac586651eaca32bfa59f11a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64f7a832b3d8132ed453fc59c0be6dca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00090.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a64f7a832b3d8132ed453fc59c0be6dca">size</a></td></tr>
-<tr class="separator:a64f7a832b3d8132ed453fc59c0be6dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2195a06f5ff2491c0157ec663ac1243"><td class="memItemLeft" align="right" valign="top">union <a class="el" href="a00011.html">glob_off_union</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#ae2195a06f5ff2491c0157ec663ac1243">glob_off_next</a></td></tr>
-<tr class="separator:ae2195a06f5ff2491c0157ec663ac1243"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50f7d10a154969575897e87ae3ed539f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00090.html#a631233f0a428f73b49c774cf84b49c15">pageChunkStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a50f7d10a154969575897e87ae3ed539f">status</a></td></tr>
-<tr class="separator:a50f7d10a154969575897e87ae3ed539f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1668a96c70519ab0ddd253d1f6d54133"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="a00002.html">aiotracker</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a1668a96c70519ab0ddd253d1f6d54133">aio_ptr</a> = NULL</td></tr>
-<tr class="separator:a1668a96c70519ab0ddd253d1f6d54133"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2479051e8d3d5ac26d19cfa61d7464a"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#af2479051e8d3d5ac26d19cfa61d7464a">aio_lock</a> = 0</td></tr>
-<tr class="separator:af2479051e8d3d5ac26d19cfa61d7464a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a6f8196d1429a6bc768600e378984ed0f"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a6f8196d1429a6bc768600e378984ed0f">details</a></td></tr>
+<tr class="separator:a6f8196d1429a6bc768600e378984ed0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_methods_a00026"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00026')"><img src="closed.png" alt="-"/>&#160;Private Member Functions inherited from <a class="el" href="a00026.html">rambrain::rambrainException</a></td></tr>
+<tr class="memitem:adc8b99eedc8c84ace511f44dbd46d531 inherit pub_methods_a00026"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00026.html#adc8b99eedc8c84ace511f44dbd46d531">~rambrainException</a> ()</td></tr>
+<tr class="memdesc:adc8b99eedc8c84ace511f44dbd46d531 inherit pub_methods_a00026"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the exception.  <a href="#adc8b99eedc8c84ace511f44dbd46d531">More...</a><br /></td></tr>
+<tr class="separator:adc8b99eedc8c84ace511f44dbd46d531 inherit pub_methods_a00026"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>tracks page file allocations while objects are preferably written continuous to page file, we may encounter the situation that the pagefiles are nearly full. In this case we take fragments of free space and use these to break up the consecutive memory of a chunk into parts, tracked by pageChunks. </p>
+<div class="textblock"><p>Exception for errors with the memory. </p>
+<p>Happens for example when swapping did unexpectedly not work or perhaps the swap is fully and not designed to be overfilled </p>
 
-<p>Definition at line <a class="el" href="a00048_source.html#l00083">83</a> of file <a class="el" href="a00048_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00042_source.html#l00087">87</a> of file <a class="el" href="a00042_source.html">exceptions.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a63f9ce789a7c5f351afed6acae0966ec"></a>
+<a class="anchor" id="ab95d58d39319d495e6eaf2200ee58e60"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -155,33 +167,11 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">rambrain::pageFileLocation::pageFileLocation </td>
+          <td class="memname">rambrain::memoryException::memoryException </td>
           <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>details</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="a00090.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
-          <td class="paramname"><em>offset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00090.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
-          <td class="paramname"><em>size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00090.html#a631233f0a428f73b49c774cf84b49c15">pageChunkStatus</a>&#160;</td>
-          <td class="paramname"><em>status</em> = <code><a class="el" href="a00090.html#a631233f0a428f73b49c774cf84b49c15aa924f4aa2de3b0d29198f2845cbb0e18">PAGE_FREE</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -191,124 +181,113 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00048_source.html#l00086">86</a> of file <a class="el" href="a00048_source.html">managedFileSwap.h</a>.</p>
+<p>Create a new exception. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">details</td><td>Optionally provided details about the current state of affairs </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00042_source.html#l00095">95</a> of file <a class="el" href="a00042_source.html">exceptions.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4b7c072943dfc4739f96ccbd6de78a70"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual rambrain::memoryException::~memoryException </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destroy the exception. </p>
+
+<p>Definition at line <a class="el" href="a00042_source.html#l00099">99</a> of file <a class="el" href="a00042_source.html">exceptions.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="af55ac69654f5294cbec693b9d4e2b5be"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const char* rambrain::memoryException::what </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+        <tr>
+          <td align="right">throw </td><td>(</td><td colspan="2"></td>
+        </tr>
+        <tr>
+          <td align="right"></td><td>)</td><td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Report what has gone wrong. </p>
+<dl class="section return"><dt>Returns</dt><dd>The report </dd></dl>
+
+<p>Definition at line <a class="el" href="a00042_source.html#l00105">105</a> of file <a class="el" href="a00042_source.html">exceptions.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="af2479051e8d3d5ac26d19cfa61d7464a"></a>
+<a class="anchor" id="a6f8196d1429a6bc768600e378984ed0f"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">char rambrain::pageFileLocation::aio_lock = 0</td>
+          <td class="memname">string rambrain::memoryException::details</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00048_source.html#l00095">95</a> of file <a class="el" href="a00048_source.html">managedFileSwap.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a1668a96c70519ab0ddd253d1f6d54133"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct <a class="el" href="a00002.html">aiotracker</a>* rambrain::pageFileLocation::aio_ptr = NULL</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00048_source.html#l00094">94</a> of file <a class="el" href="a00048_source.html">managedFileSwap.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="abb10204e66ac58e8db03950ec7fd8a5d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int rambrain::pageFileLocation::file</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The number of the file this <a class="el" href="a00020.html" title="tracks page file allocations while objects are preferably written continuous to page file...">pageFileLocation</a> is resident in </p>
-
-<p>Definition at line <a class="el" href="a00048_source.html#l00089">89</a> of file <a class="el" href="a00048_source.html">managedFileSwap.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae2195a06f5ff2491c0157ec663ac1243"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">union <a class="el" href="a00011.html">glob_off_union</a> rambrain::pageFileLocation::glob_off_next</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This points if used to the next part, if free to the next free chunk, if PAGE_END points to memchunk. </p>
-
-<p>Definition at line <a class="el" href="a00048_source.html#l00092">92</a> of file <a class="el" href="a00048_source.html">managedFileSwap.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a948cc9d04ac586651eaca32bfa59f11a"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00090.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::pageFileLocation::offset</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Byte offset into the file </p>
-
-<p>Definition at line <a class="el" href="a00048_source.html#l00090">90</a> of file <a class="el" href="a00048_source.html">managedFileSwap.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a64f7a832b3d8132ed453fc59c0be6dca"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00090.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::pageFileLocation::size</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>size of the chunk (data, not including possible reserved bytes after data) </p>
-
-<p>Definition at line <a class="el" href="a00048_source.html#l00091">91</a> of file <a class="el" href="a00048_source.html">managedFileSwap.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a50f7d10a154969575897e87ae3ed539f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00090.html#a631233f0a428f73b49c774cf84b49c15">pageChunkStatus</a> rambrain::pageFileLocation::status</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>the status of the page </p>
-
-<p>Definition at line <a class="el" href="a00048_source.html#l00093">93</a> of file <a class="el" href="a00048_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00042_source.html#l00110">110</a> of file <a class="el" href="a00042_source.html">exceptions.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00048_source.html">managedFileSwap.h</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00042_source.html">exceptions.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00090.html">rambrain</a></li><li class="navelem"><a class="el" href="a00020.html">pageFileLocation</a></li>
-    <li class="footer">Generated on Tue Sep 8 2015 01:22:32 for rambrain by
+    <li class="navelem"><a class="el" href="a00091.html">rambrain</a></li><li class="navelem"><a class="el" href="a00020.html">memoryException</a></li>
+    <li class="footer">Generated on Thu Sep 10 2015 01:40:31 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

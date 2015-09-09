@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: /home/rambrainbuild/docubrain/tests/performanceTests.cpp Source File</title>
+<title>rambrain: /home/rambrainbuild/docubrain/tests/performanceTestClasses.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('a00071_source.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">performanceTests.cpp</div>  </div>
+<div class="title">performanceTestClasses.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00071.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*   rambrain - a dynamical physical memory extender</span></div>
@@ -127,68 +127,278 @@ $(document).ready(function(){initNavTree('a00071_source.html','');});
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> *   along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00080.html">tester.h</a>&quot;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00070.html">performanceTestClasses.h</a>&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">using namespace </span><a class="code" href="a00092.html">std</a>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00071.html#a3c04138a5bfe5d72780bb7e82a18e627">   35</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="a00071.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> ( <span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv )</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;Starting performance tests&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;Called with: &quot;</span>;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; argc; ++i ) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        cout &lt;&lt; argv[i] &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    cout &lt;&lt; endl &lt;&lt; endl;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">int</span> i = 1;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">if</span> ( i &gt;= argc ) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        cerr &lt;&lt; <span class="stringliteral">&quot;Not enough arguments supplied, expected number of repetitions followed by test directives, exiting&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">return</span> 2;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">int</span> repetitions = atoi ( argv[i++] );</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">while</span> ( i &lt; argc ) {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;Attempting to run &quot;</span> &lt;&lt; argv[i] &lt;&lt; endl;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <a class="code" href="a00029.html">tester</a> myTester ( argv[i] );</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordtype">int</span> j;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <span class="keywordflow">for</span> ( j = i + 1; j &lt; argc; ++j ) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            myTester.<a class="code" href="a00029.html#a1a61f18468c143dbd7c18c599fc1b695">addParameter</a> ( argv[j] );</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        ++i;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordtype">bool</span> success = <a class="code" href="a00021.html">performanceTest&lt;&gt;::runRespectiveTest</a> ( argv[i - 1], myTester, repetitions, argv, i, argc );</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">if</span> ( success ) {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            myTester.<a class="code" href="a00029.html#a76875804de961f7d87b9de2ebee1957c">writeToFile</a>();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;Performance tests done&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef PERFORMANCETESTCLASSES_H</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define PERFORMANCETESTCLASSES_H</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;inttypes.h&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00081.html">tester.h</a>&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00049.html">managedFileSwap.h</a>&quot;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00040.html">cyclicManagedMemory.h</a>&quot;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00055.html">managedPtr.h</a>&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00060.html">rambrainconfig.h</a>&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">using namespace </span><a class="code" href="a00093.html">std</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">using namespace </span><a class="code" href="a00091.html">rambrain</a>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00032.html">   46</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00032.html">testParameterBase</a></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="a00032.html#a1b0dcec6718d1f89841ac4f1fb2d4310">   52</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="a00032.html#a1b0dcec6718d1f89841ac4f1fb2d4310">~testParameterBase</a>() {}</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">string</span> valueAsString() = 0;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">string</span> valueAsString ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> step ) = 0;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="a00032.html#a261f867bce5dacd6697c2bb035ad72d2">   65</a></span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00032.html#a261f867bce5dacd6697c2bb035ad72d2">steps</a>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="a00032.html#afc2046a28e4b318c3644aa2492cae56b">   66</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="a00032.html#afc2046a28e4b318c3644aa2492cae56b">deltaLog</a>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="a00032.html#afc05d7f3106d20f69c6ef6242c31a844">   67</a></span>&#160;    <span class="keywordtype">string</span> <a class="code" href="a00032.html#afc05d7f3106d20f69c6ef6242c31a844">name</a>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="a00032.html#a153ada4196d884c2aa8b3188d2457db5">   68</a></span>&#160;    <span class="keywordtype">bool</span> enabled = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;};</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="ttc" id="a00021_html"><div class="ttname"><a href="a00021.html">performanceTest</a></div><div class="ttdoc">Derived performance test classes which take parameter types as template arguments. </div><div class="ttdef"><b>Definition:</b> <a href="a00070_source.html#l00136">performanceTestClasses.h:136</a></div></div>
-<div class="ttc" id="a00070_html"><div class="ttname"><a href="a00070.html">performanceTestClasses.h</a></div></div>
-<div class="ttc" id="a00071_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="a00071.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdoc">Provides a binary to run performance tests. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00035">performanceTests.cpp:35</a></div></div>
-<div class="ttc" id="a00029_html_a1a61f18468c143dbd7c18c599fc1b695"><div class="ttname"><a href="a00029.html#a1a61f18468c143dbd7c18c599fc1b695">tester::addParameter</a></div><div class="ttdeci">void addParameter(char *param)</div><div class="ttdoc">Add a new parameter to the list of parameters. </div><div class="ttdef"><b>Definition:</b> <a href="a00079_source.html#l00031">tester.cpp:31</a></div></div>
-<div class="ttc" id="a00029_html"><div class="ttname"><a href="a00029.html">tester</a></div><div class="ttdoc">A basic class to be used by tests. Provides helper methods and functionality e.g. time measurements...</div><div class="ttdef"><b>Definition:</b> <a href="a00080_source.html#l00032">tester.h:32</a></div></div>
-<div class="ttc" id="a00029_html_a76875804de961f7d87b9de2ebee1957c"><div class="ttname"><a href="a00029.html#a76875804de961f7d87b9de2ebee1957c">tester::writeToFile</a></div><div class="ttdeci">void writeToFile()</div><div class="ttdoc">Write all collected information to file. </div><div class="ttdef"><b>Definition:</b> <a href="a00079_source.html#l00100">tester.cpp:100</a></div></div>
-<div class="ttc" id="a00092_html"><div class="ttname"><a href="a00092.html">std</a></div><div class="ttdoc">STL namespace. </div></div>
-<div class="ttc" id="a00080_html"><div class="ttname"><a href="a00080.html">tester.h</a></div></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="a00031.html">   76</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00031.html">testParameter</a> : <span class="keyword">public</span> <a class="code" href="a00032.html">testParameterBase</a></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;{</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="a00031.html#af0c5f6ffc72748d4e85ff709f4edab62">   83</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="a00031.html#af0c5f6ffc72748d4e85ff709f4edab62">~testParameter</a>() {}</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="a00031.html#ab52b58a5f2a820ecc0137ecd0da43053">   88</a></span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span> <span class="keywordtype">string</span> <a class="code" href="a00031.html#ab52b58a5f2a820ecc0137ecd0da43053">valueAsString</a>() {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">return</span> toString ( mean );</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="a00031.html#afb95c4c38bff20d5d7c629cfa8b13ed8">   97</a></span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span> <span class="keywordtype">string</span> <a class="code" href="a00031.html#afb95c4c38bff20d5d7c629cfa8b13ed8">valueAsString</a> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> step ) {</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="keywordflow">return</span> toString ( valueAtStep ( step ) );</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="a00031.html#ad9c145df95de9bbffba57074034c2d91">  101</a></span>&#160;    T <a class="code" href="a00031.html#ad9c145df95de9bbffba57074034c2d91">min</a>, max, mean;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="a00031.html#aa253722487cce7de5e4c40a2f4c7c3a9">  109</a></span>&#160;    T <a class="code" href="a00031.html#aa253722487cce7de5e4c40a2f4c7c3a9">valueAtStep</a> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> step ) {</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">if</span> ( deltaLog ) {</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            <span class="keywordflow">return</span> pow ( 10.0, ( log10 ( max ) - log10 ( min ) ) * step / ( steps - 1 ) ) * min;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;            <span class="keywordflow">return</span> ( max - min ) * step / ( steps - 1 ) + min;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        }</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="a00031.html#ac4a4584e5b0658d84e209a20160c82cb">  123</a></span>&#160;    <span class="keywordtype">string</span> <a class="code" href="a00031.html#ac4a4584e5b0658d84e209a20160c82cb">toString</a> ( <span class="keyword">const</span> T &amp;t ) {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        stringstream ss;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        ss &lt;&lt; t;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="keywordflow">return</span> ss.str();</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    }</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;};</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span>... U&gt;</div>
+<div class="line"><a name="l00136"></a><span class="lineno"><a class="line" href="a00022.html">  136</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00022.html">performanceTest</a>;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="a00024.html">  143</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00022.html">performanceTest</a>&lt;&gt;</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;{</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <a class="code" href="a00022.html">performanceTest</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> *name );</div>
+<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="a00024.html#a1aa7ebeb97071e17de8319d001b54a78">  155</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="a00024.html#a1aa7ebeb97071e17de8319d001b54a78">~performanceTest</a>() {}</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> runTests ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> repetitions, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;path = <span class="stringliteral">&quot;./&quot;</span> );</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> runRegisteredTests ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> repetitions, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;path = <span class="stringliteral">&quot;./&quot;</span> );</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> enableTest ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;name, <span class="keywordtype">bool</span> enabled );</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> enableAllTests ( <span class="keywordtype">bool</span> enabled );</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> unregisterTest ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;name );</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> dumpTestInfo();</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> runRespectiveTest ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;name, <a class="code" href="a00030.html">tester</a> &amp;myTester, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> repetitions, <span class="keywordtype">char</span> **arguments, <span class="keywordtype">int</span> &amp;offset, <span class="keywordtype">int</span> argumentscount );</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> actualTestMethod ( <a class="code" href="a00030.html">tester</a> &amp;test, <span class="keywordtype">char</span> **arguments, <span class="keywordtype">int</span> &amp;offset, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> argumentscount ) = 0;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">string</span> getComment() = 0;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
+<div class="line"><a name="l00221"></a><span class="lineno"><a class="line" href="a00024.html#ab244a26d06ae360803ba8e53bfd4cce1">  221</a></span>&#160;    <span class="keyword">inline</span> <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="a00024.html#ab244a26d06ae360803ba8e53bfd4cce1">setDisplayPlots</a> ( <span class="keywordtype">bool</span> display ) {</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        displayPlots = display;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    }</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00231"></a><span class="lineno"><a class="line" href="a00024.html#a0e7a9f0e693563cdc8445d44c5cffa2e">  231</a></span>&#160;    <span class="keyword">virtual</span> <span class="keyword">inline</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="a00024.html#a0e7a9f0e693563cdc8445d44c5cffa2e">getStepsForParam</a> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> varryParam ) {</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;        <span class="keywordflow">return</span> parameters[varryParam]-&gt;steps;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    }</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">string</span> getParamsString ( <span class="keywordtype">int</span> varryParam, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> step, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;delimiter = <span class="stringliteral">&quot; &quot;</span> );</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">string</span> getTestOutfile ( <span class="keywordtype">int</span> varryParam, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> step );</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> resultToTempFile ( <span class="keywordtype">int</span> varryParam, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> step, ofstream &amp;file );</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <span class="keyword">virtual</span> vector&lt;string&gt; splitString ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;in, <span class="keywordtype">char</span> delimiter );</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">string</span> generateGnuplotScript ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;infile, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;name, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;xlabel, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;ylabel, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;title, <span class="keywordtype">bool</span> log, <span class="keywordtype">int</span> paramColumn );</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handleTimingInfos ( <span class="keywordtype">int</span> varryParam, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> step, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> repetitions );</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="keyword">virtual</span> vector&lt;vector&lt;string&gt;&gt; getRelevantTimingParts ( ifstream &amp;in, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> start, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> end );</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> timingInfosToFile ( ofstream &amp;out, <span class="keyword">const</span> vector&lt;vector&lt;string&gt;&gt; &amp;relevantTimingParts, <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> &amp;starttime );</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> plotTimingInfos ( ofstream &amp;gnutemp, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;outname, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;dataFile, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> measurements, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> repetitions, <span class="keywordtype">bool</span> linesPoints );</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> plotTimingHitMissInfos ( ofstream &amp;gnutemp, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;outname, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;dataFile, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> measurements, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> repetitions, <span class="keywordtype">bool</span> linesPoints );</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">string</span> generateMyGnuplotPlotPart ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;file, <span class="keywordtype">int</span> paramColumn ) = 0;</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;</div>
+<div class="line"><a name="l00328"></a><span class="lineno"><a class="line" href="a00024.html#a6c0cdc27e3ec70a86bd6e17d3d60295b">  328</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="a00024.html#a6c0cdc27e3ec70a86bd6e17d3d60295b">name</a>;</div>
+<div class="line"><a name="l00329"></a><span class="lineno"><a class="line" href="a00024.html#aab3749315fc4f0280d2158a80440da24">  329</a></span>&#160;    <span class="keywordtype">bool</span> enabled = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00330"></a><span class="lineno"><a class="line" href="a00024.html#a7da28b9356f3201600c71c16afcf6030">  330</a></span>&#160;    vector&lt;testParameterBase *&gt; <a class="code" href="a00024.html#a7da28b9356f3201600c71c16afcf6030">parameters</a>;</div>
+<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="a00024.html#a46c7d278bada9167cf57fa39c680f7ac">  331</a></span>&#160;    <span class="keyword">static</span> map&lt;string, performanceTest&lt;&gt; *&gt; <a class="code" href="a00024.html#a46c7d278bada9167cf57fa39c680f7ac">testClasses</a>;</div>
+<div class="line"><a name="l00332"></a><span class="lineno"><a class="line" href="a00024.html#aa41228b97e1b171503ca8032057bb41c">  332</a></span>&#160;    vector&lt;string&gt; <a class="code" href="a00024.html#aa41228b97e1b171503ca8032057bb41c">plotParts</a>;</div>
+<div class="line"><a name="l00333"></a><span class="lineno"><a class="line" href="a00024.html#a74cccef6126a3c18b81d1fd36a8fe709">  333</a></span>&#160;    <span class="keyword">static</span> <span class="keywordtype">bool</span> <a class="code" href="a00024.html#a74cccef6126a3c18b81d1fd36a8fe709">displayPlots</a>;</div>
+<div class="line"><a name="l00334"></a><span class="lineno"><a class="line" href="a00024.html#aebef6431ba821a8476cf4322add3bcf0">  334</a></span>&#160;    <span class="keywordtype">bool</span> plotTimingStats = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;};</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... U&gt;</div>
+<div class="line"><a name="l00343"></a><span class="lineno"><a class="line" href="a00023.html">  343</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00022.html">performanceTest</a>&lt;T, U...&gt; : <span class="keyword">public</span> <a class="code" href="a00022.html">performanceTest</a>&lt;U...&gt;</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;{</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00351"></a><span class="lineno"><a class="line" href="a00023.html#a99e85e5057fdf41735f0321966beec4a">  351</a></span>&#160;    <a class="code" href="a00023.html#a99e85e5057fdf41735f0321966beec4a">performanceTest</a> ( <span class="keyword">const</span> <span class="keywordtype">char</span> *name ) : <a class="code" href="a00022.html">performanceTest</a>&lt;U...&gt; ( name ) {</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;        this-&gt;parameters.push_back ( &amp;parameter );</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    }</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;</div>
+<div class="line"><a name="l00358"></a><span class="lineno"><a class="line" href="a00023.html#a8c8ab2f1aea9a9d1fed6f5a929cc26e1">  358</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="a00023.html#a8c8ab2f1aea9a9d1fed6f5a929cc26e1">~performanceTest</a>() {}</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00361"></a><span class="lineno"><a class="line" href="a00023.html#ace2b7b732cc8bfdc7e41750d6cbd17ba">  361</a></span>&#160;    <a class="code" href="a00031.html">testParameter&lt;T&gt;</a> <a class="code" href="a00023.html#ace2b7b732cc8bfdc7e41750d6cbd17ba">parameter</a>;</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;};</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="preprocessor">#define PARAMREFS(number, param, params...) testParameter&lt;param&gt; &amp;parameter##number = (performanceTest&lt;param, ##params&gt;::parameter)</span></div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="preprocessor">#define ONEPARAM(param) PARAMREFS(1, param)</span></div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;<span class="preprocessor">#define TWOPARAMS(param1, param2) PARAMREFS(1, param1, param2); \</span></div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="preprocessor">                                  PARAMREFS(2, param2)</span></div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;<span class="preprocessor">#define THREEARAMS(param1, param2, param3) PARAMREFS(1, param1, param2, param3); \</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="preprocessor">                                           PARAMREFS(2, param2, param3); \</span></div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="preprocessor">                                           PARAMREFS(3, param3)</span></div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;<span class="preprocessor">#define ONECONVERT(param) param p = convert&lt;param&gt;(arguments[offset++]); \</span></div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="preprocessor">                          actualTestMethod(test, p)</span></div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="preprocessor">#define TWOCONVERT(param1, param2) param1 p1 = convert&lt;param1&gt;(arguments[offset++]); \</span></div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;<span class="preprocessor">                                   param2 p2 = convert&lt;param2&gt;(arguments[offset++]); \</span></div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<span class="preprocessor">                                   actualTestMethod(test, p1, p2)</span></div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;<span class="preprocessor">#define THREECONVERT(param1, param2, param3) param1 p1 = convert&lt;param1&gt;(arguments[offset++]); \</span></div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="preprocessor">                                             param2 p2 = convert&lt;param2&gt;(arguments[offset++]); \</span></div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;<span class="preprocessor">                                             param3 p3 = convert&lt;param3&gt;(arguments[offset++]); \</span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="preprocessor">                                             actualTestMethod(test, p1, p2, p3)</span></div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;<span class="preprocessor">#define TESTCLASS(name, parammacro, convertmacro, params...) \</span></div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="preprocessor">    class name : public performanceTest&lt;params&gt; \</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;<span class="preprocessor">    { \</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;<span class="preprocessor">    public: \</span></div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;<span class="preprocessor">        name(); \</span></div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;<span class="preprocessor">        virtual ~name() {} \</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;<span class="preprocessor">        virtual inline void actualTestMethod(tester&amp; test, char **arguments, int&amp; offset, unsigned int argumentscount); \</span></div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;<span class="preprocessor">        virtual void actualTestMethod(tester&amp;, params); \</span></div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;<span class="preprocessor">        virtual inline string getComment() { return comment; } \</span></div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;<span class="preprocessor">        parammacro; \</span></div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;<span class="preprocessor">        static string comment; \</span></div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="preprocessor">    protected: \</span></div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;<span class="preprocessor">        virtual string generateMyGnuplotPlotPart(const string&amp; file, int paramColumn); \</span></div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;<span class="preprocessor">        template&lt;typename T&gt; \</span></div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;<span class="preprocessor">        inline T convert(char* str) { \</span></div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;<span class="preprocessor">            return T(str); \</span></div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="preprocessor">        } \</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;<span class="preprocessor">    }; \</span></div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="preprocessor">    template&lt;&gt; \</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<span class="preprocessor">    inline int name::convert&lt;int&gt;(char* str) { \</span></div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="preprocessor">        return atoi(str); \</span></div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="preprocessor">    } \</span></div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;<span class="preprocessor">    void name::actualTestMethod(tester&amp; test, char **arguments, int&amp; offset, unsigned int argumentscount) { \</span></div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;<span class="preprocessor">        if (argumentscount - offset &lt; parameters.size()) { \</span></div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="preprocessor">            cerr &lt;&lt; &quot;Not enough parameters supplied for test!&quot; &lt;&lt; endl; \</span></div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;<span class="preprocessor">        } else {\</span></div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;<span class="preprocessor">            convertmacro; \</span></div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;<span class="preprocessor">        } \</span></div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;<span class="preprocessor">    } \</span></div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;<span class="preprocessor">    extern name name##Instance</span></div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;<span class="preprocessor">#define ONEPARAMTEST(name, param) TESTCLASS(name, ONEPARAM(param), ONECONVERT(param), param)</span></div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="preprocessor">#define TWOPARAMTEST(name, param1, param2) TESTCLASS(name, TWOPARAMS(param1, param2), TWOCONVERT(param1, param2), param1, param2)</span></div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="preprocessor">#define THREEPARAMTEST(name, param1, param2, param3) TESTCLASS(name, THREEPARAMS(param1, param2, param3), THREECONVERT(param1, param2, param3), param1, param2, param3)</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;<span class="comment">// Actual performance test classes come here</span></div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixTransposeTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixCleverTransposeTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixCleverTranspose2Test, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;<span class="preprocessor">#ifndef OpenMP_NOT_FOUND</span></div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixCleverTransposeOpenMPTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixCleverBlockTransposeTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="preprocessor">#ifndef OpenMP_NOT_FOUND</span></div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixCleverBlockTransposeOpenMPTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixMultiplyTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="preprocessor">#ifndef OpenMP_NOT_FOUND</span></div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixMultiplyOpenMPTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixCopyTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;<span class="preprocessor">#ifndef OpenMP_NOT_FOUND</span></div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixCopyOpenMPTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixDoubleCopyTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;<span class="preprocessor">#ifndef OpenMP_NOT_FOUND</span></div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( matrixDoubleCopyOpenMPTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( measureThroughputTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( measurePreemptiveSpeedupTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;<a class="code" href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a> ( measureExplicitAsyncSpeedupTest, <span class="keywordtype">int</span>, <span class="keywordtype">int</span> );</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;<span class="preprocessor">#endif // PERFORMANCETESTCLASSES_H</span></div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;</div>
+<div class="ttc" id="a00032_html_afc2046a28e4b318c3644aa2492cae56b"><div class="ttname"><a href="a00032.html#afc2046a28e4b318c3644aa2492cae56b">testParameterBase::deltaLog</a></div><div class="ttdeci">bool deltaLog</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00066">performanceTestClasses.h:66</a></div></div>
+<div class="ttc" id="a00024_html_a1aa7ebeb97071e17de8319d001b54a78"><div class="ttname"><a href="a00024.html#a1aa7ebeb97071e17de8319d001b54a78">performanceTest&lt;&gt;::~performanceTest</a></div><div class="ttdeci">virtual ~performanceTest()</div><div class="ttdoc">Cleanup. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00155">performanceTestClasses.h:155</a></div></div>
+<div class="ttc" id="a00022_html"><div class="ttname"><a href="a00022.html">performanceTest</a></div><div class="ttdoc">Derived performance test classes which take parameter types as template arguments. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00136">performanceTestClasses.h:136</a></div></div>
+<div class="ttc" id="a00093_html"><div class="ttname"><a href="a00093.html">std</a></div><div class="ttdoc">STL namespace. </div></div>
+<div class="ttc" id="a00091_html"><div class="ttname"><a href="a00091.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00036_source.html#l00026">common.h:26</a></div></div>
+<div class="ttc" id="a00030_html"><div class="ttname"><a href="a00030.html">tester</a></div><div class="ttdoc">A basic class to be used by tests. Provides helper methods and functionality e.g. time measurements...</div><div class="ttdef"><b>Definition:</b> <a href="a00081_source.html#l00032">tester.h:32</a></div></div>
+<div class="ttc" id="a00024_html_a0e7a9f0e693563cdc8445d44c5cffa2e"><div class="ttname"><a href="a00024.html#a0e7a9f0e693563cdc8445d44c5cffa2e">performanceTest&lt;&gt;::getStepsForParam</a></div><div class="ttdeci">virtual unsigned int getStepsForParam(unsigned int varryParam)</div><div class="ttdoc">Get the amount of steps for parameter variation. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00231">performanceTestClasses.h:231</a></div></div>
+<div class="ttc" id="a00024_html_ab244a26d06ae360803ba8e53bfd4cce1"><div class="ttname"><a href="a00024.html#ab244a26d06ae360803ba8e53bfd4cce1">performanceTest&lt;&gt;::setDisplayPlots</a></div><div class="ttdeci">static void setDisplayPlots(bool display)</div><div class="ttdoc">If the generated plots shall be immediately displayed. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00221">performanceTestClasses.h:221</a></div></div>
+<div class="ttc" id="a00024_html_a7da28b9356f3201600c71c16afcf6030"><div class="ttname"><a href="a00024.html#a7da28b9356f3201600c71c16afcf6030">performanceTest&lt;&gt;::parameters</a></div><div class="ttdeci">vector&lt; testParameterBase * &gt; parameters</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00330">performanceTestClasses.h:330</a></div></div>
+<div class="ttc" id="a00055_html"><div class="ttname"><a href="a00055.html">managedPtr.h</a></div></div>
+<div class="ttc" id="a00024_html_a74cccef6126a3c18b81d1fd36a8fe709"><div class="ttname"><a href="a00024.html#a74cccef6126a3c18b81d1fd36a8fe709">performanceTest&lt;&gt;::displayPlots</a></div><div class="ttdeci">static bool displayPlots</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00333">performanceTestClasses.h:333</a></div></div>
+<div class="ttc" id="a00071_html_af5ca33e1ddc335f5e8438d775535b0d0"><div class="ttname"><a href="a00071.html#af5ca33e1ddc335f5e8438d775535b0d0">TWOPARAMTEST</a></div><div class="ttdeci">TWOPARAMTEST(matrixTransposeTest, int, int)</div></div>
+<div class="ttc" id="a00032_html_afc05d7f3106d20f69c6ef6242c31a844"><div class="ttname"><a href="a00032.html#afc05d7f3106d20f69c6ef6242c31a844">testParameterBase::name</a></div><div class="ttdeci">string name</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00067">performanceTestClasses.h:67</a></div></div>
+<div class="ttc" id="a00032_html_a261f867bce5dacd6697c2bb035ad72d2"><div class="ttname"><a href="a00032.html#a261f867bce5dacd6697c2bb035ad72d2">testParameterBase::steps</a></div><div class="ttdeci">unsigned int steps</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00065">performanceTestClasses.h:65</a></div></div>
+<div class="ttc" id="a00024_html_a46c7d278bada9167cf57fa39c680f7ac"><div class="ttname"><a href="a00024.html#a46c7d278bada9167cf57fa39c680f7ac">performanceTest&lt;&gt;::testClasses</a></div><div class="ttdeci">static map&lt; string, performanceTest&lt;&gt; * &gt; testClasses</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00331">performanceTestClasses.h:331</a></div></div>
+<div class="ttc" id="a00081_html"><div class="ttname"><a href="a00081.html">tester.h</a></div></div>
+<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">testParameterBase</a></div><div class="ttdoc">A base class to encapsulate parameters for performance tests. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00046">performanceTestClasses.h:46</a></div></div>
+<div class="ttc" id="a00049_html"><div class="ttname"><a href="a00049.html">managedFileSwap.h</a></div></div>
+<div class="ttc" id="a00031_html_afb95c4c38bff20d5d7c629cfa8b13ed8"><div class="ttname"><a href="a00031.html#afb95c4c38bff20d5d7c629cfa8b13ed8">testParameter::valueAsString</a></div><div class="ttdeci">virtual string valueAsString(unsigned int step)</div><div class="ttdoc">Cast the encapsulated parameter to a string and return it&#39;s value at a certain step. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00097">performanceTestClasses.h:97</a></div></div>
+<div class="ttc" id="a00032_html_a1b0dcec6718d1f89841ac4f1fb2d4310"><div class="ttname"><a href="a00032.html#a1b0dcec6718d1f89841ac4f1fb2d4310">testParameterBase::~testParameterBase</a></div><div class="ttdeci">virtual ~testParameterBase()</div><div class="ttdoc">Cleanup. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00052">performanceTestClasses.h:52</a></div></div>
+<div class="ttc" id="a00040_html"><div class="ttname"><a href="a00040.html">cyclicManagedMemory.h</a></div></div>
+<div class="ttc" id="a00031_html_ad9c145df95de9bbffba57074034c2d91"><div class="ttname"><a href="a00031.html#ad9c145df95de9bbffba57074034c2d91">testParameter::min</a></div><div class="ttdeci">T min</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00101">performanceTestClasses.h:101</a></div></div>
+<div class="ttc" id="a00031_html_ab52b58a5f2a820ecc0137ecd0da43053"><div class="ttname"><a href="a00031.html#ab52b58a5f2a820ecc0137ecd0da43053">testParameter::valueAsString</a></div><div class="ttdeci">virtual string valueAsString()</div><div class="ttdoc">Cast the encapsulated parameter to a string and return it&#39;s mean value. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00088">performanceTestClasses.h:88</a></div></div>
+<div class="ttc" id="a00024_html_a6c0cdc27e3ec70a86bd6e17d3d60295b"><div class="ttname"><a href="a00024.html#a6c0cdc27e3ec70a86bd6e17d3d60295b">performanceTest&lt;&gt;::name</a></div><div class="ttdeci">const char * name</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00328">performanceTestClasses.h:328</a></div></div>
+<div class="ttc" id="a00060_html"><div class="ttname"><a href="a00060.html">rambrainconfig.h</a></div></div>
+<div class="ttc" id="a00031_html"><div class="ttname"><a href="a00031.html">testParameter</a></div><div class="ttdoc">Class to encapsulate parameters given by type T. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00076">performanceTestClasses.h:76</a></div></div>
+<div class="ttc" id="a00031_html_aa253722487cce7de5e4c40a2f4c7c3a9"><div class="ttname"><a href="a00031.html#aa253722487cce7de5e4c40a2f4c7c3a9">testParameter::valueAtStep</a></div><div class="ttdeci">T valueAtStep(unsigned int step)</div><div class="ttdoc">Look up the parameter value at a certain step. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00109">performanceTestClasses.h:109</a></div></div>
+<div class="ttc" id="a00031_html_af0c5f6ffc72748d4e85ff709f4edab62"><div class="ttname"><a href="a00031.html#af0c5f6ffc72748d4e85ff709f4edab62">testParameter::~testParameter</a></div><div class="ttdeci">virtual ~testParameter()</div><div class="ttdoc">Cleanup. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00083">performanceTestClasses.h:83</a></div></div>
+<div class="ttc" id="a00031_html_ac4a4584e5b0658d84e209a20160c82cb"><div class="ttname"><a href="a00031.html#ac4a4584e5b0658d84e209a20160c82cb">testParameter::toString</a></div><div class="ttdeci">string toString(const T &amp;t)</div><div class="ttdoc">Convert a value of the parameter type to a string. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00123">performanceTestClasses.h:123</a></div></div>
+<div class="ttc" id="a00023_html_ace2b7b732cc8bfdc7e41750d6cbd17ba"><div class="ttname"><a href="a00023.html#ace2b7b732cc8bfdc7e41750d6cbd17ba">performanceTest&lt; T, U...&gt;::parameter</a></div><div class="ttdeci">testParameter&lt; T &gt; parameter</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00361">performanceTestClasses.h:361</a></div></div>
+<div class="ttc" id="a00023_html_a8c8ab2f1aea9a9d1fed6f5a929cc26e1"><div class="ttname"><a href="a00023.html#a8c8ab2f1aea9a9d1fed6f5a929cc26e1">performanceTest&lt; T, U...&gt;::~performanceTest</a></div><div class="ttdeci">virtual ~performanceTest()</div><div class="ttdoc">Cleanup. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00358">performanceTestClasses.h:358</a></div></div>
+<div class="ttc" id="a00023_html_a99e85e5057fdf41735f0321966beec4a"><div class="ttname"><a href="a00023.html#a99e85e5057fdf41735f0321966beec4a">performanceTest&lt; T, U...&gt;::performanceTest</a></div><div class="ttdeci">performanceTest(const char *name)</div><div class="ttdoc">Create a new test object and register it for usage. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00351">performanceTestClasses.h:351</a></div></div>
+<div class="ttc" id="a00024_html_aa41228b97e1b171503ca8032057bb41c"><div class="ttname"><a href="a00024.html#aa41228b97e1b171503ca8032057bb41c">performanceTest&lt;&gt;::plotParts</a></div><div class="ttdeci">vector&lt; string &gt; plotParts</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00332">performanceTestClasses.h:332</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00071.html">performanceTests.cpp</a></li>
-    <li class="footer">Generated on Tue Sep 8 2015 01:22:29 for rambrain by
+    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00071.html">performanceTestClasses.h</a></li>
+    <li class="footer">Generated on Thu Sep 10 2015 01:40:27 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
