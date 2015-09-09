@@ -109,7 +109,7 @@ private:
     ///@brief: separates all chunks matching state in list separateStatus  or preeemptiveLoaded from the ring
     struct cyclicManagedMemory::chain filterChain ( chain &toFilter, const memoryStatus *separateStatus, bool *preemptiveLoaded = NULL );
     static void insertBefore ( cyclicAtime *pos, chain separated );
-
+    static void printChain ( const char *name, const chain mchain );
 };
 
 #define MUTUAL_CONNECT(A,B) A->next = B; B->prev = A;
