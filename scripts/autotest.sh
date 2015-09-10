@@ -62,11 +62,12 @@ EOF
         rm -rf *
         cmake .. $opts >> "${outname}" 2>&1
         echo -e "\n\n" >> "$outname"
-        make -j 8 >> "${outname}" 2>&1
+        make -j $processes >> "${outname}" 2>&1
 
         fail=$?
         if [ $fail -ne 0 ]; then
             >&2 echo "Make exited with error code ${fail}, ATTENTION NEEDED!"
+            >&2 grep FAILED ${outname}
         else
             echo "Running tests..."
             echo -e "\n\n" >> "$outname"
@@ -75,6 +76,7 @@ EOF
             fail=$?
             if [ $fail -ne 0 ]; then
                 >&2 echo "${fail} tests failed in this run, ATTENTION NEEDED!"
+                >&2 grep FAILED ${outname}
             fi
         fi
     done
