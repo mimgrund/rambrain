@@ -2238,7 +2238,7 @@ void measureConstSpeedupTest::actualTestMethod ( tester &test, int bytesize , in
     sum = 0ull;
     for ( unsigned int n = 0; n < nBlocks; ++n ) {
         managedPtr<char> *data ( realData[n] );
-        ADHERETOLOC ( char, data, loc );
+        ADHERETOLOCCONST ( char, data, loc );
         for ( int i = 0; i < bytesize; ++i ) {
             sum += loc[i];
         }
