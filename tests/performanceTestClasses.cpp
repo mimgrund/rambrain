@@ -2166,3 +2166,122 @@ string measureExplicitAsyncSpeedupTest::generateMyGnuplotPlotPart ( const string
     ss << "'" << file << "' using " << paramColumn << ":($6+$7+$8+$9) with lines lt 2 lc 6 title \"Total *\"";
     return ss.str();
 }
+
+
+TESTSTATICS ( measureConstSpeedupTest, "Measures runtime of const versus non-const usage of swapped data without preemptive" );
+
+measureConstSpeedupTest::measureConstSpeedupTest() : performanceTest<int, int> ( "MeasureConstSpeedup" )
+{
+    TESTPARAM ( 1, 1024, 1024000, 20, true, 102400, "Byte size of data block" );
+    TESTPARAM ( 2, 10240, 10240, 1, true, 10240, "Size of memory per data block" );
+    parameter2.enabled = false;
+    plotParts = vector<string> ( {"Non-Const Swap In", "Non-Const Swap out", "Const Swap In", "Const Swap out"} );
+    plotTimingStats = true;
+}
+
+void measureConstSpeedupTest::actualTestMethod ( tester &test, int bytesize , int memory )
+{
+    const unsigned int nBlocks = 1024;
+    const unsigned int nDummyBlocks = memory * 1.5;
+    rambrainglobals::config.resizeMemory ( nBlocks * memory );
+    rambrainglobals::config.resizeSwap ( 2 * nBlocks * bytesize );
+
+    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveLoading ( false );
+    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveUnloading ( false );
+
+    // Real data to be fetched later
+    managedPtr<char> *realData[nBlocks];
+    for ( unsigned int n = 0; n < nBlocks; ++n ) {
+        realData[n] = new managedPtr<char> ( bytesize );
+        managedPtr<char> *data ( realData[n] );
+        ADHERETOLOC ( char, data, loc );
+        for ( int i = 0; i < bytesize; ++i ) {
+            loc[i] = i + n * bytesize;
+        }
+    }
+
+    // Dummy data in order to swap out real data
+    managedPtr<char> *dummyData[nDummyBlocks];
+    for ( unsigned int n = 0; n < nDummyBlocks; ++n ) {
+        dummyData[n] = new managedPtr<char> ( bytesize );
+        managedPtr<char> *data ( dummyData[n] );
+        ADHERETOLOC ( char, data, loc );
+        for ( int i = 0; i < bytesize; ++i ) {
+            loc[i] = n * nDummyBlocks + i;
+        }
+    }
+
+    // Swap in data non-const
+    test.addTimeMeasurement();
+    long long int sum = 0ull;
+    for ( unsigned int n = 0; n < nBlocks; ++n ) {
+        managedPtr<char> *data ( realData[n] );
+        ADHERETOLOC ( char, data, loc );
+        for ( int i = 0; i < bytesize; ++i ) {
+            sum += loc[i];
+        }
+    }
+
+    // Swap out data non-const
+    test.addTimeMeasurement();
+    sum = 0ull;
+    for ( unsigned int n = 0; n < nDummyBlocks; ++n ) {
+        managedPtr<char> *data ( dummyData[n] );
+        ADHERETOLOC ( char, data, loc );
+        for ( int i = 0; i < bytesize; ++i ) {
+            sum += loc[i];
+        }
+    }
+
+    // Swap in data const
+    test.addTimeMeasurement();
+    sum = 0ull;
+    for ( unsigned int n = 0; n < nBlocks; ++n ) {
+        managedPtr<char> *data ( realData[n] );
+        ADHERETOLOC ( char, data, loc );
+        for ( int i = 0; i < bytesize; ++i ) {
+            sum += loc[i];
+        }
+    }
+
+    // Swap out data const
+    test.addTimeMeasurement();
+    sum = 0ull;
+    for ( unsigned int n = 0; n < nDummyBlocks; ++n ) {
+        managedPtr<char> *data ( dummyData[n] );
+        ADHERETOLOC ( char, data, loc );
+        for ( int i = 0; i < bytesize; ++i ) {
+            sum += loc[i];
+        }
+    }
+    test.addTimeMeasurement();
+
+#ifdef PTEST_CHECKS
+    for ( unsigned int n = 0; n < nBlocks; ++n ) {
+        ADHERETOLOC ( char, realData[n], loc );
+        for ( int i = 0; i < bytesize; ++i ) {
+            if ( loc[i] != i + n * bytesize ) {
+                errmsgf ( "Failed check! %d %d %d", n, i, loc[i] );
+            }
+        }
+    }
+#endif
+
+
+    for ( unsigned int n = 0; n < nBlocks; ++n ) {
+        delete realData[n];
+    }
+    for ( unsigned int n = 0; n < nDummyBlocks; ++n ) {
+        delete dummyData[n];
+    }
+}
+
+string measureConstSpeedupTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    stringstream ss;
+    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Non-Const Swap In\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Non-Const Swap Out\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Const Swap In\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Const Swap out\"";
+    return ss.str();
+}
