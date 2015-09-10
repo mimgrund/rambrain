@@ -691,7 +691,7 @@ TEST ( cyclicManagedMemory, Unit_RecoveryFromRandomAccess )
     //And see if we recovered from preemptives:
     homi_rate = manager.getHitsOverMisses();
     infomsgf ( "HoMrate = %lf", homi_rate );
-    EXPECT_TRUE ( homi_rate > 44 ); //Is the same as better than 40% in first cycle of consecutive access again
+    EXPECT_TRUE ( homi_rate > 40 );
     manager.resetSwapstats();
 
 }
