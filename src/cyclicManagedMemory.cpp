@@ -484,11 +484,12 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         preemtivelySelected = 0;
         bool activeInList = false;
         do {
+            if ( readEl == active ) {
+                activeInList = true;
+            }
             if ( selectedReadinVol2 + readEl->chunk->size + memory_used <= memory_max && readEl->chunk->status == MEM_SWAPPED && ( selectedReadinVol2 == 0 || ( preemtivelySelected + readEl->chunk->size <= max_preemptive ) ) ) {
                 chunks[n++] = readEl->chunk;
-                if ( readEl == active ) {
-                    activeInList = true;
-                }
+
                 if ( selectedReadinVol2 > 0 ) {
                     preemtivelySelected += readEl->chunk->size;
                 }
@@ -517,6 +518,11 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 
         VERBOSEPRINT ( "Before reordering" );
         preemptiveBytes += selectedReadinVol - actual_obj_size;
+
+        if ( activeInList ) {
+            endSwapin = endSwapin->prev;
+        }
+
         cyclicAtime *after = endSwapin->next;
         if ( after == readEl ) {
             after = NULL;    //mark if were cyclic.
@@ -826,7 +832,7 @@ void cyclicManagedMemory::printChain ( const char *name, const cyclicManagedMemo
 {
     cyclicAtime *cur = mchain.from;
     if ( !cur ) {
-        printf ( "Chain named '%s' is empty", name );
+        printf ( "Chain named '%s' is empty\n", name );
         return;
     }
 
