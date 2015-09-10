@@ -232,13 +232,16 @@ cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( chain &toFilter, c
     do {
         //determine whether to separate this chunk:
         bool separateThis = false;
-        for ( const memoryStatus *status = separateStatus; *status != MEM_ROOT; ++status ) {
-            separateThis |= cur->chunk->status == *status;
+        for ( const memoryStatus *status = separateStatus; ( *status != MEM_ROOT ); ++status ) {
+            if ( cur->chunk->status == *status ) {
+                separateThis = true;
+                goto afterchecks;
+            }
         }
         if ( preemptiveLoaded ) {
-            separateThis |= ! ( cur->chunk->preemptiveLoaded ^ *preemptiveLoaded );
+            separateThis = ! ( cur->chunk->preemptiveLoaded ^ *preemptiveLoaded );
         }
-
+afterchecks:
         if ( separateThis ) { // we should separate this element
             if ( !sepaStart ) { // if its the first to separate, lets mark this as start
                 sepaStart = cur;
@@ -339,7 +342,7 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
         //Take out all chunks that we have swapped out:
         cyclicAtime *from = preemptiveStart;
         preemptiveStart = preemptiveStart->prev;
-        const memoryStatus filterMe[] = {MEM_SWAPPED, MEM_SWAPOUT, MEM_ROOT};//Mem_root terminates list.
+        const memoryStatus filterMe[] = {MEM_SWAPOUT, MEM_SWAPPED, MEM_ROOT}; //Mem_root terminates list.
         chain area = {from, cur};
         struct chain separated = filterChain ( area, filterMe ); // After this action, from->prev->next  to cur2 only holds preemtive stuff.
         preemptiveStart = preemptiveStart->next;//Lets move again into area that only holds preemptives now.
@@ -523,7 +526,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         }
         chain toFilter = {readEl, endSwapin};
 
-        const memoryStatus justSwappedin[] = {MEM_SWAPIN, MEM_ALLOCATED, MEM_ROOT};
+        const memoryStatus justSwappedin[] = {MEM_SWAPIN, MEM_ALLOCATED, MEM_ALLOCATED_INUSE_READ, MEM_ALLOCATED_INUSE_WRITE, MEM_ROOT};
         chain filtered = filterChain ( toFilter, justSwappedin );
         if ( activeInList ) {
             active = ( after == NULL ? filtered.from : after );
