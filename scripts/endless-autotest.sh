@@ -84,25 +84,27 @@ EOF
 
 	    fail=$?
 	    if [ $fail -ne 0 ]; then
-		>&2 echo "Make exited with error code ${fail}, ATTENTION NEEDED!"
-		((totalfails++))
-		mv "$outname" "FAIL_${totalfails}_${outname}"
+            >&2 echo "Make exited with error code ${fail}, ATTENTION NEEDED!"
+            >&2 grep FAILED ${outname}
+            ((totalfails++))
+            mv "$outname" "FAIL_${totalfails}_${outname}"
 	    else
-		echo "Running tests..."
-		echo -e "\n\n" >> "$outname"
-		timeout --kill-after=10 300 ../bin/rambrain-tests >> "${outname}" 2>&1
+            echo "Running tests..."
+            echo -e "\n\n" >> "$outname"
+            timeout --kill-after=10 300 ../bin/rambrain-tests >> "${outname}" 2>&1
 
-		fail=$?
-		if [ $fail -ne 0 ]; then
-		    >&2 echo "${fail} tests failed in this run, ATTENTION NEEDED!"
-		    ((totalfails++))
-		    mv "$outname" "FAIL_${totalfails}_${outname}"
-		fi
+            fail=$?
+            if [ $fail -ne 0 ]; then
+                >&2 echo "${fail} tests failed in this run, ATTENTION NEEDED!"
+                >&2 grep FAILED ${outname}
+                ((totalfails++))
+                mv "$outname" "FAIL_${totalfails}_${outname}"
+            fi
 	    fi
 	    
 	    echo "Test successfull"
 	    mv "$outname" "SUCCESS_${totalfails}_${outname}"
-	done
+        done
     done
 done
 
