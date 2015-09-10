@@ -228,6 +228,7 @@ cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( chain &toFilter, c
     bool cyclic = ( after == toFilter.from );
     cyclicAtime *firstValid = NULL, *lastValid = NULL;
     MUTUAL_CONNECT ( toFilter.to, ( &end ) );
+    MUTUAL_CONNECT ( ( &end ), toFilter.from );
 
     do {
         //determine whether to separate this chunk:
@@ -285,7 +286,12 @@ afterchecks:
     }
     toFilter = {firstValid, lastValid};
     if ( lastValid ) {
-        MUTUAL_CONNECT ( lastValid, after );
+        if ( !cyclic ) {
+            MUTUAL_CONNECT ( before, firstValid );
+            MUTUAL_CONNECT ( lastValid, after );
+        } else {
+            MUTUAL_CONNECT ( lastValid, firstValid );
+        }
     } else {
         if ( !cyclic ) {
             MUTUAL_CONNECT ( before, after );
@@ -519,38 +525,45 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         VERBOSEPRINT ( "Before reordering" );
         preemptiveBytes += selectedReadinVol - actual_obj_size;
 
-        if ( activeInList ) {
+        if ( readEl == oldBorder ) { // Correct for boundary too long when hitting counterActive.
+            readEl = readEl->next;
+        }
+
+        if ( activeInList ) { // Correct when active was also moved in action.
             endSwapin = endSwapin->prev;
+
         }
 
         cyclicAtime *after = endSwapin->next;
         if ( after == readEl ) {
             after = NULL;    //mark if were cyclic.
         }
-        if ( readEl == oldBorder ) {
-            readEl = readEl->next;
-        }
-        chain toFilter = {readEl, endSwapin};
 
+        chain toFilter = {readEl, endSwapin};
         const memoryStatus justSwappedin[] = {MEM_SWAPIN, MEM_ALLOCATED, MEM_ALLOCATED_INUSE_READ, MEM_ALLOCATED_INUSE_WRITE, MEM_ROOT};
         chain filtered = filterChain ( toFilter, justSwappedin );
-        if ( activeInList ) {
-            active = ( after == NULL ? filtered.from : after );
-        }
-        if ( toFilter.from ) { // we still have elements in chain that have not been just swapped in.
-            insertBefore ( active, filtered );
-        } else {
-            if ( !after ) { // we have just filtered in all we need.
-                counterActive = readEl;
-                active = readEl;
-                MUTUAL_CONNECT ( filtered.to, filtered.from );
-            } else {
-                insertBefore ( active, filtered );
-            }
-        }
         if ( !preemptiveStart ) {
             preemptiveStart = filtered.from;
+            if ( preemptiveStart && !preemptiveStart->chunk->preemptiveLoaded ) { ///@todo in rare cases, these two lines are necessary as the readEl is also filtered. We should find out if we can leave this out somehow more elegant.
+                preemptiveStart = NULL;
+            }
         }
+        //Let us now reinsert:
+        if ( after ) { // We are not cyclic
+            if ( activeInList ) {
+                active = readEl->next;
+            }
+            insertBefore ( active, filtered );
+        } else { // We are cyclic
+            counterActive = readEl;
+            if ( toFilter.from ) {
+                insertBefore ( endSwapin->next, filtered );
+            } else {
+                MUTUAL_CONNECT ( filtered.to, filtered.from )
+            }
+
+        }
+
         rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         touch ( chunk );
         if ( counterActive->chunk->status == MEM_SWAPPED ) {
@@ -755,6 +768,7 @@ bool cyclicManagedMemory::checkCycle() const
     }
 
     if ( memerror ) {
+        printCycle();
         return false;
 
     } else {
