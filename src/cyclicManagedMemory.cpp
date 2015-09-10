@@ -215,28 +215,43 @@ void cyclicManagedMemory::insertBefore ( cyclicAtime *pos, cyclicManagedMemory::
 }
 
 
-cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( cyclicAtime *from, cyclicAtime *to, const memoryStatus *separateStatus, bool *preemptiveLoaded )
+cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( chain &toFilter, const memoryStatus *separateStatus, bool *preemptiveLoaded )
 {
-    cyclicAtime *cur = from;
+    cyclicAtime *cur = toFilter.from;
     cyclicAtime *sepaStart = NULL;
     struct cyclicManagedMemory::chain separated = {NULL, NULL};
+
+    //First, insert an element at end to cope with all types (cyclic, noncyclic) at once:
+    cyclicAtime end;
+    cyclicAtime *after = toFilter.to->next;
+    cyclicAtime *before = toFilter.from->prev;
+    bool cyclic = ( after == toFilter.from );
+    cyclicAtime *firstValid = NULL, *lastValid = NULL;
+    MUTUAL_CONNECT ( toFilter.to, ( &end ) );
 
     do {
         //determine whether to separate this chunk:
         bool separateThis = false;
-        for ( const memoryStatus *status = separateStatus; *status != MEM_ROOT; ++status ) {
-            separateThis |= cur->chunk->status == *status;
+        for ( const memoryStatus *status = separateStatus; ( *status != MEM_ROOT ); ++status ) {
+            if ( cur->chunk->status == *status ) {
+                separateThis = true;
+                goto afterchecks;
+            }
         }
         if ( preemptiveLoaded ) {
-            separateThis |= ! ( cur->chunk->preemptiveLoaded ^ *preemptiveLoaded );
+            separateThis = ! ( cur->chunk->preemptiveLoaded ^ *preemptiveLoaded );
         }
-
+afterchecks:
         if ( separateThis ) { // we should separate this element
             if ( !sepaStart ) { // if its the first to separate, lets mark this as start
                 sepaStart = cur;
             }
 
         } else { // We should not separate this
+            if ( !firstValid ) {
+                firstValid = cur;
+            }
+            lastValid = cur;
             if ( sepaStart ) { //We had started separating something, so lets cut these out
                 cyclicAtime *newTo = cur->prev;
                 MUTUAL_CONNECT ( sepaStart->prev, cur );
@@ -254,7 +269,8 @@ cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( cyclicAtime *from,
             }
         }
         cur = cur->next;
-    } while ( cur != to );
+    } while ( cur != &end );
+
     //The cur==to element is by definition out of selection, thus we may close the separated area if it exists:
     if ( sepaStart ) { //We had started separating something, so lets cut these out
         cyclicAtime *newTo = cur->prev;
@@ -266,6 +282,14 @@ cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( cyclicAtime *from,
             MUTUAL_CONNECT ( separated.to, sepaStart );
         }
         separated.to = newTo;
+    }
+    toFilter = {firstValid, lastValid};
+    if ( lastValid ) {
+        MUTUAL_CONNECT ( lastValid, after );
+    } else {
+        if ( !cyclic ) {
+            MUTUAL_CONNECT ( before, after );
+        }
     }
     return separated;
 }
@@ -318,8 +342,9 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
         //Take out all chunks that we have swapped out:
         cyclicAtime *from = preemptiveStart;
         preemptiveStart = preemptiveStart->prev;
-        const memoryStatus filterMe[] = {MEM_SWAPPED, MEM_SWAPOUT, MEM_ROOT};//Mem_root terminates list.
-        struct chain separated = filterChain ( from, cur, filterMe ); // After this action, from->prev->next  to cur2 only holds preemtive stuff.
+        const memoryStatus filterMe[] = {MEM_SWAPOUT, MEM_SWAPPED, MEM_ROOT}; //Mem_root terminates list.
+        chain area = {from, cur};
+        struct chain separated = filterChain ( area, filterMe ); // After this action, from->prev->next  to cur2 only holds preemtive stuff.
         preemptiveStart = preemptiveStart->next;//Lets move again into area that only holds preemptives now.
         insertBefore ( preemptiveStart, separated );
         preemptiveStart = ( preemptiveStart == active ? NULL : preemptiveStart );
@@ -457,9 +482,13 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         unsigned int n = 0;
         global_bytesize selectedReadinVol2 = 0;
         preemtivelySelected = 0;
+        bool activeInList = false;
         do {
             if ( selectedReadinVol2 + readEl->chunk->size + memory_used <= memory_max && readEl->chunk->status == MEM_SWAPPED && ( selectedReadinVol2 == 0 || ( preemtivelySelected + readEl->chunk->size <= max_preemptive ) ) ) {
                 chunks[n++] = readEl->chunk;
+                if ( readEl == active ) {
+                    activeInList = true;
+                }
                 if ( selectedReadinVol2 > 0 ) {
                     preemtivelySelected += readEl->chunk->size;
                 }
@@ -487,88 +516,35 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 
 
         VERBOSEPRINT ( "Before reordering" );
-        cyclicAtime *cleanSince2 = endSwapin;
-        //Check if we have additional preemptives to place correctly
-        cyclicAtime *curel = endSwapin;
-        if ( numberSelected > 1 ) {
-            //Now we're right after active. We need to place the preemptive ones at back as if we do not,
-            //The most recently loaded preemptives would be swapped out first, which would not be good.
-            //Thus, let us search forewards until we are at the border of the preemptive area:
-
-#ifdef VERYVERBOSE
-            printf ( "endSwapin is at %lu, curel at %lu , curelprev %lu \n", endSwapin->chunk->id, curel->chunk->id, curel->prev->chunk->id );
-#endif
-            //Now, lets do this rather stupidly:
-            unsigned int max = memChunks.size();
-            unsigned int noen = 0;
-            while ( curel->chunk != chunks[numberSelected - 1] && noen++ < max ) { // As long as we've not placed the last element we've swapped in
-#ifdef VERYVERBOSE
-                if ( memChunks.size() > min_elements ) {
-                    printCycle();
-                }
-                printf ( "curel->prev = %lu\n, vs %lu ", curel->prev->chunk->id, chunks[numberSelected - 1]->id );
-#endif
-                if ( curel->prev->chunk->preemptiveLoaded ) { // Next one is preemptive...
-                    if ( curel != endSwapin ) { //...and we have elements in between
-                        cyclicAtime *startMove = curel->prev;
-                        cyclicAtime *endMove = curel->prev;
-
-                        while ( startMove->prev->chunk->preemptiveLoaded ) { // let us search until the last consecutive element which is preemptive
-                            startMove = startMove->prev;
-                        }
-#ifdef VERYVERBOSE
-                        printf ( "startMove = %lu , EndMove = %lu , endSwapin = %lu \n", startMove->chunk->id, endMove->chunk->id, endSwapin->chunk->id );
-#endif
-
-                        curel = startMove->prev; // after the action, we will further investigate from here on.
-                        cyclicAtime *beforeInsert = endSwapin->prev;
-                        MUTUAL_CONNECT ( startMove->prev, endMove->next ); // Cuts out elements [startMove,Endmove]
-                        MUTUAL_CONNECT ( beforeInsert, startMove ); //These two insert elements at back of preemptives
-                        MUTUAL_CONNECT ( endMove, endSwapin );
-                        endSwapin = startMove; // And the end of preemptives is now at startMove.
-                        if ( startMove->chunk == chunks[numberSelected - 1] ) {
-                            break;
-                        }
-                    }
-
-                    else { //...and its anyways where we sit at
-                        endSwapin = endSwapin->prev;
-                        curel = curel->prev;
-                    }
-
-                } else {
-                    curel = curel->prev;
-                }
-
-            }
-
-            preemptiveBytes += selectedReadinVol - actual_obj_size;
+        preemptiveBytes += selectedReadinVol - actual_obj_size;
+        cyclicAtime *after = endSwapin->next;
+        if ( after == readEl ) {
+            after = NULL;    //mark if were cyclic.
         }
+        if ( readEl == oldBorder ) {
+            readEl = readEl->next;
+        }
+        chain toFilter = {readEl, endSwapin};
 
-        VERBOSEPRINT ( "Before active first" );
-        curel = endSwapin;
-        endSwapin = cleanSince2; //Now, everything is hanging before cleanSince2, and curel is the last preemtive element.
-        //We need to insert the first element (which we had to swap in) making it the new active:
-        if ( endSwapin != active->prev ) { //If we're not anyways correctly placed
-            cyclicAtime *beforeIC = curel->prev;
-            cyclicAtime *afterIC = endSwapin->next;
-            cyclicAtime *beforeActive = active->prev;
-#ifdef VERYVERBOSE
-            printf ( "beforeIC = %lu , afterIC = %lu , afterActive = %lu \n", beforeIC->chunk->id, afterIC->chunk->id, beforeActive->chunk->id );
-#endif
-            MUTUAL_CONNECT ( beforeIC, afterIC );
-            MUTUAL_CONNECT ( beforeActive, curel );
-            MUTUAL_CONNECT ( endSwapin, active );
-            if ( !preemptiveStart ) {
-                preemptiveStart = beforeActive->next;
-            }
+        const memoryStatus justSwappedin[] = {MEM_SWAPIN, MEM_ALLOCATED, MEM_ALLOCATED_INUSE_READ, MEM_ALLOCATED_INUSE_WRITE, MEM_ROOT};
+        chain filtered = filterChain ( toFilter, justSwappedin );
+        if ( activeInList ) {
+            active = ( after == NULL ? filtered.from : after );
+        }
+        if ( toFilter.from ) { // we still have elements in chain that have not been just swapped in.
+            insertBefore ( active, filtered );
         } else {
-            if ( !preemptiveStart ) {
-                preemptiveStart = curel;
+            if ( !after ) { // we have just filtered in all we need.
+                counterActive = readEl;
+                active = readEl;
+                MUTUAL_CONNECT ( filtered.to, filtered.from );
+            } else {
+                insertBefore ( active, filtered );
             }
         }
-
-
+        if ( !preemptiveStart ) {
+            preemptiveStart = filtered.from;
+        }
         rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         touch ( chunk );
         if ( counterActive->chunk->status == MEM_SWAPPED ) {
@@ -774,6 +750,7 @@ bool cyclicManagedMemory::checkCycle() const
 
     if ( memerror ) {
         return false;
+
     } else {
         return true;
     }
@@ -844,6 +821,26 @@ void cyclicManagedMemory::printCycle() const
     printf ( "\n" );
     printf ( "\n" );
 }
+
+void cyclicManagedMemory::printChain ( const char *name, const cyclicManagedMemory::chain mchain )
+{
+    cyclicAtime *cur = mchain.from;
+    if ( !cur ) {
+        printf ( "Chain named '%s' is empty", name );
+        return;
+    }
+
+    printf ( "Chain named '%s'", name );
+    while ( true ) {
+        printf ( "->%lu\t", cur->chunk->id );
+        if ( cur == mchain.to ) {
+            break;
+        }
+        cur = cur->next;
+    }
+    printf ( "\n" );
+}
+
 
 cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::global_bytesize min_size )
 {
@@ -923,7 +920,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
 #endif
     passed = 0;
     bool resetPreemptiveStart = false;
-    while ( unload_size2 < unload_size ) {
+    while ( unload_size2 < unload_size && passed != allelements ) {
         ++passed;
         if ( fromPos->chunk->status == MEM_ALLOCATED && ( unload_size2 + fromPos->chunk->size <= swap_free ) && ( fromPos->chunk->useCnt == 0 ) ) {
             if ( fromPos->chunk->size + unload_size2 <= swap_free ) {
@@ -944,13 +941,6 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
                 }
             }
         }
-        if ( passed == allelements ) {
-#ifdef VERYVERBOSE
-            printf ( "emergency, once round!\n" );
-#endif
-            break;
-        }
-
         fromPos = fromPos->prev;
     }
     global_bytesize real_unloaded = swap->swapOut ( unloadlist, unload );
@@ -967,90 +957,33 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
 #ifdef VERYVERBOSE
     printf ( "active = %d\n", active->chunk->id );
 #endif
-    fromPos = counterActive;
-    cyclicAtime *moveEnd, *cleanFrom;
-    moveEnd = NULL;
+    fromPos = fromPos->next;
+    chain possiblyContaminated = {fromPos, counterActive};
+    cyclicAtime *after = counterActive->next;
+    if ( after == fromPos ) { // We're cyclic
+        after = NULL;
+    }
+    memoryStatus notAllowed[] = {MEM_SWAPOUT, MEM_SWAPPED, MEM_ROOT};
+    counterActive = possiblyContaminated.from->prev;
+    chain filtered = filterChain ( possiblyContaminated, notAllowed );
+    //Possibilities:
+    if ( !possiblyContaminated.from ) { // filtered out all selected
+        if ( after ) { //However, there are still other elements around.
+            insertBefore ( after, filtered );
 
-    bool inSwappedSection = ( fromPos->chunk->status == MEM_SWAPPED || fromPos->chunk->status == MEM_SWAPOUT );
-    bool doRoundtrip = fromPos == countPos;
 
-
-    cleanFrom = counterActive->next;
-
-    while ( fromPos != countPos || doRoundtrip ) {
-#ifdef VERYVERBOSE
-        printf ( "at %d\t", fromPos->chunk->id );
-#endif
-        doRoundtrip = false;
-        if ( inSwappedSection ) {
-            if ( fromPos->chunk->status != MEM_SWAPPED && fromPos->chunk->status != MEM_SWAPOUT ) {
-                inSwappedSection = false;
-                if ( moveEnd ) {
-                    //  xxxxxxxxxxoooooooxxxxxxooooooo
-                    //  ------A--><--B--><-C--><--D
-                    // Change order from A-B-C-D to A-C-B-D
-
-                    cyclicAtime *endNonswap = fromPos; //A
-                    cyclicAtime *startIsoswap = fromPos->next; //B
-                    cyclicAtime *endIsoswap = moveEnd; //B
-                    cyclicAtime *startIsoNonswap = moveEnd->next;//C
-                    cyclicAtime *endIsoNonswap = cleanFrom->prev;//C
-                    cyclicAtime *startClean = cleanFrom;//D
-#ifdef VERYVERBOSE
-                    printf ( "----%d><%d-%d><%d-%d><%d---\n", endNonswap->chunk->id, startIsoswap->chunk->id, endIsoswap->chunk->id,
-                             startIsoNonswap->chunk->id, endIsoNonswap->chunk->id, startClean->chunk->id );
-#endif
-                    //A-C:
-                    MUTUAL_CONNECT ( endNonswap, startIsoNonswap );
-                    MUTUAL_CONNECT ( endIsoNonswap, startIsoswap );
-                    MUTUAL_CONNECT ( endIsoswap, startClean );
-                    cleanFrom = startIsoswap;
-                    moveEnd = NULL;
-
-                }
-            } else {
-                if ( !moveEnd ) {
-                    cleanFrom = fromPos;
-                }
-            }
-        } else {
-            if ( fromPos->chunk->status == MEM_SWAPPED || fromPos->chunk->status == MEM_SWAPOUT ) {
-                inSwappedSection = true;
-                if ( moveEnd == NULL ) {
-                    moveEnd = fromPos;
-                }
-            }
+        } else { //We're left with what we have
+            MUTUAL_CONNECT ( filtered.to, filtered.from );
+            counterActive = active;
         }
-        fromPos = fromPos->prev;
-    }
-#ifdef VERYVERBOSE
-    printf ( "After loop at %d\n", fromPos->chunk->id );
-#endif
-    if ( moveEnd ) {
 
-        //  xxxxxxxxxxoooooooxxxxxxooooooo
-        //  ------A--><--B--><-C--><--D
-        // Change order from A-B-C-D to A-C-B-D
-        cyclicAtime *endNonswap = fromPos; //A
-        cyclicAtime *startIsoswap = fromPos->next; //B
-        cyclicAtime *endIsoswap = moveEnd; //B
-        cyclicAtime *startIsoNonswap = moveEnd->next;//C
-        cyclicAtime *endIsoNonswap = cleanFrom->prev;//C
-        cyclicAtime *startClean = cleanFrom;//D
-#ifdef VERYVERBOSE
-        printf ( "LAST----%d><%d-%d><%d-%d><%d---\n", endNonswap->chunk->id, startIsoswap->chunk->id, endIsoswap->chunk->id,
-                 startIsoNonswap->chunk->id, endIsoNonswap->chunk->id, startClean->chunk->id );
-#endif
-        //A-C:
-        MUTUAL_CONNECT ( endNonswap, startIsoNonswap );
-        MUTUAL_CONNECT ( endIsoNonswap, startIsoswap );
-        MUTUAL_CONNECT ( endIsoswap, startClean );
-        cleanFrom = startIsoswap;
-        moveEnd = NULL;
-    }
-    counterActive = cleanFrom->prev;
-    while ( ! ( counterActive->chunk->status & MEM_ALLOCATED || counterActive->chunk->status == MEM_SWAPIN || counterActive == active ) ) {
-        counterActive = counterActive->prev;
+    } else {
+        //We will have filtered out some of them.
+        if ( !after ) {
+            after = possiblyContaminated.to->next;
+        }
+        insertBefore ( after, filtered );
+        counterActive = filtered.from->prev;
     }
     if ( ! ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) ) { // We may have swapped out the first allocated element
         active = counterActive;
