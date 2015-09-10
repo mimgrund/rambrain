@@ -228,6 +228,7 @@ cyclicManagedMemory::chain cyclicManagedMemory::filterChain ( chain &toFilter, c
     bool cyclic = ( after == toFilter.from );
     cyclicAtime *firstValid = NULL, *lastValid = NULL;
     MUTUAL_CONNECT ( toFilter.to, ( &end ) );
+    MUTUAL_CONNECT ( ( &end ), toFilter.from );
 
     do {
         //determine whether to separate this chunk:
@@ -285,7 +286,12 @@ afterchecks:
     }
     toFilter = {firstValid, lastValid};
     if ( lastValid ) {
-        MUTUAL_CONNECT ( lastValid, after );
+        if ( !cyclic ) {
+            MUTUAL_CONNECT ( before, firstValid );
+            MUTUAL_CONNECT ( lastValid, after );
+        } else {
+            MUTUAL_CONNECT ( lastValid, firstValid );
+        }
     } else {
         if ( !cyclic ) {
             MUTUAL_CONNECT ( before, after );
@@ -518,6 +524,9 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 
         VERBOSEPRINT ( "Before reordering" );
         preemptiveBytes += selectedReadinVol - actual_obj_size;
+        if ( readEl == oldBorder ) {
+            readEl = readEl->next;
+        }
 
         if ( activeInList ) {
             endSwapin = endSwapin->prev;
@@ -527,25 +536,31 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         if ( after == readEl ) {
             after = NULL;    //mark if were cyclic.
         }
-        if ( readEl == oldBorder ) {
-            readEl = readEl->next;
-        }
         chain toFilter = {readEl, endSwapin};
 
         const memoryStatus justSwappedin[] = {MEM_SWAPIN, MEM_ALLOCATED, MEM_ALLOCATED_INUSE_READ, MEM_ALLOCATED_INUSE_WRITE, MEM_ROOT};
         chain filtered = filterChain ( toFilter, justSwappedin );
         if ( activeInList ) {
-            active = ( after == NULL ? filtered.from : after );
+            active = ( after == NULL ? filtered.to : after );
         }
         if ( toFilter.from ) { // we still have elements in chain that have not been just swapped in.
-            insertBefore ( active, filtered );
+            if ( after ) {
+                insertBefore ( active, filtered );
+            } else {
+                insertBefore ( toFilter.to->next, filtered );
+            }
         } else {
             if ( !after ) { // we have just filtered in all we need.
                 counterActive = readEl;
                 active = readEl;
                 MUTUAL_CONNECT ( filtered.to, filtered.from );
             } else {
-                insertBefore ( active, filtered );
+                if ( activeInList ) {
+                    active = after;
+                    insertBefore ( active, filtered );
+                } else {
+                    insertBefore ( active, filtered );
+                }
             }
         }
         if ( !preemptiveStart ) {
