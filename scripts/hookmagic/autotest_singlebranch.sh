@@ -56,11 +56,12 @@ good=0
         cmake .. $opts >> "${outname}" 2>&1
         echo -e "\n\n" >> "$outname"
 
-        make -j 8 >> "${outname}" 2>&1
+        make -j $processes >> "${outname}" 2>&1
 
         fail=$?
         if [ $fail -ne 0 ]; then
             echo "Make exited with error code ${fail}, ATTENTION NEEDED!"
+            >&2 grep FAILED ${outname}
         else
             echo "Running tests..."
             echo -e "\n\n" >> "$outname"
@@ -69,6 +70,7 @@ good=0
             fail=$?
             if [ $fail -ne 0 ]; then
                 echo "${fail} tests failed in this run, ATTENTION NEEDED!"
+                >&2 grep FAILED ${outname}
             else
 		echo "test succeeded."
 		((good++))

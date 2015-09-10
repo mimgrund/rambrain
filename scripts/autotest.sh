@@ -76,6 +76,7 @@ EOF
             fail=$?
             if [ $fail -ne 0 ]; then
                 >&2 echo "${fail} tests failed in this run, ATTENTION NEEDED!"
+                >&2 grep FAILED ${outname}
             fi
         fi
     done
