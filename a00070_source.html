@@ -2275,6 +2275,125 @@ $(document).ready(function(){initNavTree('a00070_source.html','');});
 <div class="line"><a name="l02166"></a><span class="lineno"> 2166</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:($6+$7+$8+$9) with lines lt 2 lc 6 title \&quot;Total *\&quot;&quot;</span>;</div>
 <div class="line"><a name="l02167"></a><span class="lineno"> 2167</span>&#160;    <span class="keywordflow">return</span> ss.str();</div>
 <div class="line"><a name="l02168"></a><span class="lineno"> 2168</span>&#160;}</div>
+<div class="line"><a name="l02169"></a><span class="lineno"> 2169</span>&#160;</div>
+<div class="line"><a name="l02170"></a><span class="lineno"> 2170</span>&#160;</div>
+<div class="line"><a name="l02171"></a><span class="lineno"> 2171</span>&#160;<a class="code" href="a00070.html#a26ae4c36275297208e567385c2f52d9c">TESTSTATICS</a> ( measureConstSpeedupTest, <span class="stringliteral">&quot;Measures runtime of const versus non-const usage of swapped data without preemptive&quot;</span> );</div>
+<div class="line"><a name="l02172"></a><span class="lineno"> 2172</span>&#160;</div>
+<div class="line"><a name="l02173"></a><span class="lineno"> 2173</span>&#160;measureConstSpeedupTest::measureConstSpeedupTest() : <a class="code" href="a00022.html">performanceTest</a>&lt;int, int&gt; ( <span class="stringliteral">&quot;MeasureConstSpeedup&quot;</span> )</div>
+<div class="line"><a name="l02174"></a><span class="lineno"> 2174</span>&#160;{</div>
+<div class="line"><a name="l02175"></a><span class="lineno"> 2175</span>&#160;    TESTPARAM ( 1, 1024, 1024000, 20, <span class="keyword">true</span>, 102400, <span class="stringliteral">&quot;Byte size of data block&quot;</span> );</div>
+<div class="line"><a name="l02176"></a><span class="lineno"> 2176</span>&#160;    TESTPARAM ( 2, 10240, 10240, 1, <span class="keyword">true</span>, 10240, <span class="stringliteral">&quot;Size of memory per data block&quot;</span> );</div>
+<div class="line"><a name="l02177"></a><span class="lineno"> 2177</span>&#160;    parameter2.enabled = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l02178"></a><span class="lineno"> 2178</span>&#160;    plotParts = vector&lt;string&gt; ( {<span class="stringliteral">&quot;Non-Const Swap In&quot;</span>, <span class="stringliteral">&quot;Non-Const Swap out&quot;</span>, <span class="stringliteral">&quot;Const Swap In&quot;</span>, <span class="stringliteral">&quot;Const Swap out&quot;</span>} );</div>
+<div class="line"><a name="l02179"></a><span class="lineno"> 2179</span>&#160;    plotTimingStats = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l02180"></a><span class="lineno"> 2180</span>&#160;}</div>
+<div class="line"><a name="l02181"></a><span class="lineno"> 2181</span>&#160;</div>
+<div class="line"><a name="l02182"></a><span class="lineno"> 2182</span>&#160;<span class="keywordtype">void</span> measureConstSpeedupTest::actualTestMethod ( <a class="code" href="a00030.html">tester</a> &amp;test, <span class="keywordtype">int</span> bytesize , <span class="keywordtype">int</span> memory )</div>
+<div class="line"><a name="l02183"></a><span class="lineno"> 2183</span>&#160;{</div>
+<div class="line"><a name="l02184"></a><span class="lineno"> 2184</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> nBlocks = 1024;</div>
+<div class="line"><a name="l02185"></a><span class="lineno"> 2185</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> nDummyBlocks = memory * 1.5;</div>
+<div class="line"><a name="l02186"></a><span class="lineno"> 2186</span>&#160;    <a class="code" href="a00092.html#ad02508d72047bc55a38eda857e4816c1">rambrainglobals::config</a>.<a class="code" href="a00025.html#a55f24943ba147e71eee649812bec31e3">resizeMemory</a> ( nBlocks * memory );</div>
+<div class="line"><a name="l02187"></a><span class="lineno"> 2187</span>&#160;    <a class="code" href="a00092.html#ad02508d72047bc55a38eda857e4816c1">rambrainglobals::config</a>.<a class="code" href="a00025.html#a33b6e5764cb838b06e0cb624f47bdf67">resizeSwap</a> ( 2 * nBlocks * bytesize );</div>
+<div class="line"><a name="l02188"></a><span class="lineno"> 2188</span>&#160;</div>
+<div class="line"><a name="l02189"></a><span class="lineno"> 2189</span>&#160;    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )-&gt;setPreemptiveLoading ( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l02190"></a><span class="lineno"> 2190</span>&#160;    ( ( cyclicManagedMemory * ) managedMemory::defaultManager )-&gt;setPreemptiveUnloading ( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l02191"></a><span class="lineno"> 2191</span>&#160;</div>
+<div class="line"><a name="l02192"></a><span class="lineno"> 2192</span>&#160;    <span class="comment">// Real data to be fetched later</span></div>
+<div class="line"><a name="l02193"></a><span class="lineno"> 2193</span>&#160;    managedPtr&lt;char&gt; *realData[nBlocks];</div>
+<div class="line"><a name="l02194"></a><span class="lineno"> 2194</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; nBlocks; ++n ) {</div>
+<div class="line"><a name="l02195"></a><span class="lineno"> 2195</span>&#160;        realData[n] = <span class="keyword">new</span> managedPtr&lt;char&gt; ( bytesize );</div>
+<div class="line"><a name="l02196"></a><span class="lineno"> 2196</span>&#160;        managedPtr&lt;char&gt; *data ( realData[n] );</div>
+<div class="line"><a name="l02197"></a><span class="lineno"> 2197</span>&#160;        ADHERETOLOC ( <span class="keywordtype">char</span>, data, loc );</div>
+<div class="line"><a name="l02198"></a><span class="lineno"> 2198</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; bytesize; ++i ) {</div>
+<div class="line"><a name="l02199"></a><span class="lineno"> 2199</span>&#160;            loc[i] = i + n * bytesize;</div>
+<div class="line"><a name="l02200"></a><span class="lineno"> 2200</span>&#160;        }</div>
+<div class="line"><a name="l02201"></a><span class="lineno"> 2201</span>&#160;    }</div>
+<div class="line"><a name="l02202"></a><span class="lineno"> 2202</span>&#160;</div>
+<div class="line"><a name="l02203"></a><span class="lineno"> 2203</span>&#160;    <span class="comment">// Dummy data in order to swap out real data</span></div>
+<div class="line"><a name="l02204"></a><span class="lineno"> 2204</span>&#160;    managedPtr&lt;char&gt; *dummyData[nDummyBlocks];</div>
+<div class="line"><a name="l02205"></a><span class="lineno"> 2205</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; nDummyBlocks; ++n ) {</div>
+<div class="line"><a name="l02206"></a><span class="lineno"> 2206</span>&#160;        dummyData[n] = <span class="keyword">new</span> managedPtr&lt;char&gt; ( bytesize );</div>
+<div class="line"><a name="l02207"></a><span class="lineno"> 2207</span>&#160;        managedPtr&lt;char&gt; *data ( dummyData[n] );</div>
+<div class="line"><a name="l02208"></a><span class="lineno"> 2208</span>&#160;        ADHERETOLOC ( <span class="keywordtype">char</span>, data, loc );</div>
+<div class="line"><a name="l02209"></a><span class="lineno"> 2209</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; bytesize; ++i ) {</div>
+<div class="line"><a name="l02210"></a><span class="lineno"> 2210</span>&#160;            loc[i] = n * nDummyBlocks + i;</div>
+<div class="line"><a name="l02211"></a><span class="lineno"> 2211</span>&#160;        }</div>
+<div class="line"><a name="l02212"></a><span class="lineno"> 2212</span>&#160;    }</div>
+<div class="line"><a name="l02213"></a><span class="lineno"> 2213</span>&#160;</div>
+<div class="line"><a name="l02214"></a><span class="lineno"> 2214</span>&#160;    <span class="comment">// Swap in data non-const</span></div>
+<div class="line"><a name="l02215"></a><span class="lineno"> 2215</span>&#160;    test.<a class="code" href="a00030.html#a01d742f1f0fe5d55766cb3c256b999d7">addTimeMeasurement</a>();</div>
+<div class="line"><a name="l02216"></a><span class="lineno"> 2216</span>&#160;    <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> sum = 0ull;</div>
+<div class="line"><a name="l02217"></a><span class="lineno"> 2217</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; nBlocks; ++n ) {</div>
+<div class="line"><a name="l02218"></a><span class="lineno"> 2218</span>&#160;        managedPtr&lt;char&gt; *data ( realData[n] );</div>
+<div class="line"><a name="l02219"></a><span class="lineno"> 2219</span>&#160;        ADHERETOLOC ( <span class="keywordtype">char</span>, data, loc );</div>
+<div class="line"><a name="l02220"></a><span class="lineno"> 2220</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; bytesize; ++i ) {</div>
+<div class="line"><a name="l02221"></a><span class="lineno"> 2221</span>&#160;            sum += loc[i];</div>
+<div class="line"><a name="l02222"></a><span class="lineno"> 2222</span>&#160;        }</div>
+<div class="line"><a name="l02223"></a><span class="lineno"> 2223</span>&#160;    }</div>
+<div class="line"><a name="l02224"></a><span class="lineno"> 2224</span>&#160;</div>
+<div class="line"><a name="l02225"></a><span class="lineno"> 2225</span>&#160;    <span class="comment">// Swap out data non-const</span></div>
+<div class="line"><a name="l02226"></a><span class="lineno"> 2226</span>&#160;    test.<a class="code" href="a00030.html#a01d742f1f0fe5d55766cb3c256b999d7">addTimeMeasurement</a>();</div>
+<div class="line"><a name="l02227"></a><span class="lineno"> 2227</span>&#160;    sum = 0ull;</div>
+<div class="line"><a name="l02228"></a><span class="lineno"> 2228</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; nDummyBlocks; ++n ) {</div>
+<div class="line"><a name="l02229"></a><span class="lineno"> 2229</span>&#160;        managedPtr&lt;char&gt; *data ( dummyData[n] );</div>
+<div class="line"><a name="l02230"></a><span class="lineno"> 2230</span>&#160;        ADHERETOLOC ( <span class="keywordtype">char</span>, data, loc );</div>
+<div class="line"><a name="l02231"></a><span class="lineno"> 2231</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; bytesize; ++i ) {</div>
+<div class="line"><a name="l02232"></a><span class="lineno"> 2232</span>&#160;            sum += loc[i];</div>
+<div class="line"><a name="l02233"></a><span class="lineno"> 2233</span>&#160;        }</div>
+<div class="line"><a name="l02234"></a><span class="lineno"> 2234</span>&#160;    }</div>
+<div class="line"><a name="l02235"></a><span class="lineno"> 2235</span>&#160;</div>
+<div class="line"><a name="l02236"></a><span class="lineno"> 2236</span>&#160;    <span class="comment">// Swap in data const</span></div>
+<div class="line"><a name="l02237"></a><span class="lineno"> 2237</span>&#160;    test.<a class="code" href="a00030.html#a01d742f1f0fe5d55766cb3c256b999d7">addTimeMeasurement</a>();</div>
+<div class="line"><a name="l02238"></a><span class="lineno"> 2238</span>&#160;    sum = 0ull;</div>
+<div class="line"><a name="l02239"></a><span class="lineno"> 2239</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; nBlocks; ++n ) {</div>
+<div class="line"><a name="l02240"></a><span class="lineno"> 2240</span>&#160;        managedPtr&lt;char&gt; *data ( realData[n] );</div>
+<div class="line"><a name="l02241"></a><span class="lineno"> 2241</span>&#160;        ADHERETOLOCCONST ( <span class="keywordtype">char</span>, data, loc );</div>
+<div class="line"><a name="l02242"></a><span class="lineno"> 2242</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; bytesize; ++i ) {</div>
+<div class="line"><a name="l02243"></a><span class="lineno"> 2243</span>&#160;            sum += loc[i];</div>
+<div class="line"><a name="l02244"></a><span class="lineno"> 2244</span>&#160;        }</div>
+<div class="line"><a name="l02245"></a><span class="lineno"> 2245</span>&#160;    }</div>
+<div class="line"><a name="l02246"></a><span class="lineno"> 2246</span>&#160;</div>
+<div class="line"><a name="l02247"></a><span class="lineno"> 2247</span>&#160;    <span class="comment">// Swap out data const</span></div>
+<div class="line"><a name="l02248"></a><span class="lineno"> 2248</span>&#160;    test.<a class="code" href="a00030.html#a01d742f1f0fe5d55766cb3c256b999d7">addTimeMeasurement</a>();</div>
+<div class="line"><a name="l02249"></a><span class="lineno"> 2249</span>&#160;    sum = 0ull;</div>
+<div class="line"><a name="l02250"></a><span class="lineno"> 2250</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; nDummyBlocks; ++n ) {</div>
+<div class="line"><a name="l02251"></a><span class="lineno"> 2251</span>&#160;        managedPtr&lt;char&gt; *data ( dummyData[n] );</div>
+<div class="line"><a name="l02252"></a><span class="lineno"> 2252</span>&#160;        ADHERETOLOC ( <span class="keywordtype">char</span>, data, loc );</div>
+<div class="line"><a name="l02253"></a><span class="lineno"> 2253</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; bytesize; ++i ) {</div>
+<div class="line"><a name="l02254"></a><span class="lineno"> 2254</span>&#160;            sum += loc[i];</div>
+<div class="line"><a name="l02255"></a><span class="lineno"> 2255</span>&#160;        }</div>
+<div class="line"><a name="l02256"></a><span class="lineno"> 2256</span>&#160;    }</div>
+<div class="line"><a name="l02257"></a><span class="lineno"> 2257</span>&#160;    test.<a class="code" href="a00030.html#a01d742f1f0fe5d55766cb3c256b999d7">addTimeMeasurement</a>();</div>
+<div class="line"><a name="l02258"></a><span class="lineno"> 2258</span>&#160;</div>
+<div class="line"><a name="l02259"></a><span class="lineno"> 2259</span>&#160;<span class="preprocessor">#ifdef PTEST_CHECKS</span></div>
+<div class="line"><a name="l02260"></a><span class="lineno"> 2260</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; nBlocks; ++n ) {</div>
+<div class="line"><a name="l02261"></a><span class="lineno"> 2261</span>&#160;        ADHERETOLOC ( <span class="keywordtype">char</span>, realData[n], loc );</div>
+<div class="line"><a name="l02262"></a><span class="lineno"> 2262</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; bytesize; ++i ) {</div>
+<div class="line"><a name="l02263"></a><span class="lineno"> 2263</span>&#160;            <span class="keywordflow">if</span> ( loc[i] != i + n * bytesize ) {</div>
+<div class="line"><a name="l02264"></a><span class="lineno"> 2264</span>&#160;                errmsgf ( <span class="stringliteral">&quot;Failed check! %d %d %d&quot;</span>, n, i, loc[i] );</div>
+<div class="line"><a name="l02265"></a><span class="lineno"> 2265</span>&#160;            }</div>
+<div class="line"><a name="l02266"></a><span class="lineno"> 2266</span>&#160;        }</div>
+<div class="line"><a name="l02267"></a><span class="lineno"> 2267</span>&#160;    }</div>
+<div class="line"><a name="l02268"></a><span class="lineno"> 2268</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l02269"></a><span class="lineno"> 2269</span>&#160;</div>
+<div class="line"><a name="l02270"></a><span class="lineno"> 2270</span>&#160;</div>
+<div class="line"><a name="l02271"></a><span class="lineno"> 2271</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; nBlocks; ++n ) {</div>
+<div class="line"><a name="l02272"></a><span class="lineno"> 2272</span>&#160;        <span class="keyword">delete</span> realData[n];</div>
+<div class="line"><a name="l02273"></a><span class="lineno"> 2273</span>&#160;    }</div>
+<div class="line"><a name="l02274"></a><span class="lineno"> 2274</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> n = 0; n &lt; nDummyBlocks; ++n ) {</div>
+<div class="line"><a name="l02275"></a><span class="lineno"> 2275</span>&#160;        <span class="keyword">delete</span> dummyData[n];</div>
+<div class="line"><a name="l02276"></a><span class="lineno"> 2276</span>&#160;    }</div>
+<div class="line"><a name="l02277"></a><span class="lineno"> 2277</span>&#160;}</div>
+<div class="line"><a name="l02278"></a><span class="lineno"> 2278</span>&#160;</div>
+<div class="line"><a name="l02279"></a><span class="lineno"> 2279</span>&#160;<span class="keywordtype">string</span> measureConstSpeedupTest::generateMyGnuplotPlotPart ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;file , <span class="keywordtype">int</span> paramColumn )</div>
+<div class="line"><a name="l02280"></a><span class="lineno"> 2280</span>&#160;{</div>
+<div class="line"><a name="l02281"></a><span class="lineno"> 2281</span>&#160;    stringstream ss;</div>
+<div class="line"><a name="l02282"></a><span class="lineno"> 2282</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;plot &#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:3 with lines title \&quot;Non-Const Swap In\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l02283"></a><span class="lineno"> 2283</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:4 with lines title \&quot;Non-Const Swap Out\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l02284"></a><span class="lineno"> 2284</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:5 with lines title \&quot;Const Swap In\&quot;, \\&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l02285"></a><span class="lineno"> 2285</span>&#160;    ss &lt;&lt; <span class="stringliteral">&quot;&#39;&quot;</span> &lt;&lt; file &lt;&lt; <span class="stringliteral">&quot;&#39; using &quot;</span> &lt;&lt; paramColumn &lt;&lt; <span class="stringliteral">&quot;:($3+$4+$5) with lines title \&quot;Const Swap out\&quot;&quot;</span>;</div>
+<div class="line"><a name="l02286"></a><span class="lineno"> 2286</span>&#160;    <span class="keywordflow">return</span> ss.str();</div>
+<div class="line"><a name="l02287"></a><span class="lineno"> 2287</span>&#160;}</div>
 <div class="ttc" id="a00032_html_afc2046a28e4b318c3644aa2492cae56b"><div class="ttname"><a href="a00032.html#afc2046a28e4b318c3644aa2492cae56b">testParameterBase::deltaLog</a></div><div class="ttdeci">bool deltaLog</div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00066">performanceTestClasses.h:66</a></div></div>
 <div class="ttc" id="a00024_html"><div class="ttname"><a href="a00024.html">performanceTest&lt;&gt;</a></div><div class="ttdoc">Base class for all performance tests which itself does not contain any parameters. </div><div class="ttdef"><b>Definition:</b> <a href="a00071_source.html#l00143">performanceTestClasses.h:143</a></div></div>
 <div class="ttc" id="a00030_html_a67a7cd03f1356bb3e5c1cef32fded3e4"><div class="ttname"><a href="a00030.html#a67a7cd03f1356bb3e5c1cef32fded3e4">tester::addExternalTime</a></div><div class="ttdeci">void addExternalTime(std::chrono::duration&lt; double &gt;)</div><div class="ttdoc">Add a duration to the timing list. </div><div class="ttdef"><b>Definition:</b> <a href="a00080_source.html#l00045">tester.cpp:45</a></div></div>
@@ -2304,7 +2423,7 @@ $(document).ready(function(){initNavTree('a00070_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00070.html">performanceTestClasses.cpp</a></li>
-    <li class="footer">Generated on Thu Sep 10 2015 01:40:27 for rambrain by
+    <li class="footer">Generated on Fri Sep 11 2015 01:41:11 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

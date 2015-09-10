@@ -19,5 +19,6 @@ var a00071 =
     [ "TWOPARAMTEST", "a00071.html#a369f3619b3958e07bfd0e92c31d9b19f", null ],
     [ "TWOPARAMTEST", "a00071.html#a1fa05a65451ce4beadfe79f2ad6ec8f9", null ],
     [ "TWOPARAMTEST", "a00071.html#a0715fad62e359b618fa3b2c347ae95d1", null ],
-    [ "TWOPARAMTEST", "a00071.html#a0487402c9462101d58322eaf729423b6", null ]
+    [ "TWOPARAMTEST", "a00071.html#a0487402c9462101d58322eaf729423b6", null ],
+    [ "TWOPARAMTEST", "a00071.html#aafe34710d6998c468917ad6b2a8d50ac", null ]
 ];

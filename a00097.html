@@ -103,7 +103,9 @@ $(document).ready(function(){initNavTree('a00097.html','');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt><a class="anchor" id="_todo000001"></a>Member <a class="el" href="a00009.html#ae8cd02152e84886d3a9a933585f13483">rambrain::cyclicManagedMemory::swapOut</a>  (global_bytesize min_size)</dt>
+<dt><a class="anchor" id="_todo000001"></a>Member <a class="el" href="a00009.html#a6ce5a7e8f7fbc5a53bee42e18bf562c9">rambrain::cyclicManagedMemory::swapIn</a>  (<a class="el" href="a00017.html" title="manages all managed Chunks of raw memory ">managedMemoryChunk</a> &amp;chunk)</dt>
+<dd>in rare cases, these two lines are necessary as the readEl is also filtered. We should find out if we can leave this out somehow more elegant.  </dd>
+<dt><a class="anchor" id="_todo000002"></a>Member <a class="el" href="a00009.html#ae8cd02152e84886d3a9a933585f13483">rambrain::cyclicManagedMemory::swapOut</a>  (global_bytesize min_size)</dt>
 <dd>investigate if subtracting swapped out preemptive bytes is affecting performance ( too much preemptive action possible ). Naively testing, this is not the case. </dd>
 </dl>
 </div></div><!-- contents -->
@@ -111,7 +113,7 @@ $(document).ready(function(){initNavTree('a00097.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Sep 10 2015 01:40:27 for rambrain by
+    <li class="footer">Generated on Fri Sep 11 2015 01:41:11 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

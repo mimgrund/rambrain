@@ -45,6 +45,7 @@ var searchData=
   ['prepareuse',['prepareUse',['../a00016.html#aa4085ccf02a1a0d6790d700cccad4061',1,'rambrain::managedMemory::prepareUse()'],['../a00018.html#a84635bcc9865d9b638aeab5bac93e463',1,'rambrain::managedPtr::prepareUse()']]],
   ['prev',['prev',['../a00008.html#a6f410eb9297c3173ad123a2d646c15af',1,'rambrain::cyclicAtime']]],
   ['previousmanager',['previousManager',['../a00016.html#a77a644c7c289c46758f643fc8d024809',1,'rambrain::managedMemory']]],
+  ['printchain',['printChain',['../a00009.html#ad02e09cfa5df186887f997e9d4297560',1,'rambrain::cyclicManagedMemory']]],
   ['printcycle',['printCycle',['../a00009.html#a9b94ee22aa0fa75d1e191d7bdcc2fc61',1,'rambrain::cyclicManagedMemory']]],
   ['printmemusage',['printMemUsage',['../a00009.html#a07652d6606229354639a30e1057a4265',1,'rambrain::cyclicManagedMemory']]],
   ['printswapstats',['printSwapstats',['../a00016.html#a4147c7d36b38e4bea0c73b6f4609d477',1,'rambrain::managedMemory']]],
