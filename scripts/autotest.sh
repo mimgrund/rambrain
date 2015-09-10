@@ -62,7 +62,7 @@ EOF
         rm -rf *
         cmake .. $opts >> "${outname}" 2>&1
         echo -e "\n\n" >> "$outname"
-        make -j 8 >> "${outname}" 2>&1
+        make -j $processes >> "${outname}" 2>&1
 
         fail=$?
         if [ $fail -ne 0 ]; then
