@@ -67,6 +67,7 @@ EOF
         fail=$?
         if [ $fail -ne 0 ]; then
             >&2 echo "Make exited with error code ${fail}, ATTENTION NEEDED!"
+            >&2 grep FAILED ${outname}
         else
             echo "Running tests..."
             echo -e "\n\n" >> "$outname"
