@@ -445,5 +445,6 @@ TWOPARAMTEST ( matrixDoubleCopyOpenMPTest, int, int );
 TWOPARAMTEST ( measureThroughputTest, int, int );
 TWOPARAMTEST ( measurePreemptiveSpeedupTest, int, int );
 TWOPARAMTEST ( measureExplicitAsyncSpeedupTest, int, int );
+TWOPARAMTEST ( measureConstSpeedupTest, int, int );
 #endif // PERFORMANCETESTCLASSES_H
 
