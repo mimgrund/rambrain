@@ -314,7 +314,7 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
     unsigned int chunks = 0;
     bool consecutive = true;
     while ( cur != active && bytesselected < bytes ) {
-        if ( cur->chunk->size + bytesselected < swapleft && cur->chunk->status & MEM_ALLOCATED ) {
+        if ( cur->chunk->size + bytesselected < swapleft && cur->chunk->status & MEM_ALLOCATED && cur->chunk->useCnt == 0 ) {
             bytesselected += cur->chunk->size;
             ++chunks;
             cur->chunk->preemptiveLoaded = false;
@@ -331,7 +331,7 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
     managedMemoryChunk **cursw = chunklist;
     bytesselected = 0;
     while ( cur2 != cur && bytesselected < bytes ) {
-        if ( cur2->chunk->size + bytesselected < swapleft && cur2->chunk->status & MEM_ALLOCATED ) {
+        if ( cur2->chunk->size + bytesselected < swapleft && cur2->chunk->status & MEM_ALLOCATED && cur2->chunk->useCnt == 0 ) {
             *cursw = cur2->chunk;
             ++cursw;
             bytesselected += cur2->chunk->size;
