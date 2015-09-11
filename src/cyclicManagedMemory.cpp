@@ -489,6 +489,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         global_bytesize selectedReadinVol2 = 0;
         preemtivelySelected = 0;
         bool activeInList = false;
+
         do {
             if ( readEl == active ) {
                 activeInList = true;
@@ -529,9 +530,17 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             readEl = readEl->next;
         }
 
-        if ( activeInList ) { // Correct when active was also moved in action.
-            endSwapin = endSwapin->prev;
-
+        //one difficulty here is that active ptr marks our insertion point. However, it is not easy to track where active
+        //actually is sitting in, be it the filtered section, the 'good' section or outside the filtered area. Normally,
+        //it is just outside, however in rare circumstances, active is inside. We need to keep track of these cases without
+        //producing much overhead. The following seems to work now and we hope it captures all circumstances.
+        bool allElementsLoadedin = false;
+        if ( activeInList ) { // Correct when active was also moved in action. This will exclude cyclic things downstairs, as we have an element out of here, endSwapin.
+            if ( active == endSwapin ) {
+                active = active->next;
+            } else {
+                allElementsLoadedin = true;
+            }
         }
 
         cyclicAtime *after = endSwapin->next;
@@ -540,6 +549,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         }
 
         chain toFilter = {readEl, endSwapin};
+
         const memoryStatus justSwappedin[] = {MEM_SWAPIN, MEM_ALLOCATED, MEM_ALLOCATED_INUSE_READ, MEM_ALLOCATED_INUSE_WRITE, MEM_ROOT};
         chain filtered = filterChain ( toFilter, justSwappedin );
         if ( !preemptiveStart ) {
@@ -550,20 +560,19 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         }
         //Let us now reinsert:
         if ( after ) { // We are not cyclic
-            if ( activeInList ) {
-                active = readEl->next;
+            if ( allElementsLoadedin ) {
+                active = toFilter.from;
             }
             insertBefore ( active, filtered );
         } else { // We are cyclic
             counterActive = readEl;
             if ( toFilter.from ) {
-                insertBefore ( endSwapin->next, filtered );
+                insertBefore ( toFilter.from, filtered );
             } else {
                 MUTUAL_CONNECT ( filtered.to, filtered.from )
             }
 
         }
-
         rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         touch ( chunk );
         if ( counterActive->chunk->status == MEM_SWAPPED ) {
