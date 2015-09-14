@@ -2172,7 +2172,7 @@ TESTSTATICS ( measureConstSpeedupTest, "Measures runtime of const versus non-con
 
 measureConstSpeedupTest::measureConstSpeedupTest() : performanceTest<int> ( "MeasureConstSpeedup" )
 {
-    TESTPARAM ( 1, 1024, 1024000, 20, true, 102400, "Byte size of data block" );
+    TESTPARAM ( 1, 1024, 1024000, 20, true, 32400, "Byte size of data block" );
     plotParts = vector<string> ( {"Non-Const Swap In", "Non-Const Swap out", "Const Swap In", "Const Swap out"} );
     plotTimingStats = true;
 }
@@ -2280,9 +2280,9 @@ void measureConstSpeedupTest::actualTestMethod ( tester &test, int kbytesize )
 string measureConstSpeedupTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
 {
     stringstream ss;
-    ss << "plot '" << file << "' using " << paramColumn << ":3 with lines title \"Non-Const Swap In\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Non-Const Swap Out\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Const Swap In\", \\" << endl;
-    ss << "'" << file << "' using " << paramColumn << ":($3+$4+$5) with lines title \"Const Swap out\"";
+    ss << "plot '" << file << "' using " << paramColumn << ":2 with lines title \"Non-Const Swap In\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":3 with lines title \"Non-Const Swap Out\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Const Swap In\", \\" << endl;
+    ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Const Swap out\"";
     return ss.str();
 }
