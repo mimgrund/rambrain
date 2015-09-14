@@ -291,14 +291,21 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemor
      *          -look for read-in memory that can be overwritten
      *          -delete cached files and look again
      **/
-    std::map<global_offset, pageFileLocation *>::iterator it = free_space.begin();
+
     pageFileLocation *found = NULL;
-    do {
+    std::map<global_offset, pageFileLocation *>::iterator it;
+    if ( free_space.size() == 0 ) {
+        return NULL;
+    }
+    for ( it = free_space.begin(); it != free_space.end(); ++it ) {
+        if ( !it->second ) {
+            printf ( "Tuuuuut!\n" );
+        }
         if ( it->second->size >= size ) {
             found = it->second;
             break;
         }
-    } while ( ++it != free_space.end() );
+    }
     pageFileLocation *res = NULL;
     pageFileLocation *former = NULL;
     if ( found ) {
@@ -352,8 +359,15 @@ pageFileLocation *managedFileSwap::pfmalloc ( global_bytesize size, managedMemor
                 }
                 former = neu;
                 it = free_space.find ( nextFreeOffset );
+                if ( it == free_space.end() ) {
+                    neu->status = PAGE_END;
+                    break;
+                }
             };
-
+            if ( size != 0 ) {
+                pffree ( res );
+                return NULL;
+            }
         } else {
             throw memoryException ( "Out of swap space" );
 
