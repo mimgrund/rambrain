@@ -33,6 +33,7 @@
 #include <mm_malloc.h>
 #include <sys/statvfs.h>
 #include <iostream>
+#include <limits>
 #ifndef OpenMP_NOT_FOUND
 #include <omp.h>
 #endif
@@ -215,10 +216,16 @@ bool managedFileSwap::extendSwapByPolicy ( global_bytesize min_size )
         freeondisk = getFreeDiskSpace();
         while ( ( extendby < needed || extendby > freeondisk ) ) {
 
-            warnmsgf ( "I am out of swap.\n\t\
-                Can increase in steps of ~%luMB\n\t\
-                need at least %lu steps, possible steps until disk is full: %lu ", pageFileSize / mib, needed / pageFileSize, freeondisk / pageFileSize );
-            std::cin >> extendby;
+            warnmsgf ( "I am out of swap.\n\tI can increase in steps of ~%luMB\n\tWe need at least %lu steps, possible steps until disk is full: %lu \n\t please type in an integer number and press enter", pageFileSize / mib, needed / pageFileSize, freeondisk / pageFileSize );
+            do {
+                std::cin >> extendby;
+                if ( !std::cin.fail() ) {
+                    break;
+                }
+                errmsg ( "I don't feel like this being an integer." );
+                std::cin.clear();
+                std::cin.ignore ( std::numeric_limits<streamsize>::max(), '\n' );
+            } while ( true );
 
             //again check disk free space as this may have changed due to user interaction:
             freeondisk = getFreeDiskSpace();

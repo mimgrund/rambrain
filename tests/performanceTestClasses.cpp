@@ -2183,7 +2183,6 @@ void measureConstSpeedupTest::actualTestMethod ( tester &test, int kbytesize )
     const unsigned int nDummyBlocks = nBlocks;
 
     global_bytesize goodBlockSize = nBlocks * kbytesize;
-    global_bytesize badBlockSize = nDummyBlocks * kbytesize;
 
     rambrainglobals::config.resizeMemory ( goodBlockSize );
     rambrainglobals::config.resizeSwap ( 2.0 * goodBlockSize );
