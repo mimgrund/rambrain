@@ -5,6 +5,7 @@ var a00071 =
     [ "performanceTest", "a00022.html", null ],
     [ "performanceTest<>", "a00024.html", "a00024" ],
     [ "performanceTest< T, U...>", "a00023.html", "a00023" ],
+    [ "ONEPARAMTEST", "a00071.html#ad5a2738040da91b1f1e276de80a20c41", null ],
     [ "TWOPARAMTEST", "a00071.html#af5ca33e1ddc335f5e8438d775535b0d0", null ],
     [ "TWOPARAMTEST", "a00071.html#a5663d51d4b9c8c9988ff8cbd8780d018", null ],
     [ "TWOPARAMTEST", "a00071.html#afb5d773cfb5e11181afb7d9c6ffe69b6", null ],
@@ -19,6 +20,5 @@ var a00071 =
     [ "TWOPARAMTEST", "a00071.html#a369f3619b3958e07bfd0e92c31d9b19f", null ],
     [ "TWOPARAMTEST", "a00071.html#a1fa05a65451ce4beadfe79f2ad6ec8f9", null ],
     [ "TWOPARAMTEST", "a00071.html#a0715fad62e359b618fa3b2c347ae95d1", null ],
-    [ "TWOPARAMTEST", "a00071.html#a0487402c9462101d58322eaf729423b6", null ],
-    [ "TWOPARAMTEST", "a00071.html#aafe34710d6998c468917ad6b2a8d50ac", null ]
+    [ "TWOPARAMTEST", "a00071.html#a0487402c9462101d58322eaf729423b6", null ]
 ];
