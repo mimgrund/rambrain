@@ -2170,21 +2170,23 @@ string measureExplicitAsyncSpeedupTest::generateMyGnuplotPlotPart ( const string
 
 TESTSTATICS ( measureConstSpeedupTest, "Measures runtime of const versus non-const usage of swapped data without preemptive" );
 
-measureConstSpeedupTest::measureConstSpeedupTest() : performanceTest<int, int> ( "MeasureConstSpeedup" )
+measureConstSpeedupTest::measureConstSpeedupTest() : performanceTest<int> ( "MeasureConstSpeedup" )
 {
     TESTPARAM ( 1, 1024, 1024000, 20, true, 102400, "Byte size of data block" );
-    TESTPARAM ( 2, 10240, 10240, 1, true, 10240, "Size of memory per data block" );
-    parameter2.enabled = false;
     plotParts = vector<string> ( {"Non-Const Swap In", "Non-Const Swap out", "Const Swap In", "Const Swap out"} );
     plotTimingStats = true;
 }
 
-void measureConstSpeedupTest::actualTestMethod ( tester &test, int bytesize , int memory )
+void measureConstSpeedupTest::actualTestMethod ( tester &test, int kbytesize )
 {
     const unsigned int nBlocks = 1024;
-    const unsigned int nDummyBlocks = memory * 1.5;
-    rambrainglobals::config.resizeMemory ( nBlocks * memory );
-    rambrainglobals::config.resizeSwap ( 2 * nBlocks * bytesize );
+    const unsigned int nDummyBlocks = nBlocks;
+
+    global_bytesize goodBlockSize = nBlocks * kbytesize;
+    global_bytesize badBlockSize = nDummyBlocks * kbytesize;
+
+    rambrainglobals::config.resizeMemory ( goodBlockSize );
+    rambrainglobals::config.resizeSwap ( 2.0 * goodBlockSize );
 
     ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveLoading ( false );
     ( ( cyclicManagedMemory * ) managedMemory::defaultManager )->setPreemptiveUnloading ( false );
@@ -2192,21 +2194,21 @@ void measureConstSpeedupTest::actualTestMethod ( tester &test, int bytesize , in
     // Real data to be fetched later
     managedPtr<char> *realData[nBlocks];
     for ( unsigned int n = 0; n < nBlocks; ++n ) {
-        realData[n] = new managedPtr<char> ( bytesize );
+        realData[n] = new managedPtr<char> ( kbytesize );
         managedPtr<char> *data ( realData[n] );
         ADHERETOLOC ( char, data, loc );
-        for ( int i = 0; i < bytesize; ++i ) {
-            loc[i] = i + n * bytesize;
+        for ( int i = 0; i < kbytesize; ++i ) {
+            loc[i] = i + n * kbytesize;
         }
     }
 
     // Dummy data in order to swap out real data
     managedPtr<char> *dummyData[nDummyBlocks];
     for ( unsigned int n = 0; n < nDummyBlocks; ++n ) {
-        dummyData[n] = new managedPtr<char> ( bytesize );
+        dummyData[n] = new managedPtr<char> ( kbytesize );
         managedPtr<char> *data ( dummyData[n] );
         ADHERETOLOC ( char, data, loc );
-        for ( int i = 0; i < bytesize; ++i ) {
+        for ( int i = 0; i < kbytesize; ++i ) {
             loc[i] = n * nDummyBlocks + i;
         }
     }
@@ -2217,7 +2219,7 @@ void measureConstSpeedupTest::actualTestMethod ( tester &test, int bytesize , in
     for ( unsigned int n = 0; n < nBlocks; ++n ) {
         managedPtr<char> *data ( realData[n] );
         ADHERETOLOC ( char, data, loc );
-        for ( int i = 0; i < bytesize; ++i ) {
+        for ( int i = 0; i < kbytesize; ++i ) {
             sum += loc[i];
         }
     }
@@ -2228,7 +2230,7 @@ void measureConstSpeedupTest::actualTestMethod ( tester &test, int bytesize , in
     for ( unsigned int n = 0; n < nDummyBlocks; ++n ) {
         managedPtr<char> *data ( dummyData[n] );
         ADHERETOLOC ( char, data, loc );
-        for ( int i = 0; i < bytesize; ++i ) {
+        for ( int i = 0; i < kbytesize; ++i ) {
             sum += loc[i];
         }
     }
@@ -2239,7 +2241,7 @@ void measureConstSpeedupTest::actualTestMethod ( tester &test, int bytesize , in
     for ( unsigned int n = 0; n < nBlocks; ++n ) {
         managedPtr<char> *data ( realData[n] );
         ADHERETOLOCCONST ( char, data, loc );
-        for ( int i = 0; i < bytesize; ++i ) {
+        for ( int i = 0; i < kbytesize; ++i ) {
             sum += loc[i];
         }
     }
@@ -2250,7 +2252,7 @@ void measureConstSpeedupTest::actualTestMethod ( tester &test, int bytesize , in
     for ( unsigned int n = 0; n < nDummyBlocks; ++n ) {
         managedPtr<char> *data ( dummyData[n] );
         ADHERETOLOC ( char, data, loc );
-        for ( int i = 0; i < bytesize; ++i ) {
+        for ( int i = 0; i < kbytesize; ++i ) {
             sum += loc[i];
         }
     }
