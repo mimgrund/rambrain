@@ -563,7 +563,12 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             if ( allElementsLoadedin ) {
                 active = toFilter.from;
             }
-            insertBefore ( active, filtered );
+            if ( active ) {
+                insertBefore ( active, filtered );
+            } else {
+                active = after;
+                insertBefore ( after, filtered );
+            }
         } else { // We are cyclic
             counterActive = readEl;
             if ( toFilter.from ) {
