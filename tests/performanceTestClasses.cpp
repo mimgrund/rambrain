@@ -2172,7 +2172,7 @@ TESTSTATICS ( measureConstSpeedupTest, "Measures runtime of const versus non-con
 
 measureConstSpeedupTest::measureConstSpeedupTest() : performanceTest<int> ( "MeasureConstSpeedup" )
 {
-    TESTPARAM ( 1, 1024, 1024000, 20, true, 32400, "Byte size of data block" );
+    TESTPARAM ( 1, 1024, 10240, 20, true, 324, "Byte size of data block" );
     plotParts = vector<string> ( {"Non-Const Swap In", "Non-Const Swap out", "Const Swap In", "Const Swap out"} );
     plotTimingStats = true;
 }
