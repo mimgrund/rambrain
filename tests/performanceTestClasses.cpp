@@ -1871,7 +1871,7 @@ TESTSTATICS ( measurePreemptiveSpeedupTest, "Measures preemptive vs non preempti
 
 measurePreemptiveSpeedupTest::measurePreemptiveSpeedupTest() : performanceTest<int, int> ( "MeasurePreemptiveSpeedup" )
 {
-    TESTPARAM ( 1, 1024, 1024000, 20, true, 102400, "Byte size per used chunk" );
+    TESTPARAM ( 1, 1024, 1024000, 20, true, 10240, "Byte size per used chunk" );
     TESTPARAM ( 2, 1, 200, 20, true, 100, "percentage of array that will be written to" );
     plotParts = vector<string> ( {"Set Use", "Prepare", "Calculation", \
                                   "Set Use *", "Prepare *", "Calculation *"
@@ -2017,7 +2017,7 @@ TESTSTATICS ( measureExplicitAsyncSpeedupTest, "Measures runtime of preemptive v
 
 measureExplicitAsyncSpeedupTest::measureExplicitAsyncSpeedupTest() : performanceTest<int, int> ( "MeasureExplicitAsyncSpeedup" )
 {
-    TESTPARAM ( 1, 1024, 1024000, 20, true, 102400, "Byte size per used chunk" );
+    TESTPARAM ( 1, 1024, 1024000, 20, true, 10240, "Byte size per used chunk" );
     TESTPARAM ( 2, 1, 200, 20, true, 100, "percentage of array that will be written to" );
     plotParts = vector<string> ( {"Set Use", "Prepare", "Calculation", "Deletion", \
                                   "Set Use *", "Prepare *", "Calculation *", "Deletion *"
