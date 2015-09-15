@@ -688,6 +688,9 @@ void managedMemory::sigswapstats ( int )
 #endif
     defaultManager->swap_out_bytes_last = defaultManager->swap_out_bytes;
     defaultManager->swap_in_bytes_last = defaultManager->swap_in_bytes;
+#ifdef LOGSTATS
+    defaultManager->swap_hits = defaultManager->swap_misses = 1;
+#endif
 }
 double managedMemory::getHitsOverMisses()
 {
