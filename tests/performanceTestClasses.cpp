@@ -389,37 +389,29 @@ void performanceTest<>::plotTimingInfos ( ofstream &gnutemp, const string &outna
 
     gnutemp << "plot ";
     int c = 1;
-    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
+    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s ) {
         int mrep = m * repetitions;
         gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:2 lt 1";
         if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
-        gnutemp << " lc " << c << " title \"" << plotParts[m] << ": Swapped out\", \\" << endl;
-    }
-    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
-        int mrep = m * repetitions;
+        gnutemp << " lc " << c++ << " title \"" << "Swapped out: " << plotParts[m] << "\", \\" << endl;
+
         gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:3 lt 1";
         if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
-        gnutemp << " lc " << c << " title \"" << plotParts[m] << ": Swapped in\", \\" << endl;
-    }
-    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
-        int mrep = m * repetitions;
+        gnutemp << " lc " << c++ << " title \"" << "Swapped in: " << plotParts[m] << "\", \\" << endl;
         gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:4 lt 2";
         if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
-        gnutemp << " lc " << c << " title \"" << plotParts[m] << ": Main Memory\", \\" << endl;
-    }
-    for ( unsigned int m = 0, s = 2; m < measurements; ++m, ++s, ++c ) {
-        int mrep = m * repetitions;
+        gnutemp << " lc " << c++ << " title \"" << "Main memory: " << plotParts[m] << "\", \\" << endl;
         gnutemp << "'" << dataFile << "' every :::" << mrep << "::" << ( mrep + repetitions - 1 ) << " using 1:5 lt 2";
         if ( linesPoints ) {
             gnutemp << " pt " << s;
         }
-        gnutemp << " lc " << c << " title \"" << plotParts[m] << ": Swap Memory\"";
+        gnutemp << " lc " << c++ << " title \"" << "Swap memory:" << plotParts[m] << "\"";
         if ( m != measurements - 1 ) {
             gnutemp << ", \\";
         }
