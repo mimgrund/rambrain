@@ -107,7 +107,9 @@ protected:
      * @return min + (max - min) * step
      */
     T valueAtStep ( unsigned int step ) {
-        if ( deltaLog ) {
+        if ( steps < 2 ) {
+            return min;
+        } else if ( deltaLog ) {
             return pow ( 10.0, ( log10 ( max ) - log10 ( min ) ) * step / ( steps - 1 ) ) * min;
         } else {
             return ( max - min ) * step / ( steps - 1 ) + min;
