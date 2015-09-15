@@ -2130,7 +2130,7 @@ void measureExplicitAsyncSpeedupTest::actualTestMethod ( tester &test, int bytes
     }
 
 #ifdef PTEST_CHECKS
-    for ( int x = 0; x < numel; ++x ) {
+    for ( unsigned int x = 0; x < numel; ++x ) {
         adhereTo<char> glue ( *ptr[x] );
         char *loc = glue;
         for ( int r = 0; r < rewritetimesmin * bytesize; r++ )
@@ -2259,9 +2259,10 @@ void measureConstSpeedupTest::actualTestMethod ( tester &test, int kbytesize )
 
 #ifdef PTEST_CHECKS
     for ( unsigned int n = 0; n < nBlocks; ++n ) {
-        ADHERETOLOC ( char, realData[n], loc );
-        for ( int i = 0; i < bytesize; ++i ) {
-            if ( loc[i] != i + n * bytesize ) {
+        managedPtr<char> *data ( realData[n] );
+        ADHERETOLOC ( char, data, loc );
+        for ( int i = 0; i < kbytesize; ++i ) {
+            if ( loc[i] != static_cast<char> ( i + n * kbytesize ) ) {
                 errmsgf ( "Failed check! %d %d %d", n, i, loc[i] );
             }
         }
