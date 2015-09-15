@@ -130,6 +130,8 @@ bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
         preemptiveBytes -= chunk.size;
 
         chunk.preemptiveLoaded = false;
+    } else {
+        consecutivePreemptiveTransactions = 0;
     }
     // This can be the case even if chunk.preemptiveLoaded is false when we have just swapped in this one as active
     if ( preemptiveStart && ( preemptiveStart->chunk == &chunk ) ) {

@@ -645,6 +645,7 @@ TEST ( cyclicManagedMemory, Unit_CleanupOfForgottenPointers )
 /**
 * @test Checks recovery from random access to preemptive access
 * */
+#ifdef SWAPSTATS
 TEST ( cyclicManagedMemory, Unit_RecoveryFromRandomAccess )
 {
     const unsigned int n_el = 1024;
@@ -659,6 +660,7 @@ TEST ( cyclicManagedMemory, Unit_RecoveryFromRandomAccess )
 
     tester test;
     test.setSeed();
+
     manager.resetSwapstats();
     //Set consecutive order and check whether scheduler works correctly
     for ( unsigned int n = 0; n < n_el * 10; ++n ) {
@@ -695,6 +697,7 @@ TEST ( cyclicManagedMemory, Unit_RecoveryFromRandomAccess )
     manager.resetSwapstats();
 
 }
+#endif
 
 
 
