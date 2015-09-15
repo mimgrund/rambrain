@@ -358,11 +358,11 @@ void performanceTest<>::timingInfosToFile ( ofstream &out, const vector<vector<s
         }
         for ( auto it = relevantTimingParts.begin(); it != relevantTimingParts.end(); ++it ) {
             const unsigned long long relTime = strtoull ( ( *it ) [0].c_str(), &buf, 10 ) - starttime;
-            const unsigned long long mbOut = strtoul ( ( *it ) [2].c_str(), &buf, 10 ) / mib;
-            const unsigned long long mbIn = strtoul ( ( *it ) [5].c_str(), &buf, 10 ) / mib;
+            const double mbOut = strtod ( ( *it ) [2].c_str() , NULL ) / mib;
+            const double mbIn = strtod ( ( *it ) [5].c_str(), NULL ) / mib;
             const string hitmiss = ( *it ) [7];
-            const unsigned long long mbUsed = strtoul ( ( *it ) [8].c_str(), &buf, 10 ) / mib;
-            const unsigned long long mbSwapped = strtoul ( ( *it ) [10].c_str(), &buf, 10 ) / mib;
+            const double mbUsed = strtod ( ( *it ) [8].c_str(), NULL ) / mib;
+            const double mbSwapped = strtod ( ( *it ) [10].c_str(), NULL ) / mib;
 
             out << relTime << " " << mbOut << " " << mbIn << " " << mbUsed << " " << mbSwapped << " " << hitmiss << endl;
         }
@@ -2285,4 +2285,61 @@ string measureConstSpeedupTest::generateMyGnuplotPlotPart ( const string &file ,
     ss << "'" << file << "' using " << paramColumn << ":4 with lines title \"Const Swap In\", \\" << endl;
     ss << "'" << file << "' using " << paramColumn << ":5 with lines title \"Const Swap out\"";
     return ss.str();
+}
+
+
+TESTSTATICS ( demonstrateDecayTest, "Should plot regeneration of hits over misses ratio" );
+
+demonstrateDecayTest::demonstrateDecayTest() : performanceTest<int> ( "DemonstrateDecay" )
+{
+    TESTPARAM ( 1, 1024, 1024, 1, true, 1024, "Dummy pararameter" );
+    plotParts = vector<string> ( {"Element allocation", "Consecutive Access", "Random Access", "Regenerating Access"} );
+    plotTimingStats = true;
+}
+
+void demonstrateDecayTest::actualTestMethod ( tester &test, int kbytesize )
+{
+    const unsigned int n_el = 100240;
+    const unsigned int efac = 10;
+    const unsigned int memsize = n_el * sizeof ( char ) / 2;
+    const unsigned int swapsize = n_el * sizeof ( char ) * 3;
+
+    rambrainglobals::config.resizeMemory ( memsize );
+    rambrainglobals::config.resizeSwap ( swapsize );
+    test.addTimeMeasurement();
+    managedPtr<char> randomAccess[n_el];
+    managedPtr<char> consecutiveAccess[n_el];
+
+    test.setSeed();
+    test.addTimeMeasurement();
+
+    //Set consecutive order and check whether scheduler works correctly
+    for ( unsigned int n = 0; n < n_el * efac; ++n ) {
+        adhereTo<char> glue ( consecutiveAccess[n % n_el] );
+        char *loc = glue;
+        *loc = n % 256;
+    }
+    test.addTimeMeasurement();
+    //Fill up preemptives with random access to object group randomAccess;
+    for (  unsigned int n = 0; n < n_el * efac; ++n ) {
+        unsigned int idx = test.random ( ( int ) n_el - 1 );
+        adhereTo<char> glue ( randomAccess[idx] );
+        char *loc = glue;
+        *loc = n % 256;
+    }
+    test.addTimeMeasurement();
+
+    //Now, try to access consecutive object group again
+    for ( unsigned int n = 0; n < n_el * efac; ++n ) {
+        adhereTo<char> glue ( consecutiveAccess[n % n_el] );
+        char *loc = glue;
+        *loc = n % 256;
+    }
+    //And see if we recovered from preemptives:
+    test.addTimeMeasurement();
+}
+
+string demonstrateDecayTest::generateMyGnuplotPlotPart ( const string &file , int paramColumn )
+{
+    return "";
 }

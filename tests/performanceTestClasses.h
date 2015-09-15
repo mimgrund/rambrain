@@ -446,5 +446,6 @@ TWOPARAMTEST ( measureThroughputTest, int, int );
 TWOPARAMTEST ( measurePreemptiveSpeedupTest, int, int );
 TWOPARAMTEST ( measureExplicitAsyncSpeedupTest, int, int );
 ONEPARAMTEST ( measureConstSpeedupTest, int );
+ONEPARAMTEST ( demonstrateDecayTest, int );
 #endif // PERFORMANCETESTCLASSES_H
 
