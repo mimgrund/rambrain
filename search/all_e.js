@@ -1,7 +1,7 @@
 var searchData=
 [
   ['offset',['offset',['../a00021.html#a948cc9d04ac586651eaca32bfa59f11a',1,'rambrain::pageFileLocation']]],
-  ['oneparamtest',['ONEPARAMTEST',['../a00071.html#ad5a2738040da91b1f1e276de80a20c41',1,'performanceTestClasses.h']]],
+  ['oneparamtest',['ONEPARAMTEST',['../a00071.html#ad5a2738040da91b1f1e276de80a20c41',1,'ONEPARAMTEST(measureConstSpeedupTest, int):&#160;performanceTestClasses.h'],['../a00071.html#a91ccfa32e1077397cb5c96de476c65c1',1,'ONEPARAMTEST(demonstrateDecayTest, int):&#160;performanceTestClasses.h']]],
   ['openswapfilerange',['openSwapFileRange',['../a00015.html#a4c61e3012ef71c79ff50ded0069bbc66',1,'rambrain::managedFileSwap']]],
   ['openswapfiles',['openSwapFiles',['../a00015.html#abdb0a993049df6c31cff4c54ce0a9387',1,'rambrain::managedFileSwap']]],
   ['operator_20const_20t_20_2a',['operator const T *',['../a00001.html#a5fc196105e2f3c180883cadb8c9482b9',1,'rambrain::adhereTo::operator const T *()'],['../a00001.html#ade7231943a2d0e397719a4081b8d0c69',1,'rambrain::adhereTo::operator const T *() const ']]],
