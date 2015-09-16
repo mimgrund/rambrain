@@ -1409,12 +1409,12 @@ $(document).ready(function(){initNavTree('a00070_source.html','');});
 <div class="line"><a name="l01300"></a><span class="lineno"> 1300</span>&#160;    test.<a class="code" href="a00030.html#a01d742f1f0fe5d55766cb3c256b999d7">addTimeMeasurement</a>();</div>
 <div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;</div>
 <div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;    <span class="comment">// Calculate C = A * B</span></div>
-<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;<span class="preprocessor">    #pragma omp parallel for</span></div>
-<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;    <span class="keywordflow">for</span> ( <a class="code" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> i = 0; i &lt; size; ++i ) {</div>
-<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;        adhereTo&lt;double&gt; adhRowA ( *rowsA[i] );</div>
-<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;        adhereTo&lt;double&gt; adhRowC ( *rowsC[i] );</div>
-<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;        <span class="keywordtype">double</span> *rowA = adhRowA;</div>
-<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;        <span class="keywordtype">double</span> *rowC = adhRowC;</div>
+<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;    <span class="keywordflow">for</span> ( <a class="code" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> i = 0; i &lt; size; ++i ) {</div>
+<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;        adhereTo&lt;double&gt; adhRowA ( *rowsA[i] );</div>
+<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;        adhereTo&lt;double&gt; adhRowC ( *rowsC[i] );</div>
+<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;        <span class="keywordtype">double</span> *rowA = adhRowA;</div>
+<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;        <span class="keywordtype">double</span> *rowC = adhRowC;</div>
+<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;<span class="preprocessor">        #pragma omp parallel for</span></div>
 <div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;        <span class="keywordflow">for</span> ( <a class="code" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> j = 0; j &lt; size; ++j ) {</div>
 <div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;            adhereTo&lt;double&gt; adhColB ( *colsB[j] );</div>
 <div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;            <span class="keywordtype">double</span> *colB = adhColB;</div>
@@ -2476,7 +2476,7 @@ $(document).ready(function(){initNavTree('a00070_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00070.html">performanceTestClasses.cpp</a></li>
-    <li class="footer">Generated on Wed Sep 16 2015 01:42:13 for rambrain by
+    <li class="footer">Generated on Thu Sep 17 2015 01:41:15 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
