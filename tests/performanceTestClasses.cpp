@@ -1300,12 +1300,12 @@ void matrixMultiplyOpenMPTest::actualTestMethod ( tester &test, int param1, int 
     test.addTimeMeasurement();
 
     // Calculate C = A * B
-    #pragma omp parallel for
     for ( global_bytesize i = 0; i < size; ++i ) {
         adhereTo<double> adhRowA ( *rowsA[i] );
         adhereTo<double> adhRowC ( *rowsC[i] );
         double *rowA = adhRowA;
         double *rowC = adhRowC;
+        #pragma omp parallel for
         for ( global_bytesize j = 0; j < size; ++j ) {
             adhereTo<double> adhColB ( *colsB[j] );
             double *colB = adhColB;
