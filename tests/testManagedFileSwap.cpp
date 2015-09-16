@@ -750,5 +750,101 @@ TEST ( managedFileSwap, Unit_SwapPolicy )
 
 }
 
+#ifdef SWAPSTATS
+TEST ( managedFileSwap, Unit_CheckSwapStats )
+{
+    printf ( "Oink" );
+    const unsigned int amount = 1E3;
+    const unsigned int countMem = 10;
+    const unsigned int countSwap = 100;
+    const unsigned int count = countMem + countSwap;
+    const global_bytesize mem = amount * countMem * sizeof ( double );
+    const global_bytesize swapmem = amount * countSwap * sizeof ( double );
+
+    managedFileSwap swap ( swapmem, "./rambrainswap-%d-%d" );
+    cyclicManagedMemory manager ( &swap, mem );
+
+    manager.setPreemptiveUnloading ( false );
+
+    ASSERT_EQ ( 0, manager.n_swap_out );
+    ASSERT_EQ ( 0, manager.n_swap_in );
+    ASSERT_EQ ( 0, manager.swap_out_scheduled_bytes );
+    ASSERT_EQ ( 0, manager.swap_in_scheduled_bytes );
+    ASSERT_EQ ( 0, manager.swap_out_bytes );
+    ASSERT_EQ ( 0, manager.swap_in_bytes );
+    ASSERT_EQ ( 0, manager.swap_out_bytes_last );
+    ASSERT_EQ ( 0, manager.swap_in_bytes_last );
+
+    managedPtr<double> *ptrs[count];
+    for ( unsigned int i = 0; i < countMem; ++i ) {
+        ptrs[i] = new managedPtr<double> ( amount );
+        managedPtr<double> *dat = ptrs[i];
+        ADHERETOLOC ( double, dat, loc );
+        for ( unsigned int j = 0; j < amount; ++j ) {
+            loc[j] = i * amount + j;
+        }
+    }
+
+    printf ( "Oink" );
+    rambrain_pthread_mutex_lock ( &manager.stateChangeMutex );
+    manager.waitForAIO();
+    rambrain_pthread_mutex_unlock ( &manager.stateChangeMutex );
+    printf ( "Oink" );
+
+    ASSERT_EQ ( 0, manager.n_swap_out );
+    ASSERT_EQ ( 0, manager.n_swap_in );
+    ASSERT_EQ ( 0, manager.swap_out_scheduled_bytes );
+    ASSERT_EQ ( 0, manager.swap_in_scheduled_bytes );
+    ASSERT_EQ ( 0, manager.swap_out_bytes );
+    ASSERT_EQ ( 0, manager.swap_in_bytes );
+    ASSERT_EQ ( 0, manager.swap_out_bytes_last );
+    ASSERT_EQ ( 0, manager.swap_in_bytes_last );
+
+    for ( unsigned int i = countMem; i < count; ++i ) {
+        ptrs[i] = new managedPtr<double> ( amount );
+        managedPtr<double> *dat = ptrs[i];
+        ADHERETOLOC ( double, dat, loc );
+        for ( unsigned int j = 0; j < amount; ++j ) {
+            loc[j] = i * amount + j;
+        }
+    }
+
+    rambrain_pthread_mutex_lock ( &manager.stateChangeMutex );
+    manager.waitForAIO();
+    rambrain_pthread_mutex_unlock ( &manager.stateChangeMutex );
+    printf ( "Oink" );
+
+    ASSERT_GE ( countSwap, manager.n_swap_out );
+    ASSERT_EQ ( 0, manager.n_swap_in );
+    ASSERT_EQ ( amount * countSwap * sizeof ( double ), manager.swap_out_scheduled_bytes );
+    ASSERT_EQ ( 0, manager.swap_in_scheduled_bytes );
+    ASSERT_EQ ( amount * countSwap * sizeof ( double ), manager.swap_out_bytes );
+    ASSERT_EQ ( 0, manager.swap_in_bytes );
+
+    double sum = 0.0;
+    for ( unsigned int i = 0; i < count; ++i ) {
+        managedPtr<double> *dat = ptrs[i];
+        ADHERETOLOC ( double, dat, loc );
+        for ( unsigned int j = 0; j < amount; ++j ) {
+            sum += loc[j];
+        }
+    }
+
+    rambrain_pthread_mutex_lock ( &manager.stateChangeMutex );
+    manager.waitForAIO();
+    rambrain_pthread_mutex_unlock ( &manager.stateChangeMutex );
+    printf ( "Oink" );
+
+    ASSERT_GE ( countSwap + count, manager.n_swap_out );
+    ASSERT_GE ( count, manager.n_swap_in );
+    ASSERT_EQ ( amount * ( countSwap + count ) * sizeof ( double ), manager.swap_out_scheduled_bytes );
+    ASSERT_EQ ( amount * count * sizeof ( double ), manager.swap_in_scheduled_bytes );
+    ASSERT_EQ ( amount * ( countSwap + count ) * sizeof ( double ), manager.swap_out_bytes );
+    ASSERT_EQ ( amount * count * sizeof ( double ), manager.swap_in_bytes );
+
+    /// @todo now follow up with some deterministic random stuff
+}
+#endif
+
 RESTORE_WARNINGS;
 
