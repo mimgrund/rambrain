@@ -146,44 +146,46 @@ $(document).ready(function(){initNavTree('a00056_source.html','');});
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="a00016.html#a2dde217198bcbce8ff8d6f1adaedeef1">managedMemory::defaultManager</a>-&gt;<a class="code" href="a00016.html#a372ed81183939767d35e295887493e24">claimUsageof</a> ( bytes, rambytes, used );</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">if</span> ( !rambytes ) {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <a class="code" href="a00019.html#a89fe4124cabf967c8c56b1975c43eb2c">swapFree</a> += ( used ? -bytes : bytes );</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <a class="code" href="a00019.html#a62729471b92115a93e0d8eae5f240293">swapUsed</a> += ( used ? bytes : -bytes );</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00019.html#a6207b667ec6674831738a9e22f6b3b5e">   44</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00019.html#a6207b667ec6674831738a9e22f6b3b5e">managedSwap::waitForCleanExit</a>()</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    printf ( <span class="stringliteral">&quot;\n&quot;</span> );</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">while</span> ( <a class="code" href="a00019.html#a4d0644a5dc6b03baaf1bc8ae3c4bfee9">totalSwapActionsQueued</a> != 0 ) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <a class="code" href="a00019.html#a3b17f61f7500342b9080116f7a12e228">checkForAIO</a>();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        printf ( <span class="stringliteral">&quot;waiting for aio to complete on %d objects\r&quot;</span>, <a class="code" href="a00019.html#a4d0644a5dc6b03baaf1bc8ae3c4bfee9">totalSwapActionsQueued</a> );</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    };</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    printf ( <span class="stringliteral">&quot;                                                       \r&quot;</span> );</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;}</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//         if((swapFree&lt;bytes&amp;&amp;used )||swapUsed&lt;bytes&amp;&amp;!used)</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//             throw memoryException(&quot;Wrong memory accounting!&quot;);</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <a class="code" href="a00019.html#a89fe4124cabf967c8c56b1975c43eb2c">swapFree</a> += ( used ? -bytes : bytes );</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <a class="code" href="a00019.html#a62729471b92115a93e0d8eae5f240293">swapUsed</a> += ( used ? bytes : -bytes );</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;}</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00019.html#a6207b667ec6674831738a9e22f6b3b5e">   46</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00019.html#a6207b667ec6674831738a9e22f6b3b5e">managedSwap::waitForCleanExit</a>()</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;{</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    printf ( <span class="stringliteral">&quot;\n&quot;</span> );</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordflow">while</span> ( <a class="code" href="a00019.html#a4d0644a5dc6b03baaf1bc8ae3c4bfee9">totalSwapActionsQueued</a> != 0 ) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <a class="code" href="a00019.html#a3b17f61f7500342b9080116f7a12e228">checkForAIO</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        printf ( <span class="stringliteral">&quot;waiting for aio to complete on %d objects\r&quot;</span>, <a class="code" href="a00019.html#a4d0644a5dc6b03baaf1bc8ae3c4bfee9">totalSwapActionsQueued</a> );</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    };</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    printf ( <span class="stringliteral">&quot;                                                       \r&quot;</span> );</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
 <div class="ttc" id="a00019_html_a3b17f61f7500342b9080116f7a12e228"><div class="ttname"><a href="a00019.html#a3b17f61f7500342b9080116f7a12e228">rambrain::managedSwap::checkForAIO</a></div><div class="ttdeci">virtual bool checkForAIO()</div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00122">managedSwap.h:122</a></div></div>
 <div class="ttc" id="a00019_html_a70fa001b0161095d2298620ecc5d5838"><div class="ttname"><a href="a00019.html#a70fa001b0161095d2298620ecc5d5838">rambrain::managedSwap::~managedSwap</a></div><div class="ttdeci">virtual ~managedSwap()</div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00030">managedSwap.cpp:30</a></div></div>
 <div class="ttc" id="a00091_html"><div class="ttname"><a href="a00091.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00036_source.html#l00026">common.h:26</a></div></div>
-<div class="ttc" id="a00016_html_a2dde217198bcbce8ff8d6f1adaedeef1"><div class="ttname"><a href="a00016.html#a2dde217198bcbce8ff8d6f1adaedeef1">rambrain::managedMemory::defaultManager</a></div><div class="ttdeci">static managedMemory * defaultManager</div><div class="ttdef"><b>Definition:</b> <a href="a00051_source.html#l00137">managedMemory.h:137</a></div></div>
+<div class="ttc" id="a00016_html_a2dde217198bcbce8ff8d6f1adaedeef1"><div class="ttname"><a href="a00016.html#a2dde217198bcbce8ff8d6f1adaedeef1">rambrain::managedMemory::defaultManager</a></div><div class="ttdeci">static managedMemory * defaultManager</div><div class="ttdef"><b>Definition:</b> <a href="a00051_source.html#l00138">managedMemory.h:138</a></div></div>
 <div class="ttc" id="a00019_html_a741c8e8d164577a825f6544d1cd1ece6"><div class="ttname"><a href="a00019.html#a741c8e8d164577a825f6544d1cd1ece6">rambrain::managedSwap::claimUsageof</a></div><div class="ttdeci">void claimUsageof(global_bytesize bytes, bool rambytes, bool used)</div><div class="ttdoc">account for memory usage change </div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00035">managedSwap.cpp:35</a></div></div>
 <div class="ttc" id="a00019_html_a89fe4124cabf967c8c56b1975c43eb2c"><div class="ttname"><a href="a00019.html#a89fe4124cabf967c8c56b1975c43eb2c">rambrain::managedSwap::swapFree</a></div><div class="ttdeci">global_bytesize swapFree</div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00141">managedSwap.h:141</a></div></div>
 <div class="ttc" id="a00091_html_abe2d051306a69fb21f8a17946b4e93ed"><div class="ttname"><a href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">rambrain::global_bytesize</a></div><div class="ttdeci">uint64_t global_bytesize</div><div class="ttdef"><b>Definition:</b> <a href="a00036_source.html#l00065">common.h:65</a></div></div>
 <div class="ttc" id="a00019_html_a62729471b92115a93e0d8eae5f240293"><div class="ttname"><a href="a00019.html#a62729471b92115a93e0d8eae5f240293">rambrain::managedSwap::swapUsed</a></div><div class="ttdeci">global_bytesize swapUsed</div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00140">managedSwap.h:140</a></div></div>
-<div class="ttc" id="a00016_html_a372ed81183939767d35e295887493e24"><div class="ttname"><a href="a00016.html#a372ed81183939767d35e295887493e24">rambrain::managedMemory::claimUsageof</a></div><div class="ttdeci">void claimUsageof(global_bytesize bytes, bool rambytes, bool used)</div><div class="ttdoc">account for memory usage change </div><div class="ttdef"><b>Definition:</b> <a href="a00050_source.html#l00791">managedMemory.cpp:791</a></div></div>
+<div class="ttc" id="a00016_html_a372ed81183939767d35e295887493e24"><div class="ttname"><a href="a00016.html#a372ed81183939767d35e295887493e24">rambrain::managedMemory::claimUsageof</a></div><div class="ttdeci">void claimUsageof(global_bytesize bytes, bool rambytes, bool used)</div><div class="ttdoc">account for memory usage change </div><div class="ttdef"><b>Definition:</b> <a href="a00050_source.html#l00792">managedMemory.cpp:792</a></div></div>
 <div class="ttc" id="a00057_html"><div class="ttname"><a href="a00057.html">managedSwap.h</a></div></div>
 <div class="ttc" id="a00019_html_a52dfde8045a75f9e9fcdc1d2d5d237d1"><div class="ttname"><a href="a00019.html#a52dfde8045a75f9e9fcdc1d2d5d237d1">rambrain::managedSwap::managedSwap</a></div><div class="ttdeci">managedSwap(global_bytesize size)</div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00026">managedSwap.cpp:26</a></div></div>
 <div class="ttc" id="a00019_html_a4d0644a5dc6b03baaf1bc8ae3c4bfee9"><div class="ttname"><a href="a00019.html#a4d0644a5dc6b03baaf1bc8ae3c4bfee9">rambrain::managedSwap::totalSwapActionsQueued</a></div><div class="ttdeci">unsigned int totalSwapActionsQueued</div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00142">managedSwap.h:142</a></div></div>
 <div class="ttc" id="a00051_html"><div class="ttname"><a href="a00051.html">managedMemory.h</a></div></div>
-<div class="ttc" id="a00019_html_a6207b667ec6674831738a9e22f6b3b5e"><div class="ttname"><a href="a00019.html#a6207b667ec6674831738a9e22f6b3b5e">rambrain::managedSwap::waitForCleanExit</a></div><div class="ttdeci">void waitForCleanExit()</div><div class="ttdoc">Function waits for all asynchronous IO to complete. The wait is implemented non-performant as a norma...</div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00044">managedSwap.cpp:44</a></div></div>
+<div class="ttc" id="a00019_html_a6207b667ec6674831738a9e22f6b3b5e"><div class="ttname"><a href="a00019.html#a6207b667ec6674831738a9e22f6b3b5e">rambrain::managedSwap::waitForCleanExit</a></div><div class="ttdeci">void waitForCleanExit()</div><div class="ttdoc">Function waits for all asynchronous IO to complete. The wait is implemented non-performant as a norma...</div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00046">managedSwap.cpp:46</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00056.html">managedSwap.cpp</a></li>
-    <li class="footer">Generated on Thu Sep 17 2015 01:41:15 for rambrain by
+    <li class="footer">Generated on Fri Sep 18 2015 01:41:34 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

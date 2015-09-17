@@ -822,8 +822,116 @@ $(document).ready(function(){initNavTree('a00085_source.html','');});
 <div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;</div>
 <div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;}</div>
 <div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;</div>
-<div class="line"><a name="l00753"></a><span class="lineno"><a class="line" href="a00085.html#a3d9512de8648bd4680902a4999028b5f">  753</a></span>&#160;<a class="code" href="a00085.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a>;</div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;</div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;<span class="preprocessor">#ifdef SWAPSTATS</span></div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;<a class="code" href="a00085.html#a3dd82cd5872087316e3d310574a008d4">TEST</a> ( <a class="code" href="a00015.html">managedFileSwap</a>, Unit_CheckSwapStats )</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;{</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> amount = 1E3;</div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> countMem = 10;</div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> countSwap = 100;</div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> count = countMem + countSwap;</div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> mem = amount * countMem * <span class="keyword">sizeof</span> ( double );</div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;    <span class="keyword">const</span> <a class="code" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> swapmem = amount * countSwap * <span class="keyword">sizeof</span> ( double );</div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;</div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;    <a class="code" href="a00015.html">managedFileSwap</a> swap ( swapmem, <span class="stringliteral">&quot;./rambrainswap-%d-%d&quot;</span> );</div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    <a class="code" href="a00009.html">cyclicManagedMemory</a> manager ( &amp;swap, mem );</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;</div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    manager.setPreemptiveUnloading ( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;    manager.setPreemptiveLoading ( <span class="keyword">false</span> );</div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;</div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    EXPECT_EQ ( 0, manager.n_swap_out );</div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;    EXPECT_EQ ( 0, manager.n_swap_in );</div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;    EXPECT_EQ ( 0, manager.swap_out_scheduled_bytes );</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    EXPECT_EQ ( 0, manager.swap_in_scheduled_bytes );</div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;    EXPECT_EQ ( 0, manager.swap_out_bytes );</div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;    EXPECT_EQ ( 0, manager.swap_in_bytes );</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;    EXPECT_EQ ( 0, manager.swap_out_bytes_last );</div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;    EXPECT_EQ ( 0, manager.swap_in_bytes_last );</div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;</div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    <a class="code" href="a00018.html">managedPtr&lt;double&gt;</a> *ptrs[count];</div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; countMem; ++i ) {</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;        ptrs[i] = <span class="keyword">new</span> <a class="code" href="a00018.html">managedPtr&lt;double&gt;</a> ( amount );</div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;        <a class="code" href="a00018.html">managedPtr&lt;double&gt;</a> *dat = ptrs[i];</div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;        ADHERETOLOC ( <span class="keywordtype">double</span>, dat, loc );</div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; amount; ++j ) {</div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;            loc[j] = i * amount + j;</div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;        }</div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;</div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;    }</div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;</div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;    swap.waitForCleanExit();</div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;</div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    EXPECT_EQ ( 0, manager.n_swap_out );</div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;    EXPECT_EQ ( 0, manager.n_swap_in );</div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;    EXPECT_EQ ( 0, manager.swap_out_scheduled_bytes );</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;    EXPECT_EQ ( 0, manager.swap_in_scheduled_bytes );</div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;    EXPECT_EQ ( 0, manager.swap_out_bytes );</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;    EXPECT_EQ ( 0, manager.swap_in_bytes );</div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;    EXPECT_EQ ( 0, manager.swap_out_bytes_last );</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;    EXPECT_EQ ( 0, manager.swap_in_bytes_last );</div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;</div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = countMem; i &lt; count; ++i ) {</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;        ptrs[i] = <span class="keyword">new</span> <a class="code" href="a00018.html">managedPtr&lt;double&gt;</a> ( amount );</div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;        <a class="code" href="a00018.html">managedPtr&lt;double&gt;</a> *dat = ptrs[i];</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;        ADHERETOLOC ( <span class="keywordtype">double</span>, dat, loc );</div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; amount; ++j ) {</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;            loc[j] = i * amount + j;</div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;        }</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;    }</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    swap.waitForCleanExit();</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;    EXPECT_GE ( countSwap, manager.n_swap_out );</div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;    EXPECT_EQ ( 0, manager.n_swap_in );</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;    EXPECT_EQ ( amount * countSwap * <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ), manager.swap_out_scheduled_bytes );</div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;    EXPECT_EQ ( 0, manager.swap_in_scheduled_bytes );</div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    EXPECT_EQ ( amount * countSwap * <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ), manager.swap_out_bytes );</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    EXPECT_EQ ( 0, manager.swap_in_bytes );</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;    <span class="keywordtype">double</span> sum = 0.0;</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;        <a class="code" href="a00018.html">managedPtr&lt;double&gt;</a> *dat = ptrs[i];</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;        ADHERETOLOC ( <span class="keywordtype">double</span>, dat, loc );</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; amount; ++j ) {</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;            sum += loc[j];</div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;        }</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;    }</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;</div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;    swap.waitForCleanExit();</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;</div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    EXPECT_GE ( countSwap + count, manager.n_swap_out );</div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    EXPECT_GE ( count, manager.n_swap_in );</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;    EXPECT_EQ ( amount * ( countSwap + count ) * <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ), manager.swap_out_scheduled_bytes );</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    EXPECT_EQ ( amount * count * <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ), manager.swap_in_scheduled_bytes );</div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    EXPECT_EQ ( amount * ( countSwap + count ) * <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ), manager.swap_out_bytes );</div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;    EXPECT_EQ ( amount * count * <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ), manager.swap_in_bytes );</div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    <a class="code" href="a00030.html">tester</a> test;</div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    test.<a class="code" href="a00030.html#a902049984a5425407a2a8aafffec0669">setSeed</a>();</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    sum = 0.0;</div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;        <a class="code" href="a00018.html">managedPtr&lt;double&gt;</a> *dat = ptrs[test.<a class="code" href="a00030.html#a3abaa7021bf1e7c8181d98e6dc78ae40">random</a> ( ( <span class="keywordtype">int</span> ) count )];</div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;        ADHERETOLOC ( <span class="keywordtype">double</span>, dat, loc );</div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;        <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> j = 0; j &lt; amount; ++j ) {</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;            sum += loc[j];</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;        }</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;    }</div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;</div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;    swap.waitForCleanExit();</div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;</div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;</div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    EXPECT_LE ( manager.swap_out_bytes, manager.swap_out_scheduled_bytes );</div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;    EXPECT_LE ( manager.swap_in_bytes , manager.swap_in_scheduled_bytes );</div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;</div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; count; ++i ) {</div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;        <span class="keyword">delete</span> ptrs[i];</div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;    }</div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;}</div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;</div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;</div>
+<div class="line"><a name="l00862"></a><span class="lineno"><a class="line" href="a00085.html#a3d9512de8648bd4680902a4999028b5f">  862</a></span>&#160;<a class="code" href="a00085.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a>;</div>
+<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;</div>
 <div class="ttc" id="a00019_html_a97a51bb407ee14b54621e1f3b7e0fe6c"><div class="ttname"><a href="a00019.html#a97a51bb407ee14b54621e1f3b7e0fe6c">rambrain::managedSwap::getSwapSize</a></div><div class="ttdeci">virtual global_bytesize getSwapSize() const </div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00082">managedSwap.h:82</a></div></div>
 <div class="ttc" id="a00030_html_a3427b96d1b0517d8b71b2c89c26943ea"><div class="ttname"><a href="a00030.html#a3427b96d1b0517d8b71b2c89c26943ea">tester::startNewTimeCycle</a></div><div class="ttdeci">void startNewTimeCycle()</div><div class="ttdoc">Starts a new cycle of time measurements. </div><div class="ttdef"><b>Definition:</b> <a href="a00080_source.html#l00089">tester.cpp:89</a></div></div>
 <div class="ttc" id="a00016_html_a4147c7d36b38e4bea0c73b6f4609d477"><div class="ttname"><a href="a00016.html#a4147c7d36b38e4bea0c73b6f4609d477">rambrain::managedMemory::printSwapstats</a></div><div class="ttdeci">void printSwapstats() const </div><div class="ttdoc">print statistic about the number, size and efficiency of swapping actions </div><div class="ttdef"><b>Definition:</b> <a href="a00050_source.html#l00627">managedMemory.cpp:627</a></div></div>
@@ -838,17 +946,17 @@ $(document).ready(function(){initNavTree('a00085_source.html','');});
 <div class="ttc" id="a00091_html_a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149"><div class="ttname"><a href="a00091.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149">rambrain::swapPolicy::fixed</a></div></div>
 <div class="ttc" id="a00019_html_a41dc53dc333f562413dc8b9a1241da0c"><div class="ttname"><a href="a00019.html#a41dc53dc333f562413dc8b9a1241da0c">rambrain::managedSwap::setSwapPolicy</a></div><div class="ttdeci">virtual swapPolicy setSwapPolicy(swapPolicy newPolicy)</div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00100">managedSwap.h:100</a></div></div>
 <div class="ttc" id="a00015_html_a401485970b3da6f50721dac80b7bbbcc"><div class="ttname"><a href="a00015.html#a401485970b3da6f50721dac80b7bbbcc">rambrain::managedFileSwap::free_space</a></div><div class="ttdeci">std::map&lt; global_offset, pageFileLocation * &gt; free_space</div><div class="ttdef"><b>Definition:</b> <a href="a00049_source.html#l00180">managedFileSwap.h:180</a></div></div>
-<div class="ttc" id="a00009_html_a3338f06b2731e1612ec653f75cbc5d17"><div class="ttname"><a href="a00009.html#a3338f06b2731e1612ec653f75cbc5d17">rambrain::cyclicManagedMemory::checkCycle</a></div><div class="ttdeci">bool checkCycle() const </div><div class="ttdoc">checks whether the scheduler believes to be sane and prints an error message if not ...</div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00648">cyclicManagedMemory.cpp:648</a></div></div>
+<div class="ttc" id="a00009_html_a3338f06b2731e1612ec653f75cbc5d17"><div class="ttname"><a href="a00009.html#a3338f06b2731e1612ec653f75cbc5d17">rambrain::cyclicManagedMemory::checkCycle</a></div><div class="ttdeci">bool checkCycle() const </div><div class="ttdoc">checks whether the scheduler believes to be sane and prints an error message if not ...</div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00653">cyclicManagedMemory.cpp:653</a></div></div>
 <div class="ttc" id="a00015_html_a9530307dab903b746f39a2d69466fca8"><div class="ttname"><a href="a00015.html#a9530307dab903b746f39a2d69466fca8">rambrain::managedFileSwap::swapDelete</a></div><div class="ttdeci">virtual void swapDelete(managedMemoryChunk *chunk)</div><div class="ttdoc">Mark chunk as deleted. </div><div class="ttdef"><b>Definition:</b> <a href="a00048_source.html#l00492">managedFileSwap.cpp:492</a></div></div>
-<div class="ttc" id="a00015_html_ae530fab28abcdc84cb1f1d2443563381"><div class="ttname"><a href="a00015.html#ae530fab28abcdc84cb1f1d2443563381">rambrain::managedFileSwap::swapOut</a></div><div class="ttdeci">virtual global_bytesize swapOut(managedMemoryChunk **chunklist, unsigned int nchunks)</div><div class="ttdoc">Trigger swap out of the chunks pointed to by chunklist. </div><div class="ttdef"><b>Definition:</b> <a href="a00048_source.html#l00580">managedFileSwap.cpp:580</a></div></div>
+<div class="ttc" id="a00015_html_ae530fab28abcdc84cb1f1d2443563381"><div class="ttname"><a href="a00015.html#ae530fab28abcdc84cb1f1d2443563381">rambrain::managedFileSwap::swapOut</a></div><div class="ttdeci">virtual global_bytesize swapOut(managedMemoryChunk **chunklist, unsigned int nchunks)</div><div class="ttdoc">Trigger swap out of the chunks pointed to by chunklist. </div><div class="ttdef"><b>Definition:</b> <a href="a00048_source.html#l00582">managedFileSwap.cpp:582</a></div></div>
 <div class="ttc" id="a00055_html"><div class="ttname"><a href="a00055.html">managedPtr.h</a></div></div>
-<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">rambrain::managedPtr</a></div><div class="ttdoc">Main class to allocate memory that is managed by the rambrain memory defaultManager. </div><div class="ttdef"><b>Definition:</b> <a href="a00051_source.html#l00053">managedMemory.h:53</a></div></div>
+<div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">rambrain::managedPtr</a></div><div class="ttdoc">Main class to allocate memory that is managed by the rambrain memory defaultManager. </div><div class="ttdef"><b>Definition:</b> <a href="a00051_source.html#l00054">managedMemory.h:54</a></div></div>
 <div class="ttc" id="a00091_html_a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9"><div class="ttname"><a href="a00091.html#a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9">rambrain::MEM_ALLOCATED</a></div><div class="ttdef"><b>Definition:</b> <a href="a00053_source.html#l00032">managedMemoryChunk.h:32</a></div></div>
 <div class="ttc" id="a00017_html_a723a8b947225aff2b938d964552c066d"><div class="ttname"><a href="a00017.html#a723a8b947225aff2b938d964552c066d">rambrain::managedMemoryChunk::size</a></div><div class="ttdeci">global_bytesize size</div><div class="ttdoc">Size of actual object in bytes. </div><div class="ttdef"><b>Definition:</b> <a href="a00053_source.html#l00067">managedMemoryChunk.h:67</a></div></div>
 <div class="ttc" id="a00041_html"><div class="ttname"><a href="a00041.html">dummyManagedMemory.h</a></div></div>
 <div class="ttc" id="a00018_html_afc4112d3c16edcb7172e7f35030f435a"><div class="ttname"><a href="a00018.html#afc4112d3c16edcb7172e7f35030f435a">rambrain::managedPtr::setUse</a></div><div class="ttdeci">bool setUse(bool writable=true, bool *tracker=NULL) const </div><div class="ttdoc">Atomically sets use to a chunk if tracker is not already set to true. returns whether we set use or n...</div><div class="ttdef"><b>Definition:</b> <a href="a00055_source.html#l00173">managedPtr.h:173</a></div></div>
 <div class="ttc" id="a00019_html_abc670034d0999286b20f190067a9e6ab"><div class="ttname"><a href="a00019.html#abc670034d0999286b20f190067a9e6ab">rambrain::managedSwap::getUsedSwap</a></div><div class="ttdeci">virtual global_bytesize getUsedSwap() const </div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00086">managedSwap.h:86</a></div></div>
-<div class="ttc" id="a00015_html_a8611c8f994caff81b8a85233b4c3061e"><div class="ttname"><a href="a00015.html#a8611c8f994caff81b8a85233b4c3061e">rambrain::managedFileSwap::swapIn</a></div><div class="ttdeci">virtual global_bytesize swapIn(managedMemoryChunk **chunklist, unsigned int nchunks)</div><div class="ttdoc">Trigger swap in of the chunks pointed to by chunklist. </div><div class="ttdef"><b>Definition:</b> <a href="a00048_source.html#l00525">managedFileSwap.cpp:525</a></div></div>
+<div class="ttc" id="a00015_html_a8611c8f994caff81b8a85233b4c3061e"><div class="ttname"><a href="a00015.html#a8611c8f994caff81b8a85233b4c3061e">rambrain::managedFileSwap::swapIn</a></div><div class="ttdeci">virtual global_bytesize swapIn(managedMemoryChunk **chunklist, unsigned int nchunks)</div><div class="ttdoc">Trigger swap in of the chunks pointed to by chunklist. </div><div class="ttdef"><b>Definition:</b> <a href="a00048_source.html#l00527">managedFileSwap.cpp:527</a></div></div>
 <div class="ttc" id="a00009_html"><div class="ttname"><a href="a00009.html">rambrain::cyclicManagedMemory</a></div><div class="ttdoc">scheduler working with a double linked cycle. Details see paper. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00035">cyclicManagedMemory.h:35</a></div></div>
 <div class="ttc" id="a00018_html_acebeebd2c7ab841f7bf6577e599ecc03"><div class="ttname"><a href="a00018.html#acebeebd2c7ab841f7bf6577e599ecc03">rambrain::managedPtr::chunk</a></div><div class="ttdeci">managedMemoryChunk * chunk</div><div class="ttdef"><b>Definition:</b> <a href="a00055_source.html#l00238">managedPtr.h:238</a></div></div>
 <div class="ttc" id="a00014_html"><div class="ttname"><a href="a00014.html">rambrain::managedDummySwap</a></div><div class="ttdoc">A dummy swap that just copies swapped out chunks to a different location in ram. </div><div class="ttdef"><b>Definition:</b> <a href="a00047_source.html#l00031">managedDummySwap.h:31</a></div></div>
@@ -868,24 +976,24 @@ $(document).ready(function(){initNavTree('a00085_source.html','');});
 <div class="ttc" id="a00015_html_a15571f6e41e70372c94702f8bc52a78e"><div class="ttname"><a href="a00015.html#a15571f6e41e70372c94702f8bc52a78e">rambrain::managedFileSwap::swapFileResizeFrac</a></div><div class="ttdeci">float swapFileResizeFrac</div><div class="ttdef"><b>Definition:</b> <a href="a00049_source.html#l00145">managedFileSwap.h:145</a></div></div>
 <div class="ttc" id="a00040_html"><div class="ttname"><a href="a00040.html">cyclicManagedMemory.h</a></div></div>
 <div class="ttc" id="a00009_html_aff64a33ffa6d2b3f0044fefd15c97294"><div class="ttname"><a href="a00009.html#aff64a33ffa6d2b3f0044fefd15c97294">rambrain::cyclicManagedMemory::setPreemptiveUnloading</a></div><div class="ttdeci">bool setPreemptiveUnloading(bool preemptive)</div><div class="ttdoc">sets whether scheduler should swap out elements without strict need </div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00196">cyclicManagedMemory.cpp:196</a></div></div>
-<div class="ttc" id="a00016_html_a1041409de3c6106acf2b072ba826c81f"><div class="ttname"><a href="a00016.html#a1041409de3c6106acf2b072ba826c81f">rambrain::managedMemory::stateChangeMutex</a></div><div class="ttdeci">static pthread_mutex_t stateChangeMutex</div><div class="ttdef"><b>Definition:</b> <a href="a00051_source.html#l00217">managedMemory.h:217</a></div></div>
+<div class="ttc" id="a00016_html_a1041409de3c6106acf2b072ba826c81f"><div class="ttname"><a href="a00016.html#a1041409de3c6106acf2b072ba826c81f">rambrain::managedMemory::stateChangeMutex</a></div><div class="ttdeci">static pthread_mutex_t stateChangeMutex</div><div class="ttdef"><b>Definition:</b> <a href="a00051_source.html#l00218">managedMemory.h:218</a></div></div>
 <div class="ttc" id="a00018_html_a5e27a4cf25fdeb82501a617e86f8f7fc"><div class="ttname"><a href="a00018.html#a5e27a4cf25fdeb82501a617e86f8f7fc">rambrain::managedPtr::unsetUse</a></div><div class="ttdeci">bool unsetUse(unsigned int loaded=1) const </div><div class="ttdoc">unsets use count on memory chunk </div><div class="ttdef"><b>Definition:</b> <a href="a00055_source.html#l00185">managedPtr.h:185</a></div></div>
 <div class="ttc" id="a00030_html_a3abaa7021bf1e7c8181d98e6dc78ae40"><div class="ttname"><a href="a00030.html#a3abaa7021bf1e7c8181d98e6dc78ae40">tester::random</a></div><div class="ttdeci">int random(int max) const </div><div class="ttdoc">Get a random number (integer) </div><div class="ttdef"><b>Definition:</b> <a href="a00080_source.html#l00074">tester.cpp:74</a></div></div>
 <div class="ttc" id="a00017_html_a93b6f29ed6ba24437927e0a279e3eb2c"><div class="ttname"><a href="a00017.html#a93b6f29ed6ba24437927e0a279e3eb2c">rambrain::managedMemoryChunk::locPtr</a></div><div class="ttdeci">void * locPtr</div><div class="ttdoc">pointer to the actual data in RAM </div><div class="ttdef"><b>Definition:</b> <a href="a00053_source.html#l00066">managedMemoryChunk.h:66</a></div></div>
 <div class="ttc" id="a00030_html_ab1b14519c719b0f70b204ecbd5468ff4"><div class="ttname"><a href="a00030.html#ab1b14519c719b0f70b204ecbd5468ff4">tester::getDurationsForCurrentCycle</a></div><div class="ttdeci">std::vector&lt; int64_t &gt; getDurationsForCurrentCycle() const </div><div class="ttdoc">Take the current cycle of time measurements and calculate all durations in betwen. </div><div class="ttdef"><b>Definition:</b> <a href="a00080_source.html#l00186">tester.cpp:186</a></div></div>
 <div class="ttc" id="a00030_html_a902049984a5425407a2a8aafffec0669"><div class="ttname"><a href="a00030.html#a902049984a5425407a2a8aafffec0669">tester::setSeed</a></div><div class="ttdeci">void setSeed(unsigned int seed=time(NULL))</div><div class="ttdoc">Set a new seed for random number generation. </div><div class="ttdef"><b>Definition:</b> <a href="a00080_source.html#l00064">tester.cpp:64</a></div></div>
-<div class="ttc" id="a00019_html_a6207b667ec6674831738a9e22f6b3b5e"><div class="ttname"><a href="a00019.html#a6207b667ec6674831738a9e22f6b3b5e">rambrain::managedSwap::waitForCleanExit</a></div><div class="ttdeci">void waitForCleanExit()</div><div class="ttdoc">Function waits for all asynchronous IO to complete. The wait is implemented non-performant as a norma...</div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00044">managedSwap.cpp:44</a></div></div>
+<div class="ttc" id="a00019_html_a6207b667ec6674831738a9e22f6b3b5e"><div class="ttname"><a href="a00019.html#a6207b667ec6674831738a9e22f6b3b5e">rambrain::managedSwap::waitForCleanExit</a></div><div class="ttdeci">void waitForCleanExit()</div><div class="ttdoc">Function waits for all asynchronous IO to complete. The wait is implemented non-performant as a norma...</div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00046">managedSwap.cpp:46</a></div></div>
 <div class="ttc" id="a00085_html_a3dd82cd5872087316e3d310574a008d4"><div class="ttname"><a href="a00085.html#a3dd82cd5872087316e3d310574a008d4">TEST</a></div><div class="ttdeci">TEST(managedFileSwap, Unit_LazyPffree)</div><div class="ttdef"><b>Definition:</b> <a href="a00085_source.html#l00039">testManagedFileSwap.cpp:39</a></div></div>
 <div class="ttc" id="a00036_html"><div class="ttname"><a href="a00036.html">common.h</a></div></div>
 <div class="ttc" id="a00017_html_a8975c39c838ab14956b4aca36f3a4220"><div class="ttname"><a href="a00017.html#a8975c39c838ab14956b4aca36f3a4220">rambrain::managedMemoryChunk::status</a></div><div class="ttdeci">memoryStatus status</div><div class="ttdef"><b>Definition:</b> <a href="a00053_source.html#l00064">managedMemoryChunk.h:64</a></div></div>
-<div class="ttc" id="a00085_html_a3d9512de8648bd4680902a4999028b5f"><div class="ttname"><a href="a00085.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a></div><div class="ttdeci">RESTORE_WARNINGS</div><div class="ttdef"><b>Definition:</b> <a href="a00085_source.html#l00753">testManagedFileSwap.cpp:753</a></div></div>
+<div class="ttc" id="a00085_html_a3d9512de8648bd4680902a4999028b5f"><div class="ttname"><a href="a00085.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a></div><div class="ttdeci">RESTORE_WARNINGS</div><div class="ttdef"><b>Definition:</b> <a href="a00085_source.html#l00862">testManagedFileSwap.cpp:862</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00085.html">testManagedFileSwap.cpp</a></li>
-    <li class="footer">Generated on Thu Sep 17 2015 01:41:15 for rambrain by
+    <li class="footer">Generated on Fri Sep 18 2015 01:41:34 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -286,6 +286,7 @@
                 <section title="waitForSwapin" ref="a00016.html#ad8309642f6f8847f5d80b80a0e5a90bc" />
                 <section title="waitForSwapout" ref="a00016.html#aa71bd5c33b1ee3c0e89e672f89c4d3f2" />
                 <section title="::cyclicManagedMemory_Integration_ArrayAccess_Test" ref="a00016.html#a64c14b438f19454bdebd737eddb9e0a6" />
+                <section title="::managedFileSwap_Unit_CheckSwapStats_Test" ref="a00016.html#ac2e5eaf4210c1832af96f0584533705f" />
                 <section title="::managedFileSwap_Unit_ManualMultiSwapping_Test" ref="a00016.html#a354aaa505fa382a499838b075f92d0f7" />
                 <section title="::managedFileSwap_Unit_ManualSwapping_Test" ref="a00016.html#a61476c6520b6093ca7003a8b2ee302f6" />
                 <section title="::managedFileSwap_Unit_ManualSwappingDelete_Test" ref="a00016.html#aa0cbd2454408b8ae3b5aca513c07eef0" />
@@ -977,6 +978,7 @@
                   <section title="waitForSwapin" ref="a00016.html#ad8309642f6f8847f5d80b80a0e5a90bc" />
                   <section title="waitForSwapout" ref="a00016.html#aa71bd5c33b1ee3c0e89e672f89c4d3f2" />
                   <section title="::cyclicManagedMemory_Integration_ArrayAccess_Test" ref="a00016.html#a64c14b438f19454bdebd737eddb9e0a6" />
+                  <section title="::managedFileSwap_Unit_CheckSwapStats_Test" ref="a00016.html#ac2e5eaf4210c1832af96f0584533705f" />
                   <section title="::managedFileSwap_Unit_ManualMultiSwapping_Test" ref="a00016.html#a354aaa505fa382a499838b075f92d0f7" />
                   <section title="::managedFileSwap_Unit_ManualSwapping_Test" ref="a00016.html#a61476c6520b6093ca7003a8b2ee302f6" />
                   <section title="::managedFileSwap_Unit_ManualSwappingDelete_Test" ref="a00016.html#aa0cbd2454408b8ae3b5aca513c07eef0" />
@@ -1398,6 +1400,7 @@
                 <section title="TEST" ref="a00085.html#a934338906b724941e205cce15e7c227d" />
                 <section title="TEST" ref="a00085.html#abde6e16f1ca8ec2a1f4f743b6f08f639" />
                 <section title="TEST" ref="a00085.html#a35475128dfe79205f3171cae9087a9dd" />
+                <section title="TEST" ref="a00085.html#a7f695a0c845da9234f652992da925d84" />
                 <section title="IGNORE_TEST_WARNINGS" ref="a00085.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
                 <section title="RESTORE_WARNINGS" ref="a00085.html#a3d9512de8648bd4680902a4999028b5f" />
               </section>
@@ -1565,6 +1568,7 @@
       <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00085.html#a934338906b724941e205cce15e7c227d" />
       <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00085.html#abde6e16f1ca8ec2a1f4f743b6f08f639" />
       <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00085.html#a35475128dfe79205f3171cae9087a9dd" />
+      <keyword name="TEST" id="testManagedFileSwap.cpp::TEST" ref="a00085.html#a7f695a0c845da9234f652992da925d84" />
       <keyword name="IGNORE_TEST_WARNINGS" id="testManagedFileSwap.cpp::IGNORE_TEST_WARNINGS" ref="a00085.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
       <keyword name="RESTORE_WARNINGS" id="testManagedFileSwap.cpp::RESTORE_WARNINGS" ref="a00085.html#a3d9512de8648bd4680902a4999028b5f" />
       <keyword name="TEST" id="testManagedMemory.cpp::TEST" ref="a00086.html#a5254f6138adaa67c630fa15dacd4fd2e" />
@@ -2164,6 +2168,7 @@
       <keyword name="::managedFileSwap_Unit_ManualMultiSwapping_Test" id="rambrain::managedMemory::::managedFileSwap_Unit_ManualMultiSwapping_Test" ref="a00016.html#a354aaa505fa382a499838b075f92d0f7" />
       <keyword name="::managedFileSwap_Unit_ManualSwappingDelete_Test" id="rambrain::managedMemory::::managedFileSwap_Unit_ManualSwappingDelete_Test" ref="a00016.html#aa0cbd2454408b8ae3b5aca513c07eef0" />
       <keyword name="::cyclicManagedMemory_Integration_ArrayAccess_Test" id="rambrain::managedMemory::::cyclicManagedMemory_Integration_ArrayAccess_Test" ref="a00016.html#a64c14b438f19454bdebd737eddb9e0a6" />
+      <keyword name="::managedFileSwap_Unit_CheckSwapStats_Test" id="rambrain::managedMemory::::managedFileSwap_Unit_CheckSwapStats_Test" ref="a00016.html#ac2e5eaf4210c1832af96f0584533705f" />
       <keyword name="configTestGetSwap" id="rambrain::managedMemory::configTestGetSwap" ref="a00016.html#afb585b10243d2574af17f1c6d1e7eec5" />
       <keyword name="ERR_SUCCESS" id="rambrain::managedMemory::ERR_SUCCESS" ref="a00016.html#a06da9a259c539347727783ee01d49c30a18484ef9fdc0d989d5310001924e459a" />
       <keyword name="ERR_SWAPFULL" id="rambrain::managedMemory::ERR_SWAPFULL" ref="a00016.html#a06da9a259c539347727783ee01d49c30af7e70df8f8c52c62970a658f89095c52" />

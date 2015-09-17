@@ -14,6 +14,7 @@ var a00085 =
     [ "TEST", "a00085.html#a934338906b724941e205cce15e7c227d", null ],
     [ "TEST", "a00085.html#abde6e16f1ca8ec2a1f4f743b6f08f639", null ],
     [ "TEST", "a00085.html#a35475128dfe79205f3171cae9087a9dd", null ],
+    [ "TEST", "a00085.html#a7f695a0c845da9234f652992da925d84", null ],
     [ "IGNORE_TEST_WARNINGS", "a00085.html#a01fd81f2b165cd8ece606bb0e29b2b33", null ],
     [ "RESTORE_WARNINGS", "a00085.html#a3d9512de8648bd4680902a4999028b5f", null ]
 ];

@@ -8,6 +8,7 @@ var searchData=
   ['cyclicmanagedmemory_5fintegration_5farrayaccess_5ftest',['cyclicManagedMemory_Integration_ArrayAccess_Test',['../a00016.html#a64c14b438f19454bdebd737eddb9e0a6',1,'rambrain::managedMemory']]],
   ['managedfileswap_5fintegration_5frandomaccess_5ftest',['managedFileSwap_Integration_RandomAccess_Test',['../a00015.html#ae1ef8102728523494e8c8c36b35d63fb',1,'rambrain::managedFileSwap']]],
   ['managedfileswap_5fintegration_5frandomaccessvarioussize_5ftest',['managedFileSwap_Integration_RandomAccessVariousSize_Test',['../a00015.html#af779962c56dc9b6e09c8387978c14a48',1,'rambrain::managedFileSwap']]],
+  ['managedfileswap_5funit_5fcheckswapstats_5ftest',['managedFileSwap_Unit_CheckSwapStats_Test',['../a00016.html#ac2e5eaf4210c1832af96f0584533705f',1,'rambrain::managedMemory']]],
   ['managedfileswap_5funit_5fmanualmultiswapping_5ftest',['managedFileSwap_Unit_ManualMultiSwapping_Test',['../a00016.html#a354aaa505fa382a499838b075f92d0f7',1,'rambrain::managedMemory']]],
   ['managedfileswap_5funit_5fmanualswapping_5ftest',['managedFileSwap_Unit_ManualSwapping_Test',['../a00016.html#a61476c6520b6093ca7003a8b2ee302f6',1,'rambrain::managedMemory']]],
   ['managedfileswap_5funit_5fmanualswappingdelete_5ftest',['managedFileSwap_Unit_ManualSwappingDelete_Test',['../a00016.html#aa0cbd2454408b8ae3b5aca513c07eef0',1,'rambrain::managedMemory']]],

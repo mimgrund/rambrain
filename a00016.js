@@ -45,6 +45,7 @@ var a00016 =
     [ "waitForSwapin", "a00016.html#ad8309642f6f8847f5d80b80a0e5a90bc", null ],
     [ "waitForSwapout", "a00016.html#aa71bd5c33b1ee3c0e89e672f89c4d3f2", null ],
     [ "::cyclicManagedMemory_Integration_ArrayAccess_Test", "a00016.html#a64c14b438f19454bdebd737eddb9e0a6", null ],
+    [ "::managedFileSwap_Unit_CheckSwapStats_Test", "a00016.html#ac2e5eaf4210c1832af96f0584533705f", null ],
     [ "::managedFileSwap_Unit_ManualMultiSwapping_Test", "a00016.html#a354aaa505fa382a499838b075f92d0f7", null ],
     [ "::managedFileSwap_Unit_ManualSwapping_Test", "a00016.html#a61476c6520b6093ca7003a8b2ee302f6", null ],
     [ "::managedFileSwap_Unit_ManualSwappingDelete_Test", "a00016.html#aa0cbd2454408b8ae3b5aca513c07eef0", null ],
