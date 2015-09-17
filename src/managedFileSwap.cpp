@@ -495,7 +495,9 @@ void managedFileSwap::swapDelete ( managedMemoryChunk *chunk )
         pageFileLocation *loc = ( pageFileLocation * ) chunk->swapBuf;
         pffree ( loc );
         chunk->swapBuf = NULL;
-        claimUsageof ( chunk->size, false, false );
+        if ( !chunk->locPtr ) { //Check if this was a cached element...
+            claimUsageof ( chunk->size, false, false );
+        }
     }
 }
 
