@@ -592,7 +592,7 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         }
 
 #ifdef SWAPSTATS
-        swap_in_scheduled_bytes += selectedReadinVol;
+        swap_in_scheduled_bytes += swappedInBytes;
         n_swap_in += 1;
 #endif
         VERBOSEPRINT ( "swapInBeforeReturn" );
@@ -1057,14 +1057,15 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
     }
     rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
     VERBOSEPRINT ( "swapOutReturn" );
+#ifdef SWAPSTATS
+    swap_out_scheduled_bytes += real_unloaded;
+    n_swap_out += 1;
+#endif
     if ( swapSuccess ) {
 #ifdef VERYVERBOSE
         printf ( "Swap out succeeded (%lu vs %lu )\n", min_size, real_unloaded );
 #endif
-#ifdef SWAPSTATS
-        swap_out_scheduled_bytes += unload_size;
-        n_swap_out += 1;
-#endif
+
         return ERR_SUCCESS;
     } else {
 #ifdef VERYVERBOSE
