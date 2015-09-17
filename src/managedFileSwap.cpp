@@ -512,7 +512,7 @@ global_bytesize managedFileSwap::swapIn ( managedMemoryChunk *chunk )
     }
     if ( buf ) {
         if ( chunk->status & MEM_ALLOCATED || chunk->status == MEM_SWAPIN ) {
-            return chunk->size;    //chunk is available or will become available
+            return 0;    //chunk is available or will become available
         }
         chunk->locPtr = buf;
         claimUsageof ( chunk->size, true, true );
