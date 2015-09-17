@@ -344,6 +344,11 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
         Throw ( rambrain::memoryException ( "Could not swap out bytes even though swap claimed to be able to swap out this." ) );
     }
     preemptiveBytes -= bytesselected;
+#ifdef SWAPSTATS
+    ++n_swap_out;
+    swap_out_scheduled_bytes += bytesselected;
+#endif
+
     rambrain_pthread_mutex_lock ( &cyclicTopoLock );
 
     if ( !consecutive ) {
