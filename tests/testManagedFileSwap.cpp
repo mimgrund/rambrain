@@ -751,6 +751,7 @@ TEST ( managedFileSwap, Unit_SwapPolicy )
 }
 
 #ifdef SWAPSTATS
+///@test Tests whether swapstats are gathered correctly for some simple cases and if they are plausible for some more complicated stuff
 TEST ( managedFileSwap, Unit_CheckSwapStats )
 {
     const unsigned int amount = 1E3;
@@ -786,9 +787,7 @@ TEST ( managedFileSwap, Unit_CheckSwapStats )
 
     }
 
-    rambrain_pthread_mutex_lock ( &manager.stateChangeMutex );
     swap.waitForCleanExit();
-    rambrain_pthread_mutex_unlock ( &manager.stateChangeMutex );
 
     EXPECT_EQ ( 0, manager.n_swap_out );
     EXPECT_EQ ( 0, manager.n_swap_in );
@@ -808,9 +807,7 @@ TEST ( managedFileSwap, Unit_CheckSwapStats )
         }
     }
 
-    rambrain_pthread_mutex_lock ( &manager.stateChangeMutex );
     swap.waitForCleanExit();
-    rambrain_pthread_mutex_unlock ( &manager.stateChangeMutex );
 
     EXPECT_GE ( countSwap, manager.n_swap_out );
     EXPECT_EQ ( 0, manager.n_swap_in );
@@ -828,9 +825,7 @@ TEST ( managedFileSwap, Unit_CheckSwapStats )
         }
     }
 
-    rambrain_pthread_mutex_lock ( &manager.stateChangeMutex );
     swap.waitForCleanExit();
-    rambrain_pthread_mutex_unlock ( &manager.stateChangeMutex );
 
     EXPECT_GE ( countSwap + count, manager.n_swap_out );
     EXPECT_GE ( count, manager.n_swap_in );
@@ -839,6 +834,23 @@ TEST ( managedFileSwap, Unit_CheckSwapStats )
     EXPECT_EQ ( amount * ( countSwap + count ) * sizeof ( double ), manager.swap_out_bytes );
     EXPECT_EQ ( amount * count * sizeof ( double ), manager.swap_in_bytes );
 
+    tester test;
+    test.setSeed();
+
+    sum = 0.0;
+    for ( unsigned int i = 0; i < count; ++i ) {
+        managedPtr<double> *dat = ptrs[test.random ( ( int ) count )];
+        ADHERETOLOC ( double, dat, loc );
+        for ( unsigned int j = 0; j < amount; ++j ) {
+            sum += loc[j];
+        }
+    }
+
+    swap.waitForCleanExit();
+
+
+    EXPECT_LE ( manager.swap_out_bytes, manager.swap_out_scheduled_bytes );
+    EXPECT_LE ( manager.swap_in_bytes , manager.swap_in_scheduled_bytes );
 
     for ( unsigned int i = 0; i < count; ++i ) {
         delete ptrs[i];
