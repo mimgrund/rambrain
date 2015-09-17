@@ -661,6 +661,8 @@ bool cyclicManagedMemory::checkCycle() const
     global_bytesize usedBytes = 0;
     global_bytesize tobef = 0;
 
+    global_bytesize swappedBytes = 0;
+
     if ( !cur ) {
         rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         rambrain_pthread_mutex_unlock ( &stateChangeMutex );
@@ -688,6 +690,9 @@ bool cyclicManagedMemory::checkCycle() const
         } else if ( cur->chunk->status == MEM_SWAPOUT ) {
             tobef += cur->chunk->size;
             usedBytes += cur->chunk->size;
+        }
+        if ( cur->chunk->status == MEM_SWAPPED || cur->chunk->status == rambrain::MEM_SWAPIN || cur->chunk->status == MEM_SWAPOUT ) {
+            swappedBytes += cur->chunk->size;
         }
 
         if ( oldcur != cur->prev ) {
@@ -724,6 +729,11 @@ bool cyclicManagedMemory::checkCycle() const
         errmsgf ( "To-Be-Freed bytes are not counted correctly, claimed %lu but found %lu", memory_used, usedBytes );
         memerror = true;
     }
+    if ( swappedBytes != swap->getUsedSwap() ) {
+        errmsgf ( "Swapped bytes are not counted correctly, claimed %lu but found %lu", memory_used, usedBytes );
+        memerror = true;
+    }
+
 
     unsigned int illicit_count = 0;
     if ( preemptiveStart ) {
