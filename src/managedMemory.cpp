@@ -630,9 +630,10 @@ void managedMemory::printSwapstats() const
           \n\tA total of %lu swapins occured, reading in %lu bytes (%.3e Bytes/avg)\
           \n\twe used already loaded elements %lu times, %lu had to be fetched\
           \n\tthus, the hits over misses rate was %.5f\
-          \n\tfraction of swapped out ram (currently) %.2e", n_swap_out, swap_out_bytes, \
+          \n\tfraction of swapped out ram (currently) %.2e\n\t %lu scheduled out bytes  and %lu scheduled in bytes saved by caching.", n_swap_out, swap_out_bytes, \
                ( ( float ) swap_out_bytes ) / n_swap_out, n_swap_in, swap_in_bytes, ( ( float ) swap_in_bytes ) / n_swap_in, \
-               swap_hits, swap_misses, ( ( float ) swap_hits / swap_misses ), ( ( float ) memory_swapped ) / ( memory_used + memory_swapped ) );
+               swap_hits, swap_misses, ( ( float ) swap_hits / swap_misses ), ( ( float ) memory_swapped ) / ( memory_used + memory_swapped ),
+               swap_out_scheduled_bytes - swap_out_bytes, swap_in_scheduled_bytes - swap_in_bytes );
 }
 
 void managedMemory::resetSwapstats()
