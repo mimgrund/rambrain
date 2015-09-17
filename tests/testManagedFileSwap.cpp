@@ -839,7 +839,10 @@ TEST ( managedFileSwap, Unit_CheckSwapStats )
     EXPECT_EQ ( amount * ( countSwap + count ) * sizeof ( double ), manager.swap_out_bytes );
     EXPECT_EQ ( amount * count * sizeof ( double ), manager.swap_in_bytes );
 
-    /// @todo now follow up with some deterministic random stuff
+
+    for ( unsigned int i = 0; i < count; ++i ) {
+        delete ptrs[i];
+    }
 }
 
 #endif
