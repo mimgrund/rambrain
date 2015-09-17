@@ -753,7 +753,6 @@ TEST ( managedFileSwap, Unit_SwapPolicy )
 #ifdef SWAPSTATS
 TEST ( managedFileSwap, Unit_CheckSwapStats )
 {
-    printf ( "Oink" );
     const unsigned int amount = 1E3;
     const unsigned int countMem = 10;
     const unsigned int countSwap = 100;
@@ -765,15 +764,16 @@ TEST ( managedFileSwap, Unit_CheckSwapStats )
     cyclicManagedMemory manager ( &swap, mem );
 
     manager.setPreemptiveUnloading ( false );
+    manager.setPreemptiveLoading ( false );
 
-    ASSERT_EQ ( 0, manager.n_swap_out );
-    ASSERT_EQ ( 0, manager.n_swap_in );
-    ASSERT_EQ ( 0, manager.swap_out_scheduled_bytes );
-    ASSERT_EQ ( 0, manager.swap_in_scheduled_bytes );
-    ASSERT_EQ ( 0, manager.swap_out_bytes );
-    ASSERT_EQ ( 0, manager.swap_in_bytes );
-    ASSERT_EQ ( 0, manager.swap_out_bytes_last );
-    ASSERT_EQ ( 0, manager.swap_in_bytes_last );
+    EXPECT_EQ ( 0, manager.n_swap_out );
+    EXPECT_EQ ( 0, manager.n_swap_in );
+    EXPECT_EQ ( 0, manager.swap_out_scheduled_bytes );
+    EXPECT_EQ ( 0, manager.swap_in_scheduled_bytes );
+    EXPECT_EQ ( 0, manager.swap_out_bytes );
+    EXPECT_EQ ( 0, manager.swap_in_bytes );
+    EXPECT_EQ ( 0, manager.swap_out_bytes_last );
+    EXPECT_EQ ( 0, manager.swap_in_bytes_last );
 
     managedPtr<double> *ptrs[count];
     for ( unsigned int i = 0; i < countMem; ++i ) {
@@ -783,22 +783,21 @@ TEST ( managedFileSwap, Unit_CheckSwapStats )
         for ( unsigned int j = 0; j < amount; ++j ) {
             loc[j] = i * amount + j;
         }
+
     }
 
-    printf ( "Oink" );
     rambrain_pthread_mutex_lock ( &manager.stateChangeMutex );
-    manager.waitForAIO();
+    swap.waitForCleanExit();
     rambrain_pthread_mutex_unlock ( &manager.stateChangeMutex );
-    printf ( "Oink" );
 
-    ASSERT_EQ ( 0, manager.n_swap_out );
-    ASSERT_EQ ( 0, manager.n_swap_in );
-    ASSERT_EQ ( 0, manager.swap_out_scheduled_bytes );
-    ASSERT_EQ ( 0, manager.swap_in_scheduled_bytes );
-    ASSERT_EQ ( 0, manager.swap_out_bytes );
-    ASSERT_EQ ( 0, manager.swap_in_bytes );
-    ASSERT_EQ ( 0, manager.swap_out_bytes_last );
-    ASSERT_EQ ( 0, manager.swap_in_bytes_last );
+    EXPECT_EQ ( 0, manager.n_swap_out );
+    EXPECT_EQ ( 0, manager.n_swap_in );
+    EXPECT_EQ ( 0, manager.swap_out_scheduled_bytes );
+    EXPECT_EQ ( 0, manager.swap_in_scheduled_bytes );
+    EXPECT_EQ ( 0, manager.swap_out_bytes );
+    EXPECT_EQ ( 0, manager.swap_in_bytes );
+    EXPECT_EQ ( 0, manager.swap_out_bytes_last );
+    EXPECT_EQ ( 0, manager.swap_in_bytes_last );
 
     for ( unsigned int i = countMem; i < count; ++i ) {
         ptrs[i] = new managedPtr<double> ( amount );
@@ -810,16 +809,15 @@ TEST ( managedFileSwap, Unit_CheckSwapStats )
     }
 
     rambrain_pthread_mutex_lock ( &manager.stateChangeMutex );
-    manager.waitForAIO();
+    swap.waitForCleanExit();
     rambrain_pthread_mutex_unlock ( &manager.stateChangeMutex );
-    printf ( "Oink" );
 
-    ASSERT_GE ( countSwap, manager.n_swap_out );
-    ASSERT_EQ ( 0, manager.n_swap_in );
-    ASSERT_EQ ( amount * countSwap * sizeof ( double ), manager.swap_out_scheduled_bytes );
-    ASSERT_EQ ( 0, manager.swap_in_scheduled_bytes );
-    ASSERT_EQ ( amount * countSwap * sizeof ( double ), manager.swap_out_bytes );
-    ASSERT_EQ ( 0, manager.swap_in_bytes );
+    EXPECT_GE ( countSwap, manager.n_swap_out );
+    EXPECT_EQ ( 0, manager.n_swap_in );
+    EXPECT_EQ ( amount * countSwap * sizeof ( double ), manager.swap_out_scheduled_bytes );
+    EXPECT_EQ ( 0, manager.swap_in_scheduled_bytes );
+    EXPECT_EQ ( amount * countSwap * sizeof ( double ), manager.swap_out_bytes );
+    EXPECT_EQ ( 0, manager.swap_in_bytes );
 
     double sum = 0.0;
     for ( unsigned int i = 0; i < count; ++i ) {
@@ -831,19 +829,19 @@ TEST ( managedFileSwap, Unit_CheckSwapStats )
     }
 
     rambrain_pthread_mutex_lock ( &manager.stateChangeMutex );
-    manager.waitForAIO();
+    swap.waitForCleanExit();
     rambrain_pthread_mutex_unlock ( &manager.stateChangeMutex );
-    printf ( "Oink" );
 
-    ASSERT_GE ( countSwap + count, manager.n_swap_out );
-    ASSERT_GE ( count, manager.n_swap_in );
-    ASSERT_EQ ( amount * ( countSwap + count ) * sizeof ( double ), manager.swap_out_scheduled_bytes );
-    ASSERT_EQ ( amount * count * sizeof ( double ), manager.swap_in_scheduled_bytes );
-    ASSERT_EQ ( amount * ( countSwap + count ) * sizeof ( double ), manager.swap_out_bytes );
-    ASSERT_EQ ( amount * count * sizeof ( double ), manager.swap_in_bytes );
+    EXPECT_GE ( countSwap + count, manager.n_swap_out );
+    EXPECT_GE ( count, manager.n_swap_in );
+    EXPECT_EQ ( amount * ( countSwap + count ) * sizeof ( double ), manager.swap_out_scheduled_bytes );
+    EXPECT_EQ ( amount * count * sizeof ( double ), manager.swap_in_scheduled_bytes );
+    EXPECT_EQ ( amount * ( countSwap + count ) * sizeof ( double ), manager.swap_out_bytes );
+    EXPECT_EQ ( amount * count * sizeof ( double ), manager.swap_in_bytes );
 
     /// @todo now follow up with some deterministic random stuff
 }
+
 #endif
 
 RESTORE_WARNINGS;
