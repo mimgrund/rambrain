@@ -541,12 +541,10 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         //actually is sitting in, be it the filtered section, the 'good' section or outside the filtered area. Normally,
         //it is just outside, however in rare circumstances, active is inside. We need to keep track of these cases without
         //producing much overhead. The following seems to work now and we hope it captures all circumstances.
-        bool allElementsLoadedin = false;
+
         if ( activeInList ) { // Correct when active was also moved in action. This will exclude cyclic things downstairs, as we have an element out of here, endSwapin.
             if ( active == endSwapin ) {
                 active = active->next;
-            } else {
-                allElementsLoadedin = true;
             }
         }
 
@@ -567,9 +565,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
         }
         //Let us now reinsert:
         if ( after ) { // We are not cyclic
-            if ( allElementsLoadedin ) {
-                active = toFilter.from;
-            }
             if ( active ) {
                 insertBefore ( active, filtered );
             } else {
@@ -583,7 +578,6 @@ bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
             } else {
                 MUTUAL_CONNECT ( filtered.to, filtered.from )
             }
-
         }
         rambrain_pthread_mutex_unlock ( &cyclicTopoLock );
         touch ( chunk );
