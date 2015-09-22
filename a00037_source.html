@@ -335,7 +335,7 @@ $(document).ready(function(){initNavTree('a00037_source.html','');});
 <div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            ret &amp;= <a class="code" href="a00006.html#a89ebde62397d8fdda601543eb2eb110a">parseConfigBlock</a> ( stream, specificDone ? readLines : thisReadLines );</div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
 <div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            defaultDone = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( <a class="code" href="a00006.html#a78ab5e3dcf141f66f4916d9a84ec6566">regex</a>.<a class="code" href="a00028.html#a952ca26ade04a532e24f85dbb2c748e4">matchConfigBlock</a> ( line, appName ) ) {</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( !specificDone &amp;&amp; <a class="code" href="a00006.html#a78ab5e3dcf141f66f4916d9a84ec6566">regex</a>.<a class="code" href="a00028.html#a952ca26ade04a532e24f85dbb2c748e4">matchConfigBlock</a> ( line, appName ) ) {</div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            ret &amp;= <a class="code" href="a00006.html#a89ebde62397d8fdda601543eb2eb110a">parseConfigBlock</a> ( stream, readLines );</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
 <div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            specificDone = <span class="keyword">true</span>;</div>
@@ -471,7 +471,7 @@ $(document).ready(function(){initNavTree('a00037_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00037.html">configreader.cpp</a></li>
-    <li class="footer">Generated on Tue Sep 22 2015 01:41:40 for rambrain by
+    <li class="footer">Generated on Wed Sep 23 2015 01:41:32 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
