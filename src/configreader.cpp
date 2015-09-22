@@ -226,7 +226,7 @@ bool configReader::parseConfigFile ( istream &stream, vector<configLineBase *> &
             ret &= parseConfigBlock ( stream, specificDone ? readLines : thisReadLines );
 
             defaultDone = true;
-        } else if ( regex.matchConfigBlock ( line, appName ) ) {
+        } else if ( !specificDone && regex.matchConfigBlock ( line, appName ) ) {
             ret &= parseConfigBlock ( stream, readLines );
 
             specificDone = true;
