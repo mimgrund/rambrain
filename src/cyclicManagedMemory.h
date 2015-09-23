@@ -32,7 +32,7 @@ struct cyclicAtime {
 };
 
 
-enum backlog_action {UNKNOWN, REGISTER, DELETE, SWAPOUT, SWAPIN, DECAY, TOUCH};
+enum backlog_action {UNKNOWN, REGISTER, DELETE, SWAPOUT, SWAPIN, DECAY, TOUCH, CHECK};
 
 union backlog_value {
     memoryID id;
@@ -59,7 +59,7 @@ public:
     void printMemUsage() const;
     /** @brief checks whether the scheduler believes to be sane and prints an error message if not
      *  @return true if sane, false if not**/
-    bool checkCycle() const;
+    bool checkCycle();
 
     /**
      * @brief sets whether scheduler should guess next needed items

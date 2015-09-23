@@ -380,7 +380,7 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
 
 bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 {
-    BACKLOG_ADD_ID ( SWAPOUT, chunk.id )
+    BACKLOG_ADD_ID ( SWAPIN, chunk.id )
     VERBOSEPRINT ( "swapInEntry" );
 #ifdef VERYVERBOSE
     if ( chunk.useCnt == 0 ) {
@@ -650,10 +650,11 @@ void cyclicManagedMemory::untouch ( managedMemoryChunk &chunk )
 }
 
 
-bool cyclicManagedMemory::checkCycle() const
+bool cyclicManagedMemory::checkCycle()
 {
     rambrain_pthread_mutex_lock ( &stateChangeMutex );
     rambrain_pthread_mutex_lock ( &cyclicTopoLock );
+    BACKLOG_ADD_SIZE ( CHECK, 0 )
 #ifdef PARENTAL_CONTROL
     unsigned int no_reg = memChunks.size() - 1;
 #else
@@ -996,6 +997,9 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
                 if ( preemptiveStart && ( fromPos->chunk == preemptiveStart->chunk ) ) {
                     resetPreemptiveStart = true;
                 }
+                if ( active->chunk == fromPos->chunk ) {
+                    active = ( active == active->prev ? NULL : active->prev );
+                }
             }
         }
         fromPos = fromPos->prev;
@@ -1115,6 +1119,8 @@ void cyclicManagedMemory::printBacklog() const
         case DECAY:
             printf ( "DECAY\t of %lu Bytes\n", backlog[pos].value.size );
             break;
+        case CHECK:
+            printf ( "CHECKED cycle\n" );
         case UNKNOWN:
             ;
         };
