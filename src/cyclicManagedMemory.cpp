@@ -1046,11 +1046,18 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         insertBefore ( after, filtered );
         counterActive = filtered.from->prev;
     }
-    if ( ! ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) ) { // We may have swapped out the first allocated element
-        active = counterActive;
+    if ( active->chunk->preemptiveLoaded ) {
 #ifdef VERYVERBOSE
-        printf ( "had to move active", fromPos->chunk->id );
+        printf ( "had to move active for preemptive\n" );
 #endif
+        active = active->next;
+    } else {
+        if ( ! ( active->chunk->status & MEM_ALLOCATED || active->chunk->status == MEM_SWAPIN ) ) { // We may have swapped out the first allocated element
+            active = counterActive;
+#ifdef VERYVERBOSE
+            printf ( "had to move active\n" );
+#endif
+        }
     }
     if ( resetPreemptiveStart ) { //Rare case!
         cyclicAtime *cur = active;
