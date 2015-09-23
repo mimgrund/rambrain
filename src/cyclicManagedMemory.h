@@ -31,6 +31,21 @@ struct cyclicAtime {
     cyclicAtime *prev;///Prev chunk in cycle
 };
 
+
+enum backlog_action {UNKNOWN, REGISTER, DELETE, SWAPOUT, SWAPIN, DECAY, TOUCH};
+
+union backlog_value {
+    memoryID id;
+    global_bytesize size;
+};
+struct backlog_entry {
+    backlog_action action = UNKNOWN;
+    backlog_value value;
+};
+
+
+
+
 ///@brief scheduler working with a double linked cycle. Details see paper.
 class cyclicManagedMemory : public managedMemory
 {
@@ -110,10 +125,18 @@ private:
     struct cyclicManagedMemory::chain filterChain ( chain &toFilter, const memoryStatus *separateStatus, bool *preemptiveLoaded = NULL );
     static void insertBefore ( cyclicAtime *pos, chain separated );
     static void printChain ( const char *name, const chain mchain );
+
+    void printBacklog() const;
+    static const unsigned int backlog_size = 100;
+    backlog_entry backlog[backlog_size];
+    unsigned int backlog_pos = 0;
+
 };
 
 #define MUTUAL_CONNECT(A,B) A->next = B; B->prev = A;
 
+#define BACKLOG_ADD_SIZE(maction,mvalue) {backlog[backlog_pos].action  = maction;backlog[backlog_pos].value.size= mvalue;backlog_pos=++backlog_pos%backlog_size;};
+#define BACKLOG_ADD_ID(maction,mvalue) {backlog[backlog_pos].action  = maction;backlog[backlog_pos].value.id= mvalue ;backlog_pos=++backlog_pos%backlog_size;};
 
 
 }

@@ -30,6 +30,8 @@
 
 
 
+
+
 namespace rambrain
 {
 #ifdef VERYVERBOSE
@@ -49,7 +51,7 @@ cyclicManagedMemory::cyclicManagedMemory ( managedSwap *swap, global_bytesize si
 
 void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk &chunk )
 {
-
+    BACKLOG_ADD_ID ( REGISTER, chunk.id )
     cyclicAtime *neu = new cyclicAtime;
 
     //Couple chunk to atime and vice versa:
@@ -66,7 +68,7 @@ void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk &chunk )
         MUTUAL_CONNECT ( before, neu );
         MUTUAL_CONNECT ( neu, after );
     }
-    if ( counterActive == active && counterActive->chunk->status == MEM_SWAPPED ) {
+    if ( ( counterActive == active ) && ( ( counterActive->chunk->status == MEM_SWAPPED ) || ( counterActive->chunk->status == MEM_SWAPOUT ) ) ) {
         counterActive = neu;
     }
     active = neu;
@@ -77,6 +79,7 @@ void cyclicManagedMemory::schedulerRegister ( managedMemoryChunk &chunk )
 
 void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
 {
+    BACKLOG_ADD_ID ( DELETE, chunk.id )
     cyclicAtime *element = ( cyclicAtime * ) chunk.schedBuf;
     //Memory counting for what we account for:
     rambrain_pthread_mutex_lock ( &cyclicTopoLock );
@@ -125,6 +128,7 @@ void cyclicManagedMemory::schedulerDelete ( managedMemoryChunk &chunk )
 bool cyclicManagedMemory::touch ( managedMemoryChunk &chunk )
 {
     rambrain_pthread_mutex_lock ( &cyclicTopoLock );
+    BACKLOG_ADD_ID ( TOUCH, chunk.id )
     if ( chunk.preemptiveLoaded ) { //This chunk was preemptively loaded
         ++consecutivePreemptiveTransactions;
         preemptiveBytes -= chunk.size;
@@ -304,6 +308,7 @@ afterchecks:
 
 void cyclicManagedMemory::decay ( global_bytesize bytes )
 {
+    BACKLOG_ADD_SIZE ( DECAY, bytes )
     if ( preemptiveStart == NULL ) {
         return;
     }
@@ -375,6 +380,7 @@ void cyclicManagedMemory::decay ( global_bytesize bytes )
 
 bool cyclicManagedMemory::swapIn ( managedMemoryChunk &chunk )
 {
+    BACKLOG_ADD_ID ( SWAPOUT, chunk.id )
     VERBOSEPRINT ( "swapInEntry" );
 #ifdef VERYVERBOSE
     if ( chunk.useCnt == 0 ) {
@@ -793,6 +799,7 @@ bool cyclicManagedMemory::checkCycle() const
     }
 
     if ( memerror ) {
+        printBacklog();
         printCycle();
         return false;
 
@@ -889,7 +896,7 @@ void cyclicManagedMemory::printChain ( const char *name, const cyclicManagedMemo
 
 cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::global_bytesize min_size )
 {
-
+    BACKLOG_ADD_SIZE ( SWAPOUT, min_size )
     rambrain_pthread_mutex_lock ( &cyclicTopoLock );
     if ( counterActive == 0 ) {
         rambrain_pthread_mutex_unlock ( &stateChangeMutex );
@@ -1083,6 +1090,38 @@ cyclicManagedMemory::~cyclicManagedMemory()
         }
         ++it;
     }
+}
+void cyclicManagedMemory::printBacklog() const
+{
+    printf ( "Begin backlog\n" );
+    unsigned int pos = backlog_pos;
+    do {
+        switch ( backlog[pos].action ) {
+        case SWAPIN:
+            printf ( "SWAPIN\t of chunk %lu\n", backlog[pos].value.id );
+            break;
+        case SWAPOUT:
+            printf ( "SWAPOUT\t of %lu bytes\n", backlog[pos].value.size );
+            break;
+        case DELETE:
+            printf ( "DELETION\t of chunk %lu\n", backlog[pos].value.id );
+            break;
+        case REGISTER:
+            printf ( "REGISTER\t of chunk %lu\n", backlog[pos].value.id );
+            break;
+        case TOUCH:
+            printf ( "TOUCH\t of chunk %lu\n", backlog[pos].value.id );
+            break;
+        case DECAY:
+            printf ( "DECAY\t of %lu Bytes\n", backlog[pos].value.size );
+            break;
+        case UNKNOWN:
+            ;
+        };
+        pos = ( ++pos ) % backlog_size;
+    } while ( backlog_pos != pos );
+
+    printf ( "End backlog\n" );
 }
 
 }
