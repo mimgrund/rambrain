@@ -997,8 +997,8 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
                 if ( preemptiveStart && ( fromPos->chunk == preemptiveStart->chunk ) ) {
                     resetPreemptiveStart = true;
                 }
-                if ( active->chunk == fromPos->chunk ) {
-                    active = ( active == active->prev ? NULL : active->prev );
+                if ( active->chunk == fromPos->chunk )  {
+                    active = active->prev;
                 }
             }
         }
@@ -1124,7 +1124,7 @@ void cyclicManagedMemory::printBacklog() const
         case UNKNOWN:
             ;
         };
-        pos = ( ++pos ) % backlog_size;
+        pos = ( pos + 1 ) % backlog_size;
     } while ( backlog_pos != pos );
 
     printf ( "End backlog\n" );

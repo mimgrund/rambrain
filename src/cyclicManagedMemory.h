@@ -135,8 +135,8 @@ private:
 
 #define MUTUAL_CONNECT(A,B) A->next = B; B->prev = A;
 
-#define BACKLOG_ADD_SIZE(maction,mvalue) {backlog[backlog_pos].action  = maction;backlog[backlog_pos].value.size= mvalue;backlog_pos=++backlog_pos%backlog_size;};
-#define BACKLOG_ADD_ID(maction,mvalue) {backlog[backlog_pos].action  = maction;backlog[backlog_pos].value.id= mvalue ;backlog_pos=++backlog_pos%backlog_size;};
+#define BACKLOG_ADD_SIZE(maction,mvalue) {backlog[backlog_pos].action  = maction;backlog[backlog_pos].value.size= mvalue;backlog_pos=(backlog_pos+1)%backlog_size;};
+#define BACKLOG_ADD_ID(maction,mvalue) {backlog[backlog_pos].action  = maction;backlog[backlog_pos].value.id= mvalue ;backlog_pos=(backlog_pos+1)%backlog_size;};
 
 
 }
