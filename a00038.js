@@ -1,12 +1,8 @@
 var a00038 =
 [
-    [ "configLineBase", "a00005.html", "a00005" ],
-    [ "configLine", "a00004.html", "a00004" ],
-    [ "configuration", "a00007.html", "a00007" ],
-    [ "configReader", "a00006.html", "a00006" ],
-    [ "swapPolicy", "a00038.html#a7d53dd1748d5012cafa91aa982c7cd35", [
-      [ "fixed", "a00038.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149", null ],
-      [ "autoextendable", "a00038.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04", null ],
-      [ "interactive", "a00038.html#a7d53dd1748d5012cafa91aa982c7cd35afe88c03a1958b4259f0c51d68eed3213", null ]
-    ] ]
+    [ "global_bytesize", "a00038.html#abe2d051306a69fb21f8a17946b4e93ed", null ],
+    [ "myScalar", "a00038.html#a750e2504f6799746989c6d76107bf7c1", null ],
+    [ "gig", "a00038.html#a8525b8b73c3e1ec62bd571b3cffd1742", null ],
+    [ "kib", "a00038.html#ac2c0fb2cc8161166cbd060cb2b85aaf1", null ],
+    [ "mib", "a00038.html#a8526efa365cdb0cb597351c2671af168", null ]
 ];

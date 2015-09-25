@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['gig',['gig',['../a00091.html#a8525b8b73c3e1ec62bd571b3cffd1742',1,'rambrain']]],
-  ['gitcommit',['gitCommit',['../a00043.html#a7f5007ab114a0895060f2e6437200ea9',1,'git_info.h']]],
-  ['gitdiff',['gitDiff',['../a00043.html#a73155ddd51dc782d33249917cd27ae19',1,'git_info.h']]],
-  ['glob_5foff_5fnext',['glob_off_next',['../a00012.html#a5a23bd5f44dc2a374002ab81c12089b3',1,'rambrain::glob_off_union::glob_off_next()'],['../a00021.html#ae2195a06f5ff2491c0157ec663ac1243',1,'rambrain::pageFileLocation::glob_off_next()']]],
-  ['globalconfigpath',['globalConfigPath',['../a00006.html#abed30805ad77a7c29e92f40432152be7',1,'rambrain::configReader']]]
+  ['file',['file',['../a00023.html#abb10204e66ac58e8db03950ec7fd8a5d',1,'rambrain::pageFileLocation']]],
+  ['filemask',['filemask',['../a00017.html#a790e01e9cbc5bd6a3e29bcb478f4961d',1,'rambrain::managedFileSwap']]],
+  ['fileno',['fileno',['../a00031.html#ad1e2f059bfcb37b60e2f0aea45d7b6a3',1,'rambrain::swapFileDesc']]],
+  ['firstlog',['firstLog',['../a00018.html#a242a4b44a5b5ae289579a766ceb76b78',1,'rambrain::managedMemory']]],
+  ['free_5fspace',['free_space',['../a00017.html#a401485970b3da6f50721dac80b7bbbcc',1,'rambrain::managedFileSwap']]],
+  ['from',['from',['../a00005.html#a3ce6b4caeed5ef2197f0e9b0acf8e3ef',1,'rambrain::cyclicManagedMemory::chain']]]
 ];

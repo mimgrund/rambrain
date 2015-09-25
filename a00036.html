@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: /home/rambrainbuild/docubrain/src/common.h File Reference</title>
+<title>rambrain: rambrain::unexpectedStateException Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -48,8 +48,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
-      <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -70,8 +70,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -105,44 +107,186 @@ $(document).ready(function(){initNavTree('a00036.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="a00134.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">common.h File Reference</div>  </div>
+<div class="title">rambrain::unexpectedStateException Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><a href="a00036_source.html">Go to the source code of this file.</a></p>
+<p>An exception for when something totally unexpected happened.  
+ <a href="a00036.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="a00044_source.html">exceptions.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for rambrain::unexpectedStateException:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="a00036.png" usemap="#rambrain::unexpectedStateException_map" alt=""/>
+  <map id="rambrain::unexpectedStateException_map" name="rambrain::unexpectedStateException_map">
+<area href="a00028.html" title="Exception base class for this library. " alt="rambrain::rambrainException" shape="rect" coords="0,0,216,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:a00091"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00091.html">rambrain</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:af3dd85dc4cdd2dfd57605e256829b87b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00036.html#af3dd85dc4cdd2dfd57605e256829b87b">unexpectedStateException</a> (const string &amp;<a class="el" href="a00036.html#a1a60b532d24243eec8cdbafd381fd1c2">details</a>)</td></tr>
+<tr class="memdesc:af3dd85dc4cdd2dfd57605e256829b87b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new exception.  <a href="#af3dd85dc4cdd2dfd57605e256829b87b">More...</a><br /></td></tr>
+<tr class="separator:af3dd85dc4cdd2dfd57605e256829b87b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab535ff3feaae830646297b16969dc04"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00036.html#aab535ff3feaae830646297b16969dc04">~unexpectedStateException</a> ()</td></tr>
+<tr class="memdesc:aab535ff3feaae830646297b16969dc04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the exception.  <a href="#aab535ff3feaae830646297b16969dc04">More...</a><br /></td></tr>
+<tr class="separator:aab535ff3feaae830646297b16969dc04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f676aed82c376c35d2b5bc04b989b6c"><td class="memItemLeft" align="right" valign="top">virtual const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00036.html#a3f676aed82c376c35d2b5bc04b989b6c">what</a> () const   throw ()</td></tr>
+<tr class="memdesc:a3f676aed82c376c35d2b5bc04b989b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report what has gone wrong.  <a href="#a3f676aed82c376c35d2b5bc04b989b6c">More...</a><br /></td></tr>
+<tr class="separator:a3f676aed82c376c35d2b5bc04b989b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a750e2504f6799746989c6d76107bf7c1"><td class="memItemLeft" align="right" valign="top">typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00091.html#a750e2504f6799746989c6d76107bf7c1">rambrain::myScalar</a></td></tr>
-<tr class="separator:a750e2504f6799746989c6d76107bf7c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe2d051306a69fb21f8a17946b4e93ed"><td class="memItemLeft" align="right" valign="top">typedef uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">rambrain::global_bytesize</a></td></tr>
-<tr class="separator:abe2d051306a69fb21f8a17946b4e93ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a1a60b532d24243eec8cdbafd381fd1c2"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00036.html#a1a60b532d24243eec8cdbafd381fd1c2">details</a></td></tr>
+<tr class="separator:a1a60b532d24243eec8cdbafd381fd1c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:ac2c0fb2cc8161166cbd060cb2b85aaf1"><td class="memItemLeft" align="right" valign="top">const global_bytesize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00091.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">rambrain::kib</a> = 1024</td></tr>
-<tr class="separator:ac2c0fb2cc8161166cbd060cb2b85aaf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8526efa365cdb0cb597351c2671af168"><td class="memItemLeft" align="right" valign="top">const global_bytesize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00091.html#a8526efa365cdb0cb597351c2671af168">rambrain::mib</a> = kib * kib</td></tr>
-<tr class="separator:a8526efa365cdb0cb597351c2671af168"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8525b8b73c3e1ec62bd571b3cffd1742"><td class="memItemLeft" align="right" valign="top">const global_bytesize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00091.html#a8525b8b73c3e1ec62bd571b3cffd1742">rambrain::gig</a> = mib * kib</td></tr>
-<tr class="separator:a8525b8b73c3e1ec62bd571b3cffd1742"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_methods_a00028"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00028')"><img src="closed.png" alt="-"/>&#160;Private Member Functions inherited from <a class="el" href="a00028.html">rambrain::rambrainException</a></td></tr>
+<tr class="memitem:adc8b99eedc8c84ace511f44dbd46d531 inherit pub_methods_a00028"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#adc8b99eedc8c84ace511f44dbd46d531">~rambrainException</a> ()</td></tr>
+<tr class="memdesc:adc8b99eedc8c84ace511f44dbd46d531 inherit pub_methods_a00028"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the exception.  <a href="#adc8b99eedc8c84ace511f44dbd46d531">More...</a><br /></td></tr>
+<tr class="separator:adc8b99eedc8c84ace511f44dbd46d531 inherit pub_methods_a00028"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>An exception for when something totally unexpected happened. </p>
+
+<p>Definition at line <a class="el" href="a00044_source.html#l00118">118</a> of file <a class="el" href="a00044_source.html">exceptions.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="af3dd85dc4cdd2dfd57605e256829b87b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">rambrain::unexpectedStateException::unexpectedStateException </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>details</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a new exception. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">details</td><td>Optionally provided details about the current state of affairs </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00044_source.html#l00126">126</a> of file <a class="el" href="a00044_source.html">exceptions.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aab535ff3feaae830646297b16969dc04"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual rambrain::unexpectedStateException::~unexpectedStateException </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destroy the exception. </p>
+
+<p>Definition at line <a class="el" href="a00044_source.html#l00130">130</a> of file <a class="el" href="a00044_source.html">exceptions.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a3f676aed82c376c35d2b5bc04b989b6c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const char* rambrain::unexpectedStateException::what </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+        <tr>
+          <td align="right">throw </td><td>(</td><td colspan="2"></td>
+        </tr>
+        <tr>
+          <td align="right"></td><td>)</td><td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Report what has gone wrong. </p>
+<dl class="section return"><dt>Returns</dt><dd>The report </dd></dl>
+
+<p>Definition at line <a class="el" href="a00044_source.html#l00136">136</a> of file <a class="el" href="a00044_source.html">exceptions.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a1a60b532d24243eec8cdbafd381fd1c2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string rambrain::unexpectedStateException::details</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00044_source.html#l00141">141</a> of file <a class="el" href="a00044_source.html">exceptions.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00044_source.html">exceptions.h</a></li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00036.html">common.h</a></li>
-    <li class="footer">Generated on Fri Sep 25 2015 01:41:46 for rambrain by
+    <li class="navelem"><a class="el" href="a00093.html">rambrain</a></li><li class="navelem"><a class="el" href="a00036.html">unexpectedStateException</a></li>
+    <li class="footer">Generated on Fri Sep 25 2015 08:15:22 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

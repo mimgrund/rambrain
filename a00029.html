@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: rambrain::swapFileDesc Struct Reference</title>
+<title>rambrain: rambrain::rambrainGlobalCriticalSectionControl Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,68 +107,211 @@ $(document).ready(function(){initNavTree('a00029.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="a00128.html">List of all members</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
+<a href="a00130.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">rambrain::swapFileDesc Struct Reference</div>  </div>
+<div class="title">rambrain::rambrainGlobalCriticalSectionControl Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>structure to handle swap files  
+<p>this class marks a section as globally critical. Only one thread can process any section where such an object is generated.  
  <a href="a00029.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00049_source.html">managedFileSwap.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00057_source.html">managedPtr.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:ad1e2f059bfcb37b60e2f0aea45d7b6a3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#ad1e2f059bfcb37b60e2f0aea45d7b6a3">fileno</a></td></tr>
-<tr class="separator:ad1e2f059bfcb37b60e2f0aea45d7b6a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38f03520f7cfe57187d74667dd9ed768"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#a38f03520f7cfe57187d74667dd9ed768">currentSize</a></td></tr>
-<tr class="separator:a38f03520f7cfe57187d74667dd9ed768"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a2eba336227be329754d0cbfad1fa7fb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#a2eba336227be329754d0cbfad1fa7fb9">rambrainGlobalCriticalSectionControl</a> (bool <a class="el" href="a00029.html#a6c7b5ba71d0137485e5149986e562807">locksByUser</a>=false)</td></tr>
+<tr class="separator:a2eba336227be329754d0cbfad1fa7fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4e628e1cade22e5e3ad1de7f34127bb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#ae4e628e1cade22e5e3ad1de7f34127bb">~rambrainGlobalCriticalSectionControl</a> ()</td></tr>
+<tr class="separator:ae4e628e1cade22e5e3ad1de7f34127bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0df23dfab5cf05d28b27de79dad30dd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#a0df23dfab5cf05d28b27de79dad30dd1">stop</a> ()</td></tr>
+<tr class="memdesc:a0df23dfab5cf05d28b27de79dad30dd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">stop pulling critical ingredients in a multithreaded situation  <a href="#a0df23dfab5cf05d28b27de79dad30dd1">More...</a><br /></td></tr>
+<tr class="separator:a0df23dfab5cf05d28b27de79dad30dd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92057e6db5750cd9b730e415ab56cbd6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#a92057e6db5750cd9b730e415ab56cbd6">start</a> ()</td></tr>
+<tr class="memdesc:a92057e6db5750cd9b730e415ab56cbd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">start pulling of critical ingredients in a multithreaded situation  <a href="#a92057e6db5750cd9b730e415ab56cbd6">More...</a><br /></td></tr>
+<tr class="separator:a92057e6db5750cd9b730e415ab56cbd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a6c7b5ba71d0137485e5149986e562807"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#a6c7b5ba71d0137485e5149986e562807">locksByUser</a></td></tr>
+<tr class="separator:a6c7b5ba71d0137485e5149986e562807"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:aae04650afc3d10bdd52790d2cffcbbef"><td class="memItemLeft" align="right" valign="top">static pthread_mutex_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00029.html#aae04650afc3d10bdd52790d2cffcbbef">mutex</a> = PTHREAD_MUTEX_INITIALIZER</td></tr>
+<tr class="separator:aae04650afc3d10bdd52790d2cffcbbef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>structure to handle swap files </p>
+<div class="textblock"><p>this class marks a section as globally critical. Only one thread can process any section where such an object is generated. </p>
+<p>if called with locksByUser set to true, the user has to unlock the mutex manually calling unlock. </p>
 
-<p>Definition at line <a class="el" href="a00049_source.html#l00057">57</a> of file <a class="el" href="a00049_source.html">managedFileSwap.h</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a38f03520f7cfe57187d74667dd9ed768"></a>
+<p>Definition at line <a class="el" href="a00057_source.html#l00409">409</a> of file <a class="el" href="a00057_source.html">managedPtr.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a2eba336227be329754d0cbfad1fa7fb9"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::swapFileDesc::currentSize</td>
+          <td class="memname">rambrain::rambrainGlobalCriticalSectionControl::rambrainGlobalCriticalSectionControl </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>locksByUser</em> = <code>false</code></td><td>)</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00049_source.html#l00059">59</a> of file <a class="el" href="a00049_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00057_source.html#l00412">412</a> of file <a class="el" href="a00057_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad1e2f059bfcb37b60e2f0aea45d7b6a3"></a>
+<a class="anchor" id="ae4e628e1cade22e5e3ad1de7f34127bb"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int rambrain::swapFileDesc::fileno</td>
+          <td class="memname">rambrain::rambrainGlobalCriticalSectionControl::~rambrainGlobalCriticalSectionControl </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00049_source.html#l00058">58</a> of file <a class="el" href="a00049_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00057_source.html#l00417">417</a> of file <a class="el" href="a00057_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00049_source.html">managedFileSwap.h</a></li>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a92057e6db5750cd9b730e415ab56cbd6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::rambrainGlobalCriticalSectionControl::start </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>start pulling of critical ingredients in a multithreaded situation </p>
+
+<p>Definition at line <a class="el" href="a00057_source.html#l00427">427</a> of file <a class="el" href="a00057_source.html">managedPtr.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0df23dfab5cf05d28b27de79dad30dd1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::rambrainGlobalCriticalSectionControl::stop </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>stop pulling critical ingredients in a multithreaded situation </p>
+
+<p>Definition at line <a class="el" href="a00057_source.html#l00423">423</a> of file <a class="el" href="a00057_source.html">managedPtr.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a6c7b5ba71d0137485e5149986e562807"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::rambrainGlobalCriticalSectionControl::locksByUser</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00057_source.html#l00432">432</a> of file <a class="el" href="a00057_source.html">managedPtr.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aae04650afc3d10bdd52790d2cffcbbef"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pthread_mutex_t rambrain::rambrainGlobalCriticalSectionControl::mutex = PTHREAD_MUTEX_INITIALIZER</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00057_source.html#l00431">431</a> of file <a class="el" href="a00057_source.html">managedPtr.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00057_source.html">managedPtr.h</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00052_source.html">managedMemory.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00091.html">rambrain</a></li><li class="navelem"><a class="el" href="a00029.html">swapFileDesc</a></li>
-    <li class="footer">Generated on Fri Sep 25 2015 01:41:50 for rambrain by
+    <li class="navelem"><a class="el" href="a00093.html">rambrain</a></li><li class="navelem"><a class="el" href="a00029.html">rambrainGlobalCriticalSectionControl</a></li>
+    <li class="footer">Generated on Fri Sep 25 2015 08:15:22 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

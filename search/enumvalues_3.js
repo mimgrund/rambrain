@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['fixed',['fixed',['../a00091.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149',1,'rambrain']]],
-  ['floating',['floating',['../a00028.html#acf6754e0f0df10007f5494899ed31229a4afe10bda6318109694a35c63aff6548',1,'rambrain::regexMatcher']]]
+  ['decay',['DECAY',['../a00093.html#a4cdc0267899330e6591a194bf1ed7e10a1bb83fbeebedfcfe83860a1ec7d5de0f',1,'rambrain']]],
+  ['delete',['DELETE',['../a00093.html#a4cdc0267899330e6591a194bf1ed7e10a7dba7d45a75c4b97cb5534d1e35f3d70',1,'rambrain']]]
 ];

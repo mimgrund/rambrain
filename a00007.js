@@ -1,12 +1,8 @@
 var a00007 =
 [
-    [ "configuration", "a00007.html#a8ced069c9a706faa0db7e14e6ba4ca52", null ],
-    [ "configOptions", "a00007.html#a60063ca6099263b106e5434bc0d5ed0b", null ],
-    [ "enableDMA", "a00007.html#a549b17d67bef794af32a9ca86eedbdd5", null ],
-    [ "memory", "a00007.html#aaa2458f8b0518cd8ecfbf0647f63d28d", null ],
-    [ "memoryManager", "a00007.html#ae86fcffce8339717271022be71e95815", null ],
-    [ "policy", "a00007.html#a44d5658ac2cbed42f40703780b8483bb", null ],
-    [ "swap", "a00007.html#a3ab38df7f6bf215f8101f4f914f67b14", null ],
-    [ "swapfiles", "a00007.html#a9d5a43a22122e628b749c18b48cedfc4", null ],
-    [ "swapMemory", "a00007.html#a0d87d5533a56ffe09fcd095918df3795", null ]
+    [ "configLineBase", "a00007.html#a1bb597262fec80005a8e2152100a02e4", null ],
+    [ "~configLineBase", "a00007.html#aa8ba56751a3967ffda56cef490012d0e", null ],
+    [ "setValue", "a00007.html#af88430bdeb79e2a68dc902517318acde", null ],
+    [ "matchType", "a00007.html#a41ed3e2e03f420e02d4397093f26f4f0", null ],
+    [ "name", "a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3", null ]
 ];

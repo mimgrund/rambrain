@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['value',['value',['../a00004.html#a7b2624523c8c1954651a40886ec989f6',1,'rambrain::configLine']]]
+  ['usecnt',['useCnt',['../a00019.html#a0464c7125ccfd3a3b5760bf9c67d86eb',1,'rambrain::managedMemoryChunk']]]
 ];

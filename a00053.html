@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: /home/rambrainbuild/docubrain/src/managedMemoryChunk.h File Reference</title>
+<title>rambrain: /home/rambrainbuild/docubrain/src/managedMemory.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -106,11 +106,9 @@ $(document).ready(function(){initNavTree('a00053.html','');});
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">managedMemoryChunk.h File Reference</div>  </div>
+<div class="title">managedMemory.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -118,45 +116,25 @@ $(document).ready(function(){initNavTree('a00053.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html">rambrain::managedMemoryChunk</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">manages all managed Chunks of raw memory  <a href="a00017.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html">rambrain::managedPtr&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main class to allocate memory that is managed by the rambrain memory defaultManager.  <a href="a00020.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html">rambrain::managedMemory</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backend class to handle raw memory and interaction/storage with <a class="el" href="a00021.html" title="Class that serves as a backend to managedMemory to actual write/read managedMemoryChunks to/from hard...">managedSwap</a>.  <a href="a00018.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00091"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00091.html">rambrain</a></td></tr>
+<tr class="memitem:a00093"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00093.html">rambrain</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a44865184cd1937b742c135666f0460cd"><td class="memItemLeft" align="right" valign="top">typedef uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00091.html#a44865184cd1937b742c135666f0460cd">rambrain::memoryID</a></td></tr>
-<tr class="separator:a44865184cd1937b742c135666f0460cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ac90afa0cd2573bc0a73c6e4c439f81"><td class="memItemLeft" align="right" valign="top">typedef uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00091.html#a7ac90afa0cd2573bc0a73c6e4c439f81">rambrain::memoryAtime</a></td></tr>
-<tr class="separator:a7ac90afa0cd2573bc0a73c6e4c439f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a2aa4b6f9186dc50dad74cf1abd3799c2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00091.html#a2aa4b6f9186dc50dad74cf1abd3799c2">rambrain::memoryStatus</a> { <br />
-&#160;&#160;<a class="el" href="a00091.html#a2aa4b6f9186dc50dad74cf1abd3799c2ae3335597107739bf9a94567aa64a11c5">rambrain::MEM_ROOT</a> = 0, 
-<a class="el" href="a00091.html#a2aa4b6f9186dc50dad74cf1abd3799c2a610971eb8090b2a006cab2a9d0b23e1a">rambrain::MEM_ALLOCATED_INUSE_READ</a> = 4 + 1, 
-<a class="el" href="a00091.html#a2aa4b6f9186dc50dad74cf1abd3799c2a153517e34aa29157bc4d3263790a2dc7">rambrain::MEM_ALLOCATED_INUSE_WRITE</a> = 4 + 2 + 1, 
-<a class="el" href="a00091.html#a2aa4b6f9186dc50dad74cf1abd3799c2a8a15f59a65c3041122f569a366a70df7">rambrain::MEM_ALLOCATED_INUSE</a> = 1, 
-<br />
-&#160;&#160;<a class="el" href="a00091.html#a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9">rambrain::MEM_ALLOCATED</a> = 4, 
-<a class="el" href="a00091.html#a2aa4b6f9186dc50dad74cf1abd3799c2af195d1470572e586d7a445d4675dc831">rambrain::MEM_SWAPPED</a> = 8, 
-<a class="el" href="a00091.html#a2aa4b6f9186dc50dad74cf1abd3799c2a43e2d4c7a961e990380e6d0f4e5b526d">rambrain::MEM_SWAPIN</a> = 16, 
-<a class="el" href="a00091.html#a2aa4b6f9186dc50dad74cf1abd3799c2ad850c17c7f18c71613429c217998c013">rambrain::MEM_SWAPOUT</a> = 32
-<br />
- }</td></tr>
-<tr class="separator:a2aa4b6f9186dc50dad74cf1abd3799c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00053.html">managedMemoryChunk.h</a></li>
-    <li class="footer">Generated on Fri Sep 25 2015 01:41:46 for rambrain by
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00053.html">managedMemory.h</a></li>
+    <li class="footer">Generated on Fri Sep 25 2015 08:15:19 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

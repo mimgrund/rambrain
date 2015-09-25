@@ -1,9 +1,20 @@
 var searchData=
 [
-  ['n_5felem',['n_elem',['../a00018.html#aaf92dc39c40a08ee727ef549be40dec8',1,'rambrain::managedPtr']]],
-  ['n_5fswap_5fin',['n_swap_in',['../a00016.html#a5dff86521b58cf4df6a7e2b8764e2b32',1,'rambrain::managedMemory']]],
-  ['n_5fswap_5fout',['n_swap_out',['../a00016.html#adb8534057130e562b7bd1ddb834a749f',1,'rambrain::managedMemory']]],
-  ['name',['name',['../a00005.html#a04d92a709d56a2d7fc570ae3c68e5bc3',1,'rambrain::configLineBase::name()'],['../a00032.html#afc05d7f3106d20f69c6ef6242c31a844',1,'testParameterBase::name()'],['../a00024.html#a6c0cdc27e3ec70a86bd6e17d3d60295b',1,'performanceTest&lt;&gt;::name()'],['../a00030.html#a928dadceb4d75dc7cf3bb216874dcc6b',1,'tester::name()']]],
-  ['next',['next',['../a00008.html#a29a53c1bf4afcae6db2317ee1fc0b258',1,'rambrain::cyclicAtime::next()'],['../a00017.html#a91bec338566ce6719ddd5088ce5cb89a',1,'rambrain::managedMemoryChunk::next()']]],
-  ['num_5finstances',['num_instances',['../a00010.html#a4af8f20c97014389124277ceefc082b2',1,'destructorTracker']]]
+  ['manager',['manager',['../a00027.html#a5eb6bc46d8a484fbc983476bef89e74f',1,'rambrain::rambrainglobals::rambrainConfig']]],
+  ['matchtype',['matchType',['../a00007.html#a41ed3e2e03f420e02d4397093f26f4f0',1,'rambrain::configLineBase']]],
+  ['max',['max',['../a00033.html#ab9b7a26b9cfd7679c39c56b107d66a3a',1,'testParameter']]],
+  ['mean',['mean',['../a00033.html#a32240ebb4edba8ac0bf8601a376c38b1',1,'testParameter']]],
+  ['memchunks',['memChunks',['../a00018.html#aeabbc3b181a06ed716cea97b6c96a82f',1,'rambrain::managedMemory']]],
+  ['memid_5fpace',['memID_pace',['../a00018.html#adadc892a13085d636d8ee109adeed498',1,'rambrain::managedMemory']]],
+  ['memory',['memory',['../a00009.html#aaa2458f8b0518cd8ecfbf0647f63d28d',1,'rambrain::configuration']]],
+  ['memory_5fmax',['memory_max',['../a00018.html#a83ce75cd12195223bb019aac25b7d891',1,'rambrain::managedMemory']]],
+  ['memory_5fswapped',['memory_swapped',['../a00018.html#a5bbb82bab1a80258be35b4a378a9e62d',1,'rambrain::managedMemory']]],
+  ['memory_5ftobefreed',['memory_tobefreed',['../a00018.html#af10f7cc8ddb9da7d3b92af1b4309cf5c',1,'rambrain::managedMemory']]],
+  ['memory_5fused',['memory_used',['../a00018.html#aef5adf85cd78d5de48654f3c16ae4cf5',1,'rambrain::managedMemory']]],
+  ['memoryalignment',['memoryAlignment',['../a00018.html#a38f530245a6614262d2f26cb39d123b9',1,'rambrain::managedMemory::memoryAlignment()'],['../a00021.html#a7973e5ced5c82836f5fb57337f357b19',1,'rambrain::managedSwap::memoryAlignment()']]],
+  ['memorymanager',['memoryManager',['../a00009.html#ae86fcffce8339717271022be71e95815',1,'rambrain::configuration']]],
+  ['mib',['mib',['../a00093.html#a8526efa365cdb0cb597351c2671af168',1,'rambrain']]],
+  ['min',['min',['../a00033.html#ad9c145df95de9bbffba57074034c2d91',1,'testParameter']]],
+  ['min_5felements',['min_elements',['../a00093.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc',1,'rambrain']]],
+  ['mutex',['mutex',['../a00029.html#aae04650afc3d10bdd52790d2cffcbbef',1,'rambrain::rambrainGlobalCriticalSectionControl']]]
 ];

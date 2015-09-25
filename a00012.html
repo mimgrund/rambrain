@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: rambrain::glob_off_union Union Reference</title>
+<title>rambrain: destructorTracker Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -108,36 +108,40 @@ $(document).ready(function(){initNavTree('a00012.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="a00115.html">List of all members</a>  </div>
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="a00101.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">rambrain::glob_off_union Union Reference</div>  </div>
+<div class="title">destructorTracker Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>saves some storage in <a class="el" href="a00021.html" title="tracks page file allocations while objects are preferably written continuous to page file...">pageFileLocation</a>  
+<p>Helper class to track construction and destruction.  
  <a href="a00012.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="a00049_source.html">managedFileSwap.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6b32d14be0e5643d166abc47d63dd9b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#a6b32d14be0e5643d166abc47d63dd9b7">glob_off_union</a> ()</td></tr>
-<tr class="separator:a6b32d14be0e5643d166abc47d63dd9b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa98d43e4b83663ab754832c7ccb980cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#aa98d43e4b83663ab754832c7ccb980cb">destructorTracker</a> ()</td></tr>
+<tr class="separator:aa98d43e4b83663ab754832c7ccb980cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a183466f7b2424c3e481b9c4687654573"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#a183466f7b2424c3e481b9c4687654573">~destructorTracker</a> ()</td></tr>
+<tr class="separator:a183466f7b2424c3e481b9c4687654573"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a5a23bd5f44dc2a374002ab81c12089b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00021.html">pageFileLocation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#a5a23bd5f44dc2a374002ab81c12089b3">glob_off_next</a></td></tr>
-<tr class="separator:a5a23bd5f44dc2a374002ab81c12089b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8842cb0cb6905d4bf95df56c0fb9b50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00017.html">managedMemoryChunk</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ab8842cb0cb6905d4bf95df56c0fb9b50">chunk</a></td></tr>
-<tr class="separator:ab8842cb0cb6905d4bf95df56c0fb9b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a4af8f20c97014389124277ceefc082b2"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#a4af8f20c97014389124277ceefc082b2">num_instances</a> = 0</td></tr>
+<tr class="separator:a4af8f20c97014389124277ceefc082b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ab22b67c578f8d64f8aa8aedd968da207"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00012.html#ab22b67c578f8d64f8aa8aedd968da207">arr</a> [10]</td></tr>
+<tr class="separator:ab22b67c578f8d64f8aa8aedd968da207"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>saves some storage in <a class="el" href="a00021.html" title="tracks page file allocations while objects are preferably written continuous to page file...">pageFileLocation</a> </p>
+<div class="textblock"><p>Helper class to track construction and destruction. </p>
 
-<p>Definition at line <a class="el" href="a00049_source.html#l00069">69</a> of file <a class="el" href="a00049_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00089_source.html#l00530">530</a> of file <a class="el" href="a00089_source.html">testManagedPtr.cpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a6b32d14be0e5643d166abc47d63dd9b7"></a>
+<a class="anchor" id="aa98d43e4b83663ab754832c7ccb980cb"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -145,7 +149,7 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">rambrain::glob_off_union::glob_off_union </td>
+          <td class="memname">destructorTracker::destructorTracker </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -158,49 +162,90 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00049_source.html#l00072">72</a> of file <a class="el" href="a00049_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00089_source.html#l00533">533</a> of file <a class="el" href="a00089_source.html">testManagedPtr.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a183466f7b2424c3e481b9c4687654573"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">destructorTracker::~destructorTracker </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00089_source.html#l00538">538</a> of file <a class="el" href="a00089_source.html">testManagedPtr.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="ab8842cb0cb6905d4bf95df56c0fb9b50"></a>
+<a class="anchor" id="ab22b67c578f8d64f8aa8aedd968da207"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00017.html">managedMemoryChunk</a>* rambrain::glob_off_union::chunk</td>
+          <td class="memname">double destructorTracker::arr[10]</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00049_source.html#l00071">71</a> of file <a class="el" href="a00049_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00089_source.html#l00545">545</a> of file <a class="el" href="a00089_source.html">testManagedPtr.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5a23bd5f44dc2a374002ab81c12089b3"></a>
+<a class="anchor" id="a4af8f20c97014389124277ceefc082b2"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00021.html">pageFileLocation</a>* rambrain::glob_off_union::glob_off_next</td>
+          <td class="memname">int destructorTracker::num_instances = 0</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00049_source.html#l00070">70</a> of file <a class="el" href="a00049_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00089_source.html#l00543">543</a> of file <a class="el" href="a00089_source.html">testManagedPtr.cpp</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this union was generated from the following file:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00049_source.html">managedFileSwap.h</a></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>/home/rambrainbuild/docubrain/tests/<a class="el" href="a00089_source.html">testManagedPtr.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00091.html">rambrain</a></li><li class="navelem"><a class="el" href="a00012.html">glob_off_union</a></li>
-    <li class="footer">Generated on Fri Sep 25 2015 01:41:48 for rambrain by
+    <li class="navelem"><a class="el" href="a00012.html">destructorTracker</a></li>
+    <li class="footer">Generated on Fri Sep 25 2015 08:15:19 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

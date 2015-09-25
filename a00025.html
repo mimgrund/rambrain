@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: rambrain::rambrainglobals::rambrainConfig Class Reference</title>
+<title>rambrain: performanceTest&lt; T, U...&gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -108,141 +108,63 @@ $(document).ready(function(){initNavTree('a00025.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="a00132.html">List of all members</a>  </div>
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="a00102.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">rambrain::rambrainglobals::rambrainConfig Class Reference</div>  </div>
+<div class="title">performanceTest&lt; T, U...&gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Main class for handling configuration throughout the library and for the user.  
+<p>Derived performance test classes which take parameter types as template arguments.  
  <a href="a00025.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00060_source.html">rambrainconfig.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00073_source.html">performanceTestClasses.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for performanceTest&lt; T, U...&gt;:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="a00025.png" usemap="#performanceTest&lt; T, U...&gt;_map" alt=""/>
+  <map id="performanceTest&lt; T, U...&gt;_map" name="performanceTest&lt; T, U...&gt;_map">
+<area href="a00024.html" alt="performanceTest&lt; U...&gt;" shape="rect" coords="0,0,162,24"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adf79cce9ad6dde113f1a25c7f28978cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#adf79cce9ad6dde113f1a25c7f28978cc">rambrainConfig</a> ()</td></tr>
-<tr class="memdesc:adf79cce9ad6dde113f1a25c7f28978cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new config handling class.  <a href="#adf79cce9ad6dde113f1a25c7f28978cc">More...</a><br /></td></tr>
-<tr class="separator:adf79cce9ad6dde113f1a25c7f28978cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50356f5e6333c5094970bf201bcca578"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a50356f5e6333c5094970bf201bcca578">~rambrainConfig</a> ()</td></tr>
-<tr class="memdesc:a50356f5e6333c5094970bf201bcca578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructs the throught the config initiated swap and manager.  <a href="#a50356f5e6333c5094970bf201bcca578">More...</a><br /></td></tr>
-<tr class="separator:a50356f5e6333c5094970bf201bcca578"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad149f44c7ec45aa83d741fd0a08e7811"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ad149f44c7ec45aa83d741fd0a08e7811">reinit</a> (bool reread=true)</td></tr>
-<tr class="memdesc:ad149f44c7ec45aa83d741fd0a08e7811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialises the system.  <a href="#ad149f44c7ec45aa83d741fd0a08e7811">More...</a><br /></td></tr>
-<tr class="separator:ad149f44c7ec45aa83d741fd0a08e7811"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61be05dcf94bd052199b719c0d3efc81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a61be05dcf94bd052199b719c0d3efc81">setCustomConfigPath</a> (const string &amp;path)</td></tr>
-<tr class="memdesc:a61be05dcf94bd052199b719c0d3efc81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple setter.  <a href="#a61be05dcf94bd052199b719c0d3efc81">More...</a><br /></td></tr>
-<tr class="separator:a61be05dcf94bd052199b719c0d3efc81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7f91003d897ef82e6b255c4affb9f00"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00007.html">configuration</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#aa7f91003d897ef82e6b255c4affb9f00">getConfig</a> ()</td></tr>
-<tr class="memdesc:aa7f91003d897ef82e6b255c4affb9f00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple getter.  <a href="#aa7f91003d897ef82e6b255c4affb9f00">More...</a><br /></td></tr>
-<tr class="separator:aa7f91003d897ef82e6b255c4affb9f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55f24943ba147e71eee649812bec31e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a55f24943ba147e71eee649812bec31e3">resizeMemory</a> (<a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> memory)</td></tr>
-<tr class="memdesc:a55f24943ba147e71eee649812bec31e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple setter.  <a href="#a55f24943ba147e71eee649812bec31e3">More...</a><br /></td></tr>
-<tr class="separator:a55f24943ba147e71eee649812bec31e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33b6e5764cb838b06e0cb624f47bdf67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a33b6e5764cb838b06e0cb624f47bdf67">resizeSwap</a> (<a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> memory)</td></tr>
-<tr class="memdesc:a33b6e5764cb838b06e0cb624f47bdf67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple setter.  <a href="#a33b6e5764cb838b06e0cb624f47bdf67">More...</a><br /></td></tr>
-<tr class="separator:a33b6e5764cb838b06e0cb624f47bdf67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99e85e5057fdf41735f0321966beec4a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a99e85e5057fdf41735f0321966beec4a">performanceTest</a> (const char *name)</td></tr>
+<tr class="memdesc:a99e85e5057fdf41735f0321966beec4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new test object and register it for usage.  <a href="#a99e85e5057fdf41735f0321966beec4a">More...</a><br /></td></tr>
+<tr class="separator:a99e85e5057fdf41735f0321966beec4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c8ab2f1aea9a9d1fed6f5a929cc26e1"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a8c8ab2f1aea9a9d1fed6f5a929cc26e1">~performanceTest</a> ()</td></tr>
+<tr class="memdesc:a8c8ab2f1aea9a9d1fed6f5a929cc26e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup.  <a href="#a8c8ab2f1aea9a9d1fed6f5a929cc26e1">More...</a><br /></td></tr>
+<tr class="separator:a8c8ab2f1aea9a9d1fed6f5a929cc26e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a8e0134e8c212da14a0fb6b60611ee2d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a8e0134e8c212da14a0fb6b60611ee2d7">init</a> ()</td></tr>
-<tr class="separator:a8e0134e8c212da14a0fb6b60611ee2d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e4485000b2a061fb75d85f68d06017d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a3e4485000b2a061fb75d85f68d06017d">clean</a> ()</td></tr>
-<tr class="separator:a3e4485000b2a061fb75d85f68d06017d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a48f1f953b1c2c97c7a2a9864bcd6935d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00006.html">configReader</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a48f1f953b1c2c97c7a2a9864bcd6935d">config</a></td></tr>
-<tr class="separator:a48f1f953b1c2c97c7a2a9864bcd6935d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8352178ea447b0e8551dc40c5fccd002"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00019.html">managedSwap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a8352178ea447b0e8551dc40c5fccd002">swap</a></td></tr>
-<tr class="separator:a8352178ea447b0e8551dc40c5fccd002"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5eb6bc46d8a484fbc983476bef89e74f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00016.html">managedMemory</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#a5eb6bc46d8a484fbc983476bef89e74f">manager</a></td></tr>
-<tr class="separator:a5eb6bc46d8a484fbc983476bef89e74f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:ace2b7b732cc8bfdc7e41750d6cbd17ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00033.html">testParameter</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00025.html#ace2b7b732cc8bfdc7e41750d6cbd17ba">parameter</a></td></tr>
+<tr class="separator:ace2b7b732cc8bfdc7e41750d6cbd17ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Main class for handling configuration throughout the library and for the user. </p>
+<div class="textblock"><h3>template&lt;typename T, typename... U&gt;<br />
+class performanceTest&lt; T, U...&gt;</h3>
 
-<p>Definition at line <a class="el" href="a00060_source.html#l00037">37</a> of file <a class="el" href="a00060_source.html">rambrainconfig.h</a>.</p>
+<p>Derived performance test classes which take parameter types as template arguments. </p>
+
+<p>Definition at line <a class="el" href="a00073_source.html#l00345">345</a> of file <a class="el" href="a00073_source.html">performanceTestClasses.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="adf79cce9ad6dde113f1a25c7f28978cc"></a>
+<a class="anchor" id="a99e85e5057fdf41735f0321966beec4a"></a>
 <div class="memitem">
 <div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">rambrain::rambrainglobals::rambrainConfig::rambrainConfig </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Construct a new config handling class. </p>
-<p>Reads in the config and sets up the system. </p><dl class="section note"><dt>Note</dt><dd>Do not do this yourself, rather use the supplied instance <a class="el" href="a00092.html#ad02508d72047bc55a38eda857e4816c1" title="You will find the object in managedMemory.cpp as we have to define it in some &#39;used&#39; file in the link...">rambrainglobals::config</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="a00059_source.html#l00035">35</a> of file <a class="el" href="a00059_source.html">rambrainconfig.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a50356f5e6333c5094970bf201bcca578"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">rambrain::rambrainglobals::rambrainConfig::~rambrainConfig </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Destructs the throught the config initiated swap and manager. </p>
-
-<p>Definition at line <a class="el" href="a00059_source.html#l00041">41</a> of file <a class="el" href="a00059_source.html">rambrainconfig.cpp</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a3e4485000b2a061fb75d85f68d06017d"></a>
-<div class="memitem">
-<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename... U&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::clean </td>
+          <td class="memname"><a class="el" href="a00024.html">performanceTest</a>&lt; T, U...&gt;::<a class="el" href="a00024.html">performanceTest</a> </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Clean up the system and delete instances </p>
-
-<p>Definition at line <a class="el" href="a00059_source.html#l00088">88</a> of file <a class="el" href="a00059_source.html">rambrainconfig.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="aa7f91003d897ef82e6b255c4affb9f00"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="a00007.html">configuration</a>&amp; rambrain::rambrainglobals::rambrainConfig::getConfig </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -253,211 +175,82 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Simple getter. </p>
-
-<p>Definition at line <a class="el" href="a00060_source.html#l00069">69</a> of file <a class="el" href="a00060_source.html">rambrainconfig.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a8e0134e8c212da14a0fb6b60611ee2d7"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::init </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Initialise the system </p>
-
-<p>Definition at line <a class="el" href="a00059_source.html#l00069">69</a> of file <a class="el" href="a00059_source.html">rambrainconfig.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ad149f44c7ec45aa83d741fd0a08e7811"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::reinit </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>reread</em> = <code>true</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Reinitialises the system. </p>
+<p>Create a new test object and register it for usage. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">reread</td><td>If the / a config file should be rereaad before resetting up the main classes </td></tr>
+    <tr><td class="paramname">name</td><td>Name of the test </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00059_source.html#l00046">46</a> of file <a class="el" href="a00059_source.html">rambrainconfig.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00073_source.html#l00353">353</a> of file <a class="el" href="a00073_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a55f24943ba147e71eee649812bec31e3"></a>
+<a class="anchor" id="a8c8ab2f1aea9a9d1fed6f5a929cc26e1"></a>
 <div class="memitem">
 <div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::resizeMemory </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
-          <td class="paramname"><em>memory</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Simple setter. </p>
-
-<p>Definition at line <a class="el" href="a00059_source.html#l00055">55</a> of file <a class="el" href="a00059_source.html">rambrainconfig.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a33b6e5764cb838b06e0cb624f47bdf67"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::resizeSwap </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
-          <td class="paramname"><em>memory</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Simple setter. </p>
-<dl class="section warning"><dt>Warning</dt><dd>Currently only extending may be supported, ergo this means to reinitiate the main classes and to throw away the old ones deleting all existing managed pointers </dd></dl>
-
-<p>Definition at line <a class="el" href="a00059_source.html#l00062">62</a> of file <a class="el" href="a00059_source.html">rambrainconfig.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a61be05dcf94bd052199b719c0d3efc81"></a>
-<div class="memitem">
-<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename... U&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::setCustomConfigPath </td>
+          <td class="memname">virtual <a class="el" href="a00024.html">performanceTest</a>&lt; T, U...&gt;::~<a class="el" href="a00024.html">performanceTest</a> </td>
           <td>(</td>
-          <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Simple setter. </p>
+<p>Cleanup. </p>
 
-<p>Definition at line <a class="el" href="a00060_source.html#l00062">62</a> of file <a class="el" href="a00060_source.html">rambrainconfig.h</a>.</p>
+<p>Definition at line <a class="el" href="a00073_source.html#l00360">360</a> of file <a class="el" href="a00073_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a48f1f953b1c2c97c7a2a9864bcd6935d"></a>
+<a class="anchor" id="ace2b7b732cc8bfdc7e41750d6cbd17ba"></a>
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename... U&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00006.html">configReader</a> rambrain::rambrainglobals::rambrainConfig::config</td>
+          <td class="memname"><a class="el" href="a00033.html">testParameter</a>&lt;T&gt; <a class="el" href="a00024.html">performanceTest</a>&lt; T, U...&gt;::parameter</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00060_source.html#l00093">93</a> of file <a class="el" href="a00060_source.html">rambrainconfig.h</a>.</p>
+<p>Definition at line <a class="el" href="a00073_source.html#l00363">363</a> of file <a class="el" href="a00073_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5eb6bc46d8a484fbc983476bef89e74f"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00016.html">managedMemory</a>* rambrain::rambrainglobals::rambrainConfig::manager</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00060_source.html#l00095">95</a> of file <a class="el" href="a00060_source.html">rambrainconfig.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a8352178ea447b0e8551dc40c5fccd002"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00019.html">managedSwap</a>* rambrain::rambrainglobals::rambrainConfig::swap</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00060_source.html#l00094">94</a> of file <a class="el" href="a00060_source.html">rambrainconfig.h</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00060_source.html">rambrainconfig.h</a></li>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00059_source.html">rambrainconfig.cpp</a></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>/home/rambrainbuild/docubrain/tests/<a class="el" href="a00073_source.html">performanceTestClasses.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00091.html">rambrain</a></li><li class="navelem"><a class="el" href="a00092.html">rambrainglobals</a></li><li class="navelem"><a class="el" href="a00025.html">rambrainConfig</a></li>
-    <li class="footer">Generated on Fri Sep 25 2015 01:41:51 for rambrain by
+    <li class="navelem"><a class="el" href="a00025.html">performanceTest&lt; T, U...&gt;</a></li>
+    <li class="footer">Generated on Fri Sep 25 2015 08:15:19 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

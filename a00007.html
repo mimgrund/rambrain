@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: rambrain::configuration Struct Reference</title>
+<title>rambrain: rambrain::configLineBase Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -109,194 +109,200 @@ $(document).ready(function(){initNavTree('a00007.html','');});
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="a00110.html">List of all members</a>  </div>
+<a href="a00112.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">rambrain::configuration Struct Reference</div>  </div>
+<div class="title">rambrain::configLineBase Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Main struct to save configuration variables.  
+<p>Base class for config lines.  
  <a href="a00007.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00038_source.html">configreader.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00040_source.html">configreader.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for rambrain::configLineBase:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="a00007.png" usemap="#rambrain::configLineBase_map" alt=""/>
+  <map id="rambrain::configLineBase_map" name="rambrain::configLineBase_map">
+<area href="a00006.html" alt="rambrain::configLine&lt; bool &gt;" shape="rect" coords="0,56,238,80"/>
+<area href="a00006.html" alt="rambrain::configLine&lt; global_bytesize &gt;" shape="rect" coords="248,56,486,80"/>
+<area href="a00006.html" alt="rambrain::configLine&lt; string &gt;" shape="rect" coords="496,56,734,80"/>
+<area href="a00006.html" alt="rambrain::configLine&lt; swapPolicy &gt;" shape="rect" coords="744,56,982,80"/>
+<area href="a00006.html" title="Class for config key value pairs represented by a line in a config file. " alt="rambrain::configLine&lt; T &gt;" shape="rect" coords="992,56,1230,80"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8ced069c9a706faa0db7e14e6ba4ca52"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a8ced069c9a706faa0db7e14e6ba4ca52">configuration</a> ()</td></tr>
-<tr class="memdesc:a8ced069c9a706faa0db7e14e6ba4ca52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Init configuration with standard values using half the available memory and disk space where the binary lives.  <a href="#a8ced069c9a706faa0db7e14e6ba4ca52">More...</a><br /></td></tr>
-<tr class="separator:a8ced069c9a706faa0db7e14e6ba4ca52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bb597262fec80005a8e2152100a02e4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a1bb597262fec80005a8e2152100a02e4">configLineBase</a> (const string &amp;<a class="el" href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">name</a>, const int <a class="el" href="a00007.html#a41ed3e2e03f420e02d4397093f26f4f0">matchType</a>)</td></tr>
+<tr class="memdesc:a1bb597262fec80005a8e2152100a02e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new config line.  <a href="#a1bb597262fec80005a8e2152100a02e4">More...</a><br /></td></tr>
+<tr class="separator:a1bb597262fec80005a8e2152100a02e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8ba56751a3967ffda56cef490012d0e"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#aa8ba56751a3967ffda56cef490012d0e">~configLineBase</a> ()</td></tr>
+<tr class="memdesc:aa8ba56751a3967ffda56cef490012d0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#aa8ba56751a3967ffda56cef490012d0e">More...</a><br /></td></tr>
+<tr class="separator:aa8ba56751a3967ffda56cef490012d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af88430bdeb79e2a68dc902517318acde"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#af88430bdeb79e2a68dc902517318acde">setValue</a> (const string &amp;str)=0</td></tr>
+<tr class="memdesc:af88430bdeb79e2a68dc902517318acde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the value from a string.  <a href="#af88430bdeb79e2a68dc902517318acde">More...</a><br /></td></tr>
+<tr class="separator:af88430bdeb79e2a68dc902517318acde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ae86fcffce8339717271022be71e95815"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#ae86fcffce8339717271022be71e95815">memoryManager</a></td></tr>
-<tr class="separator:ae86fcffce8339717271022be71e95815"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ab38df7f6bf215f8101f4f914f67b14"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a3ab38df7f6bf215f8101f4f914f67b14">swap</a></td></tr>
-<tr class="separator:a3ab38df7f6bf215f8101f4f914f67b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d5a43a22122e628b749c18b48cedfc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a9d5a43a22122e628b749c18b48cedfc4">swapfiles</a></td></tr>
-<tr class="separator:a9d5a43a22122e628b749c18b48cedfc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa2458f8b0518cd8ecfbf0647f63d28d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; <a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#aaa2458f8b0518cd8ecfbf0647f63d28d">memory</a></td></tr>
-<tr class="separator:aaa2458f8b0518cd8ecfbf0647f63d28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d87d5533a56ffe09fcd095918df3795"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; <a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a0d87d5533a56ffe09fcd095918df3795">swapMemory</a></td></tr>
-<tr class="separator:a0d87d5533a56ffe09fcd095918df3795"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a549b17d67bef794af32a9ca86eedbdd5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a549b17d67bef794af32a9ca86eedbdd5">enableDMA</a></td></tr>
-<tr class="separator:a549b17d67bef794af32a9ca86eedbdd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44d5658ac2cbed42f40703780b8483bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00004.html">configLine</a>&lt; <a class="el" href="a00091.html#a7d53dd1748d5012cafa91aa982c7cd35">swapPolicy</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a44d5658ac2cbed42f40703780b8483bb">policy</a></td></tr>
-<tr class="separator:a44d5658ac2cbed42f40703780b8483bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60063ca6099263b106e5434bc0d5ed0b"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="a00005.html">configLineBase</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a></td></tr>
-<tr class="separator:a60063ca6099263b106e5434bc0d5ed0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04d92a709d56a2d7fc570ae3c68e5bc3"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">name</a></td></tr>
+<tr class="separator:a04d92a709d56a2d7fc570ae3c68e5bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41ed3e2e03f420e02d4397093f26f4f0"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html#a41ed3e2e03f420e02d4397093f26f4f0">matchType</a></td></tr>
+<tr class="separator:a41ed3e2e03f420e02d4397093f26f4f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Main struct to save configuration variables. </p>
-<dl class="section note"><dt>Note</dt><dd>Should not be instantiated by the user, this is done in <a class="el" href="a00060.html">rambrainconfig.h</a> and <a class="el" href="a00050.html">managedMemory.cpp</a> </dd>
-<dd>
-When extended don't forget to add the new options to configOptions </dd></dl>
+<div class="textblock"><p>Base class for config lines. </p>
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00131">131</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00057">57</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a8ced069c9a706faa0db7e14e6ba4ca52"></a>
+<a class="anchor" id="a1bb597262fec80005a8e2152100a02e4"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">rambrain::configuration::configuration </td>
+          <td class="memname">rambrain::configLineBase::configLineBase </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>matchType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a new config line. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>It's name </td></tr>
+    <tr><td class="paramname">matchType</td><td>Which type is matches against in the config file </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00040_source.html#l00066">66</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa8ba56751a3967ffda56cef490012d0e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual rambrain::configLineBase::~configLineBase </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Init configuration with standard values using half the available memory and disk space where the binary lives. </p>
-<p>First d will be replaced by the process id, the second one will be replaced by the swapfile id </p>
+<p>Destructor. </p>
 
-<p>Definition at line <a class="el" href="a00037_source.html#l00092">92</a> of file <a class="el" href="a00037_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00070">70</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="af88430bdeb79e2a68dc902517318acde"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void rambrain::configLineBase::setValue </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reset the value from a string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>The string </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="a00006.html#a8e8a478e0ac8347db173dc73761cb099">rambrain::configLine&lt; T &gt;</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a60063ca6099263b106e5434bc0d5ed0b"></a>
+<a class="anchor" id="a41ed3e2e03f420e02d4397093f26f4f0"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">vector&lt;<a class="el" href="a00005.html">configLineBase</a> *&gt; rambrain::configuration::configOptions</td>
+          <td class="memname">const int rambrain::configLineBase::matchType</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00143">143</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00078">78</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a549b17d67bef794af32a9ca86eedbdd5"></a>
+<a class="anchor" id="a04d92a709d56a2d7fc570ae3c68e5bc3"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;bool&gt; rambrain::configuration::enableDMA</td>
+          <td class="memname">const string rambrain::configLineBase::name</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00038_source.html#l00140">140</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00077">77</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aaa2458f8b0518cd8ecfbf0647f63d28d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;<a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&gt; rambrain::configuration::memory</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00139">139</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ae86fcffce8339717271022be71e95815"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;string&gt; rambrain::configuration::memoryManager</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00138">138</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a44d5658ac2cbed42f40703780b8483bb"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;<a class="el" href="a00091.html#a7d53dd1748d5012cafa91aa982c7cd35">swapPolicy</a>&gt; rambrain::configuration::policy</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00141">141</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3ab38df7f6bf215f8101f4f914f67b14"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;string&gt; rambrain::configuration::swap</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00138">138</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a9d5a43a22122e628b749c18b48cedfc4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;string&gt; rambrain::configuration::swapfiles</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00138">138</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a0d87d5533a56ffe09fcd095918df3795"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00004.html">configLine</a>&lt;<a class="el" href="a00091.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&gt; rambrain::configuration::swapMemory</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00038_source.html#l00139">139</a> of file <a class="el" href="a00038_source.html">configreader.h</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this struct was generated from the following files:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00038_source.html">configreader.h</a></li>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00037_source.html">configreader.cpp</a></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00040_source.html">configreader.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00091.html">rambrain</a></li><li class="navelem"><a class="el" href="a00007.html">configuration</a></li>
-    <li class="footer">Generated on Fri Sep 25 2015 01:41:48 for rambrain by
+    <li class="navelem"><a class="el" href="a00093.html">rambrain</a></li><li class="navelem"><a class="el" href="a00007.html">configLineBase</a></li>
+    <li class="footer">Generated on Fri Sep 25 2015 08:15:20 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

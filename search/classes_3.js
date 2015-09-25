@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['glob_5foff_5funion',['glob_off_union',['../a00012.html',1,'rambrain']]]
+  ['destructortracker',['destructorTracker',['../a00012.html',1,'']]],
+  ['dummymanagedmemory',['dummyManagedMemory',['../a00013.html',1,'rambrain']]]
 ];

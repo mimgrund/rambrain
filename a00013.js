@@ -1,7 +1,11 @@
 var a00013 =
 [
-    [ "incompleteSetupException", "a00013.html#a1899b751e9c4951df6389fca39a8d455", null ],
-    [ "~incompleteSetupException", "a00013.html#a8cf6aefbbefb3d436762d2eb45496887", null ],
-    [ "what", "a00013.html#a6325f4e27d8dc500c63a91a0d7637d9a", null ],
-    [ "details", "a00013.html#afe88292acea1d85a152035f8de4dae5c", null ]
+    [ "dummyManagedMemory", "a00013.html#a404d8914ad88111d175a3607081589a0", null ],
+    [ "~dummyManagedMemory", "a00013.html#aac2af094485c7dcd53115453a16f5159", null ],
+    [ "schedulerDelete", "a00013.html#a655f874332b0aee85639bfe4ab812de3", null ],
+    [ "schedulerRegister", "a00013.html#adc7add60dc8976d05d31c0a3a2548922", null ],
+    [ "swapIn", "a00013.html#a4b4aa73d808bc21e9f28eb1f426d9f39", null ],
+    [ "swapOut", "a00013.html#a87f2c23257398f23c77e6a24eed8a0f6", null ],
+    [ "touch", "a00013.html#a429af5ee10f45c062da8a20ac860ae47", null ],
+    [ "untouch", "a00013.html#a72d803d7d063c828205e675b9780a294", null ]
 ];

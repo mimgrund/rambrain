@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: rambrain::managedPtr&lt; T &gt; Class Template Reference</title>
+<title>rambrain: rambrain::managedMemory Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -108,160 +108,377 @@ $(document).ready(function(){initNavTree('a00018.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pro-types">Protected Types</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
-<a href="a00121.html">List of all members</a>  </div>
+<a href="a00123.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">rambrain::managedPtr&lt; T &gt; Class Template Reference</div>  </div>
+<div class="title">rambrain::managedMemory Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Main class to allocate memory that is managed by the rambrain memory defaultManager.  
+<p>Backend class to handle raw memory and interaction/storage with <a class="el" href="a00021.html" title="Class that serves as a backend to managedMemory to actual write/read managedMemoryChunks to/from hard...">managedSwap</a>.  
  <a href="a00018.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00051_source.html">managedMemory.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00053_source.html">managedMemory.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for rambrain::managedMemory:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="a00018.png" usemap="#rambrain::managedMemory_map" alt=""/>
+  <map id="rambrain::managedMemory_map" name="rambrain::managedMemory_map">
+<area href="a00011.html" title="scheduler working with a double linked cycle. Details see paper. " alt="rambrain::cyclicManagedMemory" shape="rect" coords="0,56,206,80"/>
+<area href="a00013.html" title="a dummy managed Memory that basically does nothing and throws on everything. " alt="rambrain::dummyManagedMemory" shape="rect" coords="216,56,422,80"/>
+</map>
+ </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a70120a3e9fcb2b3fd79033860888e877"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a70120a3e9fcb2b3fd79033860888e877">managedPtr</a> (const <a class="el" href="a00018.html">managedPtr</a>&lt; T &gt; &amp;ref)</td></tr>
-<tr class="memdesc:a70120a3e9fcb2b3fd79033860888e877"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy ctor  <a href="#a70120a3e9fcb2b3fd79033860888e877">More...</a><br /></td></tr>
-<tr class="separator:a70120a3e9fcb2b3fd79033860888e877"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf190b0d5a8c6832a0be401a1d283d81"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#acf190b0d5a8c6832a0be401a1d283d81">managedPtr</a> ()</td></tr>
-<tr class="memdesc:acf190b0d5a8c6832a0be401a1d283d81"><td class="mdescLeft">&#160;</td><td class="mdescRight">with no arguments given, instantiates an array with one element  <a href="#acf190b0d5a8c6832a0be401a1d283d81">More...</a><br /></td></tr>
-<tr class="separator:acf190b0d5a8c6832a0be401a1d283d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a697ea6e9ed885f00fa2d2486e904b436"><td class="memTemplParams" colspan="2">template&lt;typename... ctor_args&gt; </td></tr>
-<tr class="memitem:a697ea6e9ed885f00fa2d2486e904b436"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00018.html#a697ea6e9ed885f00fa2d2486e904b436">managedPtr</a> (unsigned int <a class="el" href="a00018.html#aaf92dc39c40a08ee727ef549be40dec8">n_elem</a>, ctor_args...Args)</td></tr>
-<tr class="memdesc:a697ea6e9ed885f00fa2d2486e904b436"><td class="mdescLeft">&#160;</td><td class="mdescRight">instantiates <a class="el" href="a00018.html" title="Main class to allocate memory that is managed by the rambrain memory defaultManager. ">managedPtr</a> containing n_elem elements and passes Args as arguments to the constructor of these  <a href="#a697ea6e9ed885f00fa2d2486e904b436">More...</a><br /></td></tr>
-<tr class="separator:a697ea6e9ed885f00fa2d2486e904b436"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fec909a40fc615870c49ecd710660ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a7fec909a40fc615870c49ecd710660ec">~managedPtr</a> ()</td></tr>
-<tr class="memdesc:a7fec909a40fc615870c49ecd710660ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">destructor  <a href="#a7fec909a40fc615870c49ecd710660ec">More...</a><br /></td></tr>
-<tr class="separator:a7fec909a40fc615870c49ecd710660ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84635bcc9865d9b638aeab5bac93e463"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a84635bcc9865d9b638aeab5bac93e463">prepareUse</a> () const </td></tr>
-<tr class="memdesc:a84635bcc9865d9b638aeab5bac93e463"><td class="mdescLeft">&#160;</td><td class="mdescRight">tells the memory manager to possibly swap in chunk for near future use  <a href="#a84635bcc9865d9b638aeab5bac93e463">More...</a><br /></td></tr>
-<tr class="separator:a84635bcc9865d9b638aeab5bac93e463"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc4112d3c16edcb7172e7f35030f435a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#afc4112d3c16edcb7172e7f35030f435a">setUse</a> (bool writable=true, bool *<a class="el" href="a00018.html#a5c62007f8d10f2a5a051a739338f454d">tracker</a>=NULL) const </td></tr>
-<tr class="memdesc:afc4112d3c16edcb7172e7f35030f435a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Atomically sets use to a chunk if tracker is not already set to true. returns whether we set use or not.  <a href="#afc4112d3c16edcb7172e7f35030f435a">More...</a><br /></td></tr>
-<tr class="separator:afc4112d3c16edcb7172e7f35030f435a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e27a4cf25fdeb82501a617e86f8f7fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a5e27a4cf25fdeb82501a617e86f8f7fc">unsetUse</a> (unsigned int loaded=1) const </td></tr>
-<tr class="memdesc:a5e27a4cf25fdeb82501a617e86f8f7fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">unsets use count on memory chunk  <a href="#a5e27a4cf25fdeb82501a617e86f8f7fc">More...</a><br /></td></tr>
-<tr class="separator:a5e27a4cf25fdeb82501a617e86f8f7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab70dc6fbaf758bc0380e72017e1b2ff1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00018.html">managedPtr</a>&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ab70dc6fbaf758bc0380e72017e1b2ff1">operator=</a> (const <a class="el" href="a00018.html">managedPtr</a>&lt; T &gt; &amp;ref)</td></tr>
-<tr class="memdesc:ab70dc6fbaf758bc0380e72017e1b2ff1"><td class="mdescLeft">&#160;</td><td class="mdescRight">assignment operator  <a href="#ab70dc6fbaf758bc0380e72017e1b2ff1">More...</a><br /></td></tr>
-<tr class="separator:ab70dc6fbaf758bc0380e72017e1b2ff1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1472e84fc142f26fb9ee5774efc0b91f"><td class="memItemLeft" align="right" valign="top">DEPRECATED T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a1472e84fc142f26fb9ee5774efc0b91f">operator[]</a> (int i)</td></tr>
-<tr class="separator:a1472e84fc142f26fb9ee5774efc0b91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a486dd6d2b56621edadd8ae6d91efa463"><td class="memItemLeft" align="right" valign="top">DEPRECATED const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a486dd6d2b56621edadd8ae6d91efa463">operator[]</a> (int i) const </td></tr>
-<tr class="separator:a486dd6d2b56621edadd8ae6d91efa463"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b96f8d979019bf3f86c8e614696238d"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a9b96f8d979019bf3f86c8e614696238d">getLocPtr</a> () const </td></tr>
-<tr class="memdesc:a9b96f8d979019bf3f86c8e614696238d"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns local pointer to object  <a href="#a9b96f8d979019bf3f86c8e614696238d">More...</a><br /></td></tr>
-<tr class="separator:a9b96f8d979019bf3f86c8e614696238d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab84d0780b62769d5f14fe791b14940b0"><td class="memItemLeft" align="right" valign="top">const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ab84d0780b62769d5f14fe791b14940b0">getConstLocPtr</a> () const </td></tr>
-<tr class="memdesc:ab84d0780b62769d5f14fe791b14940b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns const local pointer to object  <a href="#ab84d0780b62769d5f14fe791b14940b0">More...</a><br /></td></tr>
-<tr class="separator:ab84d0780b62769d5f14fe791b14940b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45e18a3242b55adc2b6e50bdbecfcaba"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a45e18a3242b55adc2b6e50bdbecfcaba">managedMemory</a> (<a class="el" href="a00021.html">managedSwap</a> *<a class="el" href="a00018.html#a0c06638da1cf9f0d828f1af4000dbe68">swap</a>, <a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> size=<a class="el" href="a00093.html#a8525b8b73c3e1ec62bd571b3cffd1742">gig</a>)</td></tr>
+<tr class="memdesc:a45e18a3242b55adc2b6e50bdbecfcaba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor.  <a href="#a45e18a3242b55adc2b6e50bdbecfcaba">More...</a><br /></td></tr>
+<tr class="separator:a45e18a3242b55adc2b6e50bdbecfcaba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abac1938d32c1ad704224e51b8d97b185"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#abac1938d32c1ad704224e51b8d97b185">~managedMemory</a> ()</td></tr>
+<tr class="separator:abac1938d32c1ad704224e51b8d97b185"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af183c26795176260a40a73f3d8eb4445"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#af183c26795176260a40a73f3d8eb4445">setMemoryLimit</a> (<a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> size)</td></tr>
+<tr class="memdesc:af183c26795176260a40a73f3d8eb4445"><td class="mdescLeft">&#160;</td><td class="mdescRight">dynamically adjusts allowed ram usage  <a href="#af183c26795176260a40a73f3d8eb4445">More...</a><br /></td></tr>
+<tr class="separator:af183c26795176260a40a73f3d8eb4445"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea4a0f411615e719685e999a51565f46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aea4a0f411615e719685e999a51565f46">getMemoryLimit</a> () const </td></tr>
+<tr class="memdesc:aea4a0f411615e719685e999a51565f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns current memory limit  <a href="#aea4a0f411615e719685e999a51565f46">More...</a><br /></td></tr>
+<tr class="separator:aea4a0f411615e719685e999a51565f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4ed9d5c617b36a14037072291b69ee5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ab4ed9d5c617b36a14037072291b69ee5">getUsedMemory</a> () const </td></tr>
+<tr class="memdesc:ab4ed9d5c617b36a14037072291b69ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns current ram usage  <a href="#ab4ed9d5c617b36a14037072291b69ee5">More...</a><br /></td></tr>
+<tr class="separator:ab4ed9d5c617b36a14037072291b69ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61d250b65165dd5a6e7e833261295ec2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a61d250b65165dd5a6e7e833261295ec2">getSwappedMemory</a> () const </td></tr>
+<tr class="memdesc:a61d250b65165dd5a6e7e833261295ec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns current swap usage  <a href="#a61d250b65165dd5a6e7e833261295ec2">More...</a><br /></td></tr>
+<tr class="separator:a61d250b65165dd5a6e7e833261295ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4158747bb03019659afc34d0120be28c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a4158747bb03019659afc34d0120be28c">setOutOfSwapIsFatal</a> (bool fatal=true)</td></tr>
+<tr class="memdesc:a4158747bb03019659afc34d0120be28c"><td class="mdescLeft">&#160;</td><td class="mdescRight">set policy what to do when out of memory in both ram and swap  <a href="#a4158747bb03019659afc34d0120be28c">More...</a><br /></td></tr>
+<tr class="separator:a4158747bb03019659afc34d0120be28c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4085ccf02a1a0d6790d700cccad4061"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aa4085ccf02a1a0d6790d700cccad4061">prepareUse</a> (<a class="el" href="a00019.html">rambrain::managedMemoryChunk</a> &amp;chunk, bool acquireLock=true)</td></tr>
+<tr class="memdesc:aa4085ccf02a1a0d6790d700cccad4061"><td class="mdescLeft">&#160;</td><td class="mdescRight">Triggers swapin of chunk.  <a href="#aa4085ccf02a1a0d6790d700cccad4061">More...</a><br /></td></tr>
+<tr class="separator:aa4085ccf02a1a0d6790d700cccad4061"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3f93d73321b0df2685347e0b4e1a194"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ae3f93d73321b0df2685347e0b4e1a194">setUse</a> (<a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> id)</td></tr>
+<tr class="memdesc:ae3f93d73321b0df2685347e0b4e1a194"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience interface for <a class="el" href="a00018.html#a2b9b148789b84dda7fa6a176bf193bf3" title="Marks chunk as used and prevents swapout. ">setUse( managedMemoryChunk &amp;chunk, bool writeAccess )</a>  <a href="#ae3f93d73321b0df2685347e0b4e1a194">More...</a><br /></td></tr>
+<tr class="separator:ae3f93d73321b0df2685347e0b4e1a194"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5902552b8ed04eb9859f7ff067ef5796"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a5902552b8ed04eb9859f7ff067ef5796">unsetUse</a> (<a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> id)</td></tr>
+<tr class="memdesc:a5902552b8ed04eb9859f7ff067ef5796"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience interface for unsetUse ( <a class="el" href="a00019.html" title="manages all managed Chunks of raw memory ">managedMemoryChunk</a> &amp;chunk, bool writeAccess )  <a href="#a5902552b8ed04eb9859f7ff067ef5796">More...</a><br /></td></tr>
+<tr class="separator:a5902552b8ed04eb9859f7ff067ef5796"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b9b148789b84dda7fa6a176bf193bf3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a2b9b148789b84dda7fa6a176bf193bf3">setUse</a> (<a class="el" href="a00019.html">managedMemoryChunk</a> &amp;chunk, bool writeAccess)</td></tr>
+<tr class="memdesc:a2b9b148789b84dda7fa6a176bf193bf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks chunk as used and prevents swapout.  <a href="#a2b9b148789b84dda7fa6a176bf193bf3">More...</a><br /></td></tr>
+<tr class="separator:a2b9b148789b84dda7fa6a176bf193bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55174979cf3b0a22fc1e79a3a43e749f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a55174979cf3b0a22fc1e79a3a43e749f">unsetUse</a> (<a class="el" href="a00019.html">managedMemoryChunk</a> &amp;chunk, unsigned int no_unsets=1)</td></tr>
+<tr class="memdesc:a55174979cf3b0a22fc1e79a3a43e749f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marks chunk as unused again.  <a href="#a55174979cf3b0a22fc1e79a3a43e749f">More...</a><br /></td></tr>
+<tr class="separator:a55174979cf3b0a22fc1e79a3a43e749f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1871ed446f04492704e0bd75b16e5d2a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a1871ed446f04492704e0bd75b16e5d2a">getNumberOfChildren</a> (const <a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> &amp;id)</td></tr>
+<tr class="memdesc:a1871ed446f04492704e0bd75b16e5d2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">conveniently returns number of children of the memoryChunk with id id  <a href="#a1871ed446f04492704e0bd75b16e5d2a">More...</a><br /></td></tr>
+<tr class="separator:a1871ed446f04492704e0bd75b16e5d2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a680ef6324a0061c0a86d84c82bee3a5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a680ef6324a0061c0a86d84c82bee3a5b">printTree</a> (<a class="el" href="a00019.html">managedMemoryChunk</a> *current=NULL, unsigned int nspaces=0)</td></tr>
+<tr class="memdesc:a680ef6324a0061c0a86d84c82bee3a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">prints the tree of managed objects for further inspection  <a href="#a680ef6324a0061c0a86d84c82bee3a5b">More...</a><br /></td></tr>
+<tr class="separator:a680ef6324a0061c0a86d84c82bee3a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad26e3db754f6a8957f045a646d911a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aad26e3db754f6a8957f045a646d911a8">recursiveMfree</a> (<a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> id)</td></tr>
+<tr class="memdesc:aad26e3db754f6a8957f045a646d911a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">recursively deletes the objects in memory, first children, then parents.  <a href="#aad26e3db754f6a8957f045a646d911a8">More...</a><br /></td></tr>
+<tr class="separator:aad26e3db754f6a8957f045a646d911a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac515fe5cbdc520a70d9512da0ab363ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ac515fe5cbdc520a70d9512da0ab363ce">linearMfree</a> ()</td></tr>
+<tr class="memdesc:ac515fe5cbdc520a70d9512da0ab363ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">linearly deletes all objects in memory  <a href="#ac515fe5cbdc520a70d9512da0ab363ce">More...</a><br /></td></tr>
+<tr class="separator:ac515fe5cbdc520a70d9512da0ab363ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4147c7d36b38e4bea0c73b6f4609d477"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a4147c7d36b38e4bea0c73b6f4609d477">printSwapstats</a> () const </td></tr>
+<tr class="memdesc:a4147c7d36b38e4bea0c73b6f4609d477"><td class="mdescLeft">&#160;</td><td class="mdescRight">print statistic about the number, size and efficiency of swapping actions  <a href="#a4147c7d36b38e4bea0c73b6f4609d477">More...</a><br /></td></tr>
+<tr class="separator:a4147c7d36b38e4bea0c73b6f4609d477"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab63949c5a3fd590e39d9e15dace8c2d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aab63949c5a3fd590e39d9e15dace8c2d">resetSwapstats</a> ()</td></tr>
+<tr class="memdesc:aab63949c5a3fd590e39d9e15dace8c2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">reset statistic about the number, size and efficiency of swapping actions  <a href="#aab63949c5a3fd590e39d9e15dace8c2d">More...</a><br /></td></tr>
+<tr class="separator:aab63949c5a3fd590e39d9e15dace8c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24e3c85157bebe35c89e2140c17b4eae"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a24e3c85157bebe35c89e2140c17b4eae">getHitsOverMisses</a> ()</td></tr>
+<tr class="memdesc:a24e3c85157bebe35c89e2140c17b4eae"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns current hits over misses rate for accessing elements.  <a href="#a24e3c85157bebe35c89e2140c17b4eae">More...</a><br /></td></tr>
+<tr class="separator:a24e3c85157bebe35c89e2140c17b4eae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42267ac7844983eb482c1b06830e1a83"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a42267ac7844983eb482c1b06830e1a83">getTotalSwappedOutBytes</a> ()</td></tr>
+<tr class="memdesc:a42267ac7844983eb482c1b06830e1a83"><td class="mdescLeft">&#160;</td><td class="mdescRight">simple Getter  <a href="#a42267ac7844983eb482c1b06830e1a83">More...</a><br /></td></tr>
+<tr class="separator:a42267ac7844983eb482c1b06830e1a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a534cdc10b393a77345f7a3563dee14f2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a534cdc10b393a77345f7a3563dee14f2">getTotalSwappedInBytes</a> ()</td></tr>
+<tr class="memdesc:a534cdc10b393a77345f7a3563dee14f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">simple Getter  <a href="#a534cdc10b393a77345f7a3563dee14f2">More...</a><br /></td></tr>
+<tr class="separator:a534cdc10b393a77345f7a3563dee14f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:ab216790fe3b8a755fda83f1a4eb7247b"><td class="memTemplParams" colspan="2">template&lt;class G &gt; </td></tr>
-<tr class="memitem:ab216790fe3b8a755fda83f1a4eb7247b"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_class&lt; G &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00018.html#ab216790fe3b8a755fda83f1a4eb7247b">mDelete</a> () const </td></tr>
-<tr class="memdesc:ab216790fe3b8a755fda83f1a4eb7247b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function manages correct deallocation for array elements having a destructor.  <a href="#ab216790fe3b8a755fda83f1a4eb7247b">More...</a><br /></td></tr>
-<tr class="separator:ab216790fe3b8a755fda83f1a4eb7247b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcf79fc1b4dd016c8ea2b8f99aad57fe"><td class="memTemplParams" colspan="2">template&lt;class G &gt; </td></tr>
-<tr class="memitem:afcf79fc1b4dd016c8ea2b8f99aad57fe"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; !std::is_class&lt; G &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00018.html#afcf79fc1b4dd016c8ea2b8f99aad57fe">mDelete</a> ()</td></tr>
-<tr class="memdesc:afcf79fc1b4dd016c8ea2b8f99aad57fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function manages correct deallocation for array elements lacking a destructor.  <a href="#afcf79fc1b4dd016c8ea2b8f99aad57fe">More...</a><br /></td></tr>
-<tr class="separator:afcf79fc1b4dd016c8ea2b8f99aad57fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a856e6d1325c98c1ca0ab6063797f1c7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a856e6d1325c98c1ca0ab6063797f1c7e">waitForSwapin</a> () const </td></tr>
-<tr class="memdesc:a856e6d1325c98c1ca0ab6063797f1c7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">: indefinitely waits for swapin of the chunk While it would have been desirable to throw exceptions when chunk is not available, checking this in a save way would produce lots of overhead. Thus, it is better to wait indefinitely in this case, as under normal use, the chunk will become available.  <a href="#a856e6d1325c98c1ca0ab6063797f1c7e">More...</a><br /></td></tr>
-<tr class="separator:a856e6d1325c98c1ca0ab6063797f1c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ad20431139d51105bc8f0ec0e0fc316de"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ad20431139d51105bc8f0ec0e0fc316de">signalSwappingCond</a> ()</td></tr>
+<tr class="memdesc:ad20431139d51105bc8f0ec0e0fc316de"><td class="mdescLeft">&#160;</td><td class="mdescRight">signals that a swapping action has completed and memory limits have changed  <a href="#ad20431139d51105bc8f0ec0e0fc316de">More...</a><br /></td></tr>
+<tr class="separator:ad20431139d51105bc8f0ec0e0fc316de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addf9498a417da4d2059e94e238304223"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#addf9498a417da4d2059e94e238304223">sigswapstats</a> (int sig)</td></tr>
+<tr class="memdesc:addf9498a417da4d2059e94e238304223"><td class="mdescLeft">&#160;</td><td class="mdescRight">static binding that will print out some stats. Compile with cmake -DSWAPSTATS=on and send process SIGUSR1 to call this function  <a href="#addf9498a417da4d2059e94e238304223">More...</a><br /></td></tr>
+<tr class="separator:addf9498a417da4d2059e94e238304223"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace0f33ae4d9875dba1652c13042186df"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ace0f33ae4d9875dba1652c13042186df">versionInfo</a> ()</td></tr>
+<tr class="memdesc:ace0f33ae4d9875dba1652c13042186df"><td class="mdescLeft">&#160;</td><td class="mdescRight">prints out a GIT version info and a diff on this version at compile time  <a href="#ace0f33ae4d9875dba1652c13042186df">More...</a><br /></td></tr>
+<tr class="separator:ace0f33ae4d9875dba1652c13042186df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:acebeebd2c7ab841f7bf6577e599ecc03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00017.html">managedMemoryChunk</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#acebeebd2c7ab841f7bf6577e599ecc03">chunk</a></td></tr>
-<tr class="separator:acebeebd2c7ab841f7bf6577e599ecc03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c62007f8d10f2a5a051a739338f454d"><td class="memItemLeft" align="right" valign="top">unsigned int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a5c62007f8d10f2a5a051a739338f454d">tracker</a></td></tr>
-<tr class="separator:a5c62007f8d10f2a5a051a739338f454d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf92dc39c40a08ee727ef549be40dec8"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aaf92dc39c40a08ee727ef549be40dec8">n_elem</a></td></tr>
-<tr class="separator:aaf92dc39c40a08ee727ef549be40dec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a209234b7bebd4c63f53296f4acc16a83"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a209234b7bebd4c63f53296f4acc16a83">root</a> = 1</td></tr>
+<tr class="separator:a209234b7bebd4c63f53296f4acc16a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7f2ab208513612ef232601d0c8f5ea6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ad7f2ab208513612ef232601d0c8f5ea6">parent</a> = <a class="el" href="a00018.html#a209234b7bebd4c63f53296f4acc16a83">managedMemory::root</a></td></tr>
+<tr class="separator:ad7f2ab208513612ef232601d0c8f5ea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77840963816de83953be27f72cb9b118"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a77840963816de83953be27f72cb9b118">threadSynced</a> = false</td></tr>
+<tr class="separator:a77840963816de83953be27f72cb9b118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33804134ad86b84b0765341922ad2bbe"><td class="memItemLeft" align="right" valign="top">static pthread_mutex_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a33804134ad86b84b0765341922ad2bbe">parentalMutex</a> = PTHREAD_MUTEX_INITIALIZER</td></tr>
+<tr class="separator:a33804134ad86b84b0765341922ad2bbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a5ce7c88f59c925ad998dee92e56365"><td class="memItemLeft" align="right" valign="top">static pthread_cond_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a0a5ce7c88f59c925ad998dee92e56365">parentalCond</a> = PTHREAD_COND_INITIALIZER</td></tr>
+<tr class="separator:a0a5ce7c88f59c925ad998dee92e56365"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31ee6736bd158b5a48d17cbe23102be9"><td class="memItemLeft" align="right" valign="top">static pthread_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a31ee6736bd158b5a48d17cbe23102be9">creatingThread</a> = 0</td></tr>
+<tr class="separator:a31ee6736bd158b5a48d17cbe23102be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dde217198bcbce8ff8d6f1adaedeef1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="a00018.html">managedMemory</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a2dde217198bcbce8ff8d6f1adaedeef1">defaultManager</a></td></tr>
+<tr class="separator:a2dde217198bcbce8ff8d6f1adaedeef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a708e2307727c5a2d710b3c15dfcc6978"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a708e2307727c5a2d710b3c15dfcc6978">invalid</a> = 0</td></tr>
+<tr class="separator:a708e2307727c5a2d710b3c15dfcc6978"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
+Protected Types</h2></td></tr>
+<tr class="memitem:a06da9a259c539347727783ee01d49c30"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a06da9a259c539347727783ee01d49c30">swapErrorCode</a> { <a class="el" href="a00018.html#a06da9a259c539347727783ee01d49c30a18484ef9fdc0d989d5310001924e459a">ERR_SUCCESS</a>, 
+<a class="el" href="a00018.html#a06da9a259c539347727783ee01d49c30af7e70df8f8c52c62970a658f89095c52">ERR_SWAPFULL</a>, 
+<a class="el" href="a00018.html#a06da9a259c539347727783ee01d49c30a8fc9282fe1e0eb86c3dd924dbc0ca7ea">ERR_MORETHANTOTALRAM</a>, 
+<a class="el" href="a00018.html#a06da9a259c539347727783ee01d49c30af70fa2e06f34e4e694ee3f33f55b46c6">ERR_NOTENOUGHCANDIDATES</a>
+ }</td></tr>
+<tr class="memdesc:a06da9a259c539347727783ee01d49c30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error codes for swapOut requests.  <a href="a00018.html#a06da9a259c539347727783ee01d49c30">More...</a><br /></td></tr>
+<tr class="separator:a06da9a259c539347727783ee01d49c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a8dd7cb15d0cb0dfedc856e71a690b648"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00019.html">managedMemoryChunk</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a8dd7cb15d0cb0dfedc856e71a690b648">mmalloc</a> (<a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> sizereq)</td></tr>
+<tr class="memdesc:a8dd7cb15d0cb0dfedc856e71a690b648"><td class="mdescLeft">&#160;</td><td class="mdescRight">allocates and registers a new raw memory chunk of size sizereq to be filled in by <a class="el" href="a00020.html" title="Main class to allocate memory that is managed by the rambrain memory defaultManager. ">managedPtr</a>  <a href="#a8dd7cb15d0cb0dfedc856e71a690b648">More...</a><br /></td></tr>
+<tr class="separator:a8dd7cb15d0cb0dfedc856e71a690b648"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4c81f6f40ec94364b67d58156c80f8f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#af4c81f6f40ec94364b67d58156c80f8f">mrealloc</a> (<a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> id, <a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> sizereq)</td></tr>
+<tr class="memdesc:af4c81f6f40ec94364b67d58156c80f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">this function is a stub. In the future it should be capable of resizing an existing allocation  <a href="#af4c81f6f40ec94364b67d58156c80f8f">More...</a><br /></td></tr>
+<tr class="separator:af4c81f6f40ec94364b67d58156c80f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53171b37a59555e66a97606f4aa22e6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a53171b37a59555e66a97606f4aa22e6c">mfree</a> (<a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">rambrain::memoryID</a> id, bool inCleanup=false)</td></tr>
+<tr class="memdesc:a53171b37a59555e66a97606f4aa22e6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">this function unregisters and deallocates a chunk  <a href="#a53171b37a59555e66a97606f4aa22e6c">More...</a><br /></td></tr>
+<tr class="separator:a53171b37a59555e66a97606f4aa22e6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d14b3b19cbfb9aa0c06e848362bacc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00019.html">managedMemoryChunk</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a0d14b3b19cbfb9aa0c06e848362bacc5">resolveMemChunk</a> (const <a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> &amp;id)</td></tr>
+<tr class="memdesc:a0d14b3b19cbfb9aa0c06e848362bacc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns a reference to the memoryChunk indexed by id id  <a href="#a0d14b3b19cbfb9aa0c06e848362bacc5">More...</a><br /></td></tr>
+<tr class="separator:a0d14b3b19cbfb9aa0c06e848362bacc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab9561e5aa8cc910a85e26f55d843347"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="a00018.html#a06da9a259c539347727783ee01d49c30">swapErrorCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aab9561e5aa8cc910a85e26f55d843347">swapOut</a> (<a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> min_size)=0</td></tr>
+<tr class="memdesc:aab9561e5aa8cc910a85e26f55d843347"><td class="mdescLeft">&#160;</td><td class="mdescRight">swaps out at least min_size bytes  <a href="#aab9561e5aa8cc910a85e26f55d843347">More...</a><br /></td></tr>
+<tr class="separator:aab9561e5aa8cc910a85e26f55d843347"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03dc383951a9b23125b23700a791868b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a03dc383951a9b23125b23700a791868b">swapIn</a> (<a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> id)</td></tr>
+<tr class="memdesc:a03dc383951a9b23125b23700a791868b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for swapIn ( <a class="el" href="a00019.html" title="manages all managed Chunks of raw memory ">managedMemoryChunk</a> &amp;chunk )  <a href="#a03dc383951a9b23125b23700a791868b">More...</a><br /></td></tr>
+<tr class="separator:a03dc383951a9b23125b23700a791868b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada713f6703025aa077f28f67971c2443"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ada713f6703025aa077f28f67971c2443">swapIn</a> (<a class="el" href="a00019.html">managedMemoryChunk</a> &amp;chunk)=0</td></tr>
+<tr class="memdesc:ada713f6703025aa077f28f67971c2443"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to swap in chunk chunk.  <a href="#ada713f6703025aa077f28f67971c2443">More...</a><br /></td></tr>
+<tr class="separator:ada713f6703025aa077f28f67971c2443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac90bb2829eefb03bcfdb54f3e7657bc1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ac90bb2829eefb03bcfdb54f3e7657bc1">touch</a> (<a class="el" href="a00019.html">managedMemoryChunk</a> &amp;chunk)=0</td></tr>
+<tr class="memdesc:ac90bb2829eefb03bcfdb54f3e7657bc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">marks chunk as recently active as a hint for scheduling  <a href="#ac90bb2829eefb03bcfdb54f3e7657bc1">More...</a><br /></td></tr>
+<tr class="separator:ac90bb2829eefb03bcfdb54f3e7657bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a759831ace6eba2ca77cd11493050c126"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a759831ace6eba2ca77cd11493050c126">untouch</a> (<a class="el" href="a00019.html">managedMemoryChunk</a> &amp;chunk)=0</td></tr>
+<tr class="memdesc:a759831ace6eba2ca77cd11493050c126"><td class="mdescLeft">&#160;</td><td class="mdescRight">marks chunk as recently not needed any more  <a href="#a759831ace6eba2ca77cd11493050c126">More...</a><br /></td></tr>
+<tr class="separator:a759831ace6eba2ca77cd11493050c126"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0f1191e8bcedb261b7464d1bcd5b620"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ad0f1191e8bcedb261b7464d1bcd5b620">schedulerRegister</a> (<a class="el" href="a00019.html">managedMemoryChunk</a> &amp;chunk)=0</td></tr>
+<tr class="memdesc:ad0f1191e8bcedb261b7464d1bcd5b620"><td class="mdescLeft">&#160;</td><td class="mdescRight">gives scheduler code the opportunity to register its own datastructures associated with a chunk  <a href="#ad0f1191e8bcedb261b7464d1bcd5b620">More...</a><br /></td></tr>
+<tr class="separator:ad0f1191e8bcedb261b7464d1bcd5b620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d67620e215f59f9656bdf2f934b9f3e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a9d67620e215f59f9656bdf2f934b9f3e">schedulerDelete</a> (<a class="el" href="a00019.html">managedMemoryChunk</a> &amp;chunk)=0</td></tr>
+<tr class="memdesc:a9d67620e215f59f9656bdf2f934b9f3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">signals deletion of chunk to scheduler code  <a href="#a9d67620e215f59f9656bdf2f934b9f3e">More...</a><br /></td></tr>
+<tr class="separator:a9d67620e215f59f9656bdf2f934b9f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed33f62ffd38add9f04593cc205d475e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aed33f62ffd38add9f04593cc205d475e">ensureEnoughSpace</a> (<a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> sizereq, <a class="el" href="a00019.html">managedMemoryChunk</a> *orIsSwappedin=NULL)</td></tr>
+<tr class="memdesc:aed33f62ffd38add9f04593cc205d475e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function ensures that there is sizereq space left in ram.  <a href="#aed33f62ffd38add9f04593cc205d475e">More...</a><br /></td></tr>
+<tr class="separator:aed33f62ffd38add9f04593cc205d475e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8309642f6f8847f5d80b80a0e5a90bc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ad8309642f6f8847f5d80b80a0e5a90bc">waitForSwapin</a> (<a class="el" href="a00019.html">managedMemoryChunk</a> &amp;chunk, bool keepSwapLock=false)</td></tr>
+<tr class="memdesc:ad8309642f6f8847f5d80b80a0e5a90bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits until a certain chunk is present.  <a href="#ad8309642f6f8847f5d80b80a0e5a90bc">More...</a><br /></td></tr>
+<tr class="separator:ad8309642f6f8847f5d80b80a0e5a90bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa71bd5c33b1ee3c0e89e672f89c4d3f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aa71bd5c33b1ee3c0e89e672f89c4d3f2">waitForSwapout</a> (<a class="el" href="a00019.html">managedMemoryChunk</a> &amp;chunk, bool keepSwapLock=false)</td></tr>
+<tr class="memdesc:aa71bd5c33b1ee3c0e89e672f89c4d3f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits until a certain chunk is swapped out.  <a href="#aa71bd5c33b1ee3c0e89e672f89c4d3f2">More...</a><br /></td></tr>
+<tr class="separator:aa71bd5c33b1ee3c0e89e672f89c4d3f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a372ed81183939767d35e295887493e24"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a372ed81183939767d35e295887493e24">claimUsageof</a> (<a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> bytes, bool rambytes, bool used)</td></tr>
+<tr class="memdesc:a372ed81183939767d35e295887493e24"><td class="mdescLeft">&#160;</td><td class="mdescRight">account for memory usage change  <a href="#a372ed81183939767d35e295887493e24">More...</a><br /></td></tr>
+<tr class="separator:a372ed81183939767d35e295887493e24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c18257ab6113e766cbac0eed0a2c13a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a3c18257ab6113e766cbac0eed0a2c13a">claimTobefreed</a> (<a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> bytes, bool tobefreed)</td></tr>
+<tr class="memdesc:a3c18257ab6113e766cbac0eed0a2c13a"><td class="mdescLeft">&#160;</td><td class="mdescRight">account for future availability of bytes  <a href="#a3c18257ab6113e766cbac0eed0a2c13a">More...</a><br /></td></tr>
+<tr class="separator:a3c18257ab6113e766cbac0eed0a2c13a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefc0e17fcecc8ad92431e3888284006c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aefc0e17fcecc8ad92431e3888284006c">waitForAIO</a> ()</td></tr>
+<tr class="memdesc:aefc0e17fcecc8ad92431e3888284006c"><td class="mdescLeft">&#160;</td><td class="mdescRight">wait for some asynchronous action to occur  <a href="#aefc0e17fcecc8ad92431e3888284006c">More...</a><br /></td></tr>
+<tr class="separator:aefc0e17fcecc8ad92431e3888284006c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:ab90e18985679a274d3928e1de88af00a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ab90e18985679a274d3928e1de88af00a">Throw</a> (<a class="el" href="a00022.html">memoryException</a> e)</td></tr>
+<tr class="memdesc:ab90e18985679a274d3928e1de88af00a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom throw function, as we need to prevent throwing exceptions in construtors.  <a href="#ab90e18985679a274d3928e1de88af00a">More...</a><br /></td></tr>
+<tr class="separator:ab90e18985679a274d3928e1de88af00a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a0c06638da1cf9f0d828f1af4000dbe68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00021.html">managedSwap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a0c06638da1cf9f0d828f1af4000dbe68">swap</a> = 0</td></tr>
+<tr class="separator:a0c06638da1cf9f0d828f1af4000dbe68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83ce75cd12195223bb019aac25b7d891"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a83ce75cd12195223bb019aac25b7d891">memory_max</a></td></tr>
+<tr class="separator:a83ce75cd12195223bb019aac25b7d891"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef5adf85cd78d5de48654f3c16ae4cf5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aef5adf85cd78d5de48654f3c16ae4cf5">memory_used</a> = 0</td></tr>
+<tr class="separator:aef5adf85cd78d5de48654f3c16ae4cf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bbb82bab1a80258be35b4a378a9e62d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a5bbb82bab1a80258be35b4a378a9e62d">memory_swapped</a> = 0</td></tr>
+<tr class="separator:a5bbb82bab1a80258be35b4a378a9e62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af10f7cc8ddb9da7d3b92af1b4309cf5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#af10f7cc8ddb9da7d3b92af1b4309cf5c">memory_tobefreed</a> = 0</td></tr>
+<tr class="separator:af10f7cc8ddb9da7d3b92af1b4309cf5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d98455a682cb735c520eda4b399ded8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a6d98455a682cb735c520eda4b399ded8">outOfSwapIsFatal</a> = true</td></tr>
+<tr class="separator:a6d98455a682cb735c520eda4b399ded8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeabbc3b181a06ed716cea97b6c96a82f"><td class="memItemLeft" align="right" valign="top">std::map&lt; <a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a>, <a class="el" href="a00019.html">managedMemoryChunk</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aeabbc3b181a06ed716cea97b6c96a82f">memChunks</a></td></tr>
+<tr class="separator:aeabbc3b181a06ed716cea97b6c96a82f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f965f10d2dc7301621fa2e5cf4805c8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#a7ac90afa0cd2573bc0a73c6e4c439f81">memoryAtime</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a9f965f10d2dc7301621fa2e5cf4805c8">atime</a> = 0</td></tr>
+<tr class="separator:a9f965f10d2dc7301621fa2e5cf4805c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adadc892a13085d636d8ee109adeed498"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#adadc892a13085d636d8ee109adeed498">memID_pace</a> = 1</td></tr>
+<tr class="separator:adadc892a13085d636d8ee109adeed498"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77a644c7c289c46758f643fc8d024809"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00018.html">managedMemory</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a77a644c7c289c46758f643fc8d024809">previousManager</a></td></tr>
+<tr class="separator:a77a644c7c289c46758f643fc8d024809"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb8534057130e562b7bd1ddb834a749f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#adb8534057130e562b7bd1ddb834a749f">n_swap_out</a> = 0</td></tr>
+<tr class="separator:adb8534057130e562b7bd1ddb834a749f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dff86521b58cf4df6a7e2b8764e2b32"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a5dff86521b58cf4df6a7e2b8764e2b32">n_swap_in</a> = 0</td></tr>
+<tr class="separator:a5dff86521b58cf4df6a7e2b8764e2b32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab88d08812cd4ac88d5fc7ce8dd358d93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ab88d08812cd4ac88d5fc7ce8dd358d93">swap_out_scheduled_bytes</a> = 0</td></tr>
+<tr class="separator:ab88d08812cd4ac88d5fc7ce8dd358d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40b019788ed6d25fd23933ba3ee773dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a40b019788ed6d25fd23933ba3ee773dd">swap_in_scheduled_bytes</a> = 0</td></tr>
+<tr class="separator:a40b019788ed6d25fd23933ba3ee773dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b24361f9146dc3e7b84e0034e6ad9e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a7b24361f9146dc3e7b84e0034e6ad9e7">swap_out_bytes</a> = 0</td></tr>
+<tr class="separator:a7b24361f9146dc3e7b84e0034e6ad9e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af26cc5ecbc4a1fcb4ee2c17932cc2549"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#af26cc5ecbc4a1fcb4ee2c17932cc2549">swap_in_bytes</a> = 0</td></tr>
+<tr class="separator:af26cc5ecbc4a1fcb4ee2c17932cc2549"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada5ea5b996315264c39aa3680f5359e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ada5ea5b996315264c39aa3680f5359e5">swap_out_bytes_last</a> = 0</td></tr>
+<tr class="separator:ada5ea5b996315264c39aa3680f5359e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10169d1da4d7cb2270d5ab8630f4d9a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a10169d1da4d7cb2270d5ab8630f4d9a4">swap_in_bytes_last</a> = 0</td></tr>
+<tr class="separator:a10169d1da4d7cb2270d5ab8630f4d9a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada4a382368248e0838a0df30572d3966"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ada4a382368248e0838a0df30572d3966">swap_hits</a> = 0</td></tr>
+<tr class="separator:ada4a382368248e0838a0df30572d3966"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a296c0bc3b4597fd5052d8dd672799e02"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a296c0bc3b4597fd5052d8dd672799e02">swap_misses</a> = 0</td></tr>
+<tr class="separator:a296c0bc3b4597fd5052d8dd672799e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38f530245a6614262d2f26cb39d123b9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a38f530245a6614262d2f26cb39d123b9">memoryAlignment</a> = 1</td></tr>
+<tr class="separator:a38f530245a6614262d2f26cb39d123b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:a1041409de3c6106acf2b072ba826c81f"><td class="memItemLeft" align="right" valign="top">static pthread_mutex_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a1041409de3c6106acf2b072ba826c81f">stateChangeMutex</a> = PTHREAD_MUTEX_INITIALIZER</td></tr>
+<tr class="separator:a1041409de3c6106acf2b072ba826c81f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0875327e12aa47af2a2ac280a99ec96"><td class="memItemLeft" align="right" valign="top">static pthread_cond_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ad0875327e12aa47af2a2ac280a99ec96">swappingCond</a> = PTHREAD_COND_INITIALIZER</td></tr>
+<tr class="separator:ad0875327e12aa47af2a2ac280a99ec96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af456ef30cf3a475b227c9fa15385c5ce"><td class="memItemLeft" align="right" valign="top">static FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#af456ef30cf3a475b227c9fa15385c5ce">logFile</a> = fopen ( &quot;rambrain-swapstats.log&quot;, &quot;w&quot; )</td></tr>
+<tr class="separator:af456ef30cf3a475b227c9fa15385c5ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a242a4b44a5b5ae289579a766ceb76b78"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a242a4b44a5b5ae289579a766ceb76b78">firstLog</a> = true</td></tr>
+<tr class="separator:a242a4b44a5b5ae289579a766ceb76b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a9f095e8e7b098019dd5a80fe57bc2d68"><td class="memTemplParams" colspan="2">template&lt;class G &gt; </td></tr>
-<tr class="memitem:a9f095e8e7b098019dd5a80fe57bc2d68"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00018.html#a9f095e8e7b098019dd5a80fe57bc2d68">adhereTo</a></td></tr>
-<tr class="separator:a9f095e8e7b098019dd5a80fe57bc2d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a707a18d5c07014e1cc68a52d519204ff"><td class="memTemplParams" colspan="2">template&lt;class G &gt; </td></tr>
-<tr class="memitem:a707a18d5c07014e1cc68a52d519204ff"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00018.html#a707a18d5c07014e1cc68a52d519204ff">adhereToConst</a></td></tr>
-<tr class="separator:a707a18d5c07014e1cc68a52d519204ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4c35adf1407cabd80ef914fedd35077"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ad4c35adf1407cabd80ef914fedd35077">::managedPtr_Unit_ChunkInUse_Test</a></td></tr>
-<tr class="separator:ad4c35adf1407cabd80ef914fedd35077"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a014c5e2ea88760515ed8ee88e2e7e0f1"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a014c5e2ea88760515ed8ee88e2e7e0f1">::managedPtr_Unit_GetLocPointer_Test</a></td></tr>
-<tr class="separator:a014c5e2ea88760515ed8ee88e2e7e0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af04c3351afa2b96f7eedc5cf68142014"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#af04c3351afa2b96f7eedc5cf68142014">::managedPtr_Unit_SmartPointery_Test</a></td></tr>
-<tr class="separator:af04c3351afa2b96f7eedc5cf68142014"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae258c729b59134b27cd14a7604387d5"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aae258c729b59134b27cd14a7604387d5">::managedFileSwap_Unit_SwapSingleIsland_Test</a></td></tr>
-<tr class="separator:aae258c729b59134b27cd14a7604387d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a034e3521493115d83a646399927cd5"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a4a034e3521493115d83a646399927cd5">::managedFileSwap_Unit_SwapNextAndSingleIsland_Test</a></td></tr>
-<tr class="separator:a4a034e3521493115d83a646399927cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33afc5203b7ef7a8e11fdb48df25c101"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a33afc5203b7ef7a8e11fdb48df25c101">::adhereTo_Unit_TwiceAdheredOnceUsed_Test</a></td></tr>
-<tr class="separator:a33afc5203b7ef7a8e11fdb48df25c101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4db9f2403c3411068243fdf0798d43f5"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a4db9f2403c3411068243fdf0798d43f5"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00018.html#a4db9f2403c3411068243fdf0798d43f5">managedPtr</a></td></tr>
+<tr class="separator:a4db9f2403c3411068243fdf0798d43f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7a44371743b957ef559f0c1d92f0ed0"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ad7a44371743b957ef559f0c1d92f0ed0">managedSwap</a></td></tr>
+<tr class="separator:ad7a44371743b957ef559f0c1d92f0ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a57555464dec1f54ad14f68749ba2cd"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a7a57555464dec1f54ad14f68749ba2cd">managedFileSwap</a></td></tr>
+<tr class="separator:a7a57555464dec1f54ad14f68749ba2cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc2eae7d63704cb9c8f9efd2606dd258"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#afc2eae7d63704cb9c8f9efd2606dd258">managedDummySwap</a></td></tr>
+<tr class="separator:afc2eae7d63704cb9c8f9efd2606dd258"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61476c6520b6093ca7003a8b2ee302f6"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a61476c6520b6093ca7003a8b2ee302f6">::managedFileSwap_Unit_ManualSwapping_Test</a></td></tr>
+<tr class="separator:a61476c6520b6093ca7003a8b2ee302f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a354aaa505fa382a499838b075f92d0f7"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a354aaa505fa382a499838b075f92d0f7">::managedFileSwap_Unit_ManualMultiSwapping_Test</a></td></tr>
+<tr class="separator:a354aaa505fa382a499838b075f92d0f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0cbd2454408b8ae3b5aca513c07eef0"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#aa0cbd2454408b8ae3b5aca513c07eef0">::managedFileSwap_Unit_ManualSwappingDelete_Test</a></td></tr>
+<tr class="separator:aa0cbd2454408b8ae3b5aca513c07eef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64c14b438f19454bdebd737eddb9e0a6"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#a64c14b438f19454bdebd737eddb9e0a6">::cyclicManagedMemory_Integration_ArrayAccess_Test</a></td></tr>
+<tr class="separator:a64c14b438f19454bdebd737eddb9e0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2e5eaf4210c1832af96f0584533705f"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ac2e5eaf4210c1832af96f0584533705f">::managedFileSwap_Unit_CheckSwapStats_Test</a></td></tr>
+<tr class="separator:ac2e5eaf4210c1832af96f0584533705f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb585b10243d2574af17f1c6d1e7eec5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00021.html">managedSwap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#afb585b10243d2574af17f1c6d1e7eec5">configTestGetSwap</a> (<a class="el" href="a00018.html">managedMemory</a> *man)</td></tr>
+<tr class="separator:afb585b10243d2574af17f1c6d1e7eec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class T&gt;<br />
-class rambrain::managedPtr&lt; T &gt;</h3>
+<div class="textblock"><p>Backend class to handle raw memory and interaction/storage with <a class="el" href="a00021.html" title="Class that serves as a backend to managedMemory to actual write/read managedMemoryChunks to/from hard...">managedSwap</a>. </p>
+<dl class="section note"><dt>Note</dt><dd>Different strategies which elements to swap out / in can be implemented by inheriting this class </dd>
+<dd>
+End users do not need to instantiate/use this class directly. This will be done by config manager</dd></dl>
+<p>This class's implementation is written to standardize most of interactions between swap and <a class="el" href="a00018.html" title="Backend class to handle raw memory and interaction/storage with managedSwap. ">managedMemory</a> derived classes. Implementation supports asynchronous actions. While there may be more parallelism possible we currently support only one mutex ( stateChangeMutex ) to make this thread-safe to keep things simple at the moment. </p><dl class="section warning"><dt>Warning</dt><dd>When writing new strategies, study the locking/unlocking of stateChangeMutex closely to prevent deadlocks. ManagedFileSwap may serve as an example.</dd>
+<dd>
+Only the most recent allocated memoryManager will be used by <a class="el" href="a00001.html" title="Main class to fetch memory that is managed by rambrain for actual usage. ">adhereTo</a> / <a class="el" href="a00020.html" title="Main class to allocate memory that is managed by the rambrain memory defaultManager. ">managedPtr</a> classes </dd></dl>
 
-<p>Main class to allocate memory that is managed by the rambrain memory defaultManager. </p>
-<dl class="section warning"><dt>Warning</dt><dd><em>thread-safety</em><ul>
-<li>The object itself is not thread-safe</li>
-<li>Do not pass pointers/references to this object over thread boundaries </li>
-</ul>
-</dd></dl>
-<dl class="section note"><dt>Note</dt><dd><em>thread-safety</em><ul>
-<li>The object itself may be passed over thread boundary </li>
-</ul>
-</dd></dl>
-
-<p>Definition at line <a class="el" href="a00051_source.html#l00054">54</a> of file <a class="el" href="a00051_source.html">managedMemory.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a70120a3e9fcb2b3fd79033860888e877"></a>
+<p>Definition at line <a class="el" href="a00053_source.html#l00068">68</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="a06da9a259c539347727783ee01d49c30"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::<a class="el" href="a00018.html">managedPtr</a> </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00018.html">managedPtr</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>ref</em></td><td>)</td>
-          <td></td>
+          <td class="memname">enum <a class="el" href="a00018.html#a06da9a259c539347727783ee01d49c30">rambrain::managedMemory::swapErrorCode</a></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>copy ctor </p>
+<p>Error codes for swapOut requests. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a06da9a259c539347727783ee01d49c30a18484ef9fdc0d989d5310001924e459a"></a>ERR_SUCCESS&#160;</td><td class="fielddoc">
+<p>Swapping action was successful. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a06da9a259c539347727783ee01d49c30af7e70df8f8c52c62970a658f89095c52"></a>ERR_SWAPFULL&#160;</td><td class="fielddoc">
+<p>Swap space is full. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a06da9a259c539347727783ee01d49c30a8fc9282fe1e0eb86c3dd924dbc0ca7ea"></a>ERR_MORETHANTOTALRAM&#160;</td><td class="fielddoc">
+<p>The element/size requested does not fit in RAM as a whole. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a06da9a259c539347727783ee01d49c30af70fa2e06f34e4e694ee3f33f55b46c6"></a>ERR_NOTENOUGHCANDIDATES&#160;</td><td class="fielddoc">
+<p>We lack reasonable candidates for swapout (too much elements in use?) </p>
+</td></tr>
+</table>
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00082">82</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00157">157</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="acf190b0d5a8c6832a0be401a1d283d81"></a>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a45e18a3242b55adc2b6e50bdbecfcaba"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">rambrain::managedMemory::managedMemory </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00021.html">managedSwap</a> *&#160;</td>
+          <td class="paramname"><em>swap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
+          <td class="paramname"><em>size</em> = <code><a class="el" href="a00093.html#a8525b8b73c3e1ec62bd571b3cffd1742">gig</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Standard constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">swap</td><td>The swap that this manager should use. </td></tr>
+    <tr><td class="paramname">size</td><td>The net size of memory that is allowed in allocation. Be aware of leaving enough space for overhead. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00064">64</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="abac1938d32c1ad704224e51b8d97b185"></a>
+<div class="memitem">
+<div class="memproto">
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::<a class="el" href="a00018.html">managedPtr</a> </td>
+          <td class="memname">rambrain::managedMemory::~managedMemory </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -269,39 +486,34 @@ template&lt;class T&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>with no arguments given, instantiates an array with one element </p>
-
-<p>Definition at line <a class="el" href="a00055_source.html#l00088">88</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00090">90</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a697ea6e9ed885f00fa2d2486e904b436"></a>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a3c18257ab6113e766cbac0eed0a2c13a"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<div class="memtemplate">
-template&lt;typename... ctor_args&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::<a class="el" href="a00018.html">managedPtr</a> </td>
+          <td class="memname">void rambrain::managedMemory::claimTobefreed </td>
           <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>n_elem</em>, </td>
+          <td class="paramtype"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">rambrain::global_bytesize</a>&#160;</td>
+          <td class="paramname"><em>bytes</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ctor_args...&#160;</td>
-          <td class="paramname"><em>Args</em>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>tobefreed</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -311,398 +523,1154 @@ template&lt;typename... ctor_args&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>instantiates <a class="el" href="a00018.html" title="Main class to allocate memory that is managed by the rambrain memory defaultManager. ">managedPtr</a> containing n_elem elements and passes Args as arguments to the constructor of these </p>
-<p>I admit, this is a bit complicated. as we do not want users to carry around information about object parenthood into their classes, we have to ensure that our 'memoryManager::parent' attribute is carried down the hierarchy correctly. As this code part is accessed recursively throughout creation, we have to make sure that we do not lock twice (deadlock) we only continue if we're called by the currently active creation process the following is not very elegant, but works. The idea behind this is that we admit one thread at a time to create an object class hierarchy. In this way, the parent argument from below is correct. This is synced by basically checking wether we should be a master or not based on a possibly setted threadID...</p>
+<p>account for future availability of bytes </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bytes</td><td>number of bytes under consideration </td></tr>
+    <tr><td class="paramname">tobefreed</td><td>sum of bytes will be increased if true, else decreased. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. This tells memoryManager that asynchronous actions pending will free the number of bytes given by parameter or that these bytes have now been freed </dd></dl>
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00092">92</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00802">802</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a7fec909a40fc615870c49ecd710660ec"></a>
+<a class="anchor" id="a372ed81183939767d35e295887493e24"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::~<a class="el" href="a00018.html">managedPtr</a> </td>
+          <td class="memname">void rambrain::managedMemory::claimUsageof </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>destructor </p>
-
-<p>Definition at line <a class="el" href="a00055_source.html#l00159">159</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ab84d0780b62769d5f14fe791b14940b0"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const T* <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::getConstLocPtr </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>returns const local pointer to object </p>
-<dl class="section note"><dt>Note</dt><dd>when called, you have to care for setting use to the chunk, first </dd></dl>
-
-<p>Definition at line <a class="el" href="a00055_source.html#l00230">230</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a9b96f8d979019bf3f86c8e614696238d"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T* <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::getLocPtr </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>returns local pointer to object </p>
-<dl class="section note"><dt>Note</dt><dd>when called, you have to care for setting use to the chunk, first </dd></dl>
-
-<p>Definition at line <a class="el" href="a00055_source.html#l00220">220</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab216790fe3b8a755fda83f1a4eb7247b"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<div class="memtemplate">
-template&lt;class G &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::enable_if&lt;std::is_class&lt;G&gt;::value&gt;::type <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::mDelete </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>This function manages correct deallocation for array elements having a destructor. </p>
-
-<p>Definition at line <a class="el" href="a00055_source.html#l00245">245</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="afcf79fc1b4dd016c8ea2b8f99aad57fe"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<div class="memtemplate">
-template&lt;class G &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::enable_if&lt; !std::is_class&lt;G&gt;::value &gt;::type <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::mDelete </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>This function manages correct deallocation for array elements lacking a destructor. </p>
-
-<p>Definition at line <a class="el" href="a00055_source.html#l00260">260</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ab70dc6fbaf758bc0380e72017e1b2ff1"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00018.html">managedPtr</a>&lt;T&gt;&amp; <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="a00018.html">managedPtr</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>ref</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>assignment operator </p>
-
-<p>Definition at line <a class="el" href="a00055_source.html#l00190">190</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a1472e84fc142f26fb9ee5774efc0b91f"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">DEPRECATED T&amp; <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::operator[] </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section note"><dt>Note</dt><dd>This operator can only be called safely in single threaded situations when preemptive swapOut actions have been disabled </dd></dl>
-
-<p>Definition at line <a class="el" href="a00055_source.html#l00205">205</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a486dd6d2b56621edadd8ae6d91efa463"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">DEPRECATED const T&amp; <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::operator[] </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="section note"><dt>Note</dt><dd>This operator can only be called safely in single threaded situations when preemptive swapOut actions have been disabled </dd></dl>
-
-<p>Definition at line <a class="el" href="a00055_source.html#l00211">211</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a84635bcc9865d9b638aeab5bac93e463"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::prepareUse </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>tells the memory manager to possibly swap in chunk for near future use </p>
-
-<p>Definition at line <a class="el" href="a00055_source.html#l00167">167</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="afc4112d3c16edcb7172e7f35030f435a"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::setUse </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>writable</em> = <code>true</code>, </td>
+          <td class="paramtype"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">rambrain::global_bytesize</a>&#160;</td>
+          <td class="paramname"><em>bytes</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool *&#160;</td>
-          <td class="paramname"><em>tracker</em> = <code>NULL</code>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>rambytes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>used</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> const</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Atomically sets use to a chunk if tracker is not already set to true. returns whether we set use or not. </p>
+<p>account for memory usage change </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bytes</td><td>number of bytes under consideration </td></tr>
+    <tr><td class="paramname">rambytes</td><td>set this to true if you want to signal different usage for bytes residing in rambytes </td></tr>
+    <tr><td class="paramname">used</td><td>sum of bytes will be increased if true, else decreased. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00173">173</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00792">792</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5e27a4cf25fdeb82501a617e86f8f7fc"></a>
+<a class="anchor" id="aed33f62ffd38add9f04593cc205d475e"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::unsetUse </td>
+          <td class="memname">bool rambrain::managedMemory::ensureEnoughSpace </td>
           <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>loaded</em> = <code>1</code></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
+          <td class="paramname"><em>sizereq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00019.html">managedMemoryChunk</a> *&#160;</td>
+          <td class="paramname"><em>orIsSwappedin</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>unsets use count on memory chunk </p>
+<p>This function ensures that there is sizereq space left in ram. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">orisSwappedin</td><td>if not null, this chunk will be checked for ram presence </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If <code>orisSwappedin</code> is set, return value tells whether the chunk <code>orisSwappedin</code> is pointing to has been or is about to be swapped in. Otherwise false </dd></dl>
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00185">185</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00173">173</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a856e6d1325c98c1ca0ab6063797f1c7e"></a>
+<a class="anchor" id="a24e3c85157bebe35c89e2140c17b4eae"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::waitForSwapin </td>
+          <td class="memname">double rambrain::managedMemory::getHitsOverMisses </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>returns current hits over misses rate for accessing elements. </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00696">696</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aea4a0f411615e719685e999a51565f46"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::getMemoryLimit </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+<p>returns current memory limit </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00119">119</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1871ed446f04492704e0bd75b16e5d2a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int rambrain::managedMemory::getNumberOfChildren </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> &amp;&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>conveniently returns number of children of the memoryChunk with id id </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00515">515</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a61d250b65165dd5a6e7e833261295ec2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::getSwappedMemory </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>returns current swap usage </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00127">127</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a534cdc10b393a77345f7a3563dee14f2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double rambrain::managedMemory::getTotalSwappedInBytes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>: indefinitely waits for swapin of the chunk While it would have been desirable to throw exceptions when chunk is not available, checking this in a save way would produce lots of overhead. Thus, it is better to wait indefinitely in this case, as under normal use, the chunk will become available. </p>
+<p>simple Getter </p>
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00272">272</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00304">304</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a42267ac7844983eb482c1b06830e1a83"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double rambrain::managedMemory::getTotalSwappedOutBytes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>simple Getter </p>
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00300">300</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab4ed9d5c617b36a14037072291b69ee5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::getUsedMemory </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>returns current ram usage </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00123">123</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac515fe5cbdc520a70d9512da0ab363ce"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedMemory::linearMfree </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>linearly deletes all objects in memory </p>
+<dl class="section note"><dt>Note</dt><dd>This function does not preserve correct deallocation order in class hierarchies, as such, it is not a valid garbage collector. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00606">606</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a53171b37a59555e66a97606f4aa22e6c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedMemory::mfree </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">rambrain::memoryID</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>inCleanup</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>this function unregisters and deallocates a chunk </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00448">448</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a8dd7cb15d0cb0dfedc856e71a690b648"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00019.html">managedMemoryChunk</a> * rambrain::managedMemory::mmalloc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
+          <td class="paramname"><em>sizereq</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>allocates and registers a new raw memory chunk of size sizereq to be filled in by <a class="el" href="a00020.html" title="Main class to allocate memory that is managed by the rambrain memory defaultManager. ">managedPtr</a> </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00223">223</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af4c81f6f40ec94364b67d58156c80f8f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::mrealloc </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a>&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
+          <td class="paramname"><em>sizereq</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>this function is a stub. In the future it should be capable of resizing an existing allocation </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00367">367</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa4085ccf02a1a0d6790d700cccad4061"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::prepareUse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00019.html">rambrain::managedMemoryChunk</a> &amp;&#160;</td>
+          <td class="paramname"><em>chunk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>acquireLock</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Triggers swapin of chunk. </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00285">285</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4147c7d36b38e4bea0c73b6f4609d477"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedMemory::printSwapstats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>print statistic about the number, size and efficiency of swapping actions </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00627">627</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a680ef6324a0061c0a86d84c82bee3a5b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedMemory::printTree </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00019.html">managedMemoryChunk</a> *&#160;</td>
+          <td class="paramname"><em>current</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>nspaces</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>prints the tree of managed objects for further inspection </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00534">534</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aad26e3db754f6a8957f045a646d911a8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedMemory::recursiveMfree </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a>&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>recursively deletes the objects in memory, first children, then parents. </p>
+<dl class="section note"><dt>Note</dt><dd>This function does not preserve correct deallocation order in class hierarchies, as such, it is not a valid garbage collector. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00585">585</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aab63949c5a3fd590e39d9e15dace8c2d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedMemory::resetSwapstats </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>reset statistic about the number, size and efficiency of swapping actions </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00639">639</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0d14b3b19cbfb9aa0c06e848362bacc5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00019.html">managedMemoryChunk</a> &amp; rambrain::managedMemory::resolveMemChunk </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> &amp;&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>returns a reference to the memoryChunk indexed by id id </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00621">621</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a9d67620e215f59f9656bdf2f934b9f3e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void rambrain::managedMemory::schedulerDelete </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00019.html">managedMemoryChunk</a> &amp;&#160;</td>
+          <td class="paramname"><em>chunk</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>signals deletion of chunk to scheduler code </p>
+
+<p>Implemented in <a class="el" href="a00011.html#a937a2eeee6bdb1d5aeb313a0fa1ccced">rambrain::cyclicManagedMemory</a>, and <a class="el" href="a00013.html#a655f874332b0aee85639bfe4ab812de3">rambrain::dummyManagedMemory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad0f1191e8bcedb261b7464d1bcd5b620"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void rambrain::managedMemory::schedulerRegister </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00019.html">managedMemoryChunk</a> &amp;&#160;</td>
+          <td class="paramname"><em>chunk</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>gives scheduler code the opportunity to register its own datastructures associated with a chunk </p>
+
+<p>Implemented in <a class="el" href="a00011.html#a7b185f783b5b46babfc1c7d96297dcd9">rambrain::cyclicManagedMemory</a>, and <a class="el" href="a00013.html#adc7add60dc8976d05d31c0a3a2548922">rambrain::dummyManagedMemory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af183c26795176260a40a73f3d8eb4445"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::setMemoryLimit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
+          <td class="paramname"><em>size</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>dynamically adjusts allowed ram usage </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">size</td><td>desired allowed ram size </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>returns whether the new restrictions could be fulfilled under current load If necessary, this function will trigger writeout of objects until the new limit is reached. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00134">134</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4158747bb03019659afc34d0120be28c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::setOutOfSwapIsFatal </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>fatal</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>set policy what to do when out of memory in both ram and swap </p>
+<dl class="section return"><dt>Returns</dt><dd>old policy </dd></dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00165">165</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ae3f93d73321b0df2685347e0b4e1a194"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::setUse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a>&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convenience interface for <a class="el" href="a00018.html#a2b9b148789b84dda7fa6a176bf193bf3" title="Marks chunk as used and prevents swapout. ">setUse( managedMemoryChunk &amp;chunk, bool writeAccess )</a> </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00018.html#a2b9b148789b84dda7fa6a176bf193bf3" title="Marks chunk as used and prevents swapout. ">setUse(managedMemoryChunk &amp;chunk,bool writeAccess)</a>; </dd></dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00399">399</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2b9b148789b84dda7fa6a176bf193bf3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::setUse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00019.html">managedMemoryChunk</a> &amp;&#160;</td>
+          <td class="paramname"><em>chunk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>writeAccess</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Marks chunk as used and prevents swapout. </p>
+<dl class="section return"><dt>Returns</dt><dd>success </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">chunk</td><td>the chunk that will be used </td></tr>
+    <tr><td class="paramname">writeAccess</td><td>set this to false if the chunk will not be written to </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00321">321</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad20431139d51105bc8f0ec0e0fc316de"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedMemory::signalSwappingCond </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>signals that a swapping action has completed and memory limits have changed </p>
+<dl class="section note"><dt>Note</dt><dd>this function is used e.g. by <a class="el" href="a00021.html" title="Class that serves as a backend to managedMemory to actual write/read managedMemoryChunks to/from hard...">managedSwap</a> to give other threads waiting the possibility to check whether the condition they're waiting for is met now. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00730">730</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="addf9498a417da4d2059e94e238304223"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedMemory::sigswapstats </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>sig</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>static binding that will print out some stats. Compile with cmake -DSWAPSTATS=on and send process SIGUSR1 to call this function </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00646">646</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a03dc383951a9b23125b23700a791868b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::swapIn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a>&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Convenience function for swapIn ( <a class="el" href="a00019.html" title="manages all managed Chunks of raw memory ">managedMemoryChunk</a> &amp;chunk ) </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00018.html#ada713f6703025aa077f28f67971c2443" title="Tries to swap in chunk chunk. ">swapIn(managedMemoryChunk &amp;chunk)</a> </dd></dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00279">279</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ada713f6703025aa077f28f67971c2443"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool rambrain::managedMemory::swapIn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00019.html">managedMemoryChunk</a> &amp;&#160;</td>
+          <td class="paramname"><em>chunk</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tries to swap in chunk chunk. </p>
+<dl class="section return"><dt>Returns</dt><dd>success </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">chunk</td><td>the chunk subject to be swapped in Successful return does not mean that the chunk is available at an instant. It may be necessary for asynchronous swapIn to complete beforehands. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. </dd></dl>
+
+<p>Implemented in <a class="el" href="a00011.html#a6ce5a7e8f7fbc5a53bee42e18bf562c9">rambrain::cyclicManagedMemory</a>, and <a class="el" href="a00013.html#a4b4aa73d808bc21e9f28eb1f426d9f39">rambrain::dummyManagedMemory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aab9561e5aa8cc910a85e26f55d843347"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="a00018.html#a06da9a259c539347727783ee01d49c30">swapErrorCode</a> rambrain::managedMemory::swapOut </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
+          <td class="paramname"><em>min_size</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>swaps out at least min_size bytes </p>
+<dl class="section return"><dt>Returns</dt><dd>returns whether the swap out was successful or a reason why it was note </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min_size</td><td>minimum size of swapped out elements Sucessful return does not mean that the bytes are available at an instant. It may be necessary for swapOut to complete beforehands. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. </dd></dl>
+
+<p>Implemented in <a class="el" href="a00011.html#ae8cd02152e84886d3a9a933585f13483">rambrain::cyclicManagedMemory</a>, and <a class="el" href="a00013.html#a87f2c23257398f23c77e6a24eed8a0f6">rambrain::dummyManagedMemory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab90e18985679a274d3928e1de88af00a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::Throw </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00022.html">memoryException</a>&#160;</td>
+          <td class="paramname"><em>e</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Custom throw function, as we need to prevent throwing exceptions in construtors. </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00431">431</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac90bb2829eefb03bcfdb54f3e7657bc1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool rambrain::managedMemory::touch </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00019.html">managedMemoryChunk</a> &amp;&#160;</td>
+          <td class="paramname"><em>chunk</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>marks chunk as recently active as a hint for scheduling </p>
+
+<p>Implemented in <a class="el" href="a00011.html#a1f216f8e6d2a69e9b15a1cc9c35ebf40">rambrain::cyclicManagedMemory</a>, and <a class="el" href="a00013.html#a429af5ee10f45c062da8a20ac860ae47">rambrain::dummyManagedMemory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5902552b8ed04eb9859f7ff067ef5796"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::unsetUse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a>&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convenience interface for unsetUse ( <a class="el" href="a00019.html" title="manages all managed Chunks of raw memory ">managedMemoryChunk</a> &amp;chunk, bool writeAccess ) </p>
+<dl class="section see"><dt>See also</dt><dd>unsetUse(managedMemoryChunk &amp;chunk,bool writeAccess); </dd></dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00392">392</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a55174979cf3b0a22fc1e79a3a43e749f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::unsetUse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00019.html">managedMemoryChunk</a> &amp;&#160;</td>
+          <td class="paramname"><em>chunk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>no_unsets</em> = <code>1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Marks chunk as unused again. </p>
+<dl class="section return"><dt>Returns</dt><dd>success </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">chunk</td><td>the chunk that will not be needed in near future </td></tr>
+    <tr><td class="paramname">no_unsets</td><td>if you set use to the chunk n times, you may set this to n instead of calling n times </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00405">405</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a759831ace6eba2ca77cd11493050c126"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void rambrain::managedMemory::untouch </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00019.html">managedMemoryChunk</a> &amp;&#160;</td>
+          <td class="paramname"><em>chunk</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>marks chunk as recently not needed any more </p>
+
+<p>Implemented in <a class="el" href="a00011.html#ae4332d8e19721de23550482ab7f52848">rambrain::cyclicManagedMemory</a>, and <a class="el" href="a00013.html#a72d803d7d063c828205e675b9780a294">rambrain::dummyManagedMemory</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ace0f33ae4d9875dba1652c13042186df"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedMemory::versionInfo </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>prints out a GIT version info and a diff on this version at compile time </p>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00704">704</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aefc0e17fcecc8ad92431e3888284006c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedMemory::waitForAIO </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>wait for some asynchronous action to occur </p>
+<dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00735">735</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad8309642f6f8847f5d80b80a0e5a90bc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::waitForSwapin </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00019.html">managedMemoryChunk</a> &amp;&#160;</td>
+          <td class="paramname"><em>chunk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>keepSwapLock</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Waits until a certain chunk is present. </p>
+<dl class="section return"><dt>Returns</dt><dd>success </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>ensure that chunk is to be swapped in or may be present. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00745">745</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa71bd5c33b1ee3c0e89e672f89c4d3f2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::waitForSwapout </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00019.html">managedMemoryChunk</a> &amp;&#160;</td>
+          <td class="paramname"><em>chunk</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>keepSwapLock</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Waits until a certain chunk is swapped out. </p>
+<dl class="section return"><dt>Returns</dt><dd>success </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>ensure that chunk is to be swapped out in or may have already been swapped. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. </dd></dl>
+
+<p>Definition at line <a class="el" href="a00052_source.html#l00767">767</a> of file <a class="el" href="a00052_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Friends And Related Function Documentation</h2>
-<a class="anchor" id="a33afc5203b7ef7a8e11fdb48df25c101"></a>
+<a class="anchor" id="a64c14b438f19454bdebd737eddb9e0a6"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">friend class ::adhereTo_Unit_TwiceAdheredOnceUsed_Test</td>
+          <td class="memname">friend class ::cyclicManagedMemory_Integration_ArrayAccess_Test</td>
         </tr>
       </table>
   </td>
@@ -712,21 +1680,19 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00298">298</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00233">233</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a4a034e3521493115d83a646399927cd5"></a>
+<a class="anchor" id="ac2e5eaf4210c1832af96f0584533705f"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">friend class ::managedFileSwap_Unit_SwapNextAndSingleIsland_Test</td>
+          <td class="memname">friend class ::managedFileSwap_Unit_CheckSwapStats_Test</td>
         </tr>
       </table>
   </td>
@@ -736,21 +1702,19 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00297">297</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00234">234</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aae258c729b59134b27cd14a7604387d5"></a>
+<a class="anchor" id="a354aaa505fa382a499838b075f92d0f7"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">friend class ::managedFileSwap_Unit_SwapSingleIsland_Test</td>
+          <td class="memname">friend class ::managedFileSwap_Unit_ManualMultiSwapping_Test</td>
         </tr>
       </table>
   </td>
@@ -760,21 +1724,19 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00296">296</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00231">231</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad4c35adf1407cabd80ef914fedd35077"></a>
+<a class="anchor" id="a61476c6520b6093ca7003a8b2ee302f6"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">friend class ::managedPtr_Unit_ChunkInUse_Test</td>
+          <td class="memname">friend class ::managedFileSwap_Unit_ManualSwapping_Test</td>
         </tr>
       </table>
   </td>
@@ -784,21 +1746,19 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00293">293</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00230">230</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a014c5e2ea88760515ed8ee88e2e7e0f1"></a>
+<a class="anchor" id="aa0cbd2454408b8ae3b5aca513c07eef0"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">friend class ::managedPtr_Unit_GetLocPointer_Test</td>
+          <td class="memname">friend class ::managedFileSwap_Unit_ManualSwappingDelete_Test</td>
         </tr>
       </table>
   </td>
@@ -808,21 +1768,23 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00294">294</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00232">232</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af04c3351afa2b96f7eedc5cf68142014"></a>
+<a class="anchor" id="afb585b10243d2574af17f1c6d1e7eec5"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">friend class ::managedPtr_Unit_SmartPointery_Test</td>
+          <td class="memname"><a class="el" href="a00021.html">managedSwap</a>* configTestGetSwap </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="a00018.html">managedMemory</a> *&#160;</td>
+          <td class="paramname"><em>man</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -832,23 +1794,19 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00295">295</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00068_source.html#l00031">31</a> of file <a class="el" href="a00068_source.html">configTest.cpp</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a9f095e8e7b098019dd5a80fe57bc2d68"></a>
+<a class="anchor" id="afc2eae7d63704cb9c8f9efd2606dd258"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<div class="memtemplate">
-template&lt;class G &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">friend class <a class="el" href="a00001.html">adhereTo</a></td>
+          <td class="memname">friend class <a class="el" href="a00016.html">managedDummySwap</a></td>
         </tr>
       </table>
   </td>
@@ -858,23 +1816,19 @@ template&lt;class G &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00287">287</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00227">227</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a707a18d5c07014e1cc68a52d519204ff"></a>
+<a class="anchor" id="a7a57555464dec1f54ad14f68749ba2cd"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<div class="memtemplate">
-template&lt;class G &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">friend class adhereToConst</td>
+          <td class="memname">friend class <a class="el" href="a00017.html">managedFileSwap</a></td>
         </tr>
       </table>
   </td>
@@ -884,94 +1838,795 @@ template&lt;class G &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00289">289</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00226">226</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4db9f2403c3411068243fdf0798d43f5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="a00020.html">managedPtr</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00224">224</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad7a44371743b957ef559f0c1d92f0ed0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="a00021.html">managedSwap</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00225">225</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="acebeebd2c7ab841f7bf6577e599ecc03"></a>
+<a class="anchor" id="a9f965f10d2dc7301621fa2e5cf4805c8"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00017.html">managedMemoryChunk</a>* <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::chunk</td>
+          <td class="memname"><a class="el" href="a00093.html#a7ac90afa0cd2573bc0a73c6e4c439f81">memoryAtime</a> rambrain::managedMemory::atime = 0</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00238">238</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00210">210</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aaf92dc39c40a08ee727ef549be40dec8"></a>
+<a class="anchor" id="a31ee6736bd158b5a48d17cbe23102be9"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::n_elem</td>
+          <td class="memname">pthread_t rambrain::managedMemory::creatingThread = 0</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00240">240</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00131">131</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5c62007f8d10f2a5a051a739338f454d"></a>
+<a class="anchor" id="a2dde217198bcbce8ff8d6f1adaedeef1"></a>
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int* <a class="el" href="a00018.html">rambrain::managedPtr</a>&lt; T &gt;::tracker</td>
+          <td class="memname"><a class="el" href="a00018.html">managedMemory</a> * rambrain::managedMemory::defaultManager</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00055_source.html#l00239">239</a> of file <a class="el" href="a00055_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00138">138</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a242a4b44a5b5ae289579a766ceb76b78"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::firstLog = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00287">287</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a708e2307727c5a2d710b3c15dfcc6978"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> const rambrain::managedMemory::invalid = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00139">139</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af456ef30cf3a475b227c9fa15385c5ce"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">FILE * rambrain::managedMemory::logFile = fopen ( &quot;rambrain-swapstats.log&quot;, &quot;w&quot; )</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section warning"><dt>Warning</dt><dd>This will induce a serious issue in combination with MPI and a shared disk. How to handle that case? </dd></dl>
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00286">286</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aeabbc3b181a06ed716cea97b6c96a82f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::map&lt;<a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a>, <a class="el" href="a00019.html">managedMemoryChunk</a> *&gt; rambrain::managedMemory::memChunks</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00208">208</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adadc892a13085d636d8ee109adeed498"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> rambrain::managedMemory::memID_pace = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00211">211</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a83ce75cd12195223bb019aac25b7d891"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::memory_max</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00202">202</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5bbb82bab1a80258be35b4a378a9e62d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::memory_swapped = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00204">204</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af10f7cc8ddb9da7d3b92af1b4309cf5c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::memory_tobefreed = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00205">205</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aef5adf85cd78d5de48654f3c16ae4cf5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::memory_used = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00203">203</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a38f530245a6614262d2f26cb39d123b9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t rambrain::managedMemory::memoryAlignment = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00283">283</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a5dff86521b58cf4df6a7e2b8764e2b32"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::n_swap_in = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00241">241</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adb8534057130e562b7bd1ddb834a749f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::n_swap_out = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00240">240</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a6d98455a682cb735c520eda4b399ded8"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::outOfSwapIsFatal = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00206">206</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad7f2ab208513612ef232601d0c8f5ea6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> rambrain::managedMemory::parent = <a class="el" href="a00018.html#a209234b7bebd4c63f53296f4acc16a83">managedMemory::root</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00126">126</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0a5ce7c88f59c925ad998dee92e56365"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pthread_cond_t rambrain::managedMemory::parentalCond = PTHREAD_COND_INITIALIZER</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00130">130</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a33804134ad86b84b0765341922ad2bbe"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pthread_mutex_t rambrain::managedMemory::parentalMutex = PTHREAD_MUTEX_INITIALIZER</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00129">129</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a77a644c7c289c46758f643fc8d024809"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00018.html">managedMemory</a>* rambrain::managedMemory::previousManager</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00214">214</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a209234b7bebd4c63f53296f4acc16a83"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#a44865184cd1937b742c135666f0460cd">memoryID</a> const rambrain::managedMemory::root = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00125">125</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a1041409de3c6106acf2b072ba826c81f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pthread_mutex_t rambrain::managedMemory::stateChangeMutex = PTHREAD_MUTEX_INITIALIZER</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00218">218</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0c06638da1cf9f0d828f1af4000dbe68"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00021.html">managedSwap</a>* rambrain::managedMemory::swap = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00200">200</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ada4a382368248e0838a0df30572d3966"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::swap_hits = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00252">252</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af26cc5ecbc4a1fcb4ee2c17932cc2549"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::swap_in_bytes = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00247">247</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a10169d1da4d7cb2270d5ab8630f4d9a4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::swap_in_bytes_last = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00250">250</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a40b019788ed6d25fd23933ba3ee773dd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::swap_in_scheduled_bytes = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00245">245</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a296c0bc3b4597fd5052d8dd672799e02"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::swap_misses = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00253">253</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7b24361f9146dc3e7b84e0034e6ad9e7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::swap_out_bytes = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00246">246</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ada5ea5b996315264c39aa3680f5359e5"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::swap_out_bytes_last = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00249">249</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ab88d08812cd4ac88d5fc7ce8dd358d93"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::managedMemory::swap_out_scheduled_bytes = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00244">244</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ad0875327e12aa47af2a2ac280a99ec96"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">pthread_cond_t rambrain::managedMemory::swappingCond = PTHREAD_COND_INITIALIZER</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00220">220</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a77840963816de83953be27f72cb9b118"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedMemory::threadSynced = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00128">128</a> of file <a class="el" href="a00053_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00051_source.html">managedMemory.h</a></li>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00055_source.html">managedPtr.h</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00053_source.html">managedMemory.h</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00052_source.html">managedMemory.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00091.html">rambrain</a></li><li class="navelem"><a class="el" href="a00018.html">managedPtr</a></li>
-    <li class="footer">Generated on Fri Sep 25 2015 01:41:49 for rambrain by
+    <li class="navelem"><a class="el" href="a00093.html">rambrain</a></li><li class="navelem"><a class="el" href="a00018.html">managedMemory</a></li>
+    <li class="footer">Generated on Fri Sep 25 2015 08:15:21 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

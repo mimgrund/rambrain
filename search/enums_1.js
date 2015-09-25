@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['pagechunkstatus',['pageChunkStatus',['../a00091.html#a631233f0a428f73b49c774cf84b49c15',1,'rambrain']]]
+  ['matchtype',['matchType',['../a00030.html#acf6754e0f0df10007f5494899ed31229',1,'rambrain::regexMatcher']]],
+  ['memorystatus',['memoryStatus',['../a00093.html#a2aa4b6f9186dc50dad74cf1abd3799c2',1,'rambrain']]]
 ];

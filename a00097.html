@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: Todo List</title>
+<title>rambrain: Test List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -99,21 +99,168 @@ $(document).ready(function(){initNavTree('a00097.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Todo List </div>  </div>
+<div class="title">Test List </div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt><a class="anchor" id="_todo000001"></a>Member <a class="el" href="a00009.html#a6ce5a7e8f7fbc5a53bee42e18bf562c9">rambrain::cyclicManagedMemory::swapIn</a>  (<a class="el" href="a00017.html" title="manages all managed Chunks of raw memory ">managedMemoryChunk</a> &amp;chunk)</dt>
-<dd>in rare cases, these two lines are necessary as the readEl is also filtered. We should find out if we can leave this out somehow more elegant.  </dd>
-<dt><a class="anchor" id="_todo000002"></a>Member <a class="el" href="a00009.html#ae8cd02152e84886d3a9a933585f13483">rambrain::cyclicManagedMemory::swapOut</a>  (global_bytesize min_size)</dt>
-<dd>investigate if subtracting swapped out preemptive bytes is affecting performance ( too much preemptive action possible ). Naively testing, this is not the case. </dd>
+<dt><a class="anchor" id="_test000001"></a>globalScope&gt; Member <a class="el" href="a00077.html#a0f8a4b5152ab8f3909aba53869627a74">TEST</a>  (adhereTo, Unit_LoadUnload)</dt>
+<dd>Checks exact loading stages of objects provoked by the use of adhereTo  </dd>
+<dt><a class="anchor" id="_test000072"></a>globalScope&gt; Member <a class="el" href="a00090.html#adee0ca5670e50f234fe3b67cb81b5251">TEST</a>  (regexMatcher, Unit_SubstituteHomeDir)</dt>
+<dd>Checks if the home directory replacing works properly  </dd>
+<dt><a class="anchor" id="_test000071"></a>globalScope&gt; Member <a class="el" href="a00090.html#afcbcb3d22a4ea7f6e5b773be4dcf1ae0">TEST</a>  (regexMatcher, Unit_MatchBlock)</dt>
+<dd>Checks if block header matching works  </dd>
+<dt><a class="anchor" id="_test000070"></a>globalScope&gt; Member <a class="el" href="a00089.html#a635da180873b8e6e2adef12b7f204feb">TEST</a>  (managedPtr, Unit_CallDestructorIfSwapped)</dt>
+<dd>Tests if class constructors and destructors are called appropriately as the hierarchy dictates  </dd>
+<dt><a class="anchor" id="_test000069"></a>globalScope&gt; Member <a class="el" href="a00089.html#aff5c003b8bedea425ce8ebf888f40830">TEST</a>  (managedPtr, Unit_ConcurrentUseAccessThree)</dt>
+<dd>More complex scenario for concurrent access <dl class="section note"><dt>Note</dt><dd>would like to assert no throw, but pragma omp is not allowd  </dd></dl>
+</dd>
+<dt><a class="anchor" id="_test000068"></a>globalScope&gt; Member <a class="el" href="a00089.html#a067e22900e51f12eea9f7d2bb2a7cf60">TEST</a>  (managedPtr, Unit_ConcurrentUseAccess)</dt>
+<dd>Tests if concurrent access works properly while loading and unloading objects <dl class="section note"><dt>Note</dt><dd>would like to assert no throw, but pragma omp is not allowd  </dd></dl>
+</dd>
+<dt><a class="anchor" id="_test000067"></a>globalScope&gt; Member <a class="el" href="a00089.html#a3d6134d96ddb180e53483fbd85c37c37">TEST</a>  (managedPtr, Unit_MultithreadingConcurrentCreateDelete)</dt>
+<dd>Tests if parallel deleting of pointers work <dl class="section note"><dt>Note</dt><dd>would like to assert no throw, but pragma omp is not allowd  </dd></dl>
+</dd>
+<dt><a class="anchor" id="_test000066"></a>globalScope&gt; Member <a class="el" href="a00089.html#ad3db2c8391de1e82bc69f30ed5047cc7">TEST</a>  (managedPtr, Integration_DirectVsSmartAccess)</dt>
+<dd>Demonstrates why direct access if awfully slow in comparison to smart access via adhereto  </dd>
+<dt><a class="anchor" id="_test000065"></a>globalScope&gt; Member <a class="el" href="a00089.html#aa7789c2424a515e4702a246ebccfd5d1">TEST</a>  (managedPtr, Unit_ZeroSizedObjects)</dt>
+<dd>Tests if zero sized objects (while not usefull) can be handled  </dd>
+<dt><a class="anchor" id="_test000064"></a>globalScope&gt; Member <a class="el" href="a00089.html#a886c4be387dcee928edcbae61f29cdcf">TEST</a>  (managedPtr, Unit_PointerAllocation)</dt>
+<dd>Tests the different constructors of managedPtr  </dd>
+<dt><a class="anchor" id="_test000063"></a>globalScope&gt; Member <a class="el" href="a00089.html#a0f170b54311fada0adde8928f2f84e27">TEST</a>  (managedPtr, Unit_CreateAndInitialize)</dt>
+<dd>Tests if classes can be managed properly  </dd>
+<dt><a class="anchor" id="_test000062"></a>globalScope&gt; Member <a class="el" href="a00089.html#a26e001ea8d84301d9808b66b347983bd">TEST</a>  (managedPtr, Unit_DirectAccessSwapped)</dt>
+<dd>Tests direct access in a more complex scenario (depcrecated since not thread safe and slow!)  </dd>
+<dt><a class="anchor" id="_test000061"></a>globalScope&gt; Member <a class="el" href="a00089.html#a3f42947c57d5ae1adb673bfbfa57c1b7">TEST</a>  (managedPtr, Unit_DirectAccess)</dt>
+<dd>Tests direct access on a managedPtr (deprecated since not thread safe and slow!)  </dd>
+<dt><a class="anchor" id="_test000060"></a>globalScope&gt; Member <a class="el" href="a00089.html#a44e79c512beb352c2c2c4137f1d166f1">TEST</a>  (managedPtr, Unit_DeleteWhileInUse)</dt>
+<dd>Demonstrates how the application dies when a pointer is deleted while still in use  </dd>
+<dt><a class="anchor" id="_test000059"></a>globalScope&gt; Member <a class="el" href="a00089.html#a64b00deffca1ae5eedf3814c64e1997a">TEST</a>  (managedPtr, Unit_SmartPointery)</dt>
+<dd>Checks if chunk stati are appropriately set when handling different types of adhereto  </dd>
+<dt><a class="anchor" id="_test000058"></a>globalScope&gt; Member <a class="el" href="a00089.html#a08529ec9d78b15437406f990ab5876e9">TEST</a>  (managedPtr, Unit_GetLocPointer)</dt>
+<dd>Tests if a local pointer can be retreived or not if setUse is or is not done beforehand  </dd>
+<dt><a class="anchor" id="_test000057"></a>globalScope&gt; Member <a class="el" href="a00089.html#af2e990f2c9b5231ea8c2bd9de850d804">TEST</a>  (managedPtr, Unit_ChunkInUse)</dt>
+<dd>Test manual set and unsetUse on a pointer and checks if the chunks are updated appropriately  </dd>
+<dt><a class="anchor" id="_test000056"></a>globalScope&gt; Member <a class="el" href="a00089.html#af167be01d54cf7303f65ac4486b87529">TEST</a>  (managedPtr, Unit_ParentIDs)</dt>
+<dd>Tests if parent is correctly assigned for the first pointer  </dd>
+<dt><a class="anchor" id="_test000055"></a>globalScope&gt; Member <a class="el" href="a00089.html#a6a8bbea2d6377b6395df1b7800700e77">TEST</a>  (managedPtr, Unit_NoMemoryManager)</dt>
+<dd>Tests the behaviour if no memory manager is explicitely installed, ergo testing the fallback default  </dd>
+<dt><a class="anchor" id="_test000054"></a>globalScope&gt; Member <a class="el" href="a00088.html#aa7e18d854cdbfc4ebfe88d2cf09a20bf">TEST</a>  (managedMemory, DISABLED_VersionInfo)</dt>
+<dd>prints out a version info (git version + diff)  </dd>
+<dt><a class="anchor" id="_test000053"></a>globalScope&gt; Member <a class="el" href="a00088.html#a6d0807173265c512af3b119500c9ed4d">TEST</a>  (managedMemory, Unit_BaseMemoryUsage)</dt>
+<dd>Checks basic manager usage stats for consistency under resize  </dd>
+<dt><a class="anchor" id="_test000052"></a>globalScope&gt; Member <a class="el" href="a00088.html#a9a867597b002df64264c6a06dfe678fc">TEST</a>  (managedMemory, Unit_DefaultManagerPresentAfterAllocation)</dt>
+<dd>Checks whether we fall back to default when deleting our own memory manager instance  </dd>
+<dt><a class="anchor" id="_test000051"></a>globalScope&gt; Member <a class="el" href="a00088.html#a5254f6138adaa67c630fa15dacd4fd2e">TEST</a>  (managedMemory, Unit_DefaultManagerPresent)</dt>
+<dd>Checks presence of a default manager at runtime without doing anything before  </dd>
+<dt><a class="anchor" id="_test000050"></a>globalScope&gt; Member <a class="el" href="a00087.html#a7f695a0c845da9234f652992da925d84">TEST</a>  (managedFileSwap, Unit_CheckSwapStats)</dt>
+<dd>Tests whether swapstats are gathered correctly for some simple cases and if they are plausible for some more complicated stuff  </dd>
+<dt><a class="anchor" id="_test000049"></a>globalScope&gt; Member <a class="el" href="a00087.html#a35475128dfe79205f3171cae9087a9dd">TEST</a>  (managedFileSwap, Unit_SwapPolicy)</dt>
+<dd>Check correct usage of swap policy  </dd>
+<dt><a class="anchor" id="_test000048"></a>globalScope&gt; Member <a class="el" href="a00087.html#abde6e16f1ca8ec2a1f4f743b6f08f639">TEST</a>  (managedFileSwap, Integration_MatrixTranspose)</dt>
+<dd>Implements a simple matrix transposition that has to be swapping to check for data integrity  </dd>
+<dt><a class="anchor" id="_test000047"></a>globalScope&gt; Member <a class="el" href="a00087.html#a934338906b724941e205cce15e7c227d">TEST</a>  (managedFileSwap, Unit_SwapNextAndSingleIsland)</dt>
+<dd>Checks capability to cope with memory shortage in certain circumstances  </dd>
+<dt><a class="anchor" id="_test000046"></a>globalScope&gt; Member <a class="el" href="a00087.html#a8eea3cc15266ed04c916487168f3c1af">TEST</a>  (managedFileSwap, Unit_SwapSingleIsland)</dt>
+<dd>Checks capability to cope with memory shortage in certain circumstances  </dd>
+<dt><a class="anchor" id="_test000045"></a>globalScope&gt; Member <a class="el" href="a00087.html#ad147ad01460c5c62bb0c3fbcd1e3e9d6">TEST</a>  (managedFileSwap, Unit_SwapAllocation)</dt>
+<dd>Checks correct allocation of swap files  </dd>
+<dt><a class="anchor" id="_test000044"></a>globalScope&gt; Member <a class="el" href="a00087.html#a4203740a3836336a01426613cd982e9c">TEST</a>  (managedFileSwap, Integration_RandomAccessVariousSize)</dt>
+<dd>Puts memory manager and swap under heavy load of objects of various sizes by randomly allocating / deallocating them  </dd>
+<dt><a class="anchor" id="_test000043"></a>globalScope&gt; Member <a class="el" href="a00087.html#a7f753f173d292ba1e5466cd0d41d21bd">TEST</a>  (managedFileSwap, Integration_RandomAccess)</dt>
+<dd>Puts memory manager and swap under heavy load of objects of the same size by randomly allocating / deallocating them  </dd>
+<dt><a class="anchor" id="_test000042"></a>globalScope&gt; Member <a class="el" href="a00087.html#ad559a9e97813c841982803dd7d12fe45">TEST</a>  (managedFileSwap, Unit_SwapSize)</dt>
+<dd>Tests whether the swap size is accounted for correctly.  </dd>
+<dt><a class="anchor" id="_test000041"></a>globalScope&gt; Member <a class="el" href="a00087.html#a9edb203c25182ae999e6df46e6c0d708">TEST</a>  (managedFileSwap, Unit_SimpleSwapping)</dt>
+<dd>Tests interplay between managedFileSwap and a cylicManaged Memory  </dd>
+<dt><a class="anchor" id="_test000040"></a>globalScope&gt; Member <a class="el" href="a00087.html#aae0bfbb77b6c538c8db2c302d06d6122">TEST</a>  (managedFileSwap, Unit_ManualSwappingDelete)</dt>
+<dd>Tests whether deletion of swapped out elements is handled correctly.  </dd>
+<dt><a class="anchor" id="_test000039"></a>globalScope&gt; Member <a class="el" href="a00087.html#a3ba3a6da4bb75358292f7d2e59029f1a">TEST</a>  (managedFileSwap, Unit_ManualMultiSwapping)</dt>
+<dd>Tests whether managedFileSwap can take a few memoryChunk and store it securely.  </dd>
+<dt><a class="anchor" id="_test000038"></a>globalScope&gt; Member <a class="el" href="a00087.html#ae3d453aa77042913875ffbbe1a98e6bb">TEST</a>  (managedFileSwap, Unit_ManualSwapping)</dt>
+<dd>Tests whether managedFileSwap can take a memoryChunk and store it securely.  </dd>
+<dt><a class="anchor" id="_test000037"></a>globalScope&gt; Member <a class="el" href="a00087.html#a3dd82cd5872087316e3d310574a008d4">TEST</a>  (managedFileSwap, Unit_LazyPffree)</dt>
+<dd>Tests for speedup implied by const lazy deallocation <dl class="section note"><dt>Note</dt><dd>As this is normally cached, real life speedup will be a multiple of this when writing to disk...  </dd></dl>
+</dd>
+<dt><a class="anchor" id="_test000036"></a>globalScope&gt; Member <a class="el" href="a00086.html#a0855c443c53c36b2d8dfcc9d78f4ab58">TEST</a>  (managedDummySwap, Unit_SwapSize)</dt>
+<dd>Checks if the swap size is adjusted when setUse and unsetUse are called <dl class="section note"><dt>Note</dt><dd>Again for testing internals, not thought for use like this  </dd></dl>
+</dd>
+<dt><a class="anchor" id="_test000035"></a>globalScope&gt; Member <a class="el" href="a00086.html#ac915c82710e977f2390fca9a07a0810f">TEST</a>  (managedDummySwap, Unit_ManualSwappingDelete)</dt>
+<dd>Checks if swap delete works manually <dl class="section note"><dt>Note</dt><dd>Again testing internals, not for use like this  </dd></dl>
+</dd>
+<dt><a class="anchor" id="_test000034"></a>globalScope&gt; Member <a class="el" href="a00086.html#a3c889a158897141b6a22b22dce7b0624">TEST</a>  (managedDummySwap, Unit_ManualSwapping)</dt>
+<dd>Checks if swapping works when triggered manually <dl class="section note"><dt>Note</dt><dd>This is not supposed to be used by the user, just for checking internals  </dd></dl>
+</dd>
+<dt><a class="anchor" id="_test000033"></a>globalScope&gt; Member <a class="el" href="a00081.html#a471504f84a9877370297a2fabd6d6e3e">TEST</a>  (dummyManagedMemory, Unit_ThrowsExceptions)</dt>
+<dd>Checks that dummyManager starts crying when he is asked to create an object for us  </dd>
+<dt><a class="anchor" id="_test000032"></a>globalScope&gt; Member <a class="el" href="a00080.html#a29b36e2f84c28846f69cf80fb2181069">TEST</a>  (cyclicManagedMemory, Unit_RecoveryFromRandomAccess)</dt>
+<dd>Checks recovery from random access to preemptive access  </dd>
+<dt><a class="anchor" id="_test000031"></a>globalScope&gt; Member <a class="el" href="a00080.html#afb8411b23759277133580c6ef28a14c4">TEST</a>  (cyclicManagedMemory, Unit_CleanupOfForgottenPointers)</dt>
+<dd>Checks whether forgotten pointers are garbage-collected  </dd>
+<dt><a class="anchor" id="_test000030"></a>globalScope&gt; Member <a class="el" href="a00080.html#a4a2da3b3a961e28d382426b7082431b7">TEST</a>  (cyclicManagedMemory, Unit_HandleNestedObjects)</dt>
+<dd>Checks whether nested access in class is handled correctly  </dd>
+<dt><a class="anchor" id="_test000029"></a>globalScope&gt; Member <a class="el" href="a00080.html#a7230dc750bac0b41fb284194896355d0">TEST</a>  (cyclicManagedMemory, Unit_WorkingWithSSE)</dt>
+<dd>Checks whether memory alignment attributes are handled correctly  </dd>
+<dt><a class="anchor" id="_test000028"></a>globalScope&gt; Member <a class="el" href="a00080.html#a6970bd18461f7e88ea1212d99ee24eb1">TEST</a>  (cyclicManagedMemory, Unit_NotEnoughSpaceForArray)</dt>
+<dd>Checks whether we detect if an array object does not fit into ram  </dd>
+<dt><a class="anchor" id="_test000027"></a>globalScope&gt; Member <a class="el" href="a00080.html#ae75ff94ede15ce350e66fab6a7b96b09">TEST</a>  (cyclicManagedMemory, Unit_NotEnoughSpaceForOneElement)</dt>
+<dd>Checks whether we detect if a single object does not fit into ram  </dd>
+<dt><a class="anchor" id="_test000026"></a>globalScope&gt; Member <a class="el" href="a00080.html#a56caf2da431c0a280c68e0b05b533bbb">TEST</a>  (cyclicManagedMemory, Unit_RandomAllocation)</dt>
+<dd>Checks capability to cope with objects of random size in random allocation  </dd>
+<dt><a class="anchor" id="_test000025"></a>globalScope&gt; Member <a class="el" href="a00080.html#afa4e53c44647626de579c993ff223d3e">TEST</a>  (cyclicManagedMemory, Unit_VariousSize)</dt>
+<dd>Checks capability to cope with objects of various size  </dd>
+<dt><a class="anchor" id="_test000024"></a>globalScope&gt; Member <a class="el" href="a00080.html#aab480b10843a72f5c2cd306cd3d2da29">TEST</a>  (cyclicManagedMemory, Integration_RandomArrayAccess)</dt>
+<dd>checks integrity and accessability of array objects in random access  </dd>
+<dt><a class="anchor" id="_test000023"></a>globalScope&gt; Member <a class="el" href="a00080.html#aef1549b42a0b81171f81a38ddc9f0940">TEST</a>  (cyclicManagedMemory, Integration_ArrayAccess)</dt>
+<dd>Checks integrity of data written to a large array  </dd>
+<dt><a class="anchor" id="_test000022"></a>globalScope&gt; Member <a class="el" href="a00080.html#aa3d6fa1f4f00348a9dc05c7dc02e18f1">TEST</a>  (cyclicManagedMemory, Unit_NotEnoughMemOrSwapSpace)</dt>
+<dd>Checks whether we throw when there's not enough ram+swap to fullfil request  </dd>
+<dt><a class="anchor" id="_test000021"></a>globalScope&gt; Member <a class="el" href="a00080.html#a39f43fbea06dadaad8c91d05b82f7f7e">TEST</a>  (cyclicManagedMemory, Unit_DeepAllocatePointers)</dt>
+<dd>Checks whether we can allocate class objects and track the object hierarchy correctly  </dd>
+<dt><a class="anchor" id="_test000020"></a>globalScope&gt; Member <a class="el" href="a00080.html#ae26a8dc89c67485afd5798e31648e8dc">TEST</a>  (cyclicManagedMemory, Unit_AllocatePointers)</dt>
+<dd>Checks whether we can allocate data via memory manager  </dd>
+<dt><a class="anchor" id="_test000019"></a>globalScope&gt; Member <a class="el" href="a00079.html#ac6a417da4062c14c515333d8efe1da38">TEST</a>  (configReader, Unit_IgnoreEmptyLines)</dt>
+<dd>Checks if empty lines are properly ignored  </dd>
+<dt><a class="anchor" id="_test000018"></a>globalScope&gt; Member <a class="el" href="a00079.html#a9ebf36b8971bb04221889ab2435e581c">TEST</a>  (configReader, Unit_OverwriteDefaultInverseOrder)</dt>
+<dd>Checks if a default block after the specific block does not overwrite the latter  </dd>
+<dt><a class="anchor" id="_test000017"></a>globalScope&gt; Member <a class="el" href="a00079.html#add1d3d306a5c059a3b3ac82d148fa390">TEST</a>  (configReader, Unit_OverwriteDefault)</dt>
+<dd>Checks if a binary specific block can overwrite the default block  </dd>
+<dt><a class="anchor" id="_test000016"></a>globalScope&gt; Member <a class="el" href="a00079.html#a9f0b95e46171bd5b9ba1b36d05d200f1">TEST</a>  (configReader, Unit_ParseProgramName)</dt>
+<dd>Checks if the application name can be retreived properly  </dd>
+<dt><a class="anchor" id="_test000015"></a>globalScope&gt; Member <a class="el" href="a00079.html#a7427d91881af4e2a48665507d80a4d26">TEST</a>  (configReader, Unit_DefaultOverwritesMissingVariablesLookFurther)</dt>
+<dd>Checks if config variables which are missing in a specific block are overwritten by the default block even if the default block comes after the specific one  </dd>
+<dt><a class="anchor" id="_test000014"></a>globalScope&gt; Member <a class="el" href="a00079.html#a049adfaa98fafe4a9df14761b5a876a7">TEST</a>  (configReader, Unit_DefaultOverwritesMissingVariables)</dt>
+<dd>Checks if config variables which are missing in a specific block are overwritten by the default block  </dd>
+<dt><a class="anchor" id="_test000013"></a>globalScope&gt; Member <a class="el" href="a00079.html#a57687a32c126170c4377dd1ef6dab08c">TEST</a>  (configReader, Unit_IgnoreMissingVariables)</dt>
+<dd>Checks if config variables may be missing  </dd>
+<dt><a class="anchor" id="_test000012"></a>globalScope&gt; Member <a class="el" href="a00079.html#a31e3a7d2d39be82a5f37a992da830b2a">TEST</a>  (configReader, Unit_IgnoreCommentLines)</dt>
+<dd>Checks if comment lines are ignored properly  </dd>
+<dt><a class="anchor" id="_test000011"></a>globalScope&gt; Member <a class="el" href="a00079.html#a018867a1020a0ae4a70a5af2cbe85996">TEST</a>  (configReader, Unit_ParseCustomFile)</dt>
+<dd>Checks if config file in a custom path is read in properly  </dd>
+<dt><a class="anchor" id="_test000010"></a>globalScope&gt; Member <a class="el" href="a00079.html#a7e9890c6706de981c9a1e00a8e2cd5e0">TEST</a>  (configuration, Unit_DefaultValues)</dt>
+<dd>Checks the default values of configuration options and set up of the collection  </dd>
+<dt><a class="anchor" id="_test000009"></a>globalScope&gt; Member <a class="el" href="a00078.html#ac3fa8757f098717986ea32d04cebceec">TEST</a>  (configLine, Unit_SetValueMissingUnit)</dt>
+<dd>Checks if values without units can be set when units are expected  </dd>
+<dt><a class="anchor" id="_test000008"></a>globalScope&gt; Member <a class="el" href="a00078.html#a6847c350faa701a37d439ec277e1c08e">TEST</a>  (configLine, Unit_SetValue)</dt>
+<dd>Checks if values with units for byte sizes can be set properly  </dd>
+<dt><a class="anchor" id="_test000007"></a>globalScope&gt; Member <a class="el" href="a00077.html#aaf3f56b616e96dfd62e1739c84622b3c">TEST</a>  (adhereTo, Unit_CopyCorrectness)</dt>
+<dd>Checks whether adhereTo Objects are copied correctly  </dd>
+<dt><a class="anchor" id="_test000006"></a>globalScope&gt; Member <a class="el" href="a00077.html#a1364e79218a2e6616939b86512053b16">TEST</a>  (adhereTo, Unit_MacroUsage)</dt>
+<dd>Checks correct working of convenience macros  </dd>
+<dt><a class="anchor" id="_test000005"></a>globalScope&gt; Member <a class="el" href="a00077.html#a339f6fd734be72abd42afa17a4345d85">TEST</a>  (adhereTo, Unit_TwiceAdhered)</dt>
+<dd>Checks multithreading compatibility of adhereTo with concurrent access  </dd>
+<dt><a class="anchor" id="_test000004"></a>globalScope&gt; Member <a class="el" href="a00077.html#a137db832b9dda1490897e32b13059a24">TEST</a>  (adhereTo, Unit_Multithreading)</dt>
+<dd>Checks multithreading compatibility of adhereTo  </dd>
+<dt><a class="anchor" id="_test000003"></a>globalScope&gt; Member <a class="el" href="a00077.html#a28fdac7bfa7e91512d09eb9c3b139ce5">TEST</a>  (adhereTo, Unit_AccessData)</dt>
+<dd>Checks whether we can access stored data  </dd>
+<dt><a class="anchor" id="_test000002"></a>globalScope&gt; Member <a class="el" href="a00077.html#a22f5f265ef307ae746928c430c1b1e30">TEST</a>  (adhereTo, Unit_LoadUnloadConst)</dt>
+<dd>Checks exact loading stages of const objects provoked by the use of adhereTo </dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Sep 25 2015 01:41:46 for rambrain by
+    <li class="footer">Generated on Fri Sep 25 2015 08:15:19 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

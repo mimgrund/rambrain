@@ -1,13 +1,5 @@
 var a00004 =
 [
-    [ "configLine", "a00004.html#ad4a5615f6975a6878b10d3844e4482ba", null ],
-    [ "~configLine", "a00004.html#a9d2572a02eb2d314c983c664ffa4ee43", null ],
-    [ "setValue", "a00004.html#a33ae5450d4e7cfa932a39877396db6a4", null ],
-    [ "setValue", "a00004.html#a221ff4b74a3bddededc81ae5c4e65ff4", null ],
-    [ "setValue", "a00004.html#ab3267f33a924117788c5c85b45394dfd", null ],
-    [ "setValue", "a00004.html#a8e8a478e0ac8347db173dc73761cb099", null ],
-    [ "setValue", "a00004.html#a33ae5450d4e7cfa932a39877396db6a4", null ],
-    [ "setValue", "a00004.html#a221ff4b74a3bddededc81ae5c4e65ff4", null ],
-    [ "setValue", "a00004.html#ab3267f33a924117788c5c85b45394dfd", null ],
-    [ "value", "a00004.html#a7b2624523c8c1954651a40886ec989f6", null ]
+    [ "id", "a00004.html#a473110ed48fc143d8e51174e2d727530", null ],
+    [ "size", "a00004.html#a6bcaf3f3faa1f506fc03bfb971a2bf7a", null ]
 ];

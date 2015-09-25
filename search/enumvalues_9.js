@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['units',['units',['../a00028.html#acf6754e0f0df10007f5494899ed31229a2b6e9b3cb4427fe84fcf45206b171541',1,'rambrain::regexMatcher']]]
+  ['register',['REGISTER',['../a00093.html#a4cdc0267899330e6591a194bf1ed7e10acb5b44087af18a36e025564050293c9a',1,'rambrain']]]
 ];
