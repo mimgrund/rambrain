@@ -92,7 +92,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
     add_definitions (-fcolor-diagnostics -fansi-escape-codes)
 endif()
 
-execute_process(COMMAND git log -1 COMMAND head -1 COMMAND cut -d " " -f2 OUTPUT_VARIABLE GIT_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+execute_process(COMMAND git log -1 COMMAND head -1 COMMAND cut -d " " -f2 OUTPUT_VARIABLE GIT_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 message("Git version is ${GIT_VERSION}")
 add_definitions(-D__GIT_VERSION="${GIT_VERSION}")
 
@@ -103,6 +103,6 @@ if(BUILD_TESTS)
     add_subdirectory (tests)
 endif()
 
-add_custom_target(doc doxygen ${CMAKE_SOURCE_DIR}/doc/doxyfile ${CMAKE_SOURCE_DIR} COMMENT "Generating API documentation with Doxygen" VERBATIM)
+add_custom_target(rambrain_doc doxygen ${CMAKE_SOURCE_DIR}/doc/doxyfile ${CMAKE_SOURCE_DIR} COMMENT "Generating API documentation with Doxygen" VERBATIM)
 
 execute_process(COMMAND ./scripts/gengit.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
