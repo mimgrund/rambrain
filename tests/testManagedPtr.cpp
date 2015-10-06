@@ -24,6 +24,7 @@ IGNORE_TEST_WARNINGS;
 #include "managedPtr.h"
 #include "cyclicManagedMemory.h"
 #include "managedDummySwap.h"
+#include "dummyManagedMemory.h"
 #include "exceptions.h"
 
 #ifndef OpenMP_NOT_FOUND
@@ -588,6 +589,20 @@ TEST ( managedPtr, Unit_EmptySizeAllowed )
         adhereTo<double> glue ( ptr ); ,
         ""
     );
+}
+
+
+/**
+ * @test Tests if the size of a data array can be properly retrieved from the managedPtr
+ */
+TEST ( managedPtr, Unit_GetSize )
+{
+    managedDummySwap swap ( 200 );
+    dummyManagedMemory managedMemory ();
+
+    managedPtr<double> ptr ( 14 );
+
+    ASSERT_EQ ( 14, ptr.size() );
 }
 
 RESTORE_WARNINGS;

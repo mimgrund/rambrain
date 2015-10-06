@@ -163,6 +163,11 @@ public:
         }
     }
 
+    /// @brief Simple getter
+    inline  unsigned int size() {
+        return n_elem;
+    }
+
     ///@brief tells the memory manager to possibly swap in chunk for near future use
     bool prepareUse() const {
         managedMemory::defaultManager->prepareUse ( *chunk, true );
