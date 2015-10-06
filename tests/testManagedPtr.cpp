@@ -570,5 +570,25 @@ TEST ( managedPtr, Unit_CallDestructorIfSwapped )
     ASSERT_EQ ( 0, destructorTracker::num_instances );
 }
 
+
+/**
+ * @test Tests if a pointer of size 0 can be used, e.g. for default ctors of wrapper classes
+ */
+TEST ( managedPtr, Unit_EmptySizeAllowed )
+{
+    managedDummySwap swap ( sizeof ( double ) * 2 );
+    cyclicManagedMemory managedMemory ( & swap, sizeof ( double ) * 2 ) ;
+
+    ASSERT_NO_FATAL_FAILURE (
+        managedPtr<double> ptr ( 0 );
+    );
+    // Can however of course not pull apointer from it or even adhere it!
+    ASSERT_DEATH (
+        managedPtr<double> ptr ( 0 );
+        adhereTo<double> glue ( ptr ); ,
+        ""
+    );
+}
+
 RESTORE_WARNINGS;
 
