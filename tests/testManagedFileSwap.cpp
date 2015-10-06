@@ -856,8 +856,66 @@ TEST ( managedFileSwap, Unit_CheckSwapStats )
         delete ptrs[i];
     }
 }
-
 #endif
+
+
+/**
+ * @test Tests what happens if a pointer of size 0 is potentially swapped
+ */
+TEST ( managedFileSwap, Unit_EmptySizeSwapped )
+{
+    managedFileSwap swap ( sizeof ( double ) * 100, "./rambrainswap-%d-%d" );
+    cyclicManagedMemory managedMemory ( & swap, sizeof ( double ) * 15 ) ;
+
+    managedPtr<double> ptr1 ( 10 );
+    {
+        ADHERETOLOC ( double, ptr1, loc );
+        for ( int i = 0; i < 10; ++i ) {
+            loc[i] = i;
+        }
+    }
+
+    ASSERT_NO_FATAL_FAILURE (
+        managedPtr<double> ptr2 ( 0 );
+        managedPtr<double> ptr3 ( 15 );
+    );
+
+    {
+        ADHERETOLOC ( double, ptr1, loc );
+        for ( int i = 0; i < 10; ++i ) {
+            ASSERT_EQ ( i, loc[i] );
+        }
+    }
+}
+
+
+/**
+ * @test Tests what happens if a pointer of size 0 is inserted into a full memory
+ */
+TEST ( managedFileSwap, Unit_EmptySizeFillsUp )
+{
+    managedFileSwap swap ( sizeof ( double ) * 100, "./rambrainswap-%d-%d" );
+    cyclicManagedMemory managedMemory ( & swap, sizeof ( double ) * 10 ) ;
+
+    managedPtr<double> ptr1 ( 10 );
+    {
+        ADHERETOLOC ( double, ptr1, loc );
+        for ( int i = 0; i < 10; ++i ) {
+            loc[i] = i;
+        }
+    }
+
+    ASSERT_NO_FATAL_FAILURE (
+        managedPtr<double> ptr2 ( 0 );
+    );
+
+    {
+        ADHERETOLOC ( double, ptr1, loc );
+        for ( int i = 0; i < 10; ++i ) {
+            ASSERT_EQ ( i, loc[i] );
+        }
+    }
+}
 
 RESTORE_WARNINGS;
 
