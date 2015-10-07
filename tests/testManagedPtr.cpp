@@ -582,13 +582,11 @@ TEST ( managedPtr, Unit_EmptySizeAllowed )
 
     ASSERT_NO_FATAL_FAILURE (
         managedPtr<double> ptr ( 0 );
+        adhereTo<double> glue ( ptr );
+        double *mptr = glue;
+        EXPECT_TRUE ( NULL == mptr );
     );
-    // Can however of course not pull apointer from it or even adhere it!
-    ASSERT_DEATH (
-        managedPtr<double> ptr ( 0 );
-        adhereTo<double> glue ( ptr ); ,
-        ""
-    );
+
 }
 
 

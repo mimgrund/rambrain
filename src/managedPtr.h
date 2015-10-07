@@ -164,7 +164,7 @@ public:
     }
 
     /// @brief Simple getter
-    inline  unsigned int size() {
+    inline  unsigned int size() const {
         return n_elem;
     }
 
@@ -335,7 +335,7 @@ public:
      * \param data the managedPtr that is to be used in near future
     **/
     adhereTo ( const managedPtr<T> &data, bool loadImmediately = true ) : data ( &data ) {
-        if ( loadImmediately ) {
+        if ( loadImmediately && data.size() != 0 ) {
             data.prepareUse();
         }
 
@@ -371,6 +371,9 @@ public:
     }
     ///@brief This operator can be used to pull the data to a const pointer. Use this whenever possible.
     operator const T *() const {
+        if ( data->size() == 0 ) {
+            return NULL;
+        }
         if ( !loadedReadable ) {
             data->setUse ( false, &loadedReadable );
         }
@@ -378,6 +381,9 @@ public:
     }
     ///@brief This operator can be used to pull the data to a non-const pointer. If you only read the data, pull the const version, as this saves execution time.
     operator  T *() {
+        if ( data->size() == 0 ) {
+            return NULL;
+        }
         if ( !loadedWritable ) {
             data->setUse ( true, &loadedWritable );
         }
@@ -387,7 +393,7 @@ public:
     ~adhereTo() {
         unsigned char loaded = 0;
         loaded = ( loadedReadable ? 1 : 0 ) + ( loadedWritable ? 1 : 0 );
-        if ( loaded > 0 ) {
+        if ( loaded > 0 && data->size() != 0 ) {
             data->unsetUse ( loaded );
         }
     }
