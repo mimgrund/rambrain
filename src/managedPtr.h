@@ -83,7 +83,6 @@ public:
         rambrain_atomic_add_fetch ( tracker, 1 );
     }
 
-
     ///@brief with no arguments given, instantiates an array with one element
     managedPtr() : managedPtr ( 1 ) {}
 
