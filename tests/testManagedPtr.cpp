@@ -603,5 +603,26 @@ TEST ( managedPtr, Unit_GetSize )
     ASSERT_EQ ( 14, ptr.size() );
 }
 
+
+/**
+ * @test Tests if a pointer can be adhereto-ed and overwritten in between
+ */
+TEST ( managedPtr, Unit_OverwriteWhileUsing )
+{
+    managedDummySwap swap ( sizeof ( double ) * 2 );
+    cyclicManagedMemory managedMemory ( & swap, sizeof ( double ) * 2 ) ;
+
+    managedPtr<double> ptr1 ( 1 );
+    adhereTo<double> glue ( ptr1 );
+    double *loc = glue;
+
+    managedPtr<double> ptr2 ( 1 );
+
+    ASSERT_NO_THROW (
+        ptr1 = ptr2;
+    );
+
+}
+
 RESTORE_WARNINGS;
 
