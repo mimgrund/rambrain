@@ -115,6 +115,26 @@ managedMemory::~managedMemory()
 #endif
 }
 
+global_bytesize managedMemory::getUsedMemory() const
+{
+    return memory_used;
+}
+
+global_bytesize managedMemory::getSwappedMemory() const
+{
+    return memory_swapped;
+}
+
+global_bytesize managedMemory::getFreeSwapMemory() const
+{
+    return swap->getFreeSwap();
+}
+
+global_bytesize managedMemory::getTotalSwapMemory() const
+{
+    return swap->getSwapSize();
+}
+
 bool managedMemory::setMemoryLimit ( global_bytesize size )
 {
     rambrain_pthread_mutex_lock ( &stateChangeMutex );
