@@ -655,50 +655,67 @@ $(document).ready(function(){initNavTree('a00089_source.html','');});
 <div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;    ASSERT_EQ ( 14, ptr.<a class="code" href="a00020.html#a626821a44d97acbc60bb47989a097c9d">size</a>() );</div>
 <div class="line"><a name="l00604"></a><span class="lineno">  604</span>&#160;}</div>
 <div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;</div>
-<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160;</div>
-<div class="line"><a name="l00610"></a><span class="lineno"><a class="line" href="a00089.html#aaa065fa0370460a02a70cf248e614ac1">  610</a></span>&#160;<a class="code" href="a00089.html#a6a8bbea2d6377b6395df1b7800700e77">TEST</a> ( <a class="code" href="a00020.html">managedPtr</a>, Unit_OverwriteWhileUsing )</div>
-<div class="line"><a name="l00611"></a><span class="lineno">  611</span>&#160;{</div>
-<div class="line"><a name="l00612"></a><span class="lineno">  612</span>&#160;    <a class="code" href="a00016.html">managedDummySwap</a> swap ( <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ) * 3 );</div>
-<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;    <a class="code" href="a00011.html">cyclicManagedMemory</a> managedMemory ( &amp; swap, <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ) * 2 ) ;</div>
-<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;</div>
-<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;double&gt;</a> ptr1 ( 1 );</div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;    <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> glue ( ptr1 );</div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;    <span class="keywordtype">double</span> *loc = glue;</div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;</div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;double&gt;</a> ptr2 ( 1 );</div>
-<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;double&gt;</a> ptr3 ( 1 );</div>
-<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;    <span class="comment">//Will not throw as ptr2 is not used and we may destruct:</span></div>
-<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    ASSERT_NO_THROW (</div>
-<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;        ptr2 = ptr3;</div>
-<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;    );</div>
-<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;    <a class="code" href="a00001.html">adhereTo &lt;double&gt;</a>glue2 ( ptr3 );</div>
-<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;    <span class="keywordtype">double</span> *data = glue2;</div>
-<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;</div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;    <span class="comment">//Using source will not give any problems:</span></div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;    ASSERT_NO_THROW (</div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;        ptr2 = ptr3;</div>
-<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;    );</div>
-<div class="line"><a name="l00632"></a><span class="lineno">  632</span>&#160;</div>
-<div class="line"><a name="l00633"></a><span class="lineno">  633</span>&#160;    <span class="comment">//Throws as this would invalidate active pointer:</span></div>
-<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;    ASSERT_THROW (</div>
-<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;        ptr1 = ptr2, <a class="code" href="a00022.html">memoryException</a></div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    );</div>
-<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;</div>
-<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;</div>
+<div class="line"><a name="l00612"></a><span class="lineno"><a class="line" href="a00089.html#ac259ef9e760206698f39f45f88486641">  612</a></span>&#160;<a class="code" href="a00089.html#a6a8bbea2d6377b6395df1b7800700e77">TEST</a> ( <a class="code" href="a00020.html">managedPtr</a>, Unit_ZeroSizedObjectsCanBeOverwrittenSavely )</div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;{</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160;    <span class="keyword">class </span>destructable</div>
+<div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160;    {</div>
+<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;    <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160;        destructable() {}</div>
+<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;        ~destructable() {</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;            * ( ( <span class="keywordtype">char</span> * ) NULL ) = 0x00;   <span class="comment">//Would segfault if called.</span></div>
+<div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160;        }</div>
+<div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;    };</div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160;    {</div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;        <span class="comment">// Check that destructor is not called on destruction:</span></div>
+<div class="line"><a name="l00625"></a><span class="lineno">  625</span>&#160;        <a class="code" href="a00020.html">managedPtr&lt;destructable&gt;</a> donotkillme ( 0 );</div>
+<div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;    }</div>
+<div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;destructable&gt;</a> donotkillme ( 0 );</div>
+<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;    <span class="comment">//Check that destructor is also not called for copying:</span></div>
+<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;    donotkillme = <a class="code" href="a00020.html">managedPtr&lt;destructable&gt;</a> ( 0 );</div>
+<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160;}</div>
+<div class="line"><a name="l00631"></a><span class="lineno">  631</span>&#160;</div>
+<div class="line"><a name="l00635"></a><span class="lineno"><a class="line" href="a00089.html#aaa065fa0370460a02a70cf248e614ac1">  635</a></span>&#160;<a class="code" href="a00089.html#a6a8bbea2d6377b6395df1b7800700e77">TEST</a> ( <a class="code" href="a00020.html">managedPtr</a>, Unit_OverwriteWhileUsing )</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;{</div>
+<div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160;    <a class="code" href="a00016.html">managedDummySwap</a> swap ( <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ) * 3 );</div>
+<div class="line"><a name="l00638"></a><span class="lineno">  638</span>&#160;    <a class="code" href="a00011.html">cyclicManagedMemory</a> managedMemory ( &amp; swap, <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ) * 2 ) ;</div>
 <div class="line"><a name="l00639"></a><span class="lineno">  639</span>&#160;</div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;}</div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;</div>
-<div class="line"><a name="l00642"></a><span class="lineno"><a class="line" href="a00089.html#a3d9512de8648bd4680902a4999028b5f">  642</a></span>&#160;<a class="code" href="a00089.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a>;</div>
+<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;double&gt;</a> ptr1 ( 1 );</div>
+<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160;    <a class="code" href="a00001.html">adhereTo&lt;double&gt;</a> glue ( ptr1 );</div>
+<div class="line"><a name="l00642"></a><span class="lineno">  642</span>&#160;    <span class="keywordtype">double</span> *loc = glue;</div>
 <div class="line"><a name="l00643"></a><span class="lineno">  643</span>&#160;</div>
+<div class="line"><a name="l00644"></a><span class="lineno">  644</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;double&gt;</a> ptr2 ( 1 );</div>
+<div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;double&gt;</a> ptr3 ( 1 );</div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;    <span class="comment">//Will not throw as ptr2 is not used and we may destruct:</span></div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160;    ASSERT_NO_THROW (</div>
+<div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;        ptr2 = ptr3;</div>
+<div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;    );</div>
+<div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160;    <a class="code" href="a00001.html">adhereTo &lt;double&gt;</a>glue2 ( ptr3 );</div>
+<div class="line"><a name="l00651"></a><span class="lineno">  651</span>&#160;    <span class="keywordtype">double</span> *data = glue2;</div>
+<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;</div>
+<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160;    <span class="comment">//Using source will not give any problems:</span></div>
+<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;    ASSERT_NO_THROW (</div>
+<div class="line"><a name="l00655"></a><span class="lineno">  655</span>&#160;        ptr2 = ptr3;</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;    );</div>
+<div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160;</div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;    <span class="comment">//Throws as this would invalidate active pointer:</span></div>
+<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160;    ASSERT_THROW (</div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;        ptr1 = ptr2, <a class="code" href="a00022.html">memoryException</a></div>
+<div class="line"><a name="l00661"></a><span class="lineno">  661</span>&#160;    );</div>
+<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;</div>
+<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;}</div>
+<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160;</div>
+<div class="line"><a name="l00665"></a><span class="lineno"><a class="line" href="a00089.html#a3d9512de8648bd4680902a4999028b5f">  665</a></span>&#160;<a class="code" href="a00089.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a>;</div>
+<div class="line"><a name="l00666"></a><span class="lineno">  666</span>&#160;</div>
 <div class="ttc" id="a00022_html"><div class="ttname"><a href="a00022.html">rambrain::memoryException</a></div><div class="ttdoc">Exception for errors with the memory. </div><div class="ttdef"><b>Definition:</b> <a href="a00044_source.html#l00087">exceptions.h:87</a></div></div>
-<div class="ttc" id="a00020_html_a626821a44d97acbc60bb47989a097c9d"><div class="ttname"><a href="a00020.html#a626821a44d97acbc60bb47989a097c9d">rambrain::managedPtr::size</a></div><div class="ttdeci">unsigned int size() const </div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00166">managedPtr.h:166</a></div></div>
+<div class="ttc" id="a00020_html_a626821a44d97acbc60bb47989a097c9d"><div class="ttname"><a href="a00020.html#a626821a44d97acbc60bb47989a097c9d">rambrain::managedPtr::size</a></div><div class="ttdeci">unsigned int size() const </div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00167">managedPtr.h:167</a></div></div>
 <div class="ttc" id="a00093_html"><div class="ttname"><a href="a00093.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00038_source.html#l00026">common.h:26</a></div></div>
 <div class="ttc" id="a00044_html"><div class="ttname"><a href="a00044.html">exceptions.h</a></div></div>
 <div class="ttc" id="a00018_html_a4158747bb03019659afc34d0120be28c"><div class="ttname"><a href="a00018.html#a4158747bb03019659afc34d0120be28c">rambrain::managedMemory::setOutOfSwapIsFatal</a></div><div class="ttdeci">bool setOutOfSwapIsFatal(bool fatal=true)</div><div class="ttdoc">set policy what to do when out of memory in both ram and swap </div><div class="ttdef"><b>Definition:</b> <a href="a00052_source.html#l00169">managedMemory.cpp:169</a></div></div>
 <div class="ttc" id="a00012_html_a4af8f20c97014389124277ceefc082b2"><div class="ttname"><a href="a00012.html#a4af8f20c97014389124277ceefc082b2">destructorTracker::num_instances</a></div><div class="ttdeci">static int num_instances</div><div class="ttdef"><b>Definition:</b> <a href="a00089_source.html#l00544">testManagedPtr.cpp:544</a></div></div>
 <div class="ttc" id="a00042_html"><div class="ttname"><a href="a00042.html">cyclicManagedMemory.h</a></div></div>
 <div class="ttc" id="a00001_html"><div class="ttname"><a href="a00001.html">rambrain::adhereTo</a></div><div class="ttdoc">Main class to fetch memory that is managed by rambrain for actual usage. </div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00048">managedPtr.h:48</a></div></div>
-<div class="ttc" id="a00020_html_afc4112d3c16edcb7172e7f35030f435a"><div class="ttname"><a href="a00020.html#afc4112d3c16edcb7172e7f35030f435a">rambrain::managedPtr::setUse</a></div><div class="ttdeci">bool setUse(bool writable=true, bool *tracker=NULL) const </div><div class="ttdoc">Atomically sets use to a chunk if tracker is not already set to true. returns whether we set use or n...</div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00177">managedPtr.h:177</a></div></div>
+<div class="ttc" id="a00020_html_afc4112d3c16edcb7172e7f35030f435a"><div class="ttname"><a href="a00020.html#afc4112d3c16edcb7172e7f35030f435a">rambrain::managedPtr::setUse</a></div><div class="ttdeci">bool setUse(bool writable=true, bool *tracker=NULL) const </div><div class="ttdoc">Atomically sets use to a chunk if tracker is not already set to true. returns whether we set use or n...</div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00178">managedPtr.h:178</a></div></div>
 <div class="ttc" id="a00011_html_a25adf7d0ee4eeee6c2917bf72b0b5a37"><div class="ttname"><a href="a00011.html#a25adf7d0ee4eeee6c2917bf72b0b5a37">rambrain::cyclicManagedMemory::checkCycle</a></div><div class="ttdeci">bool checkCycle()</div><div class="ttdoc">checks whether the scheduler believes to be sane and prints an error message if not ...</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00653">cyclicManagedMemory.cpp:653</a></div></div>
 <div class="ttc" id="a00043_html"><div class="ttname"><a href="a00043.html">dummyManagedMemory.h</a></div></div>
 <div class="ttc" id="a00018_html"><div class="ttname"><a href="a00018.html">rambrain::managedMemory</a></div><div class="ttdoc">Backend class to handle raw memory and interaction/storage with managedSwap. </div><div class="ttdef"><b>Definition:</b> <a href="a00053_source.html#l00068">managedMemory.h:68</a></div></div>
@@ -715,16 +732,16 @@ $(document).ready(function(){initNavTree('a00089_source.html','');});
 <div class="ttc" id="a00020_html"><div class="ttname"><a href="a00020.html">rambrain::managedPtr</a></div><div class="ttdoc">Main class to allocate memory that is managed by the rambrain memory defaultManager. </div><div class="ttdef"><b>Definition:</b> <a href="a00053_source.html#l00054">managedMemory.h:54</a></div></div>
 <div class="ttc" id="a00093_html_a44865184cd1937b742c135666f0460cd"><div class="ttname"><a href="a00093.html#a44865184cd1937b742c135666f0460cd">rambrain::memoryID</a></div><div class="ttdeci">uint64_t memoryID</div><div class="ttdef"><b>Definition:</b> <a href="a00055_source.html#l00038">managedMemoryChunk.h:38</a></div></div>
 <div class="ttc" id="a00049_html"><div class="ttname"><a href="a00049.html">managedDummySwap.h</a></div></div>
-<div class="ttc" id="a00089_html_a3d9512de8648bd4680902a4999028b5f"><div class="ttname"><a href="a00089.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a></div><div class="ttdeci">RESTORE_WARNINGS</div><div class="ttdef"><b>Definition:</b> <a href="a00089_source.html#l00642">testManagedPtr.cpp:642</a></div></div>
-<div class="ttc" id="a00020_html_a9b96f8d979019bf3f86c8e614696238d"><div class="ttname"><a href="a00020.html#a9b96f8d979019bf3f86c8e614696238d">rambrain::managedPtr::getLocPtr</a></div><div class="ttdeci">T * getLocPtr() const </div><div class="ttdoc">returns local pointer to object </div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00224">managedPtr.h:224</a></div></div>
+<div class="ttc" id="a00089_html_a3d9512de8648bd4680902a4999028b5f"><div class="ttname"><a href="a00089.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a></div><div class="ttdeci">RESTORE_WARNINGS</div><div class="ttdef"><b>Definition:</b> <a href="a00089_source.html#l00665">testManagedPtr.cpp:665</a></div></div>
+<div class="ttc" id="a00020_html_a9b96f8d979019bf3f86c8e614696238d"><div class="ttname"><a href="a00020.html#a9b96f8d979019bf3f86c8e614696238d">rambrain::managedPtr::getLocPtr</a></div><div class="ttdeci">T * getLocPtr() const </div><div class="ttdoc">returns local pointer to object </div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00227">managedPtr.h:227</a></div></div>
 <div class="ttc" id="a00032_html_ab1b14519c719b0f70b204ecbd5468ff4"><div class="ttname"><a href="a00032.html#ab1b14519c719b0f70b204ecbd5468ff4">tester::getDurationsForCurrentCycle</a></div><div class="ttdeci">std::vector&lt; int64_t &gt; getDurationsForCurrentCycle() const </div><div class="ttdoc">Take the current cycle of time measurements and calculate all durations in betwen. </div><div class="ttdef"><b>Definition:</b> <a href="a00082_source.html#l00186">tester.cpp:186</a></div></div>
 <div class="ttc" id="a00011_html_aff64a33ffa6d2b3f0044fefd15c97294"><div class="ttname"><a href="a00011.html#aff64a33ffa6d2b3f0044fefd15c97294">rambrain::cyclicManagedMemory::setPreemptiveUnloading</a></div><div class="ttdeci">bool setPreemptiveUnloading(bool preemptive)</div><div class="ttdoc">sets whether scheduler should swap out elements without strict need </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00200">cyclicManagedMemory.cpp:200</a></div></div>
 <div class="ttc" id="a00013_html"><div class="ttname"><a href="a00013.html">rambrain::dummyManagedMemory</a></div><div class="ttdoc">a dummy managed Memory that basically does nothing and throws on everything. </div><div class="ttdef"><b>Definition:</b> <a href="a00043_source.html#l00033">dummyManagedMemory.h:33</a></div></div>
 <div class="ttc" id="a00011_html"><div class="ttname"><a href="a00011.html">rambrain::cyclicManagedMemory</a></div><div class="ttdoc">scheduler working with a double linked cycle. Details see paper. </div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00050">cyclicManagedMemory.h:50</a></div></div>
 <div class="ttc" id="a00057_html"><div class="ttname"><a href="a00057.html">managedPtr.h</a></div></div>
 <div class="ttc" id="a00019_html_a8975c39c838ab14956b4aca36f3a4220"><div class="ttname"><a href="a00019.html#a8975c39c838ab14956b4aca36f3a4220">rambrain::managedMemoryChunk::status</a></div><div class="ttdeci">memoryStatus status</div><div class="ttdef"><b>Definition:</b> <a href="a00055_source.html#l00064">managedMemoryChunk.h:64</a></div></div>
-<div class="ttc" id="a00020_html_acebeebd2c7ab841f7bf6577e599ecc03"><div class="ttname"><a href="a00020.html#acebeebd2c7ab841f7bf6577e599ecc03">rambrain::managedPtr::chunk</a></div><div class="ttdeci">managedMemoryChunk * chunk</div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00242">managedPtr.h:242</a></div></div>
-<div class="ttc" id="a00020_html_a5e27a4cf25fdeb82501a617e86f8f7fc"><div class="ttname"><a href="a00020.html#a5e27a4cf25fdeb82501a617e86f8f7fc">rambrain::managedPtr::unsetUse</a></div><div class="ttdeci">bool unsetUse(unsigned int loaded=1) const </div><div class="ttdoc">unsets use count on memory chunk </div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00189">managedPtr.h:189</a></div></div>
+<div class="ttc" id="a00020_html_acebeebd2c7ab841f7bf6577e599ecc03"><div class="ttname"><a href="a00020.html#acebeebd2c7ab841f7bf6577e599ecc03">rambrain::managedPtr::chunk</a></div><div class="ttdeci">managedMemoryChunk * chunk</div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00245">managedPtr.h:245</a></div></div>
+<div class="ttc" id="a00020_html_a5e27a4cf25fdeb82501a617e86f8f7fc"><div class="ttname"><a href="a00020.html#a5e27a4cf25fdeb82501a617e86f8f7fc">rambrain::managedPtr::unsetUse</a></div><div class="ttdeci">bool unsetUse(unsigned int loaded=1) const </div><div class="ttdoc">unsets use count on memory chunk </div><div class="ttdef"><b>Definition:</b> <a href="a00057_source.html#l00190">managedPtr.h:190</a></div></div>
 <div class="ttc" id="a00016_html"><div class="ttname"><a href="a00016.html">rambrain::managedDummySwap</a></div><div class="ttdoc">A dummy swap that just copies swapped out chunks to a different location in ram. </div><div class="ttdef"><b>Definition:</b> <a href="a00049_source.html#l00031">managedDummySwap.h:31</a></div></div>
 <div class="ttc" id="a00032_html_a01d742f1f0fe5d55766cb3c256b999d7"><div class="ttname"><a href="a00032.html#a01d742f1f0fe5d55766cb3c256b999d7">tester::addTimeMeasurement</a></div><div class="ttdeci">void addTimeMeasurement()</div><div class="ttdoc">Saves the current timestamp. </div><div class="ttdef"><b>Definition:</b> <a href="a00082_source.html#l00036">tester.cpp:36</a></div></div>
 <div class="ttc" id="a00012_html_a183466f7b2424c3e481b9c4687654573"><div class="ttname"><a href="a00012.html#a183466f7b2424c3e481b9c4687654573">destructorTracker::~destructorTracker</a></div><div class="ttdeci">~destructorTracker()</div><div class="ttdef"><b>Definition:</b> <a href="a00089_source.html#l00539">testManagedPtr.cpp:539</a></div></div>
@@ -737,7 +754,7 @@ $(document).ready(function(){initNavTree('a00089_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00089.html">testManagedPtr.cpp</a></li>
-    <li class="footer">Generated on Tue Oct 20 2015 01:42:05 for rambrain by
+    <li class="footer">Generated on Wed Oct 21 2015 01:42:24 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

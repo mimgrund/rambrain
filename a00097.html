@@ -105,12 +105,15 @@ $(document).ready(function(){initNavTree('a00097.html','');});
 <div class="textblock"><dl class="reflist">
 <dt><a class="anchor" id="_test000001"></a>globalScope&gt; Member <a class="el" href="a00077.html#a0f8a4b5152ab8f3909aba53869627a74">TEST</a>  (adhereTo, Unit_LoadUnload)</dt>
 <dd>Checks exact loading stages of objects provoked by the use of adhereTo  </dd>
-<dt><a class="anchor" id="_test000077"></a>globalScope&gt; Member <a class="el" href="a00090.html#adee0ca5670e50f234fe3b67cb81b5251">TEST</a>  (regexMatcher, Unit_SubstituteHomeDir)</dt>
+<dt><a class="anchor" id="_test000078"></a>globalScope&gt; Member <a class="el" href="a00090.html#adee0ca5670e50f234fe3b67cb81b5251">TEST</a>  (regexMatcher, Unit_SubstituteHomeDir)</dt>
 <dd>Checks if the home directory replacing works properly  </dd>
-<dt><a class="anchor" id="_test000076"></a>globalScope&gt; Member <a class="el" href="a00090.html#afcbcb3d22a4ea7f6e5b773be4dcf1ae0">TEST</a>  (regexMatcher, Unit_MatchBlock)</dt>
+<dt><a class="anchor" id="_test000077"></a>globalScope&gt; Member <a class="el" href="a00090.html#afcbcb3d22a4ea7f6e5b773be4dcf1ae0">TEST</a>  (regexMatcher, Unit_MatchBlock)</dt>
 <dd>Checks if block header matching works  </dd>
-<dt><a class="anchor" id="_test000075"></a>globalScope&gt; Member <a class="el" href="a00089.html#aaa065fa0370460a02a70cf248e614ac1">TEST</a>  (managedPtr, Unit_OverwriteWhileUsing)</dt>
+<dt><a class="anchor" id="_test000076"></a>globalScope&gt; Member <a class="el" href="a00089.html#aaa065fa0370460a02a70cf248e614ac1">TEST</a>  (managedPtr, Unit_OverwriteWhileUsing)</dt>
 <dd>Tests if a pointer can be adhereto-ed and overwritten in between  </dd>
+<dt><a class="anchor" id="_test000075"></a>globalScope&gt; Member <a class="el" href="a00089.html#ac259ef9e760206698f39f45f88486641">TEST</a>  (managedPtr, Unit_ZeroSizedObjectsCanBeOverwrittenSavely)</dt>
+<dd>Checks whether we may savely overwrite zero-sized managedPtrs <dl class="section note"><dt>Note</dt><dd>run this test using valgrind to see difference  </dd></dl>
+</dd>
 <dt><a class="anchor" id="_test000074"></a>globalScope&gt; Member <a class="el" href="a00089.html#a338a212ba1d4ba267706b17e12a0cb1b">TEST</a>  (managedPtr, Unit_GetSize)</dt>
 <dd>Tests if the size of a data array can be properly retrieved from the managedPtr  </dd>
 <dt><a class="anchor" id="_test000073"></a>globalScope&gt; Member <a class="el" href="a00089.html#ae4102bc7577ff3411e0f0b2b9a4b53b3">TEST</a>  (managedPtr, Unit_EmptySizeAllowed)</dt>
@@ -270,7 +273,7 @@ $(document).ready(function(){initNavTree('a00097.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Oct 20 2015 01:42:05 for rambrain by
+    <li class="footer">Generated on Wed Oct 21 2015 01:42:24 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
