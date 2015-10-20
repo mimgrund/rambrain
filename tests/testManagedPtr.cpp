@@ -603,5 +603,31 @@ TEST ( managedPtr, Unit_GetSize )
     ASSERT_EQ ( 14, ptr.size() );
 }
 
+/**
+ * @test Checks whether we may savely overwrite zero-sized managedPtrs
+ * @note run this test using valgrind to see difference
+ */
+
+
+TEST ( managedPtr, Unit_ZeroSizedObjectsCanBeOverwrittenSavely )
+{
+    class destructable
+    {
+    public:
+        destructable() {}
+        ~destructable() {
+            * ( ( char * ) NULL ) = 0x00;   //Would segfault if called.
+        }
+    };
+
+    {
+        // Check that destructor is not called on destruction:
+        managedPtr<destructable> donotkillme ( 0 );
+    }
+    managedPtr<destructable> donotkillme ( 0 );
+    //Check that destructor is also not called for copying:
+    donotkillme = managedPtr<destructable> ( 0 );
+}
+
 RESTORE_WARNINGS;
 
