@@ -627,7 +627,39 @@ TEST ( managedPtr, Unit_ZeroSizedObjectsCanBeOverwrittenSavely )
     managedPtr<destructable> donotkillme ( 0 );
     //Check that destructor is also not called for copying:
     donotkillme = managedPtr<destructable> ( 0 );
-}
 
-RESTORE_WARNINGS;
+
+    /**
+     * @test Tests if a pointer can be adhereto-ed and overwritten in between
+     */
+    TEST ( managedPtr, Unit_OverwriteWhileUsing ) {
+        managedDummySwap swap ( sizeof ( double ) * 3 );
+        cyclicManagedMemory managedMemory ( & swap, sizeof ( double ) * 2 ) ;
+
+        managedPtr<double> ptr1 ( 1 );
+        adhereTo<double> glue ( ptr1 );
+        double *loc = glue;
+
+        managedPtr<double> ptr2 ( 1 );
+        managedPtr<double> ptr3 ( 1 );
+        //Will not throw as ptr2 is not used and we may destruct:
+        ASSERT_NO_THROW (
+            ptr2 = ptr3;
+        );
+        adhereTo <double>glue2 ( ptr3 );
+        double *data = glue2;
+
+        //Using source will not give any problems:
+        ASSERT_NO_THROW (
+            ptr2 = ptr3;
+        );
+
+        //Throws as this would invalidate active pointer:
+        ASSERT_THROW (
+            ptr1 = ptr2, memoryException
+        );
+
+    }
+
+    RESTORE_WARNINGS;
 

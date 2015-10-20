@@ -84,11 +84,19 @@ public:
      **/
     bool setMemoryLimit ( global_bytesize size );
     /// @brief returns current memory limit
-    global_bytesize getMemoryLimit () const;
+    inline global_bytesize getMemoryLimit () const {
+        return memory_max;
+    }
     /// @brief returns current ram usage
     global_bytesize getUsedMemory() const;
     /// @brief returns current swap usage
     global_bytesize getSwappedMemory() const;
+    /// @brief return current swap free capacity
+    global_bytesize getFreeSwapMemory() const;
+    /// @brief return current swap capacity
+    global_bytesize getTotalSwapMemory() const;
+
+
     /** @brief set policy what to do when out of memory in both ram and swap
      * @return old policy
      **/
