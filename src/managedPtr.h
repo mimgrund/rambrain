@@ -94,6 +94,7 @@ public:
         tracker = new unsigned int;
         ( *tracker ) = 1;
         if ( n_elem == 0 ) {
+            chunk = NULL;
             return;
         }
 
@@ -193,11 +194,13 @@ public:
 
     ///@brief assignment operator
     managedPtr<T> &operator= ( const managedPtr<T> &ref ) {
-        if ( ref.chunk == chunk ) {
-            return *this;
-        }
-        if ( rambrain_atomic_sub_fetch ( tracker, 1 ) == 0 ) {
-            mDelete<T>();
+        if ( chunk ) {
+            if ( ref.chunk == chunk ) {
+                return *this;
+            }
+            if ( rambrain_atomic_sub_fetch ( tracker, 1 ) == 0 ) {
+                mDelete<T>();
+            }
         }
         n_elem = ref.n_elem;
         chunk = ref.chunk;
