@@ -54,11 +54,11 @@ void configLine<global_bytesize>::setValue ( const string &str )
         if ( unit == "b" || unit == "B" ) {
             value = 1uLL;
         } else if ( unit == "kb" || unit == "kB" || unit == "Kb" || unit == "KB" ) {
-            value = 1000uLL;
+            value = kib;
         } else if ( unit == "mb" || unit == "Mb" || unit == "MB" ) {
-            value = 1000000uLL;
+            value = mib;
         } else if ( unit == "gb" || unit == "Gb" || unit == "GB" ) {
-            value = 1000000000uLL;
+            value = gig;
         } else {
             value = 1uLL;
         }
@@ -91,7 +91,7 @@ void configLine<swapPolicy>::setValue ( const string &str )
 
 configuration::configuration() : memoryManager ( "memoryManager", "cyclicManagedMemory", regexMatcher::text ),
     swap ( "swap", "managedFileSwap", regexMatcher::text ),
-    /** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
+/** First %d will be replaced by the process id, the second one will be replaced by the swapfile id */
     swapfiles ( "swapfiles", "rambrainswap-%d-%d", regexMatcher::swapfilename ),
     memory ( "memory", 0, regexMatcher::floating | regexMatcher::units ),
     swapMemory ( "swapMemory", 0, regexMatcher::floating | regexMatcher::units ),
