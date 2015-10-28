@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('a00079_source.html','');});
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <a class="code" href="a00009.html">configuration</a> <a class="code" href="a00094.html#ad02508d72047bc55a38eda857e4816c1">config</a> = reader.<a class="code" href="a00008.html#aa9d982624f5495cdb3af2e4a216f4ecd">getConfig</a>();</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    ASSERT_EQ ( <span class="stringliteral">&quot;dummyManagedMemory&quot;</span>, config.memoryManager.value );</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    ASSERT_EQ ( 5000000000uLL, config.memory.value );</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    ASSERT_EQ ( 5 * <a class="code" href="a00093.html#a8525b8b73c3e1ec62bd571b3cffd1742">gig</a>, config.memory.value );</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
 <div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="a00079.html#a31e3a7d2d39be82a5f37a992da830b2a">   74</a></span>&#160;<a class="code" href="a00079.html#a7e9890c6706de981c9a1e00a8e2cd5e0">TEST</a> ( <a class="code" href="a00008.html">configReader</a>, Unit_IgnoreCommentLines )</div>
@@ -234,7 +234,7 @@ $(document).ready(function(){initNavTree('a00079_source.html','');});
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <a class="code" href="a00009.html">configuration</a> <a class="code" href="a00094.html#ad02508d72047bc55a38eda857e4816c1">config</a> = reader.<a class="code" href="a00008.html#aa9d982624f5495cdb3af2e4a216f4ecd">getConfig</a>();</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    ASSERT_EQ ( <span class="stringliteral">&quot;dummyManagedMemory&quot;</span>, config.memoryManager.value );</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    ASSERT_EQ ( 5000000000uLL, config.memory.value );</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    ASSERT_EQ ( 5 * <a class="code" href="a00093.html#a8525b8b73c3e1ec62bd571b3cffd1742">gig</a>, config.memory.value );</div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;}</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
 <div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="a00079.html#a7427d91881af4e2a48665507d80a4d26">  148</a></span>&#160;<a class="code" href="a00079.html#a7e9890c6706de981c9a1e00a8e2cd5e0">TEST</a> ( <a class="code" href="a00008.html">configReader</a>, Unit_DefaultOverwritesMissingVariablesLookFurther )</div>
@@ -259,7 +259,7 @@ $(document).ready(function(){initNavTree('a00079_source.html','');});
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <a class="code" href="a00009.html">configuration</a> <a class="code" href="a00094.html#ad02508d72047bc55a38eda857e4816c1">config</a> = reader.<a class="code" href="a00008.html#aa9d982624f5495cdb3af2e4a216f4ecd">getConfig</a>();</div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    ASSERT_EQ ( <span class="stringliteral">&quot;dummyManagedMemory&quot;</span>, config.memoryManager.value );</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    ASSERT_EQ ( 5000000000uLL, config.memory.value );</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    ASSERT_EQ ( 5 * <a class="code" href="a00093.html#a8525b8b73c3e1ec62bd571b3cffd1742">gig</a>, config.memory.value );</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;}</div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
 <div class="line"><a name="l00176"></a><span class="lineno"><a class="line" href="a00079.html#a9f0b95e46171bd5b9ba1b36d05d200f1">  176</a></span>&#160;<a class="code" href="a00079.html#a7e9890c6706de981c9a1e00a8e2cd5e0">TEST</a> ( <a class="code" href="a00008.html">configReader</a>, Unit_ParseProgramName )</div>
@@ -358,6 +358,7 @@ $(document).ready(function(){initNavTree('a00079_source.html','');});
 <div class="ttc" id="a00008_html"><div class="ttname"><a href="a00008.html">rambrain::configReader</a></div><div class="ttdoc">Reader class to read in and properly parse config files. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00163">configreader.h:163</a></div></div>
 <div class="ttc" id="a00009_html_ae86fcffce8339717271022be71e95815"><div class="ttname"><a href="a00009.html#ae86fcffce8339717271022be71e95815">rambrain::configuration::memoryManager</a></div><div class="ttdeci">configLine&lt; string &gt; memoryManager</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00138">configreader.h:138</a></div></div>
 <div class="ttc" id="a00094_html_ad02508d72047bc55a38eda857e4816c1"><div class="ttname"><a href="a00094.html#ad02508d72047bc55a38eda857e4816c1">rambrain::rambrainglobals::config</a></div><div class="ttdeci">rambrainConfig config</div><div class="ttdoc">You will find the object in managedMemory.cpp as we have to define it in some &#39;used&#39; file in the link...</div><div class="ttdef"><b>Definition:</b> <a href="a00052_source.html#l00036">managedMemory.cpp:36</a></div></div>
+<div class="ttc" id="a00093_html_a8525b8b73c3e1ec62bd571b3cffd1742"><div class="ttname"><a href="a00093.html#a8525b8b73c3e1ec62bd571b3cffd1742">rambrain::gig</a></div><div class="ttdeci">const global_bytesize gig</div><div class="ttdef"><b>Definition:</b> <a href="a00038_source.html#l00069">common.h:69</a></div></div>
 <div class="ttc" id="a00009_html_a0d87d5533a56ffe09fcd095918df3795"><div class="ttname"><a href="a00009.html#a0d87d5533a56ffe09fcd095918df3795">rambrain::configuration::swapMemory</a></div><div class="ttdeci">configLine&lt; global_bytesize &gt; swapMemory</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00139">configreader.h:139</a></div></div>
 <div class="ttc" id="a00009_html_a60063ca6099263b106e5434bc0d5ed0b"><div class="ttname"><a href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">rambrain::configuration::configOptions</a></div><div class="ttdeci">vector&lt; configLineBase * &gt; configOptions</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00143">configreader.h:143</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -366,7 +367,7 @@ $(document).ready(function(){initNavTree('a00079_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00079.html">testConfigReader.cpp</a></li>
-    <li class="footer">Generated on Tue Oct 27 2015 01:41:32 for rambrain by
+    <li class="footer">Generated on Wed Oct 28 2015 01:43:46 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
