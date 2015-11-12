@@ -1,4 +1,5 @@
 #!/bin/bash
+source ../sourceloc.sh
 
 g++ nbody.cpp -g -O0 -o nbody
 
