@@ -1,8 +1,18 @@
 #!/bin/bash
+echo Your hostname is:
+if hostname|grep cip-ws-; then
+        echo "Custom config for CIP PC"
+        cat - >~/.rambrain.conf<<EOF
+[default]
+swapfiles=/tmp/rambrain-%d-%d
+EOF
+fi
+
 
 echo "Cloning rambrain from github... "
 git clone https://github.com/mimgrund/rambrain.git rambrain
 echo "Done"
+
 
 cd rambrain/build
 echo "Building rambrain..."
