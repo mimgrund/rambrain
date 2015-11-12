@@ -35,7 +35,7 @@ echo "echo \"Changing library path...\"" > sourceloc.sh
 echo "export LD_LIBRARY_PATH=$LD_LBRARY_PATH:$libdir" >> sourceloc.sh
 echo "export LIBRARY_PATH=$LD_LBRARY_PATH:$libdir" >> sourceloc.sh
 echo "export CPLUS_INCLUDE_PATH=$LD_LBRARY_PATH:$sourcedir" >> sourceloc.sh
-echo "echo \"New libary path should contain rambrain library: $LD_LIBRARY_PATH\"" >> sourceloc.sh
+echo 'echo "New libary path should contain rambrain library: $LD_LIBRARY_PATH"' >> sourceloc.sh
 
 echo "sourceloc.sh written"
 echo "Before compiling or running programs with rambrain please execute following command once in the respective shell:"
