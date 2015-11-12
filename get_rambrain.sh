@@ -22,9 +22,11 @@ cmake .. $usexp
 make -j 8
 echo "Done"
 cd ..
-sourcedir=$(pwd)/src
+sourcedir=$(pwd)/empty
 libdir=$(pwd)/lib
-
+mkdir empty
+ln -s $(pwd)/src empty/rambrain
+ln -s $(pwd)/lib/rambrainDefinitionsHeader.h src/
 echo "Library directory is $libdir"
 
 echo "Writing script to load lib path"
