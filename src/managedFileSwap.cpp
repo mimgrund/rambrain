@@ -40,7 +40,7 @@
 namespace rambrain
 {
 
-// #define DBG_AIO
+#define DBG_AIO
 managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile, bool enableDMA ) : managedSwap ( size ), pageSize ( sysconf ( _SC_PAGE_SIZE ) )
 {
     setDMA ( enableDMA );
@@ -106,6 +106,8 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
         if ( pthread_create ( io_submit_threads + n, NULL, &io_submit_worker, this ) ) {
             throw memoryException ( "Could not create worker threads for aio" );
         }
+
+    pthread_create ( &io_arrive_thread, NULL, &io_arrrive_worker, this );
 }
 
 managedFileSwap::~managedFileSwap()
@@ -667,6 +669,22 @@ void *managedFileSwap::io_submit_worker ( void *ptr )
     return NULL;
 }
 
+void *managedFileSwap::io_arrrive_worker ( void *ptr )
+{
+    managedFileSwap *dhis = ( managedFileSwap * ) ptr;
+    while ( dhis->io_arrive_work ) {
+        if ( dhis->totalSwapActionsQueued > 0 ) {
+            pthread_mutex_lock ( &managedMemory::stateChangeMutex );
+            dhis->checkForAIO();
+            pthread_mutex_unlock ( &managedMemory::stateChangeMutex );
+        }
+        usleep ( 1000 );
+    }
+    return NULL;
+
+}
+
+
 
 void managedFileSwap::my_io_submit ( struct iocb *aio )
 {
@@ -745,6 +763,7 @@ bool managedFileSwap::checkForAIO()
 
     //We're the only thread here. Check if there's still pending requests to wait for:
     if ( totalSwapActionsQueued == 0 ) { //We do not need to wait as nothing is coming.
+        rambrain_pthread_mutex_unlock ( &aioWaiterLock );
         return true;    //Do not wait in caller for something to arrive.
     }
 

@@ -199,7 +199,7 @@ protected:
 
     struct iocb aio_template;
     io_context_t aio_context = 0;
-    unsigned int aio_max_transactions = 1024;
+    unsigned int aio_max_transactions = 10240;
     struct io_event *aio_eventarr;
     pthread_mutex_t aioWaiterLock = PTHREAD_MUTEX_INITIALIZER;
 
@@ -215,11 +215,15 @@ protected:
     unsigned int io_submit_num_threads = 1;
     pthread_t *io_submit_threads;
     pthread_t io_waiter_thread;
+    pthread_t io_arrive_thread;
 
     std::queue<struct iocb *> io_submit_requests;
 
     void my_io_submit ( struct iocb *aio );
     static void *io_submit_worker ( void *ptr );
+    static void *io_arrrive_worker ( void *ptr );
+
+    bool io_arrive_work = true;
 
     /** @brief throws out cached elements still in ram but also resident on disk. This makes space in situations of low swap memory**/
     bool cleanupCachedElements ( rambrain::global_bytesize minimum_size = 0 );
