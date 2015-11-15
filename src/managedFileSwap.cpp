@@ -40,7 +40,7 @@
 namespace rambrain
 {
 
-#define DBG_AIO
+//#define DBG_AIO
 managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, global_bytesize oneFile, bool enableDMA ) : managedSwap ( size ), pageSize ( sysconf ( _SC_PAGE_SIZE ) )
 {
     setDMA ( enableDMA );
@@ -125,9 +125,11 @@ managedFileSwap::~managedFileSwap()
     for ( unsigned int n = 0; n < io_submit_num_threads; ++n ) {
         my_io_submit ( NULL );
     }
+    io_arrive_work = false;
     for ( unsigned int n = 0; n < io_submit_num_threads; ++n ) {
         pthread_join ( io_submit_threads[n], NULL );
     }
+    pthread_join ( io_arrive_thread, NULL );
     free ( io_submit_threads );
     io_destroy ( aio_context );
 
@@ -775,9 +777,10 @@ bool managedFileSwap::checkForAIO()
     int no_arrived;
 tryagain:
     no_arrived = io_getevents ( aio_context, 0, aio_max_transactions, aio_eventarr, NULL );
+    struct timespec timeout = {0, 100000};
     if ( no_arrived == 0 ) {
         rambrain_pthread_mutex_unlock ( & ( managedMemory::stateChangeMutex ) );
-        no_arrived = io_getevents ( aio_context, 1, aio_max_transactions, aio_eventarr, NULL );
+        no_arrived = io_getevents ( aio_context, 1, aio_max_transactions, aio_eventarr, &timeout );
         rambrain_pthread_mutex_lock ( & ( managedMemory::stateChangeMutex ) );
     }
 
@@ -818,7 +821,7 @@ void managedFileSwap::asyncIoArrived ( rambrain::pageFileLocation *ref, io_event
 {
 
 #ifdef DBG_AIO
-    printf ( "aio: async io arrived, chunk of size %d\n", ref->size );
+    printf ( "aio: async io arrived, chunk of size %lu\n", ref->size );
 #endif
 
     //Check whether we're about to be deleted, if so, don't touch the element
