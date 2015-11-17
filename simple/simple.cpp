@@ -31,7 +31,7 @@ int main() {
         double yy = 0;
 
 
-        for(unsigned int y=0; y<x_len; ++y) {
+        for(unsigned int y=0; y<y_len; ++y) {
             field[x][y] = field_value(xx,yy);
             yy+= yy_step;
         }
@@ -42,7 +42,7 @@ int main() {
     for(unsigned int x=0; x<x_len; x+=gp_step) {
 
 
-        for(unsigned int y=0; y<x_len; y+=gp_step) {
+        for(unsigned int y=0; y<y_len; y+=gp_step) {
             printf("%e\t",field[x][y]);
         }
         printf("\n");
@@ -51,7 +51,7 @@ int main() {
 
     //Deallocation
     for(unsigned int x=0; x<x_len; ++x)
-        delete field[x];
+        delete[] field[x];
 
     return 0;
 };

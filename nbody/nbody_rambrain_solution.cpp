@@ -103,21 +103,22 @@ int main(int argc, char** argv)
                         double mi = massLocB[i], mj = massLocC[j];
 
                         // Softening to prevent singularity
-                        double distance = fabs((pi[0] - pj[0]) * (pi[0] - pj[0]) + (pi[1] - pj[1]) * (pi[1] - pj[1]) + (pi[2] - pj[2]) * (pi[2] - pj[2])) + softening;
+                        double distanceVector[3] = {pi[0] - pj[0], pi[1] - pj[1], pi[2] - pj[2]};
+                        double distance = fabs(distanceVector[0]*distanceVector[0] + distanceVector[1]*distanceVector[1] + distanceVector[2]*distanceVector[2]) + softening;
                         double force = forceConst / (distance * sqrt(distance));
 
                         // Adjust position
                         for (int k = 0; k < 3; ++k)
                         {
-                            pi[k] += vi[k] * dt + 0.5 * force / mi * (pj[k] - pi[k]) * dt * dt;
-                            pj[k] += vj[k] * dt + 0.5 * force / mj * (pi[k] - pj[k]) * dt * dt;
+                            pi[k] -= vi[k] * dt + 0.5 * force / mi * distanceVector[k] * dt * dt;
+                            pj[k] += vj[k] * dt + 0.5 * force / mj * distanceVector[k] * dt * dt;
                         }
 
                         // Adjust velocity
                         for (int k = 0; k < 3; ++k)
                         {
-                            vi[k] += force / mi * (pj[k] - pi[k]) * dt;
-                            vj[k] += force / mj * (pi[k] - pj[k]) * dt;
+                            vi[k] -= force / mi * distanceVector[k] * dt;
+                            vj[k] += force / mj * distanceVector[k] * dt;
                         }
                     }
                 }

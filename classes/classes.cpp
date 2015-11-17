@@ -36,7 +36,8 @@ private:
 //An abstract class for specifying initial conditions:
 class initialConditions {
 public:
-    initialConditions(double x_max, double y_max):x_max(x_max),y_max(y_max) {};
+    initialConditions(double x_max, double y_max):x_max(x_max),y_max(y_max) {}
+    virtual ~initialConditions() {}
     const double x_max,y_max;
     virtual double field_value(double x, double y) const = 0;
 };
@@ -45,11 +46,12 @@ public:
 class simpleWave : public initialConditions {
 public:
     simpleWave(double x_max, double y_max, double k_x, double k_y) :
-        initialConditions(x_max,y_max), k_x(k_x),k_y(k_y) {};
+        initialConditions(x_max,y_max), k_x(k_x),k_y(k_y) {}
+    virtual ~simpleWave() {}
 
     virtual double field_value(double x, double y) const {
         return sin(k_x*x+k_y*y);
-    };
+    }
 private:
     const double k_x,k_y;
 };

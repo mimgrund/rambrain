@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ../sourceloc.sh
+
 echo Compiling both programs
 
 if ./compile.sh; then

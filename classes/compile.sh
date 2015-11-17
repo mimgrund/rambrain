@@ -8,6 +8,13 @@ else
 	exit 1
 fi
 
+if g++ classes_rambrain_solution.cpp -g -O0 -o classes_rambrain_solution -std=c++11 -lrambrain -lrt; then
+        echo Compilation of rambrainified solution code successful
+else
+        echo Compilation of rambrainified solution code failed
+        exit 1
+fi
+
 if g++ classes_rambrain.cpp -g -O0 -o classes_rambrain -std=c++11 -lrambrain -lrt; then
         echo Compilation of rambrainified code successful
 else
