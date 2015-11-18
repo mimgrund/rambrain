@@ -35,13 +35,13 @@ TEST ( configLine, Unit_SetValue )
 
     configLine<global_bytesize> cl2 ( "cl2", 0uLL, regexMatcher::integer | regexMatcher::units );
     cl2.setValue ( "123 kb" );
-    EXPECT_EQ ( 123000uLL, cl2.value );
+    EXPECT_EQ ( 123 * kib, cl2.value );
 
     cl2.setValue ( "456 MB" );
-    EXPECT_EQ ( 456000000uLL, cl2.value );
+    EXPECT_EQ ( 456 * mib, cl2.value );
 
     cl2.setValue ( "789 Gb" );
-    EXPECT_EQ ( 789000000000uLL, cl2.value );
+    EXPECT_EQ ( 789 * gig, cl2.value );
 }
 
 /**

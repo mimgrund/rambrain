@@ -65,7 +65,7 @@ TEST ( configReader, Unit_ParseCustomFile )
     configuration config = reader.getConfig();
 
     ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
-    ASSERT_EQ ( 5000000000uLL, config.memory.value );
+    ASSERT_EQ ( 5 * gig, config.memory.value );
 }
 
 /**
@@ -139,7 +139,7 @@ TEST ( configReader, Unit_DefaultOverwritesMissingVariables )
     configuration config = reader.getConfig();
 
     ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
-    ASSERT_EQ ( 5000000000uLL, config.memory.value );
+    ASSERT_EQ ( 5 * gig, config.memory.value );
 }
 
 /**
@@ -167,7 +167,7 @@ TEST ( configReader, Unit_DefaultOverwritesMissingVariablesLookFurther )
     configuration config = reader.getConfig();
 
     ASSERT_EQ ( "dummyManagedMemory", config.memoryManager.value );
-    ASSERT_EQ ( 5000000000uLL, config.memory.value );
+    ASSERT_EQ ( 5 * gig, config.memory.value );
 }
 
 /**
