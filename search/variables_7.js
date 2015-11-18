@@ -5,6 +5,8 @@ var searchData=
   ['initialised',['initialised',['../a00035.html#ac6ba857b6f43eb3998d15b78f505b312',1,'rambrain::Timer']]],
   ['instance',['instance',['../a00017.html#a0da0fb0093407ecf03b65557ffa357a5',1,'rambrain::managedFileSwap']]],
   ['invalid',['invalid',['../a00018.html#a708e2307727c5a2d710b3c15dfcc6978',1,'rambrain::managedMemory']]],
+  ['io_5farrive_5fthread',['io_arrive_thread',['../a00017.html#ad941a30d5fb218773e0628d7c979d205',1,'rambrain::managedFileSwap']]],
+  ['io_5farrive_5fwork',['io_arrive_work',['../a00017.html#a41aa409b96e5e17dd2922f5cc6c1ee79',1,'rambrain::managedFileSwap']]],
   ['io_5fsubmit_5fcond',['io_submit_cond',['../a00017.html#a2761767bab0ccf80aa34513ab332a8bb',1,'rambrain::managedFileSwap']]],
   ['io_5fsubmit_5flock',['io_submit_lock',['../a00017.html#aeb692e9637a2c84c67bdc9d037c63e01',1,'rambrain::managedFileSwap']]],
   ['io_5fsubmit_5fnum_5fthreads',['io_submit_num_threads',['../a00017.html#af2191a726958b68a28dee8e8a48f9f9d',1,'rambrain::managedFileSwap']]],

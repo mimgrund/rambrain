@@ -44,6 +44,8 @@ var a00017 =
     [ "enableDMA", "a00017.html#ad4ada0001b48cd845bf6bf80ca31165c", null ],
     [ "filemask", "a00017.html#a790e01e9cbc5bd6a3e29bcb478f4961d", null ],
     [ "free_space", "a00017.html#a401485970b3da6f50721dac80b7bbbcc", null ],
+    [ "io_arrive_thread", "a00017.html#ad941a30d5fb218773e0628d7c979d205", null ],
+    [ "io_arrive_work", "a00017.html#a41aa409b96e5e17dd2922f5cc6c1ee79", null ],
     [ "io_submit_cond", "a00017.html#a2761767bab0ccf80aa34513ab332a8bb", null ],
     [ "io_submit_lock", "a00017.html#aeb692e9637a2c84c67bdc9d037c63e01", null ],
     [ "io_submit_num_threads", "a00017.html#af2191a726958b68a28dee8e8a48f9f9d", null ],
