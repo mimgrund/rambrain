@@ -64,6 +64,40 @@ class adhereTo;
 
 
 
+
+
+template <class T, int dim = 1>
+class managedPtr
+{
+
+public:
+    managedPtr ( const managedPtr<T, dim> &ref ) : n_elem ( ref.n_elem ), subPtrs ( new managedPtr < T, dim - 1 > [n_elem] ) {
+        for ( int i = 0; i < n_elem; ++i ) {
+            subPtrs[i] = ref.subPtrs[i];
+        }
+    }
+
+    template <typename... ctor_args>
+    managedPtr ( unsigned int n_elem , ctor_args... Args ) : n_elem ( n_elem ), subPtrs ( new managedPtr < T, dim - 1 > [n_elem] ( Args... ) ) {}
+
+    ~managedPtr() {
+        delete[] subPtrs;
+    }
+
+    managedPtr<T, dim> &operator= ( const managedPtr<T, dim> &ref ) {
+        n_elem = ref.n_elem;
+        subPtrs = new managedPtr < T, dim - 1 > [n_elem];
+        for ( int i = 0; i < n_elem; ++i ) {
+            subPtrs[i] = ref.subPtrs[i];
+        }
+    }
+
+private:
+    int n_elem;
+    managedPtr < T, dim - 1 > * subPtrs;
+};
+
+
 /**
  * \brief Main class to allocate memory that is managed by the rambrain memory defaultManager
  *
@@ -75,7 +109,7 @@ class adhereTo;
  *
  * **/
 template <class T>
-class managedPtr
+class managedPtr<T, 1>
 {
 public:
     ///@brief copy ctor
@@ -305,6 +339,7 @@ private:
     friend class ::adhereTo_Unit_TwiceAdheredOnceUsed_Test;
 #endif
 };
+
 
 /**
  * @brief Main class to fetch memory that is managed by rambrain for actual usage.

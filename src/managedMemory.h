@@ -50,7 +50,7 @@ namespace rambrain
 class managedFileSwap;
 class managedDummySwap;
 class managedSwap;
-template<class T>
+template<class T, int dim>
 class managedPtr;
 /**
  * @brief Backend class to handle raw memory and interaction/storage with managedSwap.
@@ -228,7 +228,7 @@ protected:
     static pthread_cond_t swappingCond;
     /*static pthread_cond_t topologicalCond;*/
 
-    template<class T>
+    template<class T, int dim>
     friend class managedPtr;
     friend class managedSwap;
     friend class managedFileSwap;
