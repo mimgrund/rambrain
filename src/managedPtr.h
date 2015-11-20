@@ -94,6 +94,7 @@ public:
         for ( int i = 0; i < n_elem; ++i ) {
             subPtrs[i] = ref.subPtrs[i];
         }
+        return *this;
     }
 
     managedPtr < T, dim - 1 > &operator[] ( int i ) {
