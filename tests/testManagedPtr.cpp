@@ -663,14 +663,14 @@ TEST ( managedPtr, Unit_OverwriteWhileUsing )
 
 TEST ( managedPtr, Unit_TwoDimensionalPtr )
 {
-    managedDummySwap swap ( sizeof ( double ) * 45 );
+    managedDummySwap swap ( sizeof ( double ) * 1000 );
     cyclicManagedMemory managedMemory ( & swap, sizeof ( double ) * 15 ) ;
 
-    managedPtr<double, 2> ptr ( 3, 5 );
+    managedPtr<double, 2> ptr1 ( 3, 5 );
 
     ASSERT_NO_FATAL_FAILURE (
     for ( int i = 0; i < 3; ++i ) {
-    adhereTo <double> glue ( ptr[i] );
+    adhereTo <double> glue ( ptr1[i] );
         double *loc = glue;
         for ( int j = 0; j < 5; ++j ) {
             loc[j] = i * 5 + j;
@@ -680,10 +680,68 @@ TEST ( managedPtr, Unit_TwoDimensionalPtr )
 
     ASSERT_NO_FATAL_FAILURE (
     for ( int i = 0; i < 3; ++i ) {
-    const adhereTo <double> glue ( ptr[i] );
+    const adhereTo <double> glue ( ptr1[i] );
         const double *loc = glue;
         for ( int j = 0; j < 5; ++j ) {
             ASSERT_EQ ( i * 5 + j, loc[j] );
+        }
+    }
+    );
+
+    managedPtr<double> ptr2 ( 15 );
+
+    ASSERT_NO_FATAL_FAILURE (
+        adhereTo <double> glue ( ptr2 );
+        double *loc = glue;
+    for ( int i = 0; i < 15; ++i ) {
+    loc[i] = i;
+    }
+    );
+
+    ASSERT_NO_FATAL_FAILURE (
+    for ( int i = 0; i < 3; ++i ) {
+    const adhereTo <double> glue ( ptr1[i] );
+        const double *loc = glue;
+        for ( int j = 0; j < 5; ++j ) {
+            ASSERT_EQ ( i * 5 + j, loc[j] );
+        }
+    }
+    );
+
+    managedPtr<double, 2> ptr3 ( ptr1 );
+
+    ASSERT_NO_FATAL_FAILURE (
+    for ( int i = 0; i < 3; ++i ) {
+    adhereTo <double> glue ( ptr3[i] );
+        double *loc = glue;
+        for ( int j = 0; j < 5; ++j ) {
+            ASSERT_EQ ( i * 5 + j, loc[j] );
+            loc[j] += 15;
+        }
+    }
+    );
+
+    ptr1 = ptr3;
+
+    ASSERT_NO_FATAL_FAILURE (
+    for ( int i = 0; i < 3; ++i ) {
+    const adhereTo <double> glue ( ptr1[i] );
+        const double *loc = glue;
+        for ( int j = 0; j < 5; ++j ) {
+            ASSERT_EQ ( i * 5 + j + 15, loc[j] );
+        }
+    }
+    );
+
+    managedPtr<double, 2> *ptr4 = new managedPtr<double, 2> ( ptr1 );
+    delete ptr4;
+
+    ASSERT_NO_FATAL_FAILURE (
+    for ( int i = 0; i < 3; ++i ) {
+    const adhereTo <double> glue ( ptr1[i] );
+        const double *loc = glue;
+        for ( int j = 0; j < 5; ++j ) {
+            ASSERT_EQ ( i * 5 + j + 15, loc[j] );
         }
     }
     );
