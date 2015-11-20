@@ -96,6 +96,14 @@ public:
         }
     }
 
+    managedPtr < T, dim - 1 > &operator[] ( int i ) {
+        return subPtrs[i];
+    }
+
+    const managedPtr < T, dim - 1 > &operator[] ( int i ) const {
+        return subPtrs[i];
+    }
+
 private:
     int n_elem;
     managedPtr < T, dim - 1 > * subPtrs;
