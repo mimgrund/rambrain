@@ -66,17 +66,29 @@ class adhereTo;
 
 
 
+/**
+ * \brief Main class to allocate memory that is managed by the rambrain memory defaultManager
+ *
+ * @warning _thread-safety_
+ * * The object itself is not thread-safe
+ * * Do not pass pointers/references to this object over thread boundaries
+ * @note _thread-safety_
+ * * The object itself may be passed over thread boundary
+ *
+ * **/
 template <class T, int dim = 1>
 class managedPtr
 {
 
 public:
+    ///@brief copy ctor
     managedPtr ( const managedPtr<T, dim> &ref ) : n_elem ( ref.n_elem ), subPtrs ( new managedPtr < T, dim - 1 > [n_elem] ) {
         for ( int i = 0; i < n_elem; ++i ) {
             subPtrs[i] = ref.subPtrs[i];
         }
     }
 
+    ///@brief instantiates managedPtr containing n_elem elements in the current dimension and passes Args as arguments to the constructor of these
     template <typename... ctor_args>
     managedPtr ( unsigned int n_elem , ctor_args... Args ) : n_elem ( n_elem ), subPtrs ( new managedPtr < T, dim - 1 > [n_elem] ) {
         for ( int i = 0; i < n_elem; ++i ) {
@@ -84,10 +96,12 @@ public:
         }
     }
 
+    ///@brief destructor
     ~managedPtr() {
         delete[] subPtrs;
     }
 
+    /// @brief assignment operator
     managedPtr<T, dim> &operator= ( const managedPtr<T, dim> &ref ) {
         n_elem = ref.n_elem;
         subPtrs = new managedPtr < T, dim - 1 > [n_elem];
@@ -97,10 +111,12 @@ public:
         return *this;
     }
 
+    /// @brief simple getter for this dimension
     managedPtr < T, dim - 1 > &operator[] ( int i ) {
         return subPtrs[i];
     }
 
+    /// @brief simple getter for this dimension
     const managedPtr < T, dim - 1 > &operator[] ( int i ) const {
         return subPtrs[i];
     }
@@ -112,7 +128,7 @@ private:
 
 
 /**
- * \brief Main class to allocate memory that is managed by the rambrain memory defaultManager
+ * \brief Main class to allocate memory that is managed by the rambrain memory defaultManager in a multidimensional way given by the second template parameter
  *
  * @warning _thread-safety_
  * * The object itself is not thread-safe

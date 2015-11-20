@@ -661,6 +661,9 @@ TEST ( managedPtr, Unit_OverwriteWhileUsing )
     );
 }
 
+/**
+ * @test Tests if two dimensional managed pointers work properly
+ */
 TEST ( managedPtr, Unit_TwoDimensionalPtr )
 {
     managedDummySwap swap ( sizeof ( double ) * 1000 );
