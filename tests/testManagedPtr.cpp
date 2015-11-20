@@ -659,7 +659,14 @@ TEST ( managedPtr, Unit_OverwriteWhileUsing )
     ASSERT_THROW (
         ptr1 = ptr2, memoryException
     );
+}
 
+TEST ( managedPtr, Unit_TwoDimensionalPtr )
+{
+    managedDummySwap swap ( sizeof ( double ) * 20 );
+    cyclicManagedMemory managedMemory ( & swap, sizeof ( double ) * 15 ) ;
+
+    managedPtr<double, 2> ptr ( 3, 5 );
 }
 
 RESTORE_WARNINGS;
