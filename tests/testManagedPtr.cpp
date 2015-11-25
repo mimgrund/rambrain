@@ -711,6 +711,55 @@ TEST ( managedPtr, Unit_ShallowCopy )
 }
 
 /**
+ * @test Tests, if pointers can be copied and copied back without problems
+ */
+TEST ( managedPtr, Unit_TestReassignment )
+{
+    managedDummySwap swap ( sizeof ( double ) * 100 );
+    cyclicManagedMemory managedMemory ( & swap, sizeof ( double ) * 10 ) ;
+
+    managedPtr<double> ptr1 ( 5 );
+    {
+        ADHERETOLOC ( double, ptr1, loc );
+        for ( int i = 0; i < 5; ++i ) {
+            loc[i] = i;
+        }
+    }
+
+    managedPtr<double> ptr2 ( ptr1 );
+    {
+        ADHERETOLOC ( double, ptr2, loc );
+        for ( int i = 0; i < 5; ++i ) {
+            ASSERT_EQ ( i, loc[i] );
+            loc[i] = i * 10;
+        }
+    }
+
+    {
+        ADHERETOLOCCONST ( double, ptr1, loc );
+        for ( int i = 0; i < 5; ++i ) {
+            ASSERT_EQ ( i * 10, loc[i] );
+        }
+    }
+
+    ptr1 = ptr2;
+    {
+        ADHERETOLOC ( double, ptr1, loc );
+        for ( int i = 0; i < 5; ++i ) {
+            ASSERT_EQ ( i * 10, loc[i] );
+            loc[i] = i * 100;
+        }
+    }
+
+    {
+        ADHERETOLOCCONST ( double, ptr2, loc );
+        for ( int i = 0; i < 5; ++i ) {
+            ASSERT_EQ ( i * 100, loc[i] );
+        }
+    }
+}
+
+/**
  * @test Tests if two dimensional managed pointers work properly
  */
 TEST ( managedPtr, Unit_TwoDimensionalPtr )
