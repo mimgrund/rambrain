@@ -860,6 +860,18 @@ TEST ( managedPtr, Unit_TwoDimensionalPtr )
     }
     );
 
+    ptr1 = ptr3; //! @todo FAILURE HERE WHEN ../bin/rambrain-tests --gtest_filter=*Unit_BaseMemoryUsage:*Unit_TwoDimensionalPtr ON PARENTAL W/O OPTI
+
+    ASSERT_NO_FATAL_FAILURE (
+    for ( int i = 0; i < 3; ++i ) {
+    const adhereTo <double> glue ( ptr1[i] );
+        const double *loc = glue;
+        for ( int j = 0; j < 5; ++j ) {
+            ASSERT_EQ ( i * 5 + j + 15, loc[j] );
+        }
+    }
+    );
+
     managedPtr<double, 2> ptr4 = ptr1;
 
     ASSERT_NO_FATAL_FAILURE (
