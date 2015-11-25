@@ -662,6 +662,55 @@ TEST ( managedPtr, Unit_OverwriteWhileUsing )
 }
 
 /**
+ * @test Tests, that copying a managed pointer is done in a shallow way
+ */
+TEST ( managedPtr, Unit_ShallowCopy )
+{
+    managedDummySwap swap ( sizeof ( double ) * 100 );
+    cyclicManagedMemory managedMemory ( & swap, sizeof ( double ) * 10 ) ;
+
+    managedPtr<double> ptr1 ( 5 );
+    {
+        ADHERETOLOC ( double, ptr1, loc );
+        for ( int i = 0; i < 5; ++i ) {
+            loc[i] = i;
+        }
+    }
+
+    managedPtr<double> ptr2 ( ptr1 );
+    {
+        ADHERETOLOC ( double, ptr2, loc );
+        for ( int i = 0; i < 5; ++i ) {
+            ASSERT_EQ ( i, loc[i] );
+            loc[i] = i * 10;
+        }
+    }
+
+    {
+        ADHERETOLOCCONST ( double, ptr1, loc );
+        for ( int i = 0; i < 5; ++i ) {
+            ASSERT_EQ ( i * 10, loc[i] );
+        }
+    }
+
+    managedPtr<double> ptr3 = ptr1;
+    {
+        ADHERETOLOC ( double, ptr3, loc );
+        for ( int i = 0; i < 5; ++i ) {
+            ASSERT_EQ ( i * 10, loc[i] );
+            loc[i] = i * 100;
+        }
+    }
+
+    {
+        ADHERETOLOCCONST ( double, ptr1, loc );
+        for ( int i = 0; i < 5; ++i ) {
+            ASSERT_EQ ( i * 100, loc[i] );
+        }
+    }
+}
+
+/**
  * @test Tests if two dimensional managed pointers work properly
  */
 TEST ( managedPtr, Unit_TwoDimensionalPtr )
@@ -724,8 +773,6 @@ TEST ( managedPtr, Unit_TwoDimensionalPtr )
     }
     );
 
-    ptr1 = ptr3;
-
     ASSERT_NO_FATAL_FAILURE (
     for ( int i = 0; i < 3; ++i ) {
     const adhereTo <double> glue ( ptr1[i] );
@@ -736,15 +783,38 @@ TEST ( managedPtr, Unit_TwoDimensionalPtr )
     }
     );
 
-    managedPtr<double, 2> *ptr4 = new managedPtr<double, 2> ( ptr1 );
-    delete ptr4;
+    managedPtr<double, 2> ptr4 = ptr1;
+
+    ASSERT_NO_FATAL_FAILURE (
+    for ( int i = 0; i < 3; ++i ) {
+    adhereTo <double> glue ( ptr4[i] );
+        double *loc = glue;
+        for ( int j = 0; j < 5; ++j ) {
+            ASSERT_EQ ( i * 5 + j + 15, loc[j] );
+            loc[j] += 15;
+        }
+    }
+    );
 
     ASSERT_NO_FATAL_FAILURE (
     for ( int i = 0; i < 3; ++i ) {
     const adhereTo <double> glue ( ptr1[i] );
         const double *loc = glue;
         for ( int j = 0; j < 5; ++j ) {
-            ASSERT_EQ ( i * 5 + j + 15, loc[j] );
+            ASSERT_EQ ( i * 5 + j + 30, loc[j] );
+        }
+    }
+    );
+
+    managedPtr<double, 2> *ptr5 = new managedPtr<double, 2> ( ptr1 );
+    delete ptr5;
+
+    ASSERT_NO_FATAL_FAILURE (
+    for ( int i = 0; i < 3; ++i ) {
+    const adhereTo <double> glue ( ptr1[i] );
+        const double *loc = glue;
+        for ( int j = 0; j < 5; ++j ) {
+            ASSERT_EQ ( i * 5 + j + 30, loc[j] );
         }
     }
     );
