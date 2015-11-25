@@ -760,6 +760,34 @@ TEST ( managedPtr, Unit_TestReassignment )
 }
 
 /**
+ * @test Tests, that pointers of multiple adhereTo-s glued to the same managedPtr actually are the same
+ */
+TEST ( managedPtr, Unit_MultipleAdhereTo )
+{
+    managedDummySwap swap ( sizeof ( double ) * 100 );
+    cyclicManagedMemory managedMemory ( & swap, sizeof ( double ) * 10 ) ;
+
+    managedPtr<double> ptr1 ( 5 );
+    {
+        ADHERETOLOC ( double, ptr1, loc );
+        for ( int i = 0; i < 5; ++i ) {
+            loc[i] = i;
+        }
+    }
+
+    managedPtr<double> ptr2 ( ptr1 );
+    managedPtr<double> &ptr3 = ptr2;
+    {
+        ADHERETOLOC ( double, ptr1, loc1 );
+        ADHERETOLOC ( double, ptr2, loc2 );
+        ADHERETOLOC ( double, ptr3, loc3 );
+
+        ASSERT_EQ ( loc1, loc2 );
+        ASSERT_EQ ( loc1, loc3 );
+    }
+}
+
+/**
  * @test Tests if two dimensional managed pointers work properly
  */
 TEST ( managedPtr, Unit_TwoDimensionalPtr )
