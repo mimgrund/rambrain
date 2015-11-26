@@ -104,6 +104,7 @@ public:
     /// @brief assignment operator
     managedPtr<T, dim> &operator= ( const managedPtr<T, dim> &ref ) {
         n_elem = ref.n_elem;
+        delete [] subPtrs;
         subPtrs = new managedPtr < T, dim - 1 > [n_elem];
         for ( int i = 0; i < n_elem; ++i ) {
             subPtrs[i] = ref.subPtrs[i];

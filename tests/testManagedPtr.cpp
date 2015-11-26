@@ -860,7 +860,7 @@ TEST ( managedPtr, Unit_TwoDimensionalPtr )
     }
     );
 
-    ptr1 = ptr3; //! @todo FAILURE HERE WHEN ../bin/rambrain-tests --gtest_filter=*Unit_BaseMemoryUsage:*Unit_TwoDimensionalPtr ON PARENTAL W/O OPTI
+    ptr1 = ptr3;
 
     ASSERT_NO_FATAL_FAILURE (
     for ( int i = 0; i < 3; ++i ) {
