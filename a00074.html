@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: /home/rambrainbuild/docubrain/tests/performanceTests.cpp File Reference</title>
+<title>rambrain: /home/rambrainbuild/docubrain/tests/performanceTestClasses.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('a00074.html','');});
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">performanceTests.cpp File Reference</div>  </div>
+<div class="title">performanceTestClasses.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -115,26 +115,69 @@ $(document).ready(function(){initNavTree('a00074.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
-<tr class="memdesc:a3c04138a5bfe5d72780bb7e82a18e627"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides a binary to run performance tests.  <a href="#a3c04138a5bfe5d72780bb7e82a18e627">More...</a><br /></td></tr>
-<tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26ae4c36275297208e567385c2f52d9c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a26ae4c36275297208e567385c2f52d9c">TESTSTATICS</a> (matrixTransposeTest,&quot;Measurements of allocation and definition, transposition, deletion times&quot;)</td></tr>
+<tr class="separator:a26ae4c36275297208e567385c2f52d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40dbb801aa3ea387d7cdad8a055d9f6a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a40dbb801aa3ea387d7cdad8a055d9f6a">TESTSTATICS</a> (matrixCleverTransposeTest,&quot;Measurements of allocation and definition, transposition, deletion times, but with a clever transposition algorithm&quot;)</td></tr>
+<tr class="separator:a40dbb801aa3ea387d7cdad8a055d9f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13c4e1634b91f58e715d356fc15656ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a13c4e1634b91f58e715d356fc15656ab">TESTSTATICS</a> (matrixCleverTranspose2Test,&quot;Measurements of allocation and definition, transposition, deletion times, but with a clever transposition algorithm and same rows_fetch as openMP version&quot;)</td></tr>
+<tr class="separator:a13c4e1634b91f58e715d356fc15656ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa888f1306a8f53d34ac167fff944fe64"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#aa888f1306a8f53d34ac167fff944fe64">TESTSTATICS</a> (matrixCleverTransposeOpenMPTest,&quot;Same as cleverTranspose, but with OpenMP&quot;)</td></tr>
+<tr class="separator:aa888f1306a8f53d34ac167fff944fe64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8c4e5016dd2f7cecf0cd7308ef5274e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#ad8c4e5016dd2f7cecf0cd7308ef5274e">TESTSTATICS</a> (matrixCleverBlockTransposeTest,&quot;Same as cleverTranspose, but with blockwise multiplication&quot;)</td></tr>
+<tr class="separator:ad8c4e5016dd2f7cecf0cd7308ef5274e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e37c569c981f101ea16feb243ab9463"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a2e37c569c981f101ea16feb243ab9463">TESTSTATICS</a> (matrixCleverBlockTransposeOpenMPTest,&quot;Same as cleverTranspose, but with OpenMP and blockwise multiplication&quot;)</td></tr>
+<tr class="separator:a2e37c569c981f101ea16feb243ab9463"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a631e0564d8b17b2ac6d95c81819a872e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a631e0564d8b17b2ac6d95c81819a872e">TESTSTATICS</a> (matrixMultiplyTest,&quot;Matrix multiplication with matrices being stored in columns / rows&quot;)</td></tr>
+<tr class="separator:a631e0564d8b17b2ac6d95c81819a872e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8f4918b56515b7a9c25ff10e4429021"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#ae8f4918b56515b7a9c25ff10e4429021">TESTSTATICS</a> (matrixMultiplyOpenMPTest,&quot;Matrix multiplication with matrices being stored in columns / rows&quot;)</td></tr>
+<tr class="separator:ae8f4918b56515b7a9c25ff10e4429021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac655a3a668c2ed56ebe3b59c695e6697"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#ac655a3a668c2ed56ebe3b59c695e6697">TESTSTATICS</a> (matrixCopyTest,&quot;Copy one matrix onto another&quot;)</td></tr>
+<tr class="separator:ac655a3a668c2ed56ebe3b59c695e6697"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a672f43927e3e75987447438229edc50c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a672f43927e3e75987447438229edc50c">TESTSTATICS</a> (matrixCopyOpenMPTest,&quot;Copy one matrix onto another&quot;)</td></tr>
+<tr class="separator:a672f43927e3e75987447438229edc50c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60941ebedab2e69540164bc8f18e1161"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a60941ebedab2e69540164bc8f18e1161">TESTSTATICS</a> (matrixDoubleCopyTest,&quot;Copy one matrix onto another and back&quot;)</td></tr>
+<tr class="separator:a60941ebedab2e69540164bc8f18e1161"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2156a0b5b8120f96a8159b162dceaec5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a2156a0b5b8120f96a8159b162dceaec5">TESTSTATICS</a> (matrixDoubleCopyOpenMPTest,&quot;Copy one matrix onto another and back&quot;)</td></tr>
+<tr class="separator:a2156a0b5b8120f96a8159b162dceaec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a156b148adb86e8d87b1eee751138122f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a156b148adb86e8d87b1eee751138122f">TESTSTATICS</a> (measureThroughputTest,&quot;Measures throughput under load&quot;)</td></tr>
+<tr class="separator:a156b148adb86e8d87b1eee751138122f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad61556d383378ff650f8df086737136f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#ad61556d383378ff650f8df086737136f">TESTSTATICS</a> (measurePreemptiveSpeedupTest,&quot;Measures preemptive vs non preemptive runtime&quot;)</td></tr>
+<tr class="separator:ad61556d383378ff650f8df086737136f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96405547710ead8b3030a73ee6d82002"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a96405547710ead8b3030a73ee6d82002">TESTSTATICS</a> (measureExplicitAsyncSpeedupTest,&quot;Measures runtime of preemptive versus non preemptive with explicite asynchronous preparation&quot;)</td></tr>
+<tr class="separator:a96405547710ead8b3030a73ee6d82002"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad04ea272890d277ec0d00baee65ee317"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#ad04ea272890d277ec0d00baee65ee317">TESTSTATICS</a> (measureConstSpeedupTest,&quot;Measures runtime of const versus non-const usage of swapped data without preemptive&quot;)</td></tr>
+<tr class="separator:ad04ea272890d277ec0d00baee65ee317"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51369562121d7a788307c142199aab27"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00074.html#a51369562121d7a788307c142199aab27">TESTSTATICS</a> (demonstrateDecayTest,&quot;Should plot regeneration of hits over misses ratio&quot;)</td></tr>
+<tr class="separator:a51369562121d7a788307c142199aab27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a3c04138a5bfe5d72780bb7e82a18e627"></a>
+<a class="anchor" id="a26ae4c36275297208e567385c2f52d9c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int main </td>
+          <td class="memname">TESTSTATICS </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>argc</em>, </td>
+          <td class="paramtype">matrixTransposeTest&#160;</td>
+          <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char **&#160;</td>
-          <td class="paramname"><em>argv</em>&#160;</td>
+          <td class="paramtype">&quot;Measurements of allocation and&#160;</td>
+          <td class="paramname"><em>definition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">transposition&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">deletion times&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -144,16 +187,475 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Provides a binary to run performance tests. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">argc</td><td>Expects at least two arguments </td></tr>
-    <tr><td class="paramname">argv</td><td>1st: # of test repetitions; 2nd and forth: Names of performance tests to be carried out followed by test parameters </td></tr>
-  </table>
-  </dd>
-</dl>
+</div>
+</div>
+<a class="anchor" id="a40dbb801aa3ea387d7cdad8a055d9f6a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">matrixCleverTransposeTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Measurements of allocation and&#160;</td>
+          <td class="paramname"><em>definition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">transposition&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">deletion&#160;</td>
+          <td class="paramname"><em>times</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">but with a clever transposition algorithm&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00074_source.html#l00035">35</a> of file <a class="el" href="a00074_source.html">performanceTests.cpp</a>.</p>
+</div>
+</div>
+<a class="anchor" id="a13c4e1634b91f58e715d356fc15656ab"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">matrixCleverTranspose2Test&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Measurements of allocation and&#160;</td>
+          <td class="paramname"><em>definition</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">transposition&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">deletion&#160;</td>
+          <td class="paramname"><em>times</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">but with a clever transposition algorithm and same rows_fetch as openMP version&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa888f1306a8f53d34ac167fff944fe64"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">matrixCleverTransposeOpenMPTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Same as&#160;</td>
+          <td class="paramname"><em>cleverTranspose</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">but with OpenMP&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad8c4e5016dd2f7cecf0cd7308ef5274e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">matrixCleverBlockTransposeTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Same as&#160;</td>
+          <td class="paramname"><em>cleverTranspose</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">but with blockwise multiplication&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2e37c569c981f101ea16feb243ab9463"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">matrixCleverBlockTransposeOpenMPTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Same as&#160;</td>
+          <td class="paramname"><em>cleverTranspose</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">but with OpenMP and blockwise multiplication&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a631e0564d8b17b2ac6d95c81819a872e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">matrixMultiplyTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Matrix multiplication with matrices being stored in columns / rows&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ae8f4918b56515b7a9c25ff10e4429021"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">matrixMultiplyOpenMPTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Matrix multiplication with matrices being stored in columns / rows&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac655a3a668c2ed56ebe3b59c695e6697"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">matrixCopyTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Copy one matrix onto another&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a672f43927e3e75987447438229edc50c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">matrixCopyOpenMPTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Copy one matrix onto another&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a60941ebedab2e69540164bc8f18e1161"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">matrixDoubleCopyTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Copy one matrix onto another and back&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a2156a0b5b8120f96a8159b162dceaec5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">matrixDoubleCopyOpenMPTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Copy one matrix onto another and back&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a156b148adb86e8d87b1eee751138122f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">measureThroughputTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Measures throughput under load&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad61556d383378ff650f8df086737136f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">measurePreemptiveSpeedupTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Measures preemptive vs non preemptive runtime&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a96405547710ead8b3030a73ee6d82002"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">measureExplicitAsyncSpeedupTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Measures runtime of preemptive versus non preemptive with explicite asynchronous preparation&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ad04ea272890d277ec0d00baee65ee317"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">measureConstSpeedupTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Measures runtime of const versus non-const usage of swapped data without preemptive&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a51369562121d7a788307c142199aab27"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TESTSTATICS </td>
+          <td>(</td>
+          <td class="paramtype">demonstrateDecayTest&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&quot;Should plot regeneration of hits over misses ratio&quot;&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -162,8 +664,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00074.html">performanceTests.cpp</a></li>
-    <li class="footer">Generated on Thu Nov 26 2015 01:43:07 for rambrain by
+    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00074.html">performanceTestClasses.cpp</a></li>
+    <li class="footer">Generated on Fri Nov 27 2015 01:43:03 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

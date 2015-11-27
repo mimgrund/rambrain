@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('a00008.html','');});
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
-<a href="a00113.html">List of all members</a>  </div>
+<a href="a00115.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">rambrain::configReader Class Reference</div>  </div>
 </div><!--header-->
@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('a00008.html','');});
 <p>Reader class to read in and properly parse config files.  
  <a href="a00008.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00040_source.html">configreader.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00041_source.html">configreader.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -172,7 +172,7 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a0af5a1590cdcf1a04aafe7ba3d56bed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a145f0d48de3953c9f188a6f8dee8e51f"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a145f0d48de3953c9f188a6f8dee8e51f">customConfigPath</a> = &quot;&quot;</td></tr>
 <tr class="separator:a145f0d48de3953c9f188a6f8dee8e51f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78ab5e3dcf141f66f4916d9a84ec6566"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00030.html">regexMatcher</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">regex</a></td></tr>
+<tr class="memitem:a78ab5e3dcf141f66f4916d9a84ec6566"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00031.html">regexMatcher</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">regex</a></td></tr>
 <tr class="separator:a78ab5e3dcf141f66f4916d9a84ec6566"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cc1b1f7392af7deafaa9a42dc9859fc"><td class="memItemLeft" align="right" valign="top">ifstream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a> [3]</td></tr>
 <tr class="separator:a4cc1b1f7392af7deafaa9a42dc9859fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -197,7 +197,7 @@ key = value<br />
 ...<br />
 While keys are exactly the names of members of the configuration struct There are three different locations to search for a config file, in descending priority: custom location &gt; user home dir &gt; global Not all options need to be supplied. Missing options are taken from the default block or (if not present there either) from the defaults Also all different files are taken into account to supply missing options </p><dl class="section note"><dt>Note</dt><dd>Comments can be inserted with leading hash </dd></dl>
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00163">163</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00163">163</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a9eff76380e7fa313604dff234e66b205"></a>
 <div class="memitem">
@@ -215,7 +215,7 @@ While keys are exactly the names of members of the configuration struct There ar
 <p>Init a new reader. </p>
 <dl class="section note"><dt>Note</dt><dd>Does not trigger a config read in since this is done lazily </dd></dl>
 
-<p>Definition at line <a class="el" href="a00039_source.html#l00152">152</a> of file <a class="el" href="a00039_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00152">152</a> of file <a class="el" href="a00040_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -244,7 +244,7 @@ While keys are exactly the names of members of the configuration struct There ar
 <p>Extract the current binary's name out of the /proc file system. </p>
 <dl class="section return"><dt>Returns</dt><dd>The name </dd></dl>
 
-<p>Definition at line <a class="el" href="a00039_source.html#l00289">289</a> of file <a class="el" href="a00039_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00289">289</a> of file <a class="el" href="a00040_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -271,7 +271,7 @@ While keys are exactly the names of members of the configuration struct There ar
 
 <p>Simple getter. </p>
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00192">192</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00192">192</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -299,7 +299,7 @@ While keys are exactly the names of members of the configuration struct There ar
 <p>Look up the home directory of the current user. </p>
 <dl class="section return"><dt>Returns</dt><dd>The home dir </dd></dl>
 
-<p>Definition at line <a class="el" href="a00039_source.html#l00306">306</a> of file <a class="el" href="a00039_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00306">306</a> of file <a class="el" href="a00040_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -347,7 +347,7 @@ While keys are exactly the names of members of the configuration struct There ar
 <dl class="section warning"><dt>Warning</dt><dd>Does not check for unknown variables or typos, every unknown thing is simply ignored </dd></dl>
 <dl class="section see"><dt>See also</dt><dd>parseConfigLine </dd></dl>
 
-<p>Definition at line <a class="el" href="a00039_source.html#l00247">247</a> of file <a class="el" href="a00039_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00247">247</a> of file <a class="el" href="a00040_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -394,7 +394,7 @@ While keys are exactly the names of members of the configuration struct There ar
 <dl class="section return"><dt>Returns</dt><dd>Success </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00008.html#a89ebde62397d8fdda601543eb2eb110a" title="Parse an identified configuration block and extract all matching variables. ">parseConfigBlock()</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="a00039_source.html#l00209">209</a> of file <a class="el" href="a00039_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00209">209</a> of file <a class="el" href="a00040_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -419,7 +419,7 @@ openStream </dd>
 <dd>
 <a class="el" href="a00008.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f" title="Parse config file. ">parseConfigFile</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="a00039_source.html#l00157">157</a> of file <a class="el" href="a00039_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00157">157</a> of file <a class="el" href="a00040_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -446,7 +446,7 @@ openStream </dd>
 
 <p>Simple getter. </p>
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00202">202</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00202">202</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -474,7 +474,7 @@ openStream </dd>
 <p>(Re)Open streams to config files </p>
 <p>Order is Custom location &gt; Local user space &gt; Global config </p><dl class="section return"><dt>Returns</dt><dd>Success </dd></dl>
 
-<p>Definition at line <a class="el" href="a00039_source.html#l00177">177</a> of file <a class="el" href="a00039_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00177">177</a> of file <a class="el" href="a00040_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -502,7 +502,7 @@ openStream </dd>
 
 <p>Simple setter. </p>
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00185">185</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00185">185</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -529,7 +529,7 @@ openStream </dd>
 
 <p>Simple setter. </p>
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00208">208</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00208">208</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -563,7 +563,7 @@ openStream </dd>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00039_source.html#l00312">312</a> of file <a class="el" href="a00039_source.html">configreader.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00040_source.html#l00312">312</a> of file <a class="el" href="a00040_source.html">configreader.cpp</a>.</p>
 
 </div>
 </div>
@@ -586,7 +586,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00273">273</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00273">273</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -609,7 +609,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00267">267</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00267">267</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -631,7 +631,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00261">261</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00261">261</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -653,7 +653,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00259">259</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00259">259</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -675,7 +675,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00260">260</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00260">260</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -697,7 +697,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00269">269</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00269">269</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -709,7 +709,7 @@ openStream </dd>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00030.html">regexMatcher</a> rambrain::configReader::regex</td>
+          <td class="memname">const <a class="el" href="a00031.html">regexMatcher</a> rambrain::configReader::regex</td>
         </tr>
       </table>
   </td>
@@ -719,7 +719,7 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00263">263</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00263">263</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
@@ -741,21 +741,21 @@ openStream </dd>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00040_source.html#l00265">265</a> of file <a class="el" href="a00040_source.html">configreader.h</a>.</p>
+<p>Definition at line <a class="el" href="a00041_source.html#l00265">265</a> of file <a class="el" href="a00041_source.html">configreader.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00040_source.html">configreader.h</a></li>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00039_source.html">configreader.cpp</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00041_source.html">configreader.h</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00040_source.html">configreader.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00093.html">rambrain</a></li><li class="navelem"><a class="el" href="a00008.html">configReader</a></li>
-    <li class="footer">Generated on Thu Nov 26 2015 01:43:09 for rambrain by
+    <li class="navelem"><a class="el" href="a00095.html">rambrain</a></li><li class="navelem"><a class="el" href="a00008.html">configReader</a></li>
+    <li class="footer">Generated on Fri Nov 27 2015 01:43:05 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

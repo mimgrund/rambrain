@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: rambrain::Timer Class Reference</title>
+<title>rambrain: testParameterBase Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,65 +107,57 @@ $(document).ready(function(){initNavTree('a00035.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
-<a href="a00133.html">List of all members</a>  </div>
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="a00108.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">rambrain::Timer Class Reference</div>  </div>
+<div class="title">testParameterBase Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Provides an interface to a timer which periodically sends SIGUSR1 signals.  
+<p>A base class to encapsulate parameters for performance tests.  
  <a href="a00035.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00066_source.html">timer.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00075_source.html">performanceTestClasses.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for testParameterBase:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="a00035.png" usemap="#testParameterBase_map" alt=""/>
+  <map id="testParameterBase_map" name="testParameterBase_map">
+<area href="a00034.html" title="Class to encapsulate parameters given by type T. " alt="testParameter&lt; T &gt;" shape="rect" coords="0,56,120,80"/>
+</map>
+ </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a2b4fa3e4a1e2ef1b1edeffa577717d5d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a2b4fa3e4a1e2ef1b1edeffa577717d5d">startTimer</a> (long seconds, long nanoseconds)</td></tr>
-<tr class="memdesc:a2b4fa3e4a1e2ef1b1edeffa577717d5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the timer.  <a href="#a2b4fa3e4a1e2ef1b1edeffa577717d5d">More...</a><br /></td></tr>
-<tr class="separator:a2b4fa3e4a1e2ef1b1edeffa577717d5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad432a370227d8794c716e252d615c9d9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ad432a370227d8794c716e252d615c9d9">stopTimer</a> ()</td></tr>
-<tr class="memdesc:ad432a370227d8794c716e252d615c9d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the timer.  <a href="#ad432a370227d8794c716e252d615c9d9">More...</a><br /></td></tr>
-<tr class="separator:ad432a370227d8794c716e252d615c9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ad88b5e08c6ac3c4353ff96f9a00b17"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a4ad88b5e08c6ac3c4353ff96f9a00b17">isRunning</a> ()</td></tr>
-<tr class="memdesc:a4ad88b5e08c6ac3c4353ff96f9a00b17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple getter.  <a href="#a4ad88b5e08c6ac3c4353ff96f9a00b17">More...</a><br /></td></tr>
-<tr class="separator:a4ad88b5e08c6ac3c4353ff96f9a00b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a1b0dcec6718d1f89841ac4f1fb2d4310"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a1b0dcec6718d1f89841ac4f1fb2d4310">~testParameterBase</a> ()</td></tr>
+<tr class="memdesc:a1b0dcec6718d1f89841ac4f1fb2d4310"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup.  <a href="#a1b0dcec6718d1f89841ac4f1fb2d4310">More...</a><br /></td></tr>
+<tr class="separator:a1b0dcec6718d1f89841ac4f1fb2d4310"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2514f1bc1f004ffd6d545c2044b26166"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a2514f1bc1f004ffd6d545c2044b26166">valueAsString</a> ()=0</td></tr>
+<tr class="memdesc:a2514f1bc1f004ffd6d545c2044b26166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cast the encapsulated parameter to a string and return it's mean value.  <a href="#a2514f1bc1f004ffd6d545c2044b26166">More...</a><br /></td></tr>
+<tr class="separator:a2514f1bc1f004ffd6d545c2044b26166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31a6857782aa664cce378a6a87b67593"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a31a6857782aa664cce378a6a87b67593">valueAsString</a> (unsigned int step)=0</td></tr>
+<tr class="memdesc:a31a6857782aa664cce378a6a87b67593"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cast the encapsulated parameter to a string and return it's value at a certain step.  <a href="#a31a6857782aa664cce378a6a87b67593">More...</a><br /></td></tr>
+<tr class="separator:a31a6857782aa664cce378a6a87b67593"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a2c383399b9ca73789a3bb5625632b9dd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a2c383399b9ca73789a3bb5625632b9dd">Timer</a> ()</td></tr>
-<tr class="memdesc:a2c383399b9ca73789a3bb5625632b9dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new timer.  <a href="#a2c383399b9ca73789a3bb5625632b9dd">More...</a><br /></td></tr>
-<tr class="separator:a2c383399b9ca73789a3bb5625632b9dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:ab9c2a3fb72f25c0ee936c4023cb55ffa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ab9c2a3fb72f25c0ee936c4023cb55ffa">initialiseTimer</a> ()</td></tr>
-<tr class="memdesc:ab9c2a3fb72f25c0ee936c4023cb55ffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up the timer.  <a href="#ab9c2a3fb72f25c0ee936c4023cb55ffa">More...</a><br /></td></tr>
-<tr class="separator:ab9c2a3fb72f25c0ee936c4023cb55ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:a59277ee2347b98ad2b255ee898079da7"><td class="memItemLeft" align="right" valign="top">static timer_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a59277ee2347b98ad2b255ee898079da7">timerid</a></td></tr>
-<tr class="separator:a59277ee2347b98ad2b255ee898079da7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa01c05838ff7a702f7509fe45e8a6c87"><td class="memItemLeft" align="right" valign="top">static struct sigevent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#aa01c05838ff7a702f7509fe45e8a6c87">sev</a></td></tr>
-<tr class="separator:aa01c05838ff7a702f7509fe45e8a6c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05d8a8b45ca6ca0fc8586dc45e397eb6"><td class="memItemLeft" align="right" valign="top">static struct itimerspec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a></td></tr>
-<tr class="separator:a05d8a8b45ca6ca0fc8586dc45e397eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6ba857b6f43eb3998d15b78f505b312"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#ac6ba857b6f43eb3998d15b78f505b312">initialised</a> = false</td></tr>
-<tr class="separator:ac6ba857b6f43eb3998d15b78f505b312"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa17bc507bfb17a2978f80bf8228c5c7f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#aa17bc507bfb17a2978f80bf8228c5c7f">running</a> = false</td></tr>
-<tr class="separator:aa17bc507bfb17a2978f80bf8228c5c7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a261f867bce5dacd6697c2bb035ad72d2"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a261f867bce5dacd6697c2bb035ad72d2">steps</a></td></tr>
+<tr class="separator:a261f867bce5dacd6697c2bb035ad72d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc2046a28e4b318c3644aa2492cae56b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#afc2046a28e4b318c3644aa2492cae56b">deltaLog</a></td></tr>
+<tr class="separator:afc2046a28e4b318c3644aa2492cae56b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc05d7f3106d20f69c6ef6242c31a844"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#afc05d7f3106d20f69c6ef6242c31a844">name</a></td></tr>
+<tr class="separator:afc05d7f3106d20f69c6ef6242c31a844"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a153ada4196d884c2aa8b3188d2457db5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00035.html#a153ada4196d884c2aa8b3188d2457db5">enabled</a> = true</td></tr>
+<tr class="separator:a153ada4196d884c2aa8b3188d2457db5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Provides an interface to a timer which periodically sends SIGUSR1 signals. </p>
-<dl class="section note"><dt>Note</dt><dd>There can always be only one timer in place since it is regulated via static methods </dd></dl>
+<div class="textblock"><p>A base class to encapsulate parameters for performance tests. </p>
 
-<p>Definition at line <a class="el" href="a00066_source.html#l00035">35</a> of file <a class="el" href="a00066_source.html">timer.h</a>.</p>
+<p>Definition at line <a class="el" href="a00075_source.html#l00046">46</a> of file <a class="el" href="a00075_source.html">performanceTestClasses.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a2c383399b9ca73789a3bb5625632b9dd"></a>
+<a class="anchor" id="a1b0dcec6718d1f89841ac4f1fb2d4310"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -173,7 +165,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">rambrain::Timer::Timer </td>
+          <td class="memname">virtual testParameterBase::~testParameterBase </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -181,20 +173,19 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Create a new timer. </p>
-<dl class="section note"><dt>Note</dt><dd>Unused </dd></dl>
+<p>Cleanup. </p>
 
-<p>Definition at line <a class="el" href="a00065_source.html#l00032">32</a> of file <a class="el" href="a00065_source.html">timer.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00075_source.html#l00052">52</a> of file <a class="el" href="a00075_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ab9c2a3fb72f25c0ee936c4023cb55ffa"></a>
+<a class="anchor" id="a2514f1bc1f004ffd6d545c2044b26166"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -202,7 +193,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void rambrain::Timer::initialiseTimer </td>
+          <td class="memname">virtual string testParameterBase::valueAsString </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -210,18 +201,18 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Set up the timer. </p>
+<p>Cast the encapsulated parameter to a string and return it's mean value. </p>
 
-<p>Definition at line <a class="el" href="a00065_source.html#l00066">66</a> of file <a class="el" href="a00065_source.html">timer.cpp</a>.</p>
+<p>Implemented in <a class="el" href="a00034.html#ab52b58a5f2a820ecc0137ecd0da43053">testParameter&lt; T &gt;</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a4ad88b5e08c6ac3c4353ff96f9a00b17"></a>
+<a class="anchor" id="a31a6857782aa664cce378a6a87b67593"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -229,219 +220,100 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool rambrain::Timer::isRunning </td>
+          <td class="memname">virtual string testParameterBase::valueAsString </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>step</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Simple getter. </p>
-
-<p>Definition at line <a class="el" href="a00066_source.html#l00054">54</a> of file <a class="el" href="a00066_source.html">timer.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a2b4fa3e4a1e2ef1b1edeffa577717d5d"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rambrain::Timer::startTimer </td>
-          <td>(</td>
-          <td class="paramtype">long&#160;</td>
-          <td class="paramname"><em>seconds</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">long&#160;</td>
-          <td class="paramname"><em>nanoseconds</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Start the timer. </p>
+<p>Cast the encapsulated parameter to a string and return it's value at a certain step. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">seconds</td><td>How many seconds until it fires a signal </td></tr>
-    <tr><td class="paramname">nanoseconds</td><td>How many nanoseconds on top of the seconds until it fires </td></tr>
+    <tr><td class="paramname">step</td><td>The step to take </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>min + (max - min) * step </dd></dl>
 
-<p>Definition at line <a class="el" href="a00065_source.html#l00036">36</a> of file <a class="el" href="a00065_source.html">timer.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ad432a370227d8794c716e252d615c9d9"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rambrain::Timer::stopTimer </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Stop the timer. </p>
-
-<p>Definition at line <a class="el" href="a00065_source.html#l00056">56</a> of file <a class="el" href="a00065_source.html">timer.cpp</a>.</p>
+<p>Implemented in <a class="el" href="a00034.html#afb95c4c38bff20d5d7c629cfa8b13ed8">testParameter&lt; T &gt;</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="ac6ba857b6f43eb3998d15b78f505b312"></a>
+<a class="anchor" id="afc2046a28e4b318c3644aa2492cae56b"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool rambrain::Timer::initialised = false</td>
+          <td class="memname">bool testParameterBase::deltaLog</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00066_source.html#l00074">74</a> of file <a class="el" href="a00066_source.html">timer.h</a>.</p>
+<p>Definition at line <a class="el" href="a00075_source.html#l00066">66</a> of file <a class="el" href="a00075_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a05d8a8b45ca6ca0fc8586dc45e397eb6"></a>
+<a class="anchor" id="a153ada4196d884c2aa8b3188d2457db5"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">struct itimerspec rambrain::Timer::its</td>
+          <td class="memname">bool testParameterBase::enabled = true</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00066_source.html#l00072">72</a> of file <a class="el" href="a00066_source.html">timer.h</a>.</p>
+<p>Definition at line <a class="el" href="a00075_source.html#l00068">68</a> of file <a class="el" href="a00075_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aa17bc507bfb17a2978f80bf8228c5c7f"></a>
+<a class="anchor" id="afc05d7f3106d20f69c6ef6242c31a844"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool rambrain::Timer::running = false</td>
+          <td class="memname">string testParameterBase::name</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00066_source.html#l00074">74</a> of file <a class="el" href="a00066_source.html">timer.h</a>.</p>
+<p>Definition at line <a class="el" href="a00075_source.html#l00067">67</a> of file <a class="el" href="a00075_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aa01c05838ff7a702f7509fe45e8a6c87"></a>
+<a class="anchor" id="a261f867bce5dacd6697c2bb035ad72d2"></a>
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">struct sigevent rambrain::Timer::sev</td>
+          <td class="memname">unsigned int testParameterBase::steps</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00066_source.html#l00071">71</a> of file <a class="el" href="a00066_source.html">timer.h</a>.</p>
+<p>Definition at line <a class="el" href="a00075_source.html#l00065">65</a> of file <a class="el" href="a00075_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a59277ee2347b98ad2b255ee898079da7"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">timer_t rambrain::Timer::timerid</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00066_source.html#l00070">70</a> of file <a class="el" href="a00066_source.html">timer.h</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00066_source.html">timer.h</a></li>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00065_source.html">timer.cpp</a></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>/home/rambrainbuild/docubrain/tests/<a class="el" href="a00075_source.html">performanceTestClasses.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00093.html">rambrain</a></li><li class="navelem"><a class="el" href="a00035.html">Timer</a></li>
-    <li class="footer">Generated on Thu Nov 26 2015 01:43:12 for rambrain by
+    <li class="navelem"><a class="el" href="a00035.html">testParameterBase</a></li>
+    <li class="footer">Generated on Fri Nov 27 2015 01:43:04 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

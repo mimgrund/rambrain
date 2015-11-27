@@ -54,7 +54,7 @@ var a00018 =
     [ "configTestGetSwap", "a00018.html#afb585b10243d2574af17f1c6d1e7eec5", null ],
     [ "managedDummySwap", "a00018.html#afc2eae7d63704cb9c8f9efd2606dd258", null ],
     [ "managedFileSwap", "a00018.html#a7a57555464dec1f54ad14f68749ba2cd", null ],
-    [ "managedPtr", "a00018.html#a4db9f2403c3411068243fdf0798d43f5", null ],
+    [ "managedPtr", "a00018.html#a80de276325b497fd090c8e762067f267", null ],
     [ "managedSwap", "a00018.html#ad7a44371743b957ef559f0c1d92f0ed0", null ],
     [ "atime", "a00018.html#a9f965f10d2dc7301621fa2e5cf4805c8", null ],
     [ "memChunks", "a00018.html#aeabbc3b181a06ed716cea97b6c96a82f", null ],

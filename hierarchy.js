@@ -17,11 +17,11 @@ var hierarchy =
     [ "rambrain::cyclicAtime", "a00010.html", null ],
     [ "destructorTracker", "a00012.html", null ],
     [ "std::exception", null, [
-      [ "rambrain::rambrainException", "a00028.html", [
+      [ "rambrain::rambrainException", "a00029.html", [
         [ "rambrain::incompleteSetupException", "a00015.html", null ],
-        [ "rambrain::memoryException", "a00022.html", null ],
-        [ "rambrain::unexpectedStateException", "a00036.html", null ],
-        [ "rambrain::unfinishedCodeException", "a00037.html", null ]
+        [ "rambrain::memoryException", "a00023.html", null ],
+        [ "rambrain::unexpectedStateException", "a00037.html", null ],
+        [ "rambrain::unfinishedCodeException", "a00038.html", null ]
       ] ]
     ] ],
     [ "rambrain::glob_off_union", "a00014.html", null ],
@@ -30,24 +30,26 @@ var hierarchy =
       [ "rambrain::dummyManagedMemory", "a00013.html", null ]
     ] ],
     [ "rambrain::managedMemoryChunk", "a00019.html", null ],
+    [ "rambrain::managedPtr< T, dim >", "a00020.html", null ],
     [ "rambrain::managedPtr< T >", "a00020.html", null ],
-    [ "rambrain::managedSwap", "a00021.html", [
+    [ "rambrain::managedPtr< T, 1 >", "a00021.html", null ],
+    [ "rambrain::managedSwap", "a00022.html", [
       [ "rambrain::managedDummySwap", "a00016.html", null ],
       [ "rambrain::managedFileSwap", "a00017.html", null ]
     ] ],
-    [ "rambrain::pageFileLocation", "a00023.html", null ],
-    [ "performanceTest< U >", "a00024.html", null ],
-    [ "performanceTest< U...>", "a00024.html", [
-      [ "performanceTest< T, U...>", "a00025.html", null ]
+    [ "rambrain::pageFileLocation", "a00024.html", null ],
+    [ "performanceTest< U >", "a00025.html", null ],
+    [ "performanceTest< U...>", "a00025.html", [
+      [ "performanceTest< T, U...>", "a00026.html", null ]
     ] ],
-    [ "performanceTest<>", "a00026.html", null ],
-    [ "rambrain::rambrainglobals::rambrainConfig", "a00027.html", null ],
-    [ "rambrain::rambrainGlobalCriticalSectionControl", "a00029.html", null ],
-    [ "rambrain::regexMatcher", "a00030.html", null ],
-    [ "rambrain::swapFileDesc", "a00031.html", null ],
-    [ "tester", "a00032.html", null ],
-    [ "testParameterBase", "a00034.html", [
-      [ "testParameter< T >", "a00033.html", null ]
+    [ "performanceTest<>", "a00027.html", null ],
+    [ "rambrain::rambrainglobals::rambrainConfig", "a00028.html", null ],
+    [ "rambrain::rambrainGlobalCriticalSectionControl", "a00030.html", null ],
+    [ "rambrain::regexMatcher", "a00031.html", null ],
+    [ "rambrain::swapFileDesc", "a00032.html", null ],
+    [ "tester", "a00033.html", null ],
+    [ "testParameterBase", "a00035.html", [
+      [ "testParameter< T >", "a00034.html", null ]
     ] ],
-    [ "rambrain::Timer", "a00035.html", null ]
+    [ "rambrain::Timer", "a00036.html", null ]
 ];

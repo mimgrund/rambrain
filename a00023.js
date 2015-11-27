@@ -1,11 +1,7 @@
 var a00023 =
 [
-    [ "pageFileLocation", "a00023.html#a63f9ce789a7c5f351afed6acae0966ec", null ],
-    [ "aio_lock", "a00023.html#af2479051e8d3d5ac26d19cfa61d7464a", null ],
-    [ "aio_ptr", "a00023.html#a1668a96c70519ab0ddd253d1f6d54133", null ],
-    [ "file", "a00023.html#abb10204e66ac58e8db03950ec7fd8a5d", null ],
-    [ "glob_off_next", "a00023.html#ae2195a06f5ff2491c0157ec663ac1243", null ],
-    [ "offset", "a00023.html#a948cc9d04ac586651eaca32bfa59f11a", null ],
-    [ "size", "a00023.html#a64f7a832b3d8132ed453fc59c0be6dca", null ],
-    [ "status", "a00023.html#a50f7d10a154969575897e87ae3ed539f", null ]
+    [ "memoryException", "a00023.html#ab95d58d39319d495e6eaf2200ee58e60", null ],
+    [ "~memoryException", "a00023.html#a4b7c072943dfc4739f96ccbd6de78a70", null ],
+    [ "what", "a00023.html#af55ac69654f5294cbec693b9d4e2b5be", null ],
+    [ "details", "a00023.html#a6f8196d1429a6bc768600e378984ed0f", null ]
 ];

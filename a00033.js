@@ -1,11 +1,23 @@
 var a00033 =
 [
-    [ "~testParameter", "a00033.html#af0c5f6ffc72748d4e85ff709f4edab62", null ],
-    [ "toString", "a00033.html#ac4a4584e5b0658d84e209a20160c82cb", null ],
-    [ "valueAsString", "a00033.html#ab52b58a5f2a820ecc0137ecd0da43053", null ],
-    [ "valueAsString", "a00033.html#afb95c4c38bff20d5d7c629cfa8b13ed8", null ],
-    [ "valueAtStep", "a00033.html#aa253722487cce7de5e4c40a2f4c7c3a9", null ],
-    [ "max", "a00033.html#ab9b7a26b9cfd7679c39c56b107d66a3a", null ],
-    [ "mean", "a00033.html#a32240ebb4edba8ac0bf8601a376c38b1", null ],
-    [ "min", "a00033.html#ad9c145df95de9bbffba57074034c2d91", null ]
+    [ "tester", "a00033.html#a6cc05095bf2aa614542fb0f533d474e2", null ],
+    [ "~tester", "a00033.html#ab79e99149907bf96d75d929f1dc49410", null ],
+    [ "addComment", "a00033.html#aa6c57421952ed233d62f46c7c3363dd6", null ],
+    [ "addExternalTime", "a00033.html#a67a7cd03f1356bb3e5c1cef32fded3e4", null ],
+    [ "addParameter", "a00033.html#a1a61f18468c143dbd7c18c599fc1b695", null ],
+    [ "addTimeMeasurement", "a00033.html#a01d742f1f0fe5d55766cb3c256b999d7", null ],
+    [ "getDurationsForCurrentCycle", "a00033.html#ab1b14519c719b0f70b204ecbd5468ff4", null ],
+    [ "random", "a00033.html#a3abaa7021bf1e7c8181d98e6dc78ae40", null ],
+    [ "random", "a00033.html#a6a5d94f44bdd173c8dc11bbabadb441d", null ],
+    [ "random", "a00033.html#aa852d2f21dc44ad214047a37ca9b9d06", null ],
+    [ "setSeed", "a00033.html#a902049984a5425407a2a8aafffec0669", null ],
+    [ "startNewRNGCycle", "a00033.html#ad6e6c8cec7d43a252009f13a9b0ee601", null ],
+    [ "startNewTimeCycle", "a00033.html#a3427b96d1b0517d8b71b2c89c26943ea", null ],
+    [ "writeToFile", "a00033.html#a76875804de961f7d87b9de2ebee1957c", null ],
+    [ "comment", "a00033.html#afe62e0886e6b23252681d9ec14f87855", null ],
+    [ "name", "a00033.html#a928dadceb4d75dc7cf3bb216874dcc6b", null ],
+    [ "parameters", "a00033.html#a0cc29d4b76a800395dc61c96f7a03554", null ],
+    [ "seeded", "a00033.html#a3901e2e2875b3eb883413713f0451c2a", null ],
+    [ "seeds", "a00033.html#a073c37859297abdc2cba42fd06232e9d", null ],
+    [ "timeMeasures", "a00033.html#a91d92ce07c979f993af063c372351b36", null ]
 ];

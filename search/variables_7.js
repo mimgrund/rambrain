@@ -1,8 +1,8 @@
 var searchData=
 [
   ['id',['id',['../a00004.html#a473110ed48fc143d8e51174e2d727530',1,'rambrain::backlog_value::id()'],['../a00019.html#a969f806af9b4f51d947bfd57fe484a4a',1,'rambrain::managedMemoryChunk::id()']]],
-  ['ignore_5ftest_5fwarnings',['IGNORE_TEST_WARNINGS',['../a00077.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testAdhereTo.cpp'],['../a00087.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testManagedFileSwap.cpp'],['../a00089.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testManagedPtr.cpp']]],
-  ['initialised',['initialised',['../a00035.html#ac6ba857b6f43eb3998d15b78f505b312',1,'rambrain::Timer']]],
+  ['ignore_5ftest_5fwarnings',['IGNORE_TEST_WARNINGS',['../a00079.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testAdhereTo.cpp'],['../a00089.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testManagedFileSwap.cpp'],['../a00091.html#a01fd81f2b165cd8ece606bb0e29b2b33',1,'IGNORE_TEST_WARNINGS():&#160;testManagedPtr.cpp']]],
+  ['initialised',['initialised',['../a00036.html#ac6ba857b6f43eb3998d15b78f505b312',1,'rambrain::Timer']]],
   ['instance',['instance',['../a00017.html#a0da0fb0093407ecf03b65557ffa357a5',1,'rambrain::managedFileSwap']]],
   ['invalid',['invalid',['../a00018.html#a708e2307727c5a2d710b3c15dfcc6978',1,'rambrain::managedMemory']]],
   ['io_5farrive_5fthread',['io_arrive_thread',['../a00017.html#ad941a30d5fb218773e0628d7c979d205',1,'rambrain::managedFileSwap']]],
@@ -13,5 +13,5 @@ var searchData=
   ['io_5fsubmit_5frequests',['io_submit_requests',['../a00017.html#a77c1eade5fbadda53dcfacbfc15649f4',1,'rambrain::managedFileSwap']]],
   ['io_5fsubmit_5fthreads',['io_submit_threads',['../a00017.html#aa8eb418fb8ac7b15d82223fd3fd173ad',1,'rambrain::managedFileSwap']]],
   ['io_5fwaiter_5fthread',['io_waiter_thread',['../a00017.html#a45976e4d4e2be6f5e83ba0add4e88ef7',1,'rambrain::managedFileSwap']]],
-  ['its',['its',['../a00035.html#a05d8a8b45ca6ca0fc8586dc45e397eb6',1,'rambrain::Timer']]]
+  ['its',['its',['../a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6',1,'rambrain::Timer']]]
 ];

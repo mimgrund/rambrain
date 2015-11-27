@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: rambrain::swapFileDesc Struct Reference</title>
+<title>rambrain: rambrain::regexMatcher Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,68 +107,380 @@ $(document).ready(function(){initNavTree('a00031.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="a00132.html">List of all members</a>  </div>
+<a href="#pub-types">Public Types</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="a00134.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">rambrain::swapFileDesc Struct Reference</div>  </div>
+<div class="title">rambrain::regexMatcher Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>structure to handle swap files  
+<p>Class to handle regex matching used for parsing configuration files.  
  <a href="a00031.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00051_source.html">managedFileSwap.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00066_source.html">regexmatcher.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:ad1e2f059bfcb37b60e2f0aea45d7b6a3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#ad1e2f059bfcb37b60e2f0aea45d7b6a3">fileno</a></td></tr>
-<tr class="separator:ad1e2f059bfcb37b60e2f0aea45d7b6a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38f03520f7cfe57187d74667dd9ed768"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a38f03520f7cfe57187d74667dd9ed768">currentSize</a></td></tr>
-<tr class="separator:a38f03520f7cfe57187d74667dd9ed768"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:acf6754e0f0df10007f5494899ed31229"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229">matchType</a> { <br />
+&#160;&#160;<a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229afa1a394563a55a77a4ac5b8541014aae">integer</a> = 1 &lt;&lt; 0, 
+<a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229a4afe10bda6318109694a35c63aff6548">floating</a> = 1 &lt;&lt; 1, 
+<a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229a2b6e9b3cb4427fe84fcf45206b171541">units</a> = 1 &lt;&lt; 2, 
+<a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2">text</a> = 1 &lt;&lt; 3, 
+<br />
+&#160;&#160;<a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418">alphanumtext</a> = 1 &lt;&lt; 4, 
+<a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137">boolean</a> = 1 &lt;&lt; 5, 
+<a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74">swapfilename</a> = 1 &lt;&lt; 6
+<br />
+ }</td></tr>
+<tr class="memdesc:acf6754e0f0df10007f5494899ed31229"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum to caracterise what shall be matched in a specific case; flaggy.  <a href="a00031.html#acf6754e0f0df10007f5494899ed31229">More...</a><br /></td></tr>
+<tr class="separator:acf6754e0f0df10007f5494899ed31229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a85bbcde8ed2102552f5aa6fc521594da"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a85bbcde8ed2102552f5aa6fc521594da">regexMatcher</a> ()</td></tr>
+<tr class="memdesc:a85bbcde8ed2102552f5aa6fc521594da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new regex handler, basically a dummy.  <a href="#a85bbcde8ed2102552f5aa6fc521594da">More...</a><br /></td></tr>
+<tr class="separator:a85bbcde8ed2102552f5aa6fc521594da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a952ca26ade04a532e24f85dbb2c748e4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a952ca26ade04a532e24f85dbb2c748e4">matchConfigBlock</a> (const string &amp;str, const string &amp;blockname=&quot;default&quot;) const </td></tr>
+<tr class="memdesc:a952ca26ade04a532e24f85dbb2c748e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a string matches the header of a configuration block.  <a href="#a952ca26ade04a532e24f85dbb2c748e4">More...</a><br /></td></tr>
+<tr class="separator:a952ca26ade04a532e24f85dbb2c748e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c3ce2c7a2beff16c71fbf5c33396356"><td class="memItemLeft" align="right" valign="top">pair&lt; string, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a4c3ce2c7a2beff16c71fbf5c33396356">matchKeyEqualsValue</a> (const string &amp;str, int valueType=<a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418">alphanumtext</a>) const </td></tr>
+<tr class="memdesc:a4c3ce2c7a2beff16c71fbf5c33396356"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a string matches something like key = value.  <a href="#a4c3ce2c7a2beff16c71fbf5c33396356">More...</a><br /></td></tr>
+<tr class="separator:a4c3ce2c7a2beff16c71fbf5c33396356"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7fa4bee7ced8140de8cea27640cfc09"><td class="memItemLeft" align="right" valign="top">pair&lt; string, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#ac7fa4bee7ced8140de8cea27640cfc09">matchKeyEqualsValue</a> (const string &amp;str, const string &amp;key, int valueType=<a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418">alphanumtext</a>) const </td></tr>
+<tr class="memdesc:ac7fa4bee7ced8140de8cea27640cfc09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a string matches something like key = value.  <a href="#ac7fa4bee7ced8140de8cea27640cfc09">More...</a><br /></td></tr>
+<tr class="separator:ac7fa4bee7ced8140de8cea27640cfc09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addb28ec0da837148b315a76d3e86d3dc"><td class="memItemLeft" align="right" valign="top">pair&lt; double, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#addb28ec0da837148b315a76d3e86d3dc">splitDoubleValueUnit</a> (const string &amp;str) const </td></tr>
+<tr class="memdesc:addb28ec0da837148b315a76d3e86d3dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split a string containing value and possibly unit into both parts.  <a href="#addb28ec0da837148b315a76d3e86d3dc">More...</a><br /></td></tr>
+<tr class="separator:addb28ec0da837148b315a76d3e86d3dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05b70b65e3965866b3d9dfbdcacad5d6"><td class="memItemLeft" align="right" valign="top">pair&lt; long long int, string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a05b70b65e3965866b3d9dfbdcacad5d6">splitIntegerValueUnit</a> (const string &amp;str) const </td></tr>
+<tr class="memdesc:a05b70b65e3965866b3d9dfbdcacad5d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split a string containing value and possibly unit into both parts.  <a href="#a05b70b65e3965866b3d9dfbdcacad5d6">More...</a><br /></td></tr>
+<tr class="separator:a05b70b65e3965866b3d9dfbdcacad5d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fe1eeb1a8a33964f7211daeeaf12891"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a2fe1eeb1a8a33964f7211daeeaf12891">substituteHomeDir</a> (const string &amp;source, const string &amp;homedir) const </td></tr>
+<tr class="memdesc:a2fe1eeb1a8a33964f7211daeeaf12891"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace all occurences of a ~ by the absolute home directory.  <a href="#a2fe1eeb1a8a33964f7211daeeaf12891">More...</a><br /></td></tr>
+<tr class="separator:a2fe1eeb1a8a33964f7211daeeaf12891"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a9c7cf7261cd1af242d3792cb622f34e4"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00031.html#a9c7cf7261cd1af242d3792cb622f34e4">createRegexMatching</a> (int type) const </td></tr>
+<tr class="memdesc:a9c7cf7261cd1af242d3792cb622f34e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a matching regex for a certain type.  <a href="#a9c7cf7261cd1af242d3792cb622f34e4">More...</a><br /></td></tr>
+<tr class="separator:a9c7cf7261cd1af242d3792cb622f34e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>structure to handle swap files </p>
+<div class="textblock"><p>Class to handle regex matching used for parsing configuration files. </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00057">57</a> of file <a class="el" href="a00051_source.html">managedFileSwap.h</a>.</p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a38f03520f7cfe57187d74667dd9ed768"></a>
+<p>Definition at line <a class="el" href="a00066_source.html#l00035">35</a> of file <a class="el" href="a00066_source.html">regexmatcher.h</a>.</p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a class="anchor" id="acf6754e0f0df10007f5494899ed31229"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00093.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> rambrain::swapFileDesc::currentSize</td>
+          <td class="memname">enum <a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229">rambrain::regexMatcher::matchType</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00059">59</a> of file <a class="el" href="a00051_source.html">managedFileSwap.h</a>.</p>
+<p>An enum to caracterise what shall be matched in a specific case; flaggy. </p>
+<dl class="section warning"><dt>Warning</dt><dd>Negative integers currently not supported! </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="acf6754e0f0df10007f5494899ed31229afa1a394563a55a77a4ac5b8541014aae"></a>integer&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="acf6754e0f0df10007f5494899ed31229a4afe10bda6318109694a35c63aff6548"></a>floating&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="acf6754e0f0df10007f5494899ed31229a2b6e9b3cb4427fe84fcf45206b171541"></a>units&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2"></a>text&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418"></a>alphanumtext&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137"></a>boolean&#160;</td><td class="fielddoc">
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74"></a>swapfilename&#160;</td><td class="fielddoc">
+</td></tr>
+</table>
+
+<p>Definition at line <a class="el" href="a00066_source.html#l00044">44</a> of file <a class="el" href="a00066_source.html">regexmatcher.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ad1e2f059bfcb37b60e2f0aea45d7b6a3"></a>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a85bbcde8ed2102552f5aa6fc521594da"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int rambrain::swapFileDesc::fileno</td>
+          <td class="memname">rambrain::regexMatcher::regexMatcher </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00058">58</a> of file <a class="el" href="a00051_source.html">managedFileSwap.h</a>.</p>
+<p>Create a new regex handler, basically a dummy. </p>
+
+<p>Definition at line <a class="el" href="a00065_source.html#l00040">40</a> of file <a class="el" href="a00065_source.html">regexmatcher.cpp</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00051_source.html">managedFileSwap.h</a></li>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a9c7cf7261cd1af242d3792cb622f34e4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string rambrain::regexMatcher::createRegexMatching </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a matching regex for a certain type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The partial regex to match the type </dd></dl>
+
+<p>Definition at line <a class="el" href="a00065_source.html#l00069">69</a> of file <a class="el" href="a00065_source.html">regexmatcher.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a952ca26ade04a532e24f85dbb2c748e4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::regexMatcher::matchConfigBlock </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>blockname</em> = <code>&quot;default&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if a string matches the header of a configuration block. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>The source string </td></tr>
+    <tr><td class="paramname">blockname</td><td>The config block name to check for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of matching </dd></dl>
+
+<p>Definition at line <a class="el" href="a00065_source.html#l00044">44</a> of file <a class="el" href="a00065_source.html">regexmatcher.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4c3ce2c7a2beff16c71fbf5c33396356"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pair&lt;string, string&gt; rambrain::regexMatcher::matchKeyEqualsValue </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>valueType</em> = <code><a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418">alphanumtext</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if a string matches something like key = value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>The source string </td></tr>
+    <tr><td class="paramname">valueType</td><td>Which matchType the value should be, does not match otherwise </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result key and value </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac7fa4bee7ced8140de8cea27640cfc09"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pair&lt;string, string&gt; rambrain::regexMatcher::matchKeyEqualsValue </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>valueType</em> = <code><a class="el" href="a00031.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418">alphanumtext</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if a string matches something like key = value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>The source string </td></tr>
+    <tr><td class="paramname">key</td><td>Which key to match </td></tr>
+    <tr><td class="paramname">valueType</td><td>Which matchType the value should be, does not match otherwise </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result key and value </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="addb28ec0da837148b315a76d3e86d3dc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pair&lt; double, string &gt; rambrain::regexMatcher::splitDoubleValueUnit </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Split a string containing value and possibly unit into both parts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>The string containing double and unit </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Value and unit </dd></dl>
+
+<p>Definition at line <a class="el" href="a00065_source.html#l00106">106</a> of file <a class="el" href="a00065_source.html">regexmatcher.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a05b70b65e3965866b3d9dfbdcacad5d6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pair&lt; long long, string &gt; rambrain::regexMatcher::splitIntegerValueUnit </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Split a string containing value and possibly unit into both parts. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>The string containing integer and unit </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Value and unit </dd></dl>
+
+<p>Definition at line <a class="el" href="a00065_source.html#l00122">122</a> of file <a class="el" href="a00065_source.html">regexmatcher.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a2fe1eeb1a8a33964f7211daeeaf12891"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string rambrain::regexMatcher::substituteHomeDir </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>homedir</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Replace all occurences of a ~ by the absolute home directory. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>The input string </td></tr>
+    <tr><td class="paramname">homedir</td><td>The home directory </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new string </dd></dl>
+
+<p>Definition at line <a class="el" href="a00065_source.html#l00138">138</a> of file <a class="el" href="a00065_source.html">regexmatcher.cpp</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00066_source.html">regexmatcher.h</a></li>
+<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00065_source.html">regexmatcher.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00093.html">rambrain</a></li><li class="navelem"><a class="el" href="a00031.html">swapFileDesc</a></li>
-    <li class="footer">Generated on Thu Nov 26 2015 01:43:12 for rambrain by
+    <li class="navelem"><a class="el" href="a00095.html">rambrain</a></li><li class="navelem"><a class="el" href="a00031.html">regexMatcher</a></li>
+    <li class="footer">Generated on Fri Nov 27 2015 01:43:07 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

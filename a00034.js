@@ -1,10 +1,11 @@
 var a00034 =
 [
-    [ "~testParameterBase", "a00034.html#a1b0dcec6718d1f89841ac4f1fb2d4310", null ],
-    [ "valueAsString", "a00034.html#a2514f1bc1f004ffd6d545c2044b26166", null ],
-    [ "valueAsString", "a00034.html#a31a6857782aa664cce378a6a87b67593", null ],
-    [ "deltaLog", "a00034.html#afc2046a28e4b318c3644aa2492cae56b", null ],
-    [ "enabled", "a00034.html#a153ada4196d884c2aa8b3188d2457db5", null ],
-    [ "name", "a00034.html#afc05d7f3106d20f69c6ef6242c31a844", null ],
-    [ "steps", "a00034.html#a261f867bce5dacd6697c2bb035ad72d2", null ]
+    [ "~testParameter", "a00034.html#af0c5f6ffc72748d4e85ff709f4edab62", null ],
+    [ "toString", "a00034.html#ac4a4584e5b0658d84e209a20160c82cb", null ],
+    [ "valueAsString", "a00034.html#ab52b58a5f2a820ecc0137ecd0da43053", null ],
+    [ "valueAsString", "a00034.html#afb95c4c38bff20d5d7c629cfa8b13ed8", null ],
+    [ "valueAtStep", "a00034.html#aa253722487cce7de5e4c40a2f4c7c3a9", null ],
+    [ "max", "a00034.html#ab9b7a26b9cfd7679c39c56b107d66a3a", null ],
+    [ "mean", "a00034.html#a32240ebb4edba8ac0bf8601a376c38b1", null ],
+    [ "min", "a00034.html#ad9c145df95de9bbffba57074034c2d91", null ]
 ];

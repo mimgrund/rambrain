@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: /home/rambrainbuild/docubrain/tests/testConfigLine.cpp File Reference</title>
+<title>rambrain: /home/rambrainbuild/docubrain/tests/performanceTestsWrapper.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('a00078.html','');});
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">testConfigLine.cpp File Reference</div>  </div>
+<div class="title">performanceTestsWrapper.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -115,27 +115,26 @@ $(document).ready(function(){initNavTree('a00078.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6847c350faa701a37d439ec277e1c08e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.html#a6847c350faa701a37d439ec277e1c08e">TEST</a> (<a class="el" href="a00006.html">configLine</a>, Unit_SetValue)</td></tr>
-<tr class="separator:a6847c350faa701a37d439ec277e1c08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3fa8757f098717986ea32d04cebceec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.html#ac3fa8757f098717986ea32d04cebceec">TEST</a> (<a class="el" href="a00006.html">configLine</a>, Unit_SetValueMissingUnit)</td></tr>
-<tr class="separator:ac3fa8757f098717986ea32d04cebceec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00078.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
+<tr class="memdesc:a3c04138a5bfe5d72780bb7e82a18e627"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provides a wrapper binary to run performance tests and scan through respective parameter spaces.  <a href="#a3c04138a5bfe5d72780bb7e82a18e627">More...</a><br /></td></tr>
+<tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a6847c350faa701a37d439ec277e1c08e"></a>
+<a class="anchor" id="a3c04138a5bfe5d72780bb7e82a18e627"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">TEST </td>
+          <td class="memname">int main </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="a00006.html">configLine</a>&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Unit_SetValue&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>argv</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -144,38 +143,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="a00096.html#_test000008">Test:</a></b></dt><dd>Checks if values with units for byte sizes can be set properly </dd></dl>
 
-<p>Definition at line <a class="el" href="a00078_source.html#l00029">29</a> of file <a class="el" href="a00078_source.html">testConfigLine.cpp</a>.</p>
+<p>Provides a wrapper binary to run performance tests and scan through respective parameter spaces. </p>
+<p>Usage:</p><ul>
+<li>Zero parameters: Execute all test classes, varry all parameters</li>
+<li>One parameter: Overwrite amount of repetitions or "help" / "list" just to list the available tests and the current config</li>
+<li>More parameters: Overwrite amount of repetitions eventually followed by true or false for displaying plots followed by a + or - sign and the list of test classes to be run or to leave out. </li>
+</ul>
 
-</div>
-</div>
-<a class="anchor" id="ac3fa8757f098717986ea32d04cebceec"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">TEST </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00006.html">configLine</a>&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Unit_SetValueMissingUnit&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="test"><dt><b><a class="el" href="a00096.html#_test000009">Test:</a></b></dt><dd>Checks if values without units can be set when units are expected </dd></dl>
-
-<p>Definition at line <a class="el" href="a00078_source.html#l00050">50</a> of file <a class="el" href="a00078_source.html">testConfigLine.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00078_source.html#l00037">37</a> of file <a class="el" href="a00078_source.html">performanceTestsWrapper.cpp</a>.</p>
 
 </div>
 </div>
@@ -184,8 +160,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00078.html">testConfigLine.cpp</a></li>
-    <li class="footer">Generated on Thu Nov 26 2015 01:43:07 for rambrain by
+    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00078.html">performanceTestsWrapper.cpp</a></li>
+    <li class="footer">Generated on Fri Nov 27 2015 01:43:03 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

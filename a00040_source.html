@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>rambrain: /home/rambrainbuild/docubrain/src/configreader.h Source File</title>
+<title>rambrain: /home/rambrainbuild/docubrain/src/configreader.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('a00040_source.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">configreader.h</div>  </div>
+<div class="title">configreader.cpp</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00040.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*   rambrain - a dynamical physical memory extender</span></div>
@@ -127,186 +127,354 @@ $(document).ready(function(){initNavTree('a00040_source.html','');});
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> *   along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef CONFIGREADER_H</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define CONFIGREADER_H</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;istream&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00038.html">common.h</a>&quot;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00064.html">regexmatcher.h</a>&quot;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00041.html">configreader.h</a>&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;sys/types.h&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;pwd.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;sys/statvfs.h&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;algorithm&gt;</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">using namespace </span><a class="code" href="a00095.html">std</a>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">//Test classes</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#ifdef BUILD_TESTS</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span>configReader_Unit_ParseProgramName_Test;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00093.html">rambrain</a></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00093.html#a7d53dd1748d5012cafa91aa982c7cd35">   47</a></span>&#160;<span class="keyword">enum class</span> <a class="code" href="a00093.html#a7d53dd1748d5012cafa91aa982c7cd35">swapPolicy</a> {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="a00093.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149">fixed</a>,</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="a00093.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04">autoextendable</a>,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="a00093.html#a7d53dd1748d5012cafa91aa982c7cd35afe88c03a1958b4259f0c51d68eed3213">interactive</a></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;};</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00095.html">rambrain</a></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00006.html#a33ae5450d4e7cfa932a39877396db6a4">   35</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00006.html#a8e8a478e0ac8347db173dc73761cb099">configLine&lt;global_bytesize&gt;::setValue</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str )</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordflow">if</span> ( matchType &amp; regexMatcher::units ) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <a class="code" href="a00031.html">regexMatcher</a> regex;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordtype">long</span> <span class="keywordtype">long</span> intval = 0LL;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">double</span> dblval = 0.0;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keywordtype">string</span> unit;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <span class="keywordflow">if</span> ( matchType &amp; regexMatcher::floating ) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keyword">auto</span> splitted = regex.<a class="code" href="a00031.html#addb28ec0da837148b315a76d3e86d3dc">splitDoubleValueUnit</a> ( str );</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            dblval = splitted.first;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            unit = splitted.second;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keyword">auto</span> splitted = regex.<a class="code" href="a00031.html#a05b70b65e3965866b3d9dfbdcacad5d6">splitIntegerValueUnit</a> ( str );</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            intval = splitted.first;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            unit = splitted.second;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        }</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="a00007.html">   57</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00007.html">configLineBase</a></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;{</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="a00007.html#a1bb597262fec80005a8e2152100a02e4">   66</a></span>&#160;    <a class="code" href="a00007.html#a1bb597262fec80005a8e2152100a02e4">configLineBase</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;name, <span class="keyword">const</span> <span class="keywordtype">int</span> matchType ) : name ( name ), matchType ( matchType ) {}</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="a00007.html#aa8ba56751a3967ffda56cef490012d0e">   70</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="a00007.html#aa8ba56751a3967ffda56cef490012d0e">~configLineBase</a>() {}</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> setValue ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str ) = 0;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">   77</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">string</span> <a class="code" href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">name</a>;</div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="a00007.html#a41ed3e2e03f420e02d4397093f26f4f0">   78</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> <a class="code" href="a00007.html#a41ed3e2e03f420e02d4397093f26f4f0">matchType</a>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="a00006.html">   87</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00006.html">configLine</a> : <span class="keyword">public</span> <a class="code" href="a00007.html">configLineBase</a></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;{</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="a00006.html#ad4a5615f6975a6878b10d3844e4482ba">   96</a></span>&#160;    <a class="code" href="a00006.html#ad4a5615f6975a6878b10d3844e4482ba">configLine</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;name, <span class="keyword">const</span> T &amp;value, <span class="keyword">const</span> <span class="keywordtype">int</span> matchType ) : <a class="code" href="a00007.html">configLineBase</a> ( name, matchType ), value ( value ) {}</div>
-<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="a00006.html#a9d2572a02eb2d314c983c664ffa4ee43">  100</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="a00006.html#a9d2572a02eb2d314c983c664ffa4ee43">~configLine</a>() {}</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="a00006.html#a8e8a478e0ac8347db173dc73761cb099">  106</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="a00006.html#a8e8a478e0ac8347db173dc73761cb099">setValue</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str ) {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        value = str;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">if</span> ( unit == <span class="stringliteral">&quot;b&quot;</span> || unit == <span class="stringliteral">&quot;B&quot;</span> ) {</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            value = 1uLL;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( unit == <span class="stringliteral">&quot;kb&quot;</span> || unit == <span class="stringliteral">&quot;kB&quot;</span> || unit == <span class="stringliteral">&quot;Kb&quot;</span> || unit == <span class="stringliteral">&quot;KB&quot;</span> ) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            value = <a class="code" href="a00095.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">kib</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( unit == <span class="stringliteral">&quot;mb&quot;</span> || unit == <span class="stringliteral">&quot;Mb&quot;</span> || unit == <span class="stringliteral">&quot;MB&quot;</span> ) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            value = <a class="code" href="a00095.html#a8526efa365cdb0cb597351c2671af168">mib</a>;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( unit == <span class="stringliteral">&quot;gb&quot;</span> || unit == <span class="stringliteral">&quot;Gb&quot;</span> || unit == <span class="stringliteral">&quot;GB&quot;</span> ) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            value = <a class="code" href="a00095.html#a8525b8b73c3e1ec62bd571b3cffd1742">gig</a>;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            value = 1uLL;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        value *= ( ( matchType &amp; regexMatcher::floating ) ? dblval : intval );</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        value = atoll ( str.c_str() );</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="a00006.html#a221ff4b74a3bddededc81ae5c4e65ff4">   73</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00006.html">configLine&lt;bool&gt;::setValue</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str )</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;{</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    value = ! ( str == <span class="stringliteral">&quot;false&quot;</span> || str == <span class="stringliteral">&quot;False&quot;</span> || str == <span class="stringliteral">&quot;FALSE&quot;</span> || str == <span class="stringliteral">&quot;0&quot;</span> );</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="a00006.html#ab3267f33a924117788c5c85b45394dfd">   79</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00006.html">configLine&lt;swapPolicy&gt;::setValue</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str )</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;{</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">if</span> ( str == <span class="stringliteral">&quot;fixed&quot;</span> ) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        value = swapPolicy::fixed;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( str == <span class="stringliteral">&quot;autoextendable&quot;</span> ) {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        value = swapPolicy::autoextendable;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( str == <span class="stringliteral">&quot;interactive&quot;</span> ) {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        value = swapPolicy::interactive;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        value = swapPolicy::autoextendable;</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="a00009.html#a8ced069c9a706faa0db7e14e6ba4ca52">   92</a></span>&#160;configuration::configuration() : memoryManager ( <span class="stringliteral">&quot;memoryManager&quot;</span>, <span class="stringliteral">&quot;cyclicManagedMemory&quot;</span>, <a class="code" href="a00031.html">regexMatcher</a>::text ),</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    swap ( <span class="stringliteral">&quot;swap&quot;</span>, <span class="stringliteral">&quot;managedFileSwap&quot;</span>, <a class="code" href="a00031.html">regexMatcher</a>::text ),</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    swapfiles ( <span class="stringliteral">&quot;swapfiles&quot;</span>, <span class="stringliteral">&quot;rambrainswap-%d-%d&quot;</span>, <a class="code" href="a00031.html">regexMatcher</a>::swapfilename ),</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    memory ( <span class="stringliteral">&quot;memory&quot;</span>, 0, <a class="code" href="a00031.html">regexMatcher</a>::floating | <a class="code" href="a00031.html">regexMatcher</a>::units ),</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    swapMemory ( <span class="stringliteral">&quot;swapMemory&quot;</span>, 0, <a class="code" href="a00031.html">regexMatcher</a>::floating | <a class="code" href="a00031.html">regexMatcher</a>::units ),</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    enableDMA ( <span class="stringliteral">&quot;enableDMA&quot;</span>, false, <a class="code" href="a00031.html">regexMatcher</a>::integer | <a class="code" href="a00031.html">regexMatcher</a>::boolean ),</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    policy ( <span class="stringliteral">&quot;policy&quot;</span>, <a class="code" href="a00095.html#a7d53dd1748d5012cafa91aa982c7cd35">swapPolicy</a>::<a class="code" href="a00095.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04">autoextendable</a>, <a class="code" href="a00031.html">regexMatcher</a>::text )</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;{</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="comment">// Fill configOptions</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.push_back ( &amp;<a class="code" href="a00009.html#ae86fcffce8339717271022be71e95815">memoryManager</a> );</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.push_back ( &amp;<a class="code" href="a00009.html#a3ab38df7f6bf215f8101f4f914f67b14">swap</a> );</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.push_back ( &amp;<a class="code" href="a00009.html#a9d5a43a22122e628b749c18b48cedfc4">swapfiles</a> );</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    <a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.push_back ( &amp;<a class="code" href="a00009.html#aaa2458f8b0518cd8ecfbf0647f63d28d">memory</a> );</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.push_back ( &amp;<a class="code" href="a00009.html#a0d87d5533a56ffe09fcd095918df3795">swapMemory</a> );</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.push_back ( &amp;<a class="code" href="a00009.html#a549b17d67bef794af32a9ca86eedbdd5">enableDMA</a> );</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.push_back ( &amp;<a class="code" href="a00009.html#a44d5658ac2cbed42f40703780b8483bb">policy</a> );</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="a00006.html#a7b2624523c8c1954651a40886ec989f6">  110</a></span>&#160;    T <a class="code" href="a00006.html#a7b2624523c8c1954651a40886ec989f6">value</a>;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;};</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00006.html">configLine&lt;global_bytesize&gt;::setValue</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str );</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="comment">// Get free main memory</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    ifstream meminfo ( <span class="stringliteral">&quot;/proc/meminfo&quot;</span>, ifstream::in );</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordtype">char</span> line[1024];</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> c = 0; c &lt; 3; ++c ) {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        meminfo.getline ( line, 1024 );</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    }</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00006.html">configLine&lt;bool&gt;::setValue</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str );</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00006.html">configLine&lt;swapPolicy&gt;::setValue</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str );</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
-<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="a00009.html">  131</a></span>&#160;<span class="keyword">struct </span><a class="code" href="a00009.html">configuration</a> {</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="a00009.html">configuration</a>();</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <a class="code" href="a00095.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> bytes_avail;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordtype">char</span> *begin = NULL, *end = NULL;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordtype">char</span> *pos = line;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordflow">while</span> ( !end ) {</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        <span class="keywordflow">if</span> ( *pos &lt;= &#39;9&#39; &amp;&amp; *pos &gt;= <span class="charliteral">&#39;0&#39;</span> ) {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;            <span class="keywordflow">if</span> ( begin == NULL ) {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                begin = pos;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            }</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;            <span class="keywordflow">if</span> ( begin != NULL ) {</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                end = pos;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        }</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;        ++pos;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    }</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    * ( end + 1 ) = 0x00;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    bytes_avail = atol ( begin ) * 1024;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="a00009.html#aaa2458f8b0518cd8ecfbf0647f63d28d">memory</a>.<a class="code" href="a00006.html#a7b2624523c8c1954651a40886ec989f6">value</a> = bytes_avail * 0.5;</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
-<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="a00009.html#a9d5a43a22122e628b749c18b48cedfc4">  138</a></span>&#160;    <a class="code" href="a00006.html">configLine&lt;string&gt;</a> memoryManager, swap, <a class="code" href="a00009.html#a9d5a43a22122e628b749c18b48cedfc4">swapfiles</a>;</div>
-<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="a00009.html#a0d87d5533a56ffe09fcd095918df3795">  139</a></span>&#160;    <a class="code" href="a00006.html">configLine&lt;global_bytesize&gt;</a> memory, <a class="code" href="a00009.html#a0d87d5533a56ffe09fcd095918df3795">swapMemory</a>;</div>
-<div class="line"><a name="l00140"></a><span class="lineno"><a class="line" href="a00009.html#a549b17d67bef794af32a9ca86eedbdd5">  140</a></span>&#160;    <a class="code" href="a00006.html">configLine&lt;bool&gt;</a> <a class="code" href="a00009.html#a549b17d67bef794af32a9ca86eedbdd5">enableDMA</a>;</div>
-<div class="line"><a name="l00141"></a><span class="lineno"><a class="line" href="a00009.html#a44d5658ac2cbed42f40703780b8483bb">  141</a></span>&#160;    <a class="code" href="a00006.html">configLine&lt;swapPolicy&gt;</a> <a class="code" href="a00009.html#a44d5658ac2cbed42f40703780b8483bb">policy</a>;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno"><a class="line" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">  143</a></span>&#160;    vector&lt;configLineBase *&gt; <a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;};</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00163"></a><span class="lineno"><a class="line" href="a00008.html">  163</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00008.html">configReader</a></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;{</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <a class="code" href="a00008.html">configReader</a>();</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordtype">bool</span> readConfig();</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
-<div class="line"><a name="l00185"></a><span class="lineno"><a class="line" href="a00008.html#aaa1bed466c323f77900c34dc435a6aef">  185</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="a00008.html#aaa1bed466c323f77900c34dc435a6aef">setCustomConfigPath</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;path ) {</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        customConfigPath = path;</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    }</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;</div>
-<div class="line"><a name="l00192"></a><span class="lineno"><a class="line" href="a00008.html#aa9d982624f5495cdb3af2e4a216f4ecd">  192</a></span>&#160;    <span class="keyword">inline</span> <a class="code" href="a00009.html">configuration</a> &amp;<a class="code" href="a00008.html#aa9d982624f5495cdb3af2e4a216f4ecd">getConfig</a>() {</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        <span class="keywordflow">if</span> ( !readSuccess ) {</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            readConfig();</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        }</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="a00094.html#ad02508d72047bc55a38eda857e4816c1">config</a>;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    }</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
-<div class="line"><a name="l00202"></a><span class="lineno"><a class="line" href="a00008.html#af1a0883e35fe8aae3c49631bc848508e">  202</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="a00008.html#af1a0883e35fe8aae3c49631bc848508e">readSuccessfully</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="keywordflow">return</span> readSuccess;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="comment">// Get free partition space</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordtype">char</span> exe[1024];</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordtype">int</span> ret;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    ret = readlink ( <span class="stringliteral">&quot;/proc/self/exe&quot;</span>, exe, <span class="keyword">sizeof</span> ( exe ) - 1 );</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keywordflow">if</span> ( ret != -1 ) {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        exe[ret] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        <span class="keyword">struct </span>statvfs stats;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        statvfs ( exe, &amp;stats );</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <a class="code" href="a00009.html#a0d87d5533a56ffe09fcd095918df3795">swapMemory</a>.<a class="code" href="a00006.html#a7b2624523c8c1954651a40886ec989f6">value</a> = stats.f_bfree * stats.f_bsize / 2;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;}</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;</div>
+<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="a00008.html#a9eff76380e7fa313604dff234e66b205">  152</a></span>&#160;<a class="code" href="a00008.html#a9eff76380e7fa313604dff234e66b205">configReader::configReader</a>()</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;{</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <a class="code" href="a00008.html#a0af5a1590cdcf1a04aafe7ba3d56bed7">localConfigPath</a> = <a class="code" href="a00008.html#ae8449af2304dd8fec6cad2d9835e8205">getHomeDir</a>() + <span class="stringliteral">&quot;/.rambrain.conf&quot;</span>;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;}</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="a00008.html#aafcdc8be421ea3e33248a7abe70dedd9">  157</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="a00008.html#aafcdc8be421ea3e33248a7abe70dedd9">configReader::readConfig</a>()</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;{</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordflow">if</span> ( !<a class="code" href="a00008.html#ae006ed080d566dc4ddc35cbb677e41cf">reopenStreams</a>() ) {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    vector&lt;configLineBase *&gt; readLines;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <a class="code" href="a00008.html#a5362f882add89772f902c8700b0f1986">readSuccess</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; 3; ++i ) {</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <span class="keywordflow">if</span> ( readLines.size() &lt; <a class="code" href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">config</a>.<a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.size() ) {</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            <a class="code" href="a00008.html#a5362f882add89772f902c8700b0f1986">readSuccess</a> &amp;= <a class="code" href="a00008.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f">parseConfigFile</a> ( <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[i], readLines );</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        }</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    }</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <a class="code" href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">config</a>.<a class="code" href="a00009.html#a9d5a43a22122e628b749c18b48cedfc4">swapfiles</a>.<a class="code" href="a00006.html#a8e8a478e0ac8347db173dc73761cb099">setValue</a> ( <a class="code" href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">regex</a>.<a class="code" href="a00031.html#a2fe1eeb1a8a33964f7211daeeaf12891">substituteHomeDir</a> ( <a class="code" href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">config</a>.<a class="code" href="a00009.html#a9d5a43a22122e628b749c18b48cedfc4">swapfiles</a>.<a class="code" href="a00006.html#a7b2624523c8c1954651a40886ec989f6">value</a>, <a class="code" href="a00008.html#ae8449af2304dd8fec6cad2d9835e8205">getHomeDir</a>() ) );</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="a00008.html#a5362f882add89772f902c8700b0f1986">readSuccess</a>;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;}</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;</div>
+<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="a00008.html#ae006ed080d566dc4ddc35cbb677e41cf">  177</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="a00008.html#ae006ed080d566dc4ddc35cbb677e41cf">configReader::reopenStreams</a>()</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;{</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; 3; ++i ) {</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="keywordflow">if</span> ( <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[i].is_open() ) {</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;            <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[i].close();</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        }</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    }</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordtype">bool</span> readAConfig = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[0].open ( <a class="code" href="a00008.html#a145f0d48de3953c9f188a6f8dee8e51f">customConfigPath</a> );</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[0].is_open() ) {</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        infomsgf ( <span class="stringliteral">&quot;Rambrain is initialized using custom config file: %s\n&quot;</span>, <a class="code" href="a00008.html#a145f0d48de3953c9f188a6f8dee8e51f">customConfigPath</a>.c_str() );</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        readAConfig = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    }</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[1].open ( <a class="code" href="a00008.html#a0af5a1590cdcf1a04aafe7ba3d56bed7">localConfigPath</a> );</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[1].is_open() ) {</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;        infomsgf ( <span class="stringliteral">&quot;Rambrain is initialized using user&#39;s config file: %s\n&quot;</span>, <a class="code" href="a00008.html#a0af5a1590cdcf1a04aafe7ba3d56bed7">localConfigPath</a>.c_str() );</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        readAConfig = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    }</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[2].open ( <a class="code" href="a00008.html#abed30805ad77a7c29e92f40432152be7">globalConfigPath</a> );</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[2].is_open() ) {</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        infomsgf ( <span class="stringliteral">&quot;Rambrain is initialized using system wide config file: %s\n&quot;</span>, <a class="code" href="a00008.html#abed30805ad77a7c29e92f40432152be7">globalConfigPath</a>.c_str() );</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        readAConfig = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    }</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordflow">if</span> ( !readAConfig ) {</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        infomsg ( <span class="stringliteral">&quot;Rambrain is initialized using default settings.&quot;</span> );</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    }</div>
-<div class="line"><a name="l00208"></a><span class="lineno"><a class="line" href="a00008.html#ad1a9755154dabd51a70427669a1cce7f">  208</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="a00008.html#ad1a9755154dabd51a70427669a1cce7f">setReread</a>() {</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        readSuccess = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    }</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keywordtype">bool</span> reopenStreams();</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keywordtype">bool</span> parseConfigFile ( istream &amp;stream, vector&lt;configLineBase *&gt; &amp;readLines );</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keywordtype">bool</span> parseConfigBlock ( istream &amp;stream, vector&lt;configLineBase *&gt; &amp;readLines );</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordtype">string</span> getApplicationName() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[0].is_open() || <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[1].is_open() || <a class="code" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">streams</a>[2].is_open();</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;}</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;</div>
+<div class="line"><a name="l00209"></a><span class="lineno"><a class="line" href="a00008.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f">  209</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="a00008.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f">configReader::parseConfigFile</a> ( istream &amp;stream, vector&lt;configLineBase *&gt; &amp;readLines )</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;{</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordtype">string</span> line;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordtype">bool</span> ret = <span class="keyword">true</span>, defaultDone = <span class="keyword">false</span>, specificDone = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordtype">string</span> appName = <a class="code" href="a00008.html#aa2aee2bca7966d89aae6d822e829de71">getApplicationName</a>();</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    vector&lt;configLineBase *&gt; thisReadLines ( readLines );</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordflow">while</span> ( stream.good() &amp;&amp; ! ( defaultDone &amp;&amp; specificDone ) ) {</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        getline ( stream, line );</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <a class="code" href="a00008.html#a845d458a102985a9721ebb322cbb5346">stripLeadingTrailingWhitespace</a> ( line );</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        <span class="keywordflow">if</span> ( line.empty() ) {</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;        }</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> current = stream.tellg();</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="keywordflow">if</span> ( <a class="code" href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">regex</a>.<a class="code" href="a00031.html#a952ca26ade04a532e24f85dbb2c748e4">matchConfigBlock</a> ( line ) ) {</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;            ret &amp;= <a class="code" href="a00008.html#a89ebde62397d8fdda601543eb2eb110a">parseConfigBlock</a> ( stream, specificDone ? readLines : thisReadLines );</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;            defaultDone = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( !specificDone &amp;&amp; <a class="code" href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">regex</a>.<a class="code" href="a00031.html#a952ca26ade04a532e24f85dbb2c748e4">matchConfigBlock</a> ( line, appName ) ) {</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;            ret &amp;= <a class="code" href="a00008.html#a89ebde62397d8fdda601543eb2eb110a">parseConfigBlock</a> ( stream, readLines );</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            specificDone = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        }</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        stream.seekg ( current );</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    }</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="comment">// Merge thisReadLines into readLines if a default has been done before, ergo memorize also elements from default and not specific</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keywordflow">if</span> ( defaultDone ) {</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        readLines.insert ( readLines.end(), thisReadLines.begin(), thisReadLines.end() );</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        unique ( readLines.begin(), readLines.end() );</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    }</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordflow">return</span> ret;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;}</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keywordtype">string</span> getHomeDir() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keywordtype">void</span> stripLeadingTrailingWhitespace ( <span class="keywordtype">string</span> &amp;str ) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;</div>
-<div class="line"><a name="l00259"></a><span class="lineno"><a class="line" href="a00008.html#abed30805ad77a7c29e92f40432152be7">  259</a></span>&#160;    <span class="keyword">const</span> <span class="keywordtype">string</span> globalConfigPath = <span class="stringliteral">&quot;/etc/rambrain.conf&quot;</span>;</div>
-<div class="line"><a name="l00260"></a><span class="lineno"><a class="line" href="a00008.html#a0af5a1590cdcf1a04aafe7ba3d56bed7">  260</a></span>&#160;    <span class="keywordtype">string</span> localConfigPath = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00261"></a><span class="lineno"><a class="line" href="a00008.html#a145f0d48de3953c9f188a6f8dee8e51f">  261</a></span>&#160;    <span class="keywordtype">string</span> customConfigPath = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;</div>
-<div class="line"><a name="l00263"></a><span class="lineno"><a class="line" href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">  263</a></span>&#160;    <span class="keyword">const</span> <a class="code" href="a00030.html">regexMatcher</a> <a class="code" href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">regex</a>;</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;</div>
-<div class="line"><a name="l00265"></a><span class="lineno"><a class="line" href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">  265</a></span>&#160;    ifstream streams[3];</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
-<div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">  267</a></span>&#160;    <a class="code" href="a00009.html">configuration</a> <a class="code" href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">config</a>;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;</div>
-<div class="line"><a name="l00269"></a><span class="lineno"><a class="line" href="a00008.html#a5362f882add89772f902c8700b0f1986">  269</a></span>&#160;    <span class="keywordtype">bool</span> readSuccess = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    <span class="comment">//Test classes</span></div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;<span class="preprocessor">#ifdef BUILD_TESTS</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="a00008.html#a9d31013c3be15dca42575f695b4e033f">  273</a></span>&#160;    <span class="keyword">friend</span> class ::configReader_Unit_ParseProgramName_Test;</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;};</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;}</div>
+<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="a00008.html#a89ebde62397d8fdda601543eb2eb110a">  247</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="a00008.html#a89ebde62397d8fdda601543eb2eb110a">configReader::parseConfigBlock</a> ( istream &amp;stream, vector&lt;configLineBase *&gt; &amp;readLines )</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;{</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keywordtype">string</span> line, first;</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keywordflow">while</span> ( stream.good() ) {</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        getline ( stream, line );</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;        <a class="code" href="a00008.html#a845d458a102985a9721ebb322cbb5346">stripLeadingTrailingWhitespace</a> ( line );</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;        <span class="keywordflow">if</span> ( line.empty() ) {</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;        }</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        first = line.substr ( 0, 1 );</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;        <span class="keywordflow">if</span> ( first == <span class="stringliteral">&quot;[&quot;</span> ) {</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( first == <span class="stringliteral">&quot;#&quot;</span> ) {</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;            <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <span class="keywordtype">bool</span> matched = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">for</span> ( <span class="keyword">auto</span> it = <a class="code" href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">config</a>.<a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.begin(); it != <a class="code" href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">config</a>.<a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.end(); ++it ) {</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                <a class="code" href="a00007.html">configLineBase</a> *cl = *it;</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                std::pair&lt;string, string&gt; match = <a class="code" href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">regex</a>.<a class="code" href="a00031.html#a4c3ce2c7a2beff16c71fbf5c33396356">matchKeyEqualsValue</a> ( line, cl-&gt;<a class="code" href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">name</a>, cl-&gt;<a class="code" href="a00007.html#a41ed3e2e03f420e02d4397093f26f4f0">matchType</a> );</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                <span class="keywordflow">if</span> ( match.first == cl-&gt;<a class="code" href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">name</a> ) {</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                    matched = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                    <span class="keywordflow">if</span> ( find ( readLines.begin(), readLines.end(), cl ) == readLines.end() ) { <span class="comment">// Only if this config option has not been read yet</span></div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                        readLines.push_back ( cl );</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                        cl-&gt;<a class="code" href="a00007.html#af88430bdeb79e2a68dc902517318acde">setValue</a> ( match.second );</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                    }</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                }</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            }</div>
 <div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="preprocessor">#endif // CONFIGREADER_H</span></div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;</div>
-<div class="ttc" id="a00093_html_a7d53dd1748d5012cafa91aa982c7cd35afe88c03a1958b4259f0c51d68eed3213"><div class="ttname"><a href="a00093.html#a7d53dd1748d5012cafa91aa982c7cd35afe88c03a1958b4259f0c51d68eed3213">rambrain::swapPolicy::interactive</a></div></div>
-<div class="ttc" id="a00093_html"><div class="ttname"><a href="a00093.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00038_source.html#l00026">common.h:26</a></div></div>
-<div class="ttc" id="a00006_html_a8e8a478e0ac8347db173dc73761cb099"><div class="ttname"><a href="a00006.html#a8e8a478e0ac8347db173dc73761cb099">rambrain::configLine::setValue</a></div><div class="ttdeci">virtual void setValue(const string &amp;str)</div><div class="ttdoc">Reset the value from a string. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00106">configreader.h:106</a></div></div>
-<div class="ttc" id="a00009_html_a44d5658ac2cbed42f40703780b8483bb"><div class="ttname"><a href="a00009.html#a44d5658ac2cbed42f40703780b8483bb">rambrain::configuration::policy</a></div><div class="ttdeci">configLine&lt; swapPolicy &gt; policy</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00141">configreader.h:141</a></div></div>
-<div class="ttc" id="a00030_html"><div class="ttname"><a href="a00030.html">rambrain::regexMatcher</a></div><div class="ttdoc">Class to handle regex matching used for parsing configuration files. </div><div class="ttdef"><b>Definition:</b> <a href="a00064_source.html#l00035">regexmatcher.h:35</a></div></div>
-<div class="ttc" id="a00009_html_a549b17d67bef794af32a9ca86eedbdd5"><div class="ttname"><a href="a00009.html#a549b17d67bef794af32a9ca86eedbdd5">rambrain::configuration::enableDMA</a></div><div class="ttdeci">configLine&lt; bool &gt; enableDMA</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00140">configreader.h:140</a></div></div>
-<div class="ttc" id="a00006_html_a7b2624523c8c1954651a40886ec989f6"><div class="ttname"><a href="a00006.html#a7b2624523c8c1954651a40886ec989f6">rambrain::configLine::value</a></div><div class="ttdeci">T value</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00110">configreader.h:110</a></div></div>
-<div class="ttc" id="a00006_html_a9d2572a02eb2d314c983c664ffa4ee43"><div class="ttname"><a href="a00006.html#a9d2572a02eb2d314c983c664ffa4ee43">rambrain::configLine::~configLine</a></div><div class="ttdeci">virtual ~configLine()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00100">configreader.h:100</a></div></div>
-<div class="ttc" id="a00064_html"><div class="ttname"><a href="a00064.html">regexmatcher.h</a></div></div>
-<div class="ttc" id="a00093_html_a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04"><div class="ttname"><a href="a00093.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04">rambrain::swapPolicy::autoextendable</a></div></div>
-<div class="ttc" id="a00007_html_a04d92a709d56a2d7fc570ae3c68e5bc3"><div class="ttname"><a href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">rambrain::configLineBase::name</a></div><div class="ttdeci">const string name</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00077">configreader.h:77</a></div></div>
-<div class="ttc" id="a00093_html_a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149"><div class="ttname"><a href="a00093.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149">rambrain::swapPolicy::fixed</a></div></div>
-<div class="ttc" id="a00006_html_ad4a5615f6975a6878b10d3844e4482ba"><div class="ttname"><a href="a00006.html#ad4a5615f6975a6878b10d3844e4482ba">rambrain::configLine::configLine</a></div><div class="ttdeci">configLine(const string &amp;name, const T &amp;value, const int matchType)</div><div class="ttdoc">Create a new config option. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00096">configreader.h:96</a></div></div>
-<div class="ttc" id="a00006_html"><div class="ttname"><a href="a00006.html">rambrain::configLine</a></div><div class="ttdoc">Class for config key value pairs represented by a line in a config file. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00087">configreader.h:87</a></div></div>
-<div class="ttc" id="a00009_html_a9d5a43a22122e628b749c18b48cedfc4"><div class="ttname"><a href="a00009.html#a9d5a43a22122e628b749c18b48cedfc4">rambrain::configuration::swapfiles</a></div><div class="ttdeci">configLine&lt; string &gt; swapfiles</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00138">configreader.h:138</a></div></div>
-<div class="ttc" id="a00008_html_aa9d982624f5495cdb3af2e4a216f4ecd"><div class="ttname"><a href="a00008.html#aa9d982624f5495cdb3af2e4a216f4ecd">rambrain::configReader::getConfig</a></div><div class="ttdeci">configuration &amp; getConfig()</div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00192">configreader.h:192</a></div></div>
-<div class="ttc" id="a00038_html"><div class="ttname"><a href="a00038.html">common.h</a></div></div>
-<div class="ttc" id="a00009_html"><div class="ttname"><a href="a00009.html">rambrain::configuration</a></div><div class="ttdoc">Main struct to save configuration variables. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00131">configreader.h:131</a></div></div>
-<div class="ttc" id="a00007_html_a41ed3e2e03f420e02d4397093f26f4f0"><div class="ttname"><a href="a00007.html#a41ed3e2e03f420e02d4397093f26f4f0">rambrain::configLineBase::matchType</a></div><div class="ttdeci">const int matchType</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00078">configreader.h:78</a></div></div>
-<div class="ttc" id="a00095_html"><div class="ttname"><a href="a00095.html">std</a></div><div class="ttdoc">STL namespace. </div></div>
-<div class="ttc" id="a00093_html_a7d53dd1748d5012cafa91aa982c7cd35"><div class="ttname"><a href="a00093.html#a7d53dd1748d5012cafa91aa982c7cd35">rambrain::swapPolicy</a></div><div class="ttdeci">swapPolicy</div><div class="ttdoc">An enumeration to regulate how the swap should define when it approaches it&#39;s set boundary...</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00047">configreader.h:47</a></div></div>
-<div class="ttc" id="a00008_html_a78ab5e3dcf141f66f4916d9a84ec6566"><div class="ttname"><a href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">rambrain::configReader::regex</a></div><div class="ttdeci">const regexMatcher regex</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00263">configreader.h:263</a></div></div>
-<div class="ttc" id="a00008_html_ad1a9755154dabd51a70427669a1cce7f"><div class="ttname"><a href="a00008.html#ad1a9755154dabd51a70427669a1cce7f">rambrain::configReader::setReread</a></div><div class="ttdeci">void setReread()</div><div class="ttdoc">Simple setter. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00208">configreader.h:208</a></div></div>
-<div class="ttc" id="a00007_html_aa8ba56751a3967ffda56cef490012d0e"><div class="ttname"><a href="a00007.html#aa8ba56751a3967ffda56cef490012d0e">rambrain::configLineBase::~configLineBase</a></div><div class="ttdeci">virtual ~configLineBase()</div><div class="ttdoc">Destructor. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00070">configreader.h:70</a></div></div>
-<div class="ttc" id="a00008_html_aaa1bed466c323f77900c34dc435a6aef"><div class="ttname"><a href="a00008.html#aaa1bed466c323f77900c34dc435a6aef">rambrain::configReader::setCustomConfigPath</a></div><div class="ttdeci">void setCustomConfigPath(const string &amp;path)</div><div class="ttdoc">Simple setter. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00185">configreader.h:185</a></div></div>
-<div class="ttc" id="a00008_html_af1a0883e35fe8aae3c49631bc848508e"><div class="ttname"><a href="a00008.html#af1a0883e35fe8aae3c49631bc848508e">rambrain::configReader::readSuccessfully</a></div><div class="ttdeci">bool readSuccessfully() const </div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00202">configreader.h:202</a></div></div>
-<div class="ttc" id="a00008_html"><div class="ttname"><a href="a00008.html">rambrain::configReader</a></div><div class="ttdoc">Reader class to read in and properly parse config files. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00163">configreader.h:163</a></div></div>
-<div class="ttc" id="a00094_html_ad02508d72047bc55a38eda857e4816c1"><div class="ttname"><a href="a00094.html#ad02508d72047bc55a38eda857e4816c1">rambrain::rambrainglobals::config</a></div><div class="ttdeci">rambrainConfig config</div><div class="ttdoc">You will find the object in managedMemory.cpp as we have to define it in some &#39;used&#39; file in the link...</div><div class="ttdef"><b>Definition:</b> <a href="a00052_source.html#l00036">managedMemory.cpp:36</a></div></div>
-<div class="ttc" id="a00008_html_a4a8db69407e604d2ea6b18e8ae2e40ce"><div class="ttname"><a href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">rambrain::configReader::config</a></div><div class="ttdeci">configuration config</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00267">configreader.h:267</a></div></div>
-<div class="ttc" id="a00007_html_a1bb597262fec80005a8e2152100a02e4"><div class="ttname"><a href="a00007.html#a1bb597262fec80005a8e2152100a02e4">rambrain::configLineBase::configLineBase</a></div><div class="ttdeci">configLineBase(const string &amp;name, const int matchType)</div><div class="ttdoc">Create a new config line. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00066">configreader.h:66</a></div></div>
-<div class="ttc" id="a00009_html_a0d87d5533a56ffe09fcd095918df3795"><div class="ttname"><a href="a00009.html#a0d87d5533a56ffe09fcd095918df3795">rambrain::configuration::swapMemory</a></div><div class="ttdeci">configLine&lt; global_bytesize &gt; swapMemory</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00139">configreader.h:139</a></div></div>
-<div class="ttc" id="a00009_html_a60063ca6099263b106e5434bc0d5ed0b"><div class="ttname"><a href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">rambrain::configuration::configOptions</a></div><div class="ttdeci">vector&lt; configLineBase * &gt; configOptions</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00143">configreader.h:143</a></div></div>
-<div class="ttc" id="a00007_html"><div class="ttname"><a href="a00007.html">rambrain::configLineBase</a></div><div class="ttdoc">Base class for config lines. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00057">configreader.h:57</a></div></div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            <span class="keywordflow">if</span> ( !matched ) {</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                warnmsgf ( <span class="stringliteral">&quot;Could not parse config line: %s\n&quot;</span>, line.c_str() );</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            }</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        }</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    }</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;}</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
+<div class="line"><a name="l00289"></a><span class="lineno"><a class="line" href="a00008.html#aa2aee2bca7966d89aae6d822e829de71">  289</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="a00008.html#aa2aee2bca7966d89aae6d822e829de71">configReader::getApplicationName</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="keywordtype">char</span> exe[1024];</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keywordtype">int</span> ret;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    ret = readlink ( <span class="stringliteral">&quot;/proc/self/exe&quot;</span>, exe, <span class="keyword">sizeof</span> ( exe ) - 1 );</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="keywordflow">if</span> ( ret == -1 ) {</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    }</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    exe[ret] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="keywordtype">string</span> fullName ( exe );</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> found = fullName.find_last_of ( <span class="stringliteral">&quot;/\\&quot;</span> );</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="keywordflow">return</span> fullName.substr ( found + 1 );</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;}</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
+<div class="line"><a name="l00306"></a><span class="lineno"><a class="line" href="a00008.html#ae8449af2304dd8fec6cad2d9835e8205">  306</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="a00008.html#ae8449af2304dd8fec6cad2d9835e8205">configReader::getHomeDir</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keyword">struct </span>passwd *pw = getpwuid ( getuid() );</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keywordflow">return</span> pw-&gt;pw_dir;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;}</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
+<div class="line"><a name="l00312"></a><span class="lineno"><a class="line" href="a00008.html#a845d458a102985a9721ebb322cbb5346">  312</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00008.html#a845d458a102985a9721ebb322cbb5346">configReader::stripLeadingTrailingWhitespace</a> ( <span class="keywordtype">string</span> &amp;str )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    str.erase ( str.begin(), std::find_if ( str.begin(), str.end(), std::not1 ( std::ptr_fun&lt;int, int&gt; ( std::isspace ) ) ) );</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    str.erase ( std::find_if ( str.rbegin(), str.rend(), std::not1 ( std::ptr_fun&lt;int, int&gt; ( std::isspace ) ) ).base(), str.end() );</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;}</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;}</div>
+<div class="ttc" id="a00008_html_a145f0d48de3953c9f188a6f8dee8e51f"><div class="ttname"><a href="a00008.html#a145f0d48de3953c9f188a6f8dee8e51f">rambrain::configReader::customConfigPath</a></div><div class="ttdeci">string customConfigPath</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00261">configreader.h:261</a></div></div>
+<div class="ttc" id="a00031_html_addb28ec0da837148b315a76d3e86d3dc"><div class="ttname"><a href="a00031.html#addb28ec0da837148b315a76d3e86d3dc">rambrain::regexMatcher::splitDoubleValueUnit</a></div><div class="ttdeci">pair&lt; double, string &gt; splitDoubleValueUnit(const string &amp;str) const </div><div class="ttdoc">Split a string containing value and possibly unit into both parts. </div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00106">regexmatcher.cpp:106</a></div></div>
+<div class="ttc" id="a00006_html_a8e8a478e0ac8347db173dc73761cb099"><div class="ttname"><a href="a00006.html#a8e8a478e0ac8347db173dc73761cb099">rambrain::configLine::setValue</a></div><div class="ttdeci">virtual void setValue(const string &amp;str)</div><div class="ttdoc">Reset the value from a string. </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00106">configreader.h:106</a></div></div>
+<div class="ttc" id="a00095_html_a8525b8b73c3e1ec62bd571b3cffd1742"><div class="ttname"><a href="a00095.html#a8525b8b73c3e1ec62bd571b3cffd1742">rambrain::gig</a></div><div class="ttdeci">const global_bytesize gig</div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00069">common.h:69</a></div></div>
+<div class="ttc" id="a00095_html_abe2d051306a69fb21f8a17946b4e93ed"><div class="ttname"><a href="a00095.html#abe2d051306a69fb21f8a17946b4e93ed">rambrain::global_bytesize</a></div><div class="ttdeci">uint64_t global_bytesize</div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00065">common.h:65</a></div></div>
+<div class="ttc" id="a00009_html_a44d5658ac2cbed42f40703780b8483bb"><div class="ttname"><a href="a00009.html#a44d5658ac2cbed42f40703780b8483bb">rambrain::configuration::policy</a></div><div class="ttdeci">configLine&lt; swapPolicy &gt; policy</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00141">configreader.h:141</a></div></div>
+<div class="ttc" id="a00031_html_a4c3ce2c7a2beff16c71fbf5c33396356"><div class="ttname"><a href="a00031.html#a4c3ce2c7a2beff16c71fbf5c33396356">rambrain::regexMatcher::matchKeyEqualsValue</a></div><div class="ttdeci">pair&lt; string, string &gt; matchKeyEqualsValue(const string &amp;str, int valueType=alphanumtext) const </div><div class="ttdoc">Checks if a string matches something like key = value. </div></div>
+<div class="ttc" id="a00008_html_ae006ed080d566dc4ddc35cbb677e41cf"><div class="ttname"><a href="a00008.html#ae006ed080d566dc4ddc35cbb677e41cf">rambrain::configReader::reopenStreams</a></div><div class="ttdeci">bool reopenStreams()</div><div class="ttdoc">(Re)Open streams to config files </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00177">configreader.cpp:177</a></div></div>
+<div class="ttc" id="a00095_html_a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04"><div class="ttname"><a href="a00095.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04">rambrain::swapPolicy::autoextendable</a></div></div>
+<div class="ttc" id="a00009_html_a549b17d67bef794af32a9ca86eedbdd5"><div class="ttname"><a href="a00009.html#a549b17d67bef794af32a9ca86eedbdd5">rambrain::configuration::enableDMA</a></div><div class="ttdeci">configLine&lt; bool &gt; enableDMA</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00140">configreader.h:140</a></div></div>
+<div class="ttc" id="a00006_html_a7b2624523c8c1954651a40886ec989f6"><div class="ttname"><a href="a00006.html#a7b2624523c8c1954651a40886ec989f6">rambrain::configLine::value</a></div><div class="ttdeci">T value</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00110">configreader.h:110</a></div></div>
+<div class="ttc" id="a00008_html_a845d458a102985a9721ebb322cbb5346"><div class="ttname"><a href="a00008.html#a845d458a102985a9721ebb322cbb5346">rambrain::configReader::stripLeadingTrailingWhitespace</a></div><div class="ttdeci">void stripLeadingTrailingWhitespace(string &amp;str) const </div><div class="ttdoc">Strips any leading and trailing whitespace from a given string. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00312">configreader.cpp:312</a></div></div>
+<div class="ttc" id="a00007_html_a04d92a709d56a2d7fc570ae3c68e5bc3"><div class="ttname"><a href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">rambrain::configLineBase::name</a></div><div class="ttdeci">const string name</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00077">configreader.h:77</a></div></div>
+<div class="ttc" id="a00095_html_a7d53dd1748d5012cafa91aa982c7cd35"><div class="ttname"><a href="a00095.html#a7d53dd1748d5012cafa91aa982c7cd35">rambrain::swapPolicy</a></div><div class="ttdeci">swapPolicy</div><div class="ttdoc">An enumeration to regulate how the swap should define when it approaches it&#39;s set boundary...</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00047">configreader.h:47</a></div></div>
+<div class="ttc" id="a00031_html_a2fe1eeb1a8a33964f7211daeeaf12891"><div class="ttname"><a href="a00031.html#a2fe1eeb1a8a33964f7211daeeaf12891">rambrain::regexMatcher::substituteHomeDir</a></div><div class="ttdeci">string substituteHomeDir(const string &amp;source, const string &amp;homedir) const </div><div class="ttdoc">Replace all occurences of a ~ by the absolute home directory. </div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00138">regexmatcher.cpp:138</a></div></div>
+<div class="ttc" id="a00008_html_a89ebde62397d8fdda601543eb2eb110a"><div class="ttname"><a href="a00008.html#a89ebde62397d8fdda601543eb2eb110a">rambrain::configReader::parseConfigBlock</a></div><div class="ttdeci">bool parseConfigBlock(istream &amp;stream, vector&lt; configLineBase * &gt; &amp;readLines)</div><div class="ttdoc">Parse an identified configuration block and extract all matching variables. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00247">configreader.cpp:247</a></div></div>
+<div class="ttc" id="a00041_html"><div class="ttname"><a href="a00041.html">configreader.h</a></div></div>
+<div class="ttc" id="a00006_html"><div class="ttname"><a href="a00006.html">rambrain::configLine</a></div><div class="ttdoc">Class for config key value pairs represented by a line in a config file. </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00087">configreader.h:87</a></div></div>
+<div class="ttc" id="a00009_html_a9d5a43a22122e628b749c18b48cedfc4"><div class="ttname"><a href="a00009.html#a9d5a43a22122e628b749c18b48cedfc4">rambrain::configuration::swapfiles</a></div><div class="ttdeci">configLine&lt; string &gt; swapfiles</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00138">configreader.h:138</a></div></div>
+<div class="ttc" id="a00008_html_ab2ff3a0d4426d1aed5b6a4e136afcb2f"><div class="ttname"><a href="a00008.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f">rambrain::configReader::parseConfigFile</a></div><div class="ttdeci">bool parseConfigFile(istream &amp;stream, vector&lt; configLineBase * &gt; &amp;readLines)</div><div class="ttdoc">Parse config file. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00209">configreader.cpp:209</a></div></div>
+<div class="ttc" id="a00008_html_a4cc1b1f7392af7deafaa9a42dc9859fc"><div class="ttname"><a href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">rambrain::configReader::streams</a></div><div class="ttdeci">ifstream streams[3]</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00265">configreader.h:265</a></div></div>
+<div class="ttc" id="a00007_html_a41ed3e2e03f420e02d4397093f26f4f0"><div class="ttname"><a href="a00007.html#a41ed3e2e03f420e02d4397093f26f4f0">rambrain::configLineBase::matchType</a></div><div class="ttdeci">const int matchType</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00078">configreader.h:78</a></div></div>
+<div class="ttc" id="a00008_html_ae8449af2304dd8fec6cad2d9835e8205"><div class="ttname"><a href="a00008.html#ae8449af2304dd8fec6cad2d9835e8205">rambrain::configReader::getHomeDir</a></div><div class="ttdeci">string getHomeDir() const </div><div class="ttdoc">Look up the home directory of the current user. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00306">configreader.cpp:306</a></div></div>
+<div class="ttc" id="a00095_html"><div class="ttname"><a href="a00095.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00026">common.h:26</a></div></div>
+<div class="ttc" id="a00008_html_abed30805ad77a7c29e92f40432152be7"><div class="ttname"><a href="a00008.html#abed30805ad77a7c29e92f40432152be7">rambrain::configReader::globalConfigPath</a></div><div class="ttdeci">const string globalConfigPath</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00259">configreader.h:259</a></div></div>
+<div class="ttc" id="a00008_html_a78ab5e3dcf141f66f4916d9a84ec6566"><div class="ttname"><a href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">rambrain::configReader::regex</a></div><div class="ttdeci">const regexMatcher regex</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00263">configreader.h:263</a></div></div>
+<div class="ttc" id="a00031_html_a952ca26ade04a532e24f85dbb2c748e4"><div class="ttname"><a href="a00031.html#a952ca26ade04a532e24f85dbb2c748e4">rambrain::regexMatcher::matchConfigBlock</a></div><div class="ttdeci">bool matchConfigBlock(const string &amp;str, const string &amp;blockname=&quot;default&quot;) const </div><div class="ttdoc">Checks if a string matches the header of a configuration block. </div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00044">regexmatcher.cpp:44</a></div></div>
+<div class="ttc" id="a00007_html_af88430bdeb79e2a68dc902517318acde"><div class="ttname"><a href="a00007.html#af88430bdeb79e2a68dc902517318acde">rambrain::configLineBase::setValue</a></div><div class="ttdeci">virtual void setValue(const string &amp;str)=0</div><div class="ttdoc">Reset the value from a string. </div></div>
+<div class="ttc" id="a00095_html_a8526efa365cdb0cb597351c2671af168"><div class="ttname"><a href="a00095.html#a8526efa365cdb0cb597351c2671af168">rambrain::mib</a></div><div class="ttdeci">const global_bytesize mib</div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00068">common.h:68</a></div></div>
+<div class="ttc" id="a00009_html_aaa2458f8b0518cd8ecfbf0647f63d28d"><div class="ttname"><a href="a00009.html#aaa2458f8b0518cd8ecfbf0647f63d28d">rambrain::configuration::memory</a></div><div class="ttdeci">configLine&lt; global_bytesize &gt; memory</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00139">configreader.h:139</a></div></div>
+<div class="ttc" id="a00009_html_a3ab38df7f6bf215f8101f4f914f67b14"><div class="ttname"><a href="a00009.html#a3ab38df7f6bf215f8101f4f914f67b14">rambrain::configuration::swap</a></div><div class="ttdeci">configLine&lt; string &gt; swap</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00138">configreader.h:138</a></div></div>
+<div class="ttc" id="a00008_html_aafcdc8be421ea3e33248a7abe70dedd9"><div class="ttname"><a href="a00008.html#aafcdc8be421ea3e33248a7abe70dedd9">rambrain::configReader::readConfig</a></div><div class="ttdeci">bool readConfig()</div><div class="ttdoc">Read in and parse config. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00157">configreader.cpp:157</a></div></div>
+<div class="ttc" id="a00008_html_aa2aee2bca7966d89aae6d822e829de71"><div class="ttname"><a href="a00008.html#aa2aee2bca7966d89aae6d822e829de71">rambrain::configReader::getApplicationName</a></div><div class="ttdeci">string getApplicationName() const </div><div class="ttdoc">Extract the current binary&#39;s name out of the /proc file system. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00289">configreader.cpp:289</a></div></div>
+<div class="ttc" id="a00095_html_ac2c0fb2cc8161166cbd060cb2b85aaf1"><div class="ttname"><a href="a00095.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">rambrain::kib</a></div><div class="ttdeci">const global_bytesize kib</div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00067">common.h:67</a></div></div>
+<div class="ttc" id="a00008_html_a5362f882add89772f902c8700b0f1986"><div class="ttname"><a href="a00008.html#a5362f882add89772f902c8700b0f1986">rambrain::configReader::readSuccess</a></div><div class="ttdeci">bool readSuccess</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00269">configreader.h:269</a></div></div>
+<div class="ttc" id="a00031_html"><div class="ttname"><a href="a00031.html">rambrain::regexMatcher</a></div><div class="ttdoc">Class to handle regex matching used for parsing configuration files. </div><div class="ttdef"><b>Definition:</b> <a href="a00066_source.html#l00035">regexmatcher.h:35</a></div></div>
+<div class="ttc" id="a00009_html_ae86fcffce8339717271022be71e95815"><div class="ttname"><a href="a00009.html#ae86fcffce8339717271022be71e95815">rambrain::configuration::memoryManager</a></div><div class="ttdeci">configLine&lt; string &gt; memoryManager</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00138">configreader.h:138</a></div></div>
+<div class="ttc" id="a00008_html_a4a8db69407e604d2ea6b18e8ae2e40ce"><div class="ttname"><a href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">rambrain::configReader::config</a></div><div class="ttdeci">configuration config</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00267">configreader.h:267</a></div></div>
+<div class="ttc" id="a00008_html_a9eff76380e7fa313604dff234e66b205"><div class="ttname"><a href="a00008.html#a9eff76380e7fa313604dff234e66b205">rambrain::configReader::configReader</a></div><div class="ttdeci">configReader()</div><div class="ttdoc">Init a new reader. </div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00152">configreader.cpp:152</a></div></div>
+<div class="ttc" id="a00008_html_a0af5a1590cdcf1a04aafe7ba3d56bed7"><div class="ttname"><a href="a00008.html#a0af5a1590cdcf1a04aafe7ba3d56bed7">rambrain::configReader::localConfigPath</a></div><div class="ttdeci">string localConfigPath</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00260">configreader.h:260</a></div></div>
+<div class="ttc" id="a00009_html_a0d87d5533a56ffe09fcd095918df3795"><div class="ttname"><a href="a00009.html#a0d87d5533a56ffe09fcd095918df3795">rambrain::configuration::swapMemory</a></div><div class="ttdeci">configLine&lt; global_bytesize &gt; swapMemory</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00139">configreader.h:139</a></div></div>
+<div class="ttc" id="a00031_html_a05b70b65e3965866b3d9dfbdcacad5d6"><div class="ttname"><a href="a00031.html#a05b70b65e3965866b3d9dfbdcacad5d6">rambrain::regexMatcher::splitIntegerValueUnit</a></div><div class="ttdeci">pair&lt; long long int, string &gt; splitIntegerValueUnit(const string &amp;str) const </div><div class="ttdoc">Split a string containing value and possibly unit into both parts. </div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00122">regexmatcher.cpp:122</a></div></div>
+<div class="ttc" id="a00009_html_a60063ca6099263b106e5434bc0d5ed0b"><div class="ttname"><a href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">rambrain::configuration::configOptions</a></div><div class="ttdeci">vector&lt; configLineBase * &gt; configOptions</div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00143">configreader.h:143</a></div></div>
+<div class="ttc" id="a00007_html"><div class="ttname"><a href="a00007.html">rambrain::configLineBase</a></div><div class="ttdoc">Base class for config lines. </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00057">configreader.h:57</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00040.html">configreader.h</a></li>
-    <li class="footer">Generated on Thu Nov 26 2015 01:43:07 for rambrain by
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00040.html">configreader.cpp</a></li>
+    <li class="footer">Generated on Fri Nov 27 2015 01:43:03 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
