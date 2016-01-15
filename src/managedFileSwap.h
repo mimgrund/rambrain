@@ -121,6 +121,8 @@ public:
 
     void setDMA ( bool arg1 );
 
+    virtual void close();
+
     const unsigned int pageSize;
 
 

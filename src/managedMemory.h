@@ -76,6 +76,12 @@ public:
     managedMemory ( managedSwap *swap, global_bytesize size = gig );
     virtual ~managedMemory();
 
+    /**
+     * @brief powers down the swap class, ergo a cleanup
+     * @warning Can not use any rambrain pointers after this action until a new swap is installed
+     */
+    void closeSwap();
+
     //Memory Management options
     /** @brief dynamically adjusts allowed ram usage
      *  @param size desired allowed ram size

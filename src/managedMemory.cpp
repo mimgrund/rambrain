@@ -115,6 +115,14 @@ managedMemory::~managedMemory()
 #endif
 }
 
+void managedMemory::closeSwap()
+{
+    if ( swap ) {
+        swap->waitForCleanExit();
+        swap->close();
+    }
+}
+
 global_bytesize managedMemory::getUsedMemory() const
 {
     return memory_used;

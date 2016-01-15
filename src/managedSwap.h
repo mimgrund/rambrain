@@ -123,6 +123,13 @@ public:
         return false;
     }
 
+    /**
+     * @brief Close the swap if not already closed
+     * @note Not automatically done by destructor
+     * @warning Swap can not be used anymore afterwards
+     */
+    virtual void close() = 0;
+
     //Caching Control.
     /** @brief throws out cached elements still in ram but also resident on disk. This makes space in situations of low swap memory
      * @note this function must be called having stateChangeMutex acquired.
@@ -144,6 +151,8 @@ protected:
     size_t memoryAlignment = 1;
 
     swapPolicy policy = swapPolicy::fixed;
+
+    bool closed = false;
 };
 
 

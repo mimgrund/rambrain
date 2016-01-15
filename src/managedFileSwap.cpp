@@ -112,6 +112,36 @@ managedFileSwap::managedFileSwap ( global_bytesize size, const char *filemask, g
 
 managedFileSwap::~managedFileSwap()
 {
+    close();
+}
+
+
+void managedFileSwap::closeSwapFiles()
+{
+    if ( swapFiles ) {
+        for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
+            ::close ( swapFiles[n].fileno );
+        }
+        free ( swapFiles );
+    }
+
+
+    for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
+        char fname[1024];
+        snprintf ( fname, 1024, filemask, getpid(), n );
+        unlink ( fname );
+    }
+
+}
+
+void managedFileSwap::setDMA ( bool arg1 )
+{
+    enableDMA = arg1;
+    memoryAlignment = arg1 ? 512 : 1; //Dynamical detection is tricky if not impossible to solve in general
+}
+
+void managedFileSwap::close()
+{
     free ( aio_eventarr );
     closeSwapFiles();
     free ( ( void * ) filemask );
@@ -133,31 +163,7 @@ managedFileSwap::~managedFileSwap()
     free ( io_submit_threads );
     io_destroy ( aio_context );
 
-}
-
-
-void managedFileSwap::closeSwapFiles()
-{
-    if ( swapFiles ) {
-        for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
-            close ( swapFiles[n].fileno );
-        }
-        free ( swapFiles );
-    }
-
-
-    for ( unsigned int n = 0; n < pageFileNumber; ++n ) {
-        char fname[1024];
-        snprintf ( fname, 1024, filemask, getpid(), n );
-        unlink ( fname );
-    }
-
-}
-
-void managedFileSwap::setDMA ( bool arg1 )
-{
-    enableDMA = arg1;
-    memoryAlignment = arg1 ? 512 : 1; //Dynamical detection is tricky if not impossible to solve in general
+    closed = true;
 }
 
 bool managedFileSwap::openSwapFileRange ( unsigned int start, unsigned int stop )
