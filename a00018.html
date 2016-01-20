@@ -144,6 +144,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a45e18a3242b55adc2b6e50bdbecfcaba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abac1938d32c1ad704224e51b8d97b185"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#abac1938d32c1ad704224e51b8d97b185">~managedMemory</a> ()</td></tr>
 <tr class="separator:abac1938d32c1ad704224e51b8d97b185"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4e0275c87392f269fba54dac3ff1bbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#ac4e0275c87392f269fba54dac3ff1bbf">closeSwap</a> ()</td></tr>
+<tr class="memdesc:ac4e0275c87392f269fba54dac3ff1bbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">powers down the swap class, ergo a cleanup  <a href="#ac4e0275c87392f269fba54dac3ff1bbf">More...</a><br /></td></tr>
+<tr class="separator:ac4e0275c87392f269fba54dac3ff1bbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af183c26795176260a40a73f3d8eb4445"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00018.html#af183c26795176260a40a73f3d8eb4445">setMemoryLimit</a> (<a class="el" href="a00095.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> size)</td></tr>
 <tr class="memdesc:af183c26795176260a40a73f3d8eb4445"><td class="mdescLeft">&#160;</td><td class="mdescRight">dynamically adjusts allowed ram usage  <a href="#af183c26795176260a40a73f3d8eb4445">More...</a><br /></td></tr>
 <tr class="separator:af183c26795176260a40a73f3d8eb4445"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -434,7 +437,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00165">165</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00171">171</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -544,7 +547,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </dl>
 <dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. This tells memoryManager that asynchronous actions pending will free the number of bytes given by parameter or that these bytes have now been freed </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00806">806</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00814">814</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -597,7 +600,27 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </dl>
 <dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00796">796</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00804">804</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac4e0275c87392f269fba54dac3ff1bbf"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedMemory::closeSwap </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>powers down the swap class, ergo a cleanup </p>
+<dl class="section warning"><dt>Warning</dt><dd>Can not use any rambrain pointers after this action until a new swap is installed </dd></dl>
+
+<p>Definition at line <a class="el" href="a00053_source.html#l00118">118</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -642,7 +665,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>If <code>orisSwappedin</code> is set, return value tells whether the chunk <code>orisSwappedin</code> is pointing to has been or is about to be swapped in. Otherwise false </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00177">177</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00185">185</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -661,7 +684,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>return current swap free capacity </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00128">128</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00136">136</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -680,7 +703,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>returns current hits over misses rate for accessing elements. </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00700">700</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00708">708</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -707,7 +730,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>returns current memory limit </p>
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00087">87</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00093">93</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -727,7 +750,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>conveniently returns number of children of the memoryChunk with id id </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00519">519</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00527">527</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -746,7 +769,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>returns current swap usage </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00123">123</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00131">131</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -765,7 +788,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>return current swap capacity </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00133">133</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00141">141</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -792,7 +815,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>simple Getter </p>
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00312">312</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00318">318</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -819,7 +842,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>simple Getter </p>
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00308">308</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00314">314</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -838,7 +861,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>returns current ram usage </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00118">118</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00126">126</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -858,7 +881,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 <p>linearly deletes all objects in memory </p>
 <dl class="section note"><dt>Note</dt><dd>This function does not preserve correct deallocation order in class hierarchies, as such, it is not a valid garbage collector. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00610">610</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00618">618</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -896,7 +919,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>this function unregisters and deallocates a chunk </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00452">452</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00460">460</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -924,7 +947,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>allocates and registers a new raw memory chunk of size sizereq to be filled in by <a class="el" href="a00020.html" title="Main class to allocate memory that is managed by the rambrain memory defaultManager. ">managedPtr</a> </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00227">227</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00235">235</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -962,7 +985,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>this function is a stub. In the future it should be capable of resizing an existing allocation </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00371">371</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00379">379</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -992,7 +1015,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>Triggers swapin of chunk. </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00289">289</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00297">297</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1011,7 +1034,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>print statistic about the number, size and efficiency of swapping actions </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00631">631</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00639">639</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1041,7 +1064,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>prints the tree of managed objects for further inspection </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00538">538</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00546">546</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1062,7 +1085,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 <p>recursively deletes the objects in memory, first children, then parents. </p>
 <dl class="section note"><dt>Note</dt><dd>This function does not preserve correct deallocation order in class hierarchies, as such, it is not a valid garbage collector. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00589">589</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00597">597</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1081,7 +1104,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>reset statistic about the number, size and efficiency of swapping actions </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00643">643</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00651">651</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1109,7 +1132,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>returns a reference to the memoryChunk indexed by id id </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00625">625</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00633">633</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1192,7 +1215,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>returns whether the new restrictions could be fulfilled under current load If necessary, this function will trigger writeout of objects until the new limit is reached. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00138">138</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00146">146</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1213,7 +1236,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 <p>set policy what to do when out of memory in both ram and swap </p>
 <dl class="section return"><dt>Returns</dt><dd>old policy </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00169">169</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00177">177</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1234,7 +1257,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 <p>Convenience interface for <a class="el" href="a00018.html#a2b9b148789b84dda7fa6a176bf193bf3" title="Marks chunk as used and prevents swapout. ">setUse( managedMemoryChunk &amp;chunk, bool writeAccess )</a> </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00018.html#a2b9b148789b84dda7fa6a176bf193bf3" title="Marks chunk as used and prevents swapout. ">setUse(managedMemoryChunk &amp;chunk,bool writeAccess)</a>; </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00403">403</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00411">411</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1272,7 +1295,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00325">325</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00333">333</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1300,7 +1323,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 <p>signals that a swapping action has completed and memory limits have changed </p>
 <dl class="section note"><dt>Note</dt><dd>this function is used e.g. by <a class="el" href="a00022.html" title="Class that serves as a backend to managedMemory to actual write/read managedMemoryChunks to/from hard...">managedSwap</a> to give other threads waiting the possibility to check whether the condition they're waiting for is met now. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00734">734</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00742">742</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1328,7 +1351,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>static binding that will print out some stats. Compile with cmake -DSWAPSTATS=on and send process SIGUSR1 to call this function </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00650">650</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00658">658</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1357,7 +1380,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 <p>Convenience function for swapIn ( <a class="el" href="a00019.html" title="manages all managed Chunks of raw memory ">managedMemoryChunk</a> &amp;chunk ) </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="a00018.html#ada713f6703025aa077f28f67971c2443" title="Tries to swap in chunk chunk. ">swapIn(managedMemoryChunk &amp;chunk)</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00283">283</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00291">291</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1457,7 +1480,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>Custom throw function, as we need to prevent throwing exceptions in construtors. </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00435">435</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00443">443</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1506,7 +1529,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 <p>Convenience interface for unsetUse ( <a class="el" href="a00019.html" title="manages all managed Chunks of raw memory ">managedMemoryChunk</a> &amp;chunk, bool writeAccess ) </p>
 <dl class="section see"><dt>See also</dt><dd>unsetUse(managedMemoryChunk &amp;chunk,bool writeAccess); </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00396">396</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00404">404</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1544,7 +1567,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00409">409</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00417">417</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1599,7 +1622,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 
 <p>prints out a GIT version info and a diff on this version at compile time </p>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00708">708</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00716">716</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1627,7 +1650,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 <p>wait for some asynchronous action to occur </p>
 <dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00739">739</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00747">747</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1668,7 +1691,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 <dl class="section warning"><dt>Warning</dt><dd>ensure that chunk is to be swapped in or may be present. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00749">749</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00757">757</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1709,7 +1732,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 <dl class="section warning"><dt>Warning</dt><dd>ensure that chunk is to be swapped out in or may have already been swapped. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>this function must be called having stateChangeMutex acquired. </dd></dl>
 
-<p>Definition at line <a class="el" href="a00053_source.html#l00771">771</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00053_source.html#l00779">779</a> of file <a class="el" href="a00053_source.html">managedMemory.cpp</a>.</p>
 
 </div>
 </div>
@@ -1732,7 +1755,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00241">241</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00247">247</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -1754,7 +1777,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00242">242</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00248">248</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -1776,7 +1799,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00239">239</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00245">245</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -1798,7 +1821,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00238">238</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00244">244</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -1820,7 +1843,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00240">240</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00246">246</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -1868,7 +1891,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00235">235</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00241">241</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -1890,7 +1913,7 @@ Only the most recent allocated memoryManager will be used by <a class="el" href=
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00234">234</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00240">240</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -1914,7 +1937,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00232">232</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00238">238</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -1936,7 +1959,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00233">233</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00239">239</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -1959,7 +1982,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00218">218</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00224">224</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -1981,7 +2004,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00139">139</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00145">145</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2003,7 +2026,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00146">146</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00152">152</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2025,7 +2048,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00295">295</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00301">301</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2047,7 +2070,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00147">147</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00153">153</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2070,7 +2093,7 @@ template&lt;class T , int dim&gt; </div>
 </div><div class="memdoc">
 <dl class="section warning"><dt>Warning</dt><dd>This will induce a serious issue in combination with MPI and a shared disk. How to handle that case? </dd></dl>
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00294">294</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00300">300</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2092,7 +2115,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00216">216</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00222">222</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2114,7 +2137,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00219">219</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00225">225</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2136,7 +2159,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00210">210</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00216">216</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2158,7 +2181,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00212">212</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00218">218</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2180,7 +2203,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00213">213</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00219">219</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2202,7 +2225,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00211">211</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00217">217</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2224,7 +2247,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00291">291</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00297">297</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2246,7 +2269,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00249">249</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00255">255</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2268,7 +2291,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00248">248</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00254">254</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2290,7 +2313,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00214">214</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00220">220</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2312,7 +2335,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00134">134</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00140">140</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2334,7 +2357,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00138">138</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00144">144</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2356,7 +2379,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00137">137</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00143">143</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2378,7 +2401,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00222">222</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00228">228</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2400,7 +2423,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00133">133</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00139">139</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2422,7 +2445,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00226">226</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00232">232</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2444,7 +2467,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00208">208</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00214">214</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2466,7 +2489,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00260">260</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00266">266</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2488,7 +2511,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00255">255</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00261">261</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2510,7 +2533,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00258">258</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00264">264</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2532,7 +2555,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00253">253</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00259">259</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2554,7 +2577,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00261">261</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00267">267</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2576,7 +2599,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00254">254</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00260">260</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2598,7 +2621,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00257">257</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00263">263</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2620,7 +2643,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00252">252</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00258">258</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2642,7 +2665,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00228">228</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00234">234</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2664,7 +2687,7 @@ template&lt;class T , int dim&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00054_source.html#l00136">136</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
+<p>Definition at line <a class="el" href="a00054_source.html#l00142">142</a> of file <a class="el" href="a00054_source.html">managedMemory.h</a>.</p>
 
 </div>
 </div>
@@ -2678,7 +2701,7 @@ template&lt;class T , int dim&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a00095.html">rambrain</a></li><li class="navelem"><a class="el" href="a00018.html">managedMemory</a></li>
-    <li class="footer">Generated on Tue Jan 19 2016 01:43:15 for rambrain by
+    <li class="footer">Generated on Wed Jan 20 2016 01:43:29 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

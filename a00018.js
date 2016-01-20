@@ -10,6 +10,7 @@ var a00018 =
     [ "~managedMemory", "a00018.html#abac1938d32c1ad704224e51b8d97b185", null ],
     [ "claimTobefreed", "a00018.html#a3c18257ab6113e766cbac0eed0a2c13a", null ],
     [ "claimUsageof", "a00018.html#a372ed81183939767d35e295887493e24", null ],
+    [ "closeSwap", "a00018.html#ac4e0275c87392f269fba54dac3ff1bbf", null ],
     [ "ensureEnoughSpace", "a00018.html#aed33f62ffd38add9f04593cc205d475e", null ],
     [ "getFreeSwapMemory", "a00018.html#abcd7b64034f6773bb0c33bef5a2ae96c", null ],
     [ "getHitsOverMisses", "a00018.html#a24e3c85157bebe35c89e2140c17b4eae", null ],

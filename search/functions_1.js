@@ -6,6 +6,8 @@ var searchData=
   ['claimusageof',['claimUsageof',['../a00018.html#a372ed81183939767d35e295887493e24',1,'rambrain::managedMemory::claimUsageof()'],['../a00022.html#a741c8e8d164577a825f6544d1cd1ece6',1,'rambrain::managedSwap::claimUsageof()']]],
   ['clean',['clean',['../a00028.html#a3e4485000b2a061fb75d85f68d06017d',1,'rambrain::rambrainglobals::rambrainConfig']]],
   ['cleanupcachedelements',['cleanupCachedElements',['../a00017.html#abb6d5031f31954d1d92da297ee5da435',1,'rambrain::managedFileSwap::cleanupCachedElements()'],['../a00022.html#ae35737f351420c1f3b79bae60e851e0e',1,'rambrain::managedSwap::cleanupCachedElements()']]],
+  ['close',['close',['../a00016.html#af11077475ec5c64359f28071e9856180',1,'rambrain::managedDummySwap::close()'],['../a00017.html#adc1ff48bdf3c2e0ad159765f49ac8cae',1,'rambrain::managedFileSwap::close()'],['../a00022.html#a3a7268bbe4bc0e2d9a5a0f062b426cbe',1,'rambrain::managedSwap::close()']]],
+  ['closeswap',['closeSwap',['../a00018.html#ac4e0275c87392f269fba54dac3ff1bbf',1,'rambrain::managedMemory']]],
   ['closeswapfiles',['closeSwapFiles',['../a00017.html#a8481577242e4b1d49f486a4656dac43a',1,'rambrain::managedFileSwap']]],
   ['combinefilter',['combineFilter',['../a00086.html#a76a5c70a77dbaf343c31e03122a4b5f8',1,'combineFilter(const string &amp;generalFilter, const string &amp;customFilter):&#160;testFilterHandling.cpp'],['../a00087.html#a76a5c70a77dbaf343c31e03122a4b5f8',1,'combineFilter(const string &amp;generalFilter, const string &amp;customFilter):&#160;testFilterHandling.h']]],
   ['completetransactionon',['completeTransactionOn',['../a00017.html#aec4e1f98e06dc22ff3e3568a0a0d7633',1,'rambrain::managedFileSwap']]],

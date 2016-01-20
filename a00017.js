@@ -6,6 +6,7 @@ var a00017 =
     [ "asyncIoArrived", "a00017.html#a8a79f6d2ec9f5d6b85e1dfe7756b61e2", null ],
     [ "checkForAIO", "a00017.html#a00efd15d7ce22b59c33fb713ff87683b", null ],
     [ "cleanupCachedElements", "a00017.html#abb6d5031f31954d1d92da297ee5da435", null ],
+    [ "close", "a00017.html#adc1ff48bdf3c2e0ad159765f49ac8cae", null ],
     [ "closeSwapFiles", "a00017.html#a8481577242e4b1d49f486a4656dac43a", null ],
     [ "completeTransactionOn", "a00017.html#aec4e1f98e06dc22ff3e3568a0a0d7633", null ],
     [ "copyMem", "a00017.html#ac97072c2fe1274576c10f16a6d50eae8", null ],

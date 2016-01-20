@@ -2,6 +2,7 @@ var searchData=
 [
   ['child',['child',['../a00019.html#a7363a8d7ddfc6be817b5a5baf1024643',1,'rambrain::managedMemoryChunk']]],
   ['chunk',['chunk',['../a00010.html#a710db2d46d07a035dc5e84e8f0561171',1,'rambrain::cyclicAtime::chunk()'],['../a00014.html#ab8842cb0cb6905d4bf95df56c0fb9b50',1,'rambrain::glob_off_union::chunk()'],['../a00021.html#a117266ae657cb62f0816a2d081deb420',1,'rambrain::managedPtr&lt; T, 1 &gt;::chunk()']]],
+  ['closed',['closed',['../a00022.html#ad059a95fcb8a5877bfaaf219840c844f',1,'rambrain::managedSwap']]],
   ['comment',['comment',['../a00033.html#afe62e0886e6b23252681d9ec14f87855',1,'tester']]],
   ['config',['config',['../a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce',1,'rambrain::configReader::config()'],['../a00028.html#a48f1f953b1c2c97c7a2a9864bcd6935d',1,'rambrain::rambrainglobals::rambrainConfig::config()'],['../a00096.html#ad02508d72047bc55a38eda857e4816c1',1,'rambrain::rambrainglobals::config()']]],
   ['configoptions',['configOptions',['../a00009.html#a60063ca6099263b106e5434bc0d5ed0b',1,'rambrain::configuration']]],

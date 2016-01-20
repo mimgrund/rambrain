@@ -165,6 +165,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aff6aa4d33bcbc5e6cfd7343ebb838332"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53ecd36635a2dce550989f688d8323d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#a53ecd36635a2dce550989f688d8323d0">setDMA</a> (bool arg1)</td></tr>
 <tr class="separator:a53ecd36635a2dce550989f688d8323d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc1ff48bdf3c2e0ad159765f49ac8cae"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00017.html#adc1ff48bdf3c2e0ad159765f49ac8cae">close</a> ()</td></tr>
+<tr class="memdesc:adc1ff48bdf3c2e0ad159765f49ac8cae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close the swap if not already closed.  <a href="#adc1ff48bdf3c2e0ad159765f49ac8cae">More...</a><br /></td></tr>
+<tr class="separator:adc1ff48bdf3c2e0ad159765f49ac8cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_a00022"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00022')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00022.html">rambrain::managedSwap</a></td></tr>
 <tr class="memitem:a52dfde8045a75f9e9fcdc1d2d5d237d1 inherit pub_methods_a00022"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a52dfde8045a75f9e9fcdc1d2d5d237d1">managedSwap</a> (<a class="el" href="a00095.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> size)</td></tr>
 <tr class="separator:a52dfde8045a75f9e9fcdc1d2d5d237d1 inherit pub_methods_a00022"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -276,6 +279,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a7973e5ced5c82836f5fb57337f357b19 inherit pro_attribs_a00022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a483bd634c3132518ee475ce0fb21b92d inherit pro_attribs_a00022"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00095.html#a7d53dd1748d5012cafa91aa982c7cd35">swapPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a483bd634c3132518ee475ce0fb21b92d">policy</a> = <a class="el" href="a00095.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149">swapPolicy::fixed</a></td></tr>
 <tr class="separator:a483bd634c3132518ee475ce0fb21b92d inherit pro_attribs_a00022"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad059a95fcb8a5877bfaaf219840c844f inherit pro_attribs_a00022"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#ad059a95fcb8a5877bfaaf219840c844f">closed</a> = false</td></tr>
+<tr class="separator:ad059a95fcb8a5877bfaaf219840c844f inherit pro_attribs_a00022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
@@ -461,7 +466,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>Helper function for pfmalloc. </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00391">391</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00397">397</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -499,7 +504,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>deals with a single asynchronous IO event completion </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00820">820</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00826">826</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -530,7 +535,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>Reimplemented from <a class="el" href="a00022.html#a3b17f61f7500342b9080116f7a12e228">rambrain::managedSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00759">759</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00765">765</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -560,7 +565,38 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>Reimplemented from <a class="el" href="a00022.html#ae35737f351420c1f3b79bae60e851e0e">rambrain::managedSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00916">916</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00922">922</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="adc1ff48bdf3c2e0ad159765f49ac8cae"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rambrain::managedFileSwap::close </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Close the swap if not already closed. </p>
+<dl class="section note"><dt>Note</dt><dd>Not automatically done by destructor </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Swap can not be used anymore afterwards </dd></dl>
+
+<p>Implements <a class="el" href="a00022.html#a3a7268bbe4bc0e2d9a5a0f062b426cbe">rambrain::managedSwap</a>.</p>
+
+<p>Definition at line <a class="el" href="a00051_source.html#l00143">143</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -587,7 +623,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>closes swap files </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00139">139</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00119">119</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -625,7 +661,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>called to finish a transaction when all pending aio on a <a class="el" href="a00019.html" title="manages all managed Chunks of raw memory ">managedMemoryChunk</a> has completed </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00700">700</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00706">706</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -677,7 +713,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00857">857</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00863">863</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -715,7 +751,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>Convenience function for reverse copying. </p>
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00159">159</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00161">161</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -743,7 +779,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>maps from physical location to "virtual" adress </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00596">596</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00602">602</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -781,7 +817,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>generate a <a class="el" href="a00024.html" title="tracks page file allocations while objects are preferably written continuous to page file...">pageFileLocation</a> object given a global offset and a length of the data. This maps our "virtual" adress space to physical locations in a certain file </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00600">600</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00606">606</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -812,7 +848,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>Reimplemented from <a class="el" href="a00022.html#af647cc9a3de601beed8fb86295865d10">rambrain::managedSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00254">254</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00260">260</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -849,7 +885,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>Reimplemented from <a class="el" href="a00022.html#aa2fc9e3283cdb97bf9c3ab9c6647696b">rambrain::managedSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00199">199</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00205">205</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -876,7 +912,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>returns free disk space at file system location specified by filemask </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00281">281</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00287">287</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -903,7 +939,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>If we have any restrictions regarding memory alignment of RAM buffers(DMA), this function tells us about it. </p>
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00168">168</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00170">170</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -933,7 +969,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>Reimplemented from <a class="el" href="a00022.html#a1abb02a614c246e977051eda078c154f">rambrain::managedSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00939">939</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00945">945</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -959,7 +995,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00674">674</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00680">680</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -985,7 +1021,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00647">647</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00653">653</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1011,7 +1047,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00691">691</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00697">697</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1049,7 +1085,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>opens certain range of swap files according to settings </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00163">163</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00169">169</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1076,7 +1112,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>opens swap files according to settings </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00184">184</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00190">190</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1102,7 +1138,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00426">426</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00432">432</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1141,7 +1177,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 <p>Tries to find space in the swapFiles to write out an object of size size and returns first <a class="el" href="a00024.html" title="tracks page file allocations while objects are preferably written continuous to page file...">pageFileLocation</a> to it. </p>
 <p>Priority: -Use first free chunk that fits completely -Distribute over free locations -look for read-in memory that can be overwritten -delete cached files and look again</p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00298">298</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00304">304</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1191,7 +1227,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>Schedules an elementary <a class="el" href="a00024.html" title="tracks page file allocations while objects are preferably written continuous to page file...">pageFileLocation</a> chunk for copying (in or out) </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00609">609</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00615">615</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1235,7 +1271,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>Convenience function for reverse scheduling a copy. </p>
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00163">163</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00165">165</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1253,7 +1289,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00157">157</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00137">137</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1281,7 +1317,7 @@ all public functions of <a class="el" href="a00017.html" title="An implementatio
 
 <p>returns some statistics. Typically, we will be sensitive to SIGUSR2 if compiled with -DSWAPSTATS=on </p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00882">882</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00888">888</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1314,7 +1350,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 
 <p>Implements <a class="el" href="a00022.html#ad3a4e905e42d16c0fdccf49d384a0050">rambrain::managedSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00496">496</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00502">502</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1355,7 +1391,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 
 <p>Implements <a class="el" href="a00022.html#a008bbdb1212f085e30165f6ef3ce64c3">rambrain::managedSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00531">531</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00537">537</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1386,7 +1422,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 
 <p>Implements <a class="el" href="a00022.html#aea17ec4e1139805d1f6a0d72951f82cd">rambrain::managedSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00508">508</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00514">514</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1427,7 +1463,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 
 <p>Implements <a class="el" href="a00022.html#ae2465c640d36569adca09b8410a5f0dd">rambrain::managedSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00586">586</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00592">592</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1458,7 +1494,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 
 <p>Implements <a class="el" href="a00022.html#a99d0d9de682cbe8e26951b041f883a34">rambrain::managedSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00051_source.html#l00540">540</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00051_source.html#l00546">546</a> of file <a class="el" href="a00051_source.html">managedFileSwap.cpp</a>.</p>
 
 </div>
 </div>
@@ -1481,7 +1517,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00239">239</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00241">241</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1503,7 +1539,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00240">240</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00242">242</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1525,7 +1561,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00238">238</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00240">240</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1547,7 +1583,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00241">241</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00243">243</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1570,7 +1606,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00201">201</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00203">203</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1592,7 +1628,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00203">203</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00205">205</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1614,7 +1650,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00202">202</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00204">204</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1636,7 +1672,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00200">200</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00202">202</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1658,7 +1694,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00204">204</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00206">206</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1680,7 +1716,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00181">181</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00183">183</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1702,7 +1738,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00186">186</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00188">188</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1724,7 +1760,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00184">184</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00186">186</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1746,7 +1782,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00139">139</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00141">141</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1768,7 +1804,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00180">180</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00182">182</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1790,7 +1826,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00208">208</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00210">210</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1812,7 +1848,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00218">218</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00220">220</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1834,7 +1870,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00226">226</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00228">228</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1856,7 +1892,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00214">214</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00216">216</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1878,7 +1914,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00213">213</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00215">215</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1900,7 +1936,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00215">215</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00217">217</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1922,7 +1958,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00220">220</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00222">222</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1944,7 +1980,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00216">216</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00218">218</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1966,7 +2002,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00217">217</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00219">219</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -1988,7 +2024,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00141">141</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00143">143</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -2010,7 +2046,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00142">142</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00144">144</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -2024,7 +2060,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00124">124</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00126">126</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -2046,7 +2082,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00206">206</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00208">208</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -2068,7 +2104,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00145">145</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00147">147</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -2090,7 +2126,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00052_source.html#l00147">147</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00052_source.html#l00149">149</a> of file <a class="el" href="a00052_source.html">managedFileSwap.h</a>.</p>
 
 </div>
 </div>
@@ -2104,7 +2140,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a00095.html">rambrain</a></li><li class="navelem"><a class="el" href="a00017.html">managedFileSwap</a></li>
-    <li class="footer">Generated on Tue Jan 19 2016 01:43:15 for rambrain by
+    <li class="footer">Generated on Wed Jan 20 2016 01:43:29 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

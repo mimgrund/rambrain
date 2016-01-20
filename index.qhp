@@ -187,6 +187,7 @@
               <section title="managedDummySwap" ref="a00016.html">
                 <section title="managedDummySwap" ref="a00016.html#a9bebce00e8e8a69acae98feb30c50530" />
                 <section title="~managedDummySwap" ref="a00016.html#a014fdfbac0989338a9412fa1f6cfb1bb" />
+                <section title="close" ref="a00016.html#af11077475ec5c64359f28071e9856180" />
                 <section title="swapDelete" ref="a00016.html#adf2ae06ec74196be21414fa9d3aab3b9" />
                 <section title="swapIn" ref="a00016.html#a14896f18954ee493b8ede046b0bf8a74" />
                 <section title="swapIn" ref="a00016.html#a36a52854a42601eaa510340fce80ad75" />
@@ -200,6 +201,7 @@
                 <section title="asyncIoArrived" ref="a00017.html#a8a79f6d2ec9f5d6b85e1dfe7756b61e2" />
                 <section title="checkForAIO" ref="a00017.html#a00efd15d7ce22b59c33fb713ff87683b" />
                 <section title="cleanupCachedElements" ref="a00017.html#abb6d5031f31954d1d92da297ee5da435" />
+                <section title="close" ref="a00017.html#adc1ff48bdf3c2e0ad159765f49ac8cae" />
                 <section title="closeSwapFiles" ref="a00017.html#a8481577242e4b1d49f486a4656dac43a" />
                 <section title="completeTransactionOn" ref="a00017.html#aec4e1f98e06dc22ff3e3568a0a0d7633" />
                 <section title="copyMem" ref="a00017.html#ac97072c2fe1274576c10f16a6d50eae8" />
@@ -264,6 +266,7 @@
                 <section title="~managedMemory" ref="a00018.html#abac1938d32c1ad704224e51b8d97b185" />
                 <section title="claimTobefreed" ref="a00018.html#a3c18257ab6113e766cbac0eed0a2c13a" />
                 <section title="claimUsageof" ref="a00018.html#a372ed81183939767d35e295887493e24" />
+                <section title="closeSwap" ref="a00018.html#ac4e0275c87392f269fba54dac3ff1bbf" />
                 <section title="ensureEnoughSpace" ref="a00018.html#aed33f62ffd38add9f04593cc205d475e" />
                 <section title="getFreeSwapMemory" ref="a00018.html#abcd7b64034f6773bb0c33bef5a2ae96c" />
                 <section title="getHitsOverMisses" ref="a00018.html#a24e3c85157bebe35c89e2140c17b4eae" />
@@ -392,6 +395,7 @@
                 <section title="checkForAIO" ref="a00022.html#a3b17f61f7500342b9080116f7a12e228" />
                 <section title="claimUsageof" ref="a00022.html#a741c8e8d164577a825f6544d1cd1ece6" />
                 <section title="cleanupCachedElements" ref="a00022.html#ae35737f351420c1f3b79bae60e851e0e" />
+                <section title="close" ref="a00022.html#a3a7268bbe4bc0e2d9a5a0f062b426cbe" />
                 <section title="extendSwap" ref="a00022.html#af647cc9a3de601beed8fb86295865d10" />
                 <section title="extendSwapByPolicy" ref="a00022.html#aa2fc9e3283cdb97bf9c3ab9c6647696b" />
                 <section title="getFreeSwap" ref="a00022.html#a27d19d6eec2becdf80a805ee69a121df" />
@@ -407,6 +411,7 @@
                 <section title="swapOut" ref="a00022.html#ae2465c640d36569adca09b8410a5f0dd" />
                 <section title="swapOut" ref="a00022.html#a99d0d9de682cbe8e26951b041f883a34" />
                 <section title="waitForCleanExit" ref="a00022.html#a6207b667ec6674831738a9e22f6b3b5e" />
+                <section title="closed" ref="a00022.html#ad059a95fcb8a5877bfaaf219840c844f" />
                 <section title="memoryAlignment" ref="a00022.html#a7973e5ced5c82836f5fb57337f357b19" />
                 <section title="policy" ref="a00022.html#a483bd634c3132518ee475ce0fb21b92d" />
                 <section title="swapFree" ref="a00022.html#a89fe4124cabf967c8c56b1975c43eb2c" />
@@ -852,6 +857,7 @@
                 <section title="managedDummySwap" ref="a00016.html">
                   <section title="managedDummySwap" ref="a00016.html#a9bebce00e8e8a69acae98feb30c50530" />
                   <section title="~managedDummySwap" ref="a00016.html#a014fdfbac0989338a9412fa1f6cfb1bb" />
+                  <section title="close" ref="a00016.html#af11077475ec5c64359f28071e9856180" />
                   <section title="swapDelete" ref="a00016.html#adf2ae06ec74196be21414fa9d3aab3b9" />
                   <section title="swapIn" ref="a00016.html#a14896f18954ee493b8ede046b0bf8a74" />
                   <section title="swapIn" ref="a00016.html#a36a52854a42601eaa510340fce80ad75" />
@@ -891,6 +897,7 @@
                   <section title="asyncIoArrived" ref="a00017.html#a8a79f6d2ec9f5d6b85e1dfe7756b61e2" />
                   <section title="checkForAIO" ref="a00017.html#a00efd15d7ce22b59c33fb713ff87683b" />
                   <section title="cleanupCachedElements" ref="a00017.html#abb6d5031f31954d1d92da297ee5da435" />
+                  <section title="close" ref="a00017.html#adc1ff48bdf3c2e0ad159765f49ac8cae" />
                   <section title="closeSwapFiles" ref="a00017.html#a8481577242e4b1d49f486a4656dac43a" />
                   <section title="completeTransactionOn" ref="a00017.html#aec4e1f98e06dc22ff3e3568a0a0d7633" />
                   <section title="copyMem" ref="a00017.html#ac97072c2fe1274576c10f16a6d50eae8" />
@@ -978,6 +985,7 @@
                   <section title="~managedMemory" ref="a00018.html#abac1938d32c1ad704224e51b8d97b185" />
                   <section title="claimTobefreed" ref="a00018.html#a3c18257ab6113e766cbac0eed0a2c13a" />
                   <section title="claimUsageof" ref="a00018.html#a372ed81183939767d35e295887493e24" />
+                  <section title="closeSwap" ref="a00018.html#ac4e0275c87392f269fba54dac3ff1bbf" />
                   <section title="ensureEnoughSpace" ref="a00018.html#aed33f62ffd38add9f04593cc205d475e" />
                   <section title="getFreeSwapMemory" ref="a00018.html#abcd7b64034f6773bb0c33bef5a2ae96c" />
                   <section title="getHitsOverMisses" ref="a00018.html#a24e3c85157bebe35c89e2140c17b4eae" />
@@ -1168,6 +1176,7 @@
                   <section title="checkForAIO" ref="a00022.html#a3b17f61f7500342b9080116f7a12e228" />
                   <section title="claimUsageof" ref="a00022.html#a741c8e8d164577a825f6544d1cd1ece6" />
                   <section title="cleanupCachedElements" ref="a00022.html#ae35737f351420c1f3b79bae60e851e0e" />
+                  <section title="close" ref="a00022.html#a3a7268bbe4bc0e2d9a5a0f062b426cbe" />
                   <section title="extendSwap" ref="a00022.html#af647cc9a3de601beed8fb86295865d10" />
                   <section title="extendSwapByPolicy" ref="a00022.html#aa2fc9e3283cdb97bf9c3ab9c6647696b" />
                   <section title="getFreeSwap" ref="a00022.html#a27d19d6eec2becdf80a805ee69a121df" />
@@ -1183,6 +1192,7 @@
                   <section title="swapOut" ref="a00022.html#ae2465c640d36569adca09b8410a5f0dd" />
                   <section title="swapOut" ref="a00022.html#a99d0d9de682cbe8e26951b041f883a34" />
                   <section title="waitForCleanExit" ref="a00022.html#a6207b667ec6674831738a9e22f6b3b5e" />
+                  <section title="closed" ref="a00022.html#ad059a95fcb8a5877bfaaf219840c844f" />
                   <section title="memoryAlignment" ref="a00022.html#a7973e5ced5c82836f5fb57337f357b19" />
                   <section title="policy" ref="a00022.html#a483bd634c3132518ee475ce0fb21b92d" />
                   <section title="swapFree" ref="a00022.html#a89fe4124cabf967c8c56b1975c43eb2c" />
@@ -1882,6 +1892,7 @@
       <keyword name="setPreemptiveUnloading" id="rambrain::cyclicManagedMemory::setPreemptiveUnloading" ref="a00011.html#aff64a33ffa6d2b3f0044fefd15c97294" />
       <keyword name="managedMemory" id="rambrain::managedMemory::managedMemory" ref="a00018.html#a45e18a3242b55adc2b6e50bdbecfcaba" />
       <keyword name="~managedMemory" id="rambrain::managedMemory::~managedMemory" ref="a00018.html#abac1938d32c1ad704224e51b8d97b185" />
+      <keyword name="closeSwap" id="rambrain::managedMemory::closeSwap" ref="a00018.html#ac4e0275c87392f269fba54dac3ff1bbf" />
       <keyword name="setMemoryLimit" id="rambrain::managedMemory::setMemoryLimit" ref="a00018.html#af183c26795176260a40a73f3d8eb4445" />
       <keyword name="getMemoryLimit" id="rambrain::managedMemory::getMemoryLimit" ref="a00018.html#aea4a0f411615e719685e999a51565f46" />
       <keyword name="getUsedMemory" id="rambrain::managedMemory::getUsedMemory" ref="a00018.html#ab4ed9d5c617b36a14037072291b69ee5" />
@@ -1985,6 +1996,7 @@
       <keyword name="~dummyManagedMemory" id="rambrain::dummyManagedMemory::~dummyManagedMemory" ref="a00013.html#aac2af094485c7dcd53115453a16f5159" />
       <keyword name="managedMemory" id="rambrain::managedMemory::managedMemory" ref="a00018.html#a45e18a3242b55adc2b6e50bdbecfcaba" />
       <keyword name="~managedMemory" id="rambrain::managedMemory::~managedMemory" ref="a00018.html#abac1938d32c1ad704224e51b8d97b185" />
+      <keyword name="closeSwap" id="rambrain::managedMemory::closeSwap" ref="a00018.html#ac4e0275c87392f269fba54dac3ff1bbf" />
       <keyword name="setMemoryLimit" id="rambrain::managedMemory::setMemoryLimit" ref="a00018.html#af183c26795176260a40a73f3d8eb4445" />
       <keyword name="getMemoryLimit" id="rambrain::managedMemory::getMemoryLimit" ref="a00018.html#aea4a0f411615e719685e999a51565f46" />
       <keyword name="getUsedMemory" id="rambrain::managedMemory::getUsedMemory" ref="a00018.html#ab4ed9d5c617b36a14037072291b69ee5" />
@@ -2078,6 +2090,7 @@
       <keyword name="swapOut" id="rambrain::managedDummySwap::swapOut" ref="a00016.html#a68f0a0932f20d582f34609d7501d2540" />
       <keyword name="swapOut" id="rambrain::managedDummySwap::swapOut" ref="a00016.html#ab8309f8bee2baf4cb692529fc22c33b6" />
       <keyword name="swapDelete" id="rambrain::managedDummySwap::swapDelete" ref="a00016.html#adf2ae06ec74196be21414fa9d3aab3b9" />
+      <keyword name="close" id="rambrain::managedDummySwap::close" ref="a00016.html#af11077475ec5c64359f28071e9856180" />
       <keyword name="managedSwap" id="rambrain::managedSwap::managedSwap" ref="a00022.html#a52dfde8045a75f9e9fcdc1d2d5d237d1" />
       <keyword name="~managedSwap" id="rambrain::managedSwap::~managedSwap" ref="a00022.html#a70fa001b0161095d2298620ecc5d5838" />
       <keyword name="extendSwapByPolicy" id="rambrain::managedSwap::extendSwapByPolicy" ref="a00022.html#aa2fc9e3283cdb97bf9c3ab9c6647696b" />
@@ -2099,6 +2112,7 @@
       <keyword name="totalSwapActionsQueued" id="rambrain::managedSwap::totalSwapActionsQueued" ref="a00022.html#a4d0644a5dc6b03baaf1bc8ae3c4bfee9" />
       <keyword name="memoryAlignment" id="rambrain::managedSwap::memoryAlignment" ref="a00022.html#a7973e5ced5c82836f5fb57337f357b19" />
       <keyword name="policy" id="rambrain::managedSwap::policy" ref="a00022.html#a483bd634c3132518ee475ce0fb21b92d" />
+      <keyword name="closed" id="rambrain::managedSwap::closed" ref="a00022.html#ad059a95fcb8a5877bfaaf219840c844f" />
       <keyword name="rambrain::managedFileSwap" id="rambrain::managedFileSwap" ref="a00017.html" />
       <keyword name="managedFileSwap" id="rambrain::managedFileSwap::managedFileSwap" ref="a00017.html#a0cbd82d1abbc7f41c80d6c066683f4c3" />
       <keyword name="~managedFileSwap" id="rambrain::managedFileSwap::~managedFileSwap" ref="a00017.html#a4f43e41fe05c9514040aa8b229196352" />
@@ -2110,6 +2124,7 @@
       <keyword name="extendSwap" id="rambrain::managedFileSwap::extendSwap" ref="a00017.html#ac78396375c0ad536c2c744238c3b4b2d" />
       <keyword name="extendSwapByPolicy" id="rambrain::managedFileSwap::extendSwapByPolicy" ref="a00017.html#aff6aa4d33bcbc5e6cfd7343ebb838332" />
       <keyword name="setDMA" id="rambrain::managedFileSwap::setDMA" ref="a00017.html#a53ecd36635a2dce550989f688d8323d0" />
+      <keyword name="close" id="rambrain::managedFileSwap::close" ref="a00017.html#adc1ff48bdf3c2e0ad159765f49ac8cae" />
       <keyword name="managedSwap" id="rambrain::managedSwap::managedSwap" ref="a00022.html#a52dfde8045a75f9e9fcdc1d2d5d237d1" />
       <keyword name="~managedSwap" id="rambrain::managedSwap::~managedSwap" ref="a00022.html#a70fa001b0161095d2298620ecc5d5838" />
       <keyword name="getSwapSize" id="rambrain::managedSwap::getSwapSize" ref="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c" />
@@ -2152,6 +2167,7 @@
       <keyword name="totalSwapActionsQueued" id="rambrain::managedSwap::totalSwapActionsQueued" ref="a00022.html#a4d0644a5dc6b03baaf1bc8ae3c4bfee9" />
       <keyword name="memoryAlignment" id="rambrain::managedSwap::memoryAlignment" ref="a00022.html#a7973e5ced5c82836f5fb57337f357b19" />
       <keyword name="policy" id="rambrain::managedSwap::policy" ref="a00022.html#a483bd634c3132518ee475ce0fb21b92d" />
+      <keyword name="closed" id="rambrain::managedSwap::closed" ref="a00022.html#ad059a95fcb8a5877bfaaf219840c844f" />
       <keyword name="instance" id="rambrain::managedFileSwap::instance" ref="a00017.html#a0da0fb0093407ecf03b65557ffa357a5" />
       <keyword name="determinePFLoc" id="rambrain::managedFileSwap::determinePFLoc" ref="a00017.html#a9902a385735d2ae8a4c1dfe714bbb70b" />
       <keyword name="determineGlobalOffset" id="rambrain::managedFileSwap::determineGlobalOffset" ref="a00017.html#ae9f4e4d8ec1e48e55db955e6f032e7df" />
@@ -2181,6 +2197,7 @@
       <keyword name="rambrain::managedMemory" id="rambrain::managedMemory" ref="a00018.html" />
       <keyword name="managedMemory" id="rambrain::managedMemory::managedMemory" ref="a00018.html#a45e18a3242b55adc2b6e50bdbecfcaba" />
       <keyword name="~managedMemory" id="rambrain::managedMemory::~managedMemory" ref="a00018.html#abac1938d32c1ad704224e51b8d97b185" />
+      <keyword name="closeSwap" id="rambrain::managedMemory::closeSwap" ref="a00018.html#ac4e0275c87392f269fba54dac3ff1bbf" />
       <keyword name="setMemoryLimit" id="rambrain::managedMemory::setMemoryLimit" ref="a00018.html#af183c26795176260a40a73f3d8eb4445" />
       <keyword name="getMemoryLimit" id="rambrain::managedMemory::getMemoryLimit" ref="a00018.html#aea4a0f411615e719685e999a51565f46" />
       <keyword name="getUsedMemory" id="rambrain::managedMemory::getUsedMemory" ref="a00018.html#ab4ed9d5c617b36a14037072291b69ee5" />
@@ -2340,6 +2357,7 @@
       <keyword name="claimUsageof" id="rambrain::managedSwap::claimUsageof" ref="a00022.html#a741c8e8d164577a825f6544d1cd1ece6" />
       <keyword name="waitForCleanExit" id="rambrain::managedSwap::waitForCleanExit" ref="a00022.html#a6207b667ec6674831738a9e22f6b3b5e" />
       <keyword name="checkForAIO" id="rambrain::managedSwap::checkForAIO" ref="a00022.html#a3b17f61f7500342b9080116f7a12e228" />
+      <keyword name="close" id="rambrain::managedSwap::close" ref="a00022.html#a3a7268bbe4bc0e2d9a5a0f062b426cbe" />
       <keyword name="cleanupCachedElements" id="rambrain::managedSwap::cleanupCachedElements" ref="a00022.html#ae35737f351420c1f3b79bae60e851e0e" />
       <keyword name="invalidateCacheFor" id="rambrain::managedSwap::invalidateCacheFor" ref="a00022.html#a1abb02a614c246e977051eda078c154f" />
       <keyword name="swapSize" id="rambrain::managedSwap::swapSize" ref="a00022.html#abe55c951613974220ed60f58f83c6a64" />
@@ -2348,6 +2366,7 @@
       <keyword name="totalSwapActionsQueued" id="rambrain::managedSwap::totalSwapActionsQueued" ref="a00022.html#a4d0644a5dc6b03baaf1bc8ae3c4bfee9" />
       <keyword name="memoryAlignment" id="rambrain::managedSwap::memoryAlignment" ref="a00022.html#a7973e5ced5c82836f5fb57337f357b19" />
       <keyword name="policy" id="rambrain::managedSwap::policy" ref="a00022.html#a483bd634c3132518ee475ce0fb21b92d" />
+      <keyword name="closed" id="rambrain::managedSwap::closed" ref="a00022.html#ad059a95fcb8a5877bfaaf219840c844f" />
       <keyword name="rambrain::memoryException" id="rambrain::memoryException" ref="a00023.html" />
       <keyword name="memoryException" id="rambrain::memoryException::memoryException" ref="a00023.html#ab95d58d39319d495e6eaf2200ee58e60" />
       <keyword name="~memoryException" id="rambrain::memoryException::~memoryException" ref="a00023.html#a4b7c072943dfc4739f96ccbd6de78a70" />

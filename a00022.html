@@ -181,6 +181,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6207b667ec6674831738a9e22f6b3b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b17f61f7500342b9080116f7a12e228"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a3b17f61f7500342b9080116f7a12e228">checkForAIO</a> ()</td></tr>
 <tr class="separator:a3b17f61f7500342b9080116f7a12e228"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a7268bbe4bc0e2d9a5a0f062b426cbe"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a3a7268bbe4bc0e2d9a5a0f062b426cbe">close</a> ()=0</td></tr>
+<tr class="memdesc:a3a7268bbe4bc0e2d9a5a0f062b426cbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close the swap if not already closed.  <a href="#a3a7268bbe4bc0e2d9a5a0f062b426cbe">More...</a><br /></td></tr>
+<tr class="separator:a3a7268bbe4bc0e2d9a5a0f062b426cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae35737f351420c1f3b79bae60e851e0e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#ae35737f351420c1f3b79bae60e851e0e">cleanupCachedElements</a> (<a class="el" href="a00095.html#abe2d051306a69fb21f8a17946b4e93ed">rambrain::global_bytesize</a> minimum_size=0)</td></tr>
 <tr class="memdesc:ae35737f351420c1f3b79bae60e851e0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">throws out cached elements still in ram but also resident on disk. This makes space in situations of low swap memory  <a href="#ae35737f351420c1f3b79bae60e851e0e">More...</a><br /></td></tr>
 <tr class="separator:ae35737f351420c1f3b79bae60e851e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +205,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a7973e5ced5c82836f5fb57337f357b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a483bd634c3132518ee475ce0fb21b92d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00095.html#a7d53dd1748d5012cafa91aa982c7cd35">swapPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#a483bd634c3132518ee475ce0fb21b92d">policy</a> = <a class="el" href="a00095.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149">swapPolicy::fixed</a></td></tr>
 <tr class="separator:a483bd634c3132518ee475ce0fb21b92d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad059a95fcb8a5877bfaaf219840c844f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00022.html#ad059a95fcb8a5877bfaaf219840c844f">closed</a> = false</td></tr>
+<tr class="separator:ad059a95fcb8a5877bfaaf219840c844f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that serves as a backend to <a class="el" href="a00018.html" title="Backend class to handle raw memory and interaction/storage with managedSwap. ">managedMemory</a> to actual write/read managedMemoryChunks to/from hard disk or other non random access memory. </p>
@@ -352,7 +357,36 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="a00017.html#abb6d5031f31954d1d92da297ee5da435">rambrain::managedFileSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00060_source.html#l00130">130</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00060_source.html#l00137">137</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3a7268bbe4bc0e2d9a5a0f062b426cbe"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void rambrain::managedSwap::close </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Close the swap if not already closed. </p>
+<dl class="section note"><dt>Note</dt><dd>Not automatically done by destructor </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Swap can not be used anymore afterwards </dd></dl>
+
+<p>Implemented in <a class="el" href="a00017.html#adc1ff48bdf3c2e0ad159765f49ac8cae">rambrain::managedFileSwap</a>, and <a class="el" href="a00016.html#af11077475ec5c64359f28071e9856180">rambrain::managedDummySwap</a>.</p>
 
 </div>
 </div>
@@ -584,7 +618,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="a00017.html#a00ce62478def2fbf195c7dc1fef17b33">rambrain::managedFileSwap</a>.</p>
 
-<p>Definition at line <a class="el" href="a00060_source.html#l00136">136</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00060_source.html#l00143">143</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
 
 </div>
 </div>
@@ -801,6 +835,28 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ad059a95fcb8a5877bfaaf219840c844f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool rambrain::managedSwap::closed = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00060_source.html#l00155">155</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a7973e5ced5c82836f5fb57337f357b19"></a>
 <div class="memitem">
 <div class="memproto">
@@ -819,7 +875,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00060_source.html#l00144">144</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00060_source.html#l00151">151</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
 
 </div>
 </div>
@@ -841,7 +897,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00060_source.html#l00146">146</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00060_source.html#l00153">153</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
 
 </div>
 </div>
@@ -863,7 +919,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00060_source.html#l00141">141</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00060_source.html#l00148">148</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
 
 </div>
 </div>
@@ -885,7 +941,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00060_source.html#l00139">139</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00060_source.html#l00146">146</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
 
 </div>
 </div>
@@ -907,7 +963,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00060_source.html#l00140">140</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00060_source.html#l00147">147</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
 
 </div>
 </div>
@@ -929,7 +985,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00060_source.html#l00142">142</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
+<p>Definition at line <a class="el" href="a00060_source.html#l00149">149</a> of file <a class="el" href="a00060_source.html">managedSwap.h</a>.</p>
 
 </div>
 </div>
@@ -943,7 +999,7 @@ this function must be called having stateChangeMutex acquired. </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a00095.html">rambrain</a></li><li class="navelem"><a class="el" href="a00022.html">managedSwap</a></li>
-    <li class="footer">Generated on Tue Jan 19 2016 01:43:16 for rambrain by
+    <li class="footer">Generated on Wed Jan 20 2016 01:43:30 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
