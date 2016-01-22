@@ -142,26 +142,28 @@ void managedFileSwap::setDMA ( bool arg1 )
 
 void managedFileSwap::close()
 {
-    free ( aio_eventarr );
-    closeSwapFiles();
-    free ( ( void * ) filemask );
-    if ( all_space.size() > 0 ) {
-        std::map<global_offset, pageFileLocation *>::iterator it = all_space.begin();
-        do {
-            delete it->second;
-        } while ( ++it != all_space.end() );
+    if ( !closed ) {
+        free ( aio_eventarr );
+        closeSwapFiles();
+        free ( ( void * ) filemask );
+        if ( all_space.size() > 0 ) {
+            std::map<global_offset, pageFileLocation *>::iterator it = all_space.begin();
+            do {
+                delete it->second;
+            } while ( ++it != all_space.end() );
+        }
+        //Kill worker threads by issing suicidal command:
+        for ( unsigned int n = 0; n < io_submit_num_threads; ++n ) {
+            my_io_submit ( NULL );
+        }
+        io_arrive_work = false;
+        for ( unsigned int n = 0; n < io_submit_num_threads; ++n ) {
+            pthread_join ( io_submit_threads[n], NULL );
+        }
+        pthread_join ( io_arrive_thread, NULL );
+        free ( io_submit_threads );
+        io_destroy ( aio_context );
     }
-    //Kill worker threads by issing suicidal command:
-    for ( unsigned int n = 0; n < io_submit_num_threads; ++n ) {
-        my_io_submit ( NULL );
-    }
-    io_arrive_work = false;
-    for ( unsigned int n = 0; n < io_submit_num_threads; ++n ) {
-        pthread_join ( io_submit_threads[n], NULL );
-    }
-    pthread_join ( io_arrive_thread, NULL );
-    free ( io_submit_threads );
-    io_destroy ( aio_context );
 
     closed = true;
 }
