@@ -909,5 +909,45 @@ TEST ( managedPtr, Unit_TwoDimensionalPtr )
     );
 }
 
+/**
+ * @test Tests if three dimensional managed pointers work properly
+ */
+TEST ( managedPtr, Unit_ThreeDimensionalPtr )
+{
+    managedDummySwap swap ( sizeof ( double ) * 1000 );
+    cyclicManagedMemory managedMemory ( & swap, sizeof ( double ) * 15 ) ;
+
+    managedPtr<double, 3> ptr1 ( 3, 5, 4 );
+
+    ASSERT_NO_FATAL_FAILURE (
+    for ( int i = 0; i < 3; ++i ) {
+    for ( int j = 0; j < 5; ++j ) {
+            adhereTo <double> glue ( ptr1[i][j] );
+            double *loc = glue;
+            for ( int k = 0; k < 4; ++k ) {
+                loc[k] = i * 5 * 4 + j * 4 + k;
+            }
+        }
+    } );
+
+    managedPtr<double, 3> ptr2 ( ptr1 );
+    managedPtr<double, 3> ptr3 = ptr1;
+
+    ASSERT_NO_FATAL_FAILURE (
+    for ( int i = 0; i < 3; ++i ) {
+    for ( int j = 0; j < 5; ++j ) {
+            adhereTo <double> glue2 ( ptr2[i][j] );
+            double *loc2 = glue2;
+            adhereTo <double> glue3 ( ptr3[i][j] );
+            double *loc3 = glue3;
+
+            for ( int k = 0; k < 4; ++k ) {
+                ASSERT_EQ ( i * 5 * 4 + j * 4 + k, loc2[k] );
+                ASSERT_EQ ( i * 5 * 4 + j * 4 + k, loc3[k] );
+            }
+        }
+    } );
+}
+
 RESTORE_WARNINGS;
 

@@ -96,6 +96,9 @@ public:
         }
     }
 
+    ///@brief with no arguments given, instantiates an array with one element
+    managedPtr() : managedPtr ( 1 ) {}
+
     ///@brief destructor
     ~managedPtr() {
         delete[] subPtrs;
