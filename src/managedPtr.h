@@ -83,7 +83,7 @@ class managedPtr
 public:
     ///@brief copy ctor
     managedPtr ( const managedPtr<T, dim> &ref ) : n_elem ( ref.n_elem ), subPtrs ( new managedPtr < T, dim - 1 > [n_elem] ) {
-        for ( int i = 0; i < n_elem; ++i ) {
+        for ( unsigned int i = 0; i < n_elem; ++i ) {
             subPtrs[i] = ref.subPtrs[i];
         }
     }
@@ -91,7 +91,7 @@ public:
     ///@brief instantiates managedPtr containing n_elem elements in the current dimension and passes Args as arguments to the constructor of these
     template <typename... ctor_args>
     managedPtr ( unsigned int n_elem , ctor_args... Args ) : n_elem ( n_elem ), subPtrs ( new managedPtr < T, dim - 1 > [n_elem] ) {
-        for ( int i = 0; i < n_elem; ++i ) {
+        for ( unsigned int i = 0; i < n_elem; ++i ) {
             subPtrs[i] = managedPtr < T, dim - 1 > ( Args... );
         }
     }
@@ -126,7 +126,7 @@ public:
     }
 
 private:
-    int n_elem;
+    unsigned int n_elem;
     managedPtr < T, dim - 1 > * subPtrs;
 };
 
