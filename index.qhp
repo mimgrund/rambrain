@@ -353,6 +353,7 @@
               <section title="managedPtr" ref="a00020.html">
                 <section title="managedPtr" ref="a00020.html#a22c6004a0362a28ee4b6de4fca2ccff2" />
                 <section title="managedPtr" ref="a00020.html#a89953e72c68a643d4e1b969f7950e42a" />
+                <section title="managedPtr" ref="a00020.html#a54cd4e818a35dd120bbb0a3289b392c8" />
                 <section title="~managedPtr" ref="a00020.html#a28f7b2f70057705050caccb4ddce5f51" />
                 <section title="operator=" ref="a00020.html#a11cc7b9a98dda932d2ea917861ab4fbe" />
                 <section title="operator[]" ref="a00020.html#a7b0a07a9438ff51db7409bc0bbba7d95" />
@@ -967,6 +968,7 @@
                 <section title="managedPtr" ref="a00020.html">
                   <section title="managedPtr" ref="a00020.html#a22c6004a0362a28ee4b6de4fca2ccff2" />
                   <section title="managedPtr" ref="a00020.html#a89953e72c68a643d4e1b969f7950e42a" />
+                  <section title="managedPtr" ref="a00020.html#a54cd4e818a35dd120bbb0a3289b392c8" />
                   <section title="~managedPtr" ref="a00020.html#a28f7b2f70057705050caccb4ddce5f51" />
                   <section title="operator=" ref="a00020.html#a11cc7b9a98dda932d2ea917861ab4fbe" />
                   <section title="operator[]" ref="a00020.html#a7b0a07a9438ff51db7409bc0bbba7d95" />
@@ -1107,6 +1109,7 @@
                 <section title="managedPtr" ref="a00020.html">
                   <section title="managedPtr" ref="a00020.html#a22c6004a0362a28ee4b6de4fca2ccff2" />
                   <section title="managedPtr" ref="a00020.html#a89953e72c68a643d4e1b969f7950e42a" />
+                  <section title="managedPtr" ref="a00020.html#a54cd4e818a35dd120bbb0a3289b392c8" />
                   <section title="~managedPtr" ref="a00020.html#a28f7b2f70057705050caccb4ddce5f51" />
                   <section title="operator=" ref="a00020.html#a11cc7b9a98dda932d2ea917861ab4fbe" />
                   <section title="operator[]" ref="a00020.html#a7b0a07a9438ff51db7409bc0bbba7d95" />
@@ -1501,6 +1504,7 @@
                 <section title="TEST" ref="a00091.html#a7b03e5e133dd7b652fdba93c73130808" />
                 <section title="TEST" ref="a00091.html#a27d7759526091c00ad3b6dec568fcc3a" />
                 <section title="TEST" ref="a00091.html#a8ee83cbb3aceda209d59e0063113b138" />
+                <section title="TEST" ref="a00091.html#a894dc7fe91825706339238937e499a4c" />
                 <section title="IGNORE_TEST_WARNINGS" ref="a00091.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
                 <section title="RESTORE_WARNINGS" ref="a00091.html#a3d9512de8648bd4680902a4999028b5f" />
               </section>
@@ -1670,6 +1674,7 @@
       <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00091.html#a7b03e5e133dd7b652fdba93c73130808" />
       <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00091.html#a27d7759526091c00ad3b6dec568fcc3a" />
       <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00091.html#a8ee83cbb3aceda209d59e0063113b138" />
+      <keyword name="TEST" id="testManagedPtr.cpp::TEST" ref="a00091.html#a894dc7fe91825706339238937e499a4c" />
       <keyword name="IGNORE_TEST_WARNINGS" id="testManagedPtr.cpp::IGNORE_TEST_WARNINGS" ref="a00091.html#a01fd81f2b165cd8ece606bb0e29b2b33" />
       <keyword name="RESTORE_WARNINGS" id="testManagedPtr.cpp::RESTORE_WARNINGS" ref="a00091.html#a3d9512de8648bd4680902a4999028b5f" />
       <keyword name="TEST" id="testRegexMatcher.cpp::TEST" ref="a00092.html#afcbcb3d22a4ea7f6e5b773be4dcf1ae0" />
@@ -2304,6 +2309,7 @@
       <keyword name="rambrain::managedPtr" id="rambrain::managedPtr" ref="a00020.html" />
       <keyword name="managedPtr" id="rambrain::managedPtr::managedPtr" ref="a00020.html#a22c6004a0362a28ee4b6de4fca2ccff2" />
       <keyword name="managedPtr" id="rambrain::managedPtr::managedPtr" ref="a00020.html#a89953e72c68a643d4e1b969f7950e42a" />
+      <keyword name="managedPtr" id="rambrain::managedPtr::managedPtr" ref="a00020.html#a54cd4e818a35dd120bbb0a3289b392c8" />
       <keyword name="~managedPtr" id="rambrain::managedPtr::~managedPtr" ref="a00020.html#a28f7b2f70057705050caccb4ddce5f51" />
       <keyword name="operator=" id="rambrain::managedPtr::operator=" ref="a00020.html#a11cc7b9a98dda932d2ea917861ab4fbe" />
       <keyword name="operator[]" id="rambrain::managedPtr::operator[]" ref="a00020.html#a7b0a07a9438ff51db7409bc0bbba7d95" />

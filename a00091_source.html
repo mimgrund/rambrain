@@ -940,12 +940,49 @@ $(document).ready(function(){initNavTree('a00091_source.html','');});
 <div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    );</div>
 <div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;}</div>
 <div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;</div>
-<div class="line"><a name="l00912"></a><span class="lineno"><a class="line" href="a00091.html#a3d9512de8648bd4680902a4999028b5f">  912</a></span>&#160;<a class="code" href="a00091.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a>;</div>
-<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;</div>
+<div class="line"><a name="l00915"></a><span class="lineno"><a class="line" href="a00091.html#a894dc7fe91825706339238937e499a4c">  915</a></span>&#160;<a class="code" href="a00091.html#a6a8bbea2d6377b6395df1b7800700e77">TEST</a> ( <a class="code" href="a00020.html">managedPtr</a>, Unit_ThreeDimensionalPtr )</div>
+<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;{</div>
+<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;    <a class="code" href="a00016.html">managedDummySwap</a> swap ( <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ) * 1000 );</div>
+<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;    <a class="code" href="a00011.html">cyclicManagedMemory</a> managedMemory ( &amp; swap, <span class="keyword">sizeof</span> ( <span class="keywordtype">double</span> ) * 15 ) ;</div>
+<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;</div>
+<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;double, 3&gt;</a> ptr1 ( 3, 5, 4 );</div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;</div>
+<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;    ASSERT_NO_FATAL_FAILURE (</div>
+<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; 3; ++i ) {</div>
+<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> j = 0; j &lt; 5; ++j ) {</div>
+<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160;            <a class="code" href="a00001.html">adhereTo &lt;double&gt;</a> glue ( ptr1[i][j] );</div>
+<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160;            <span class="keywordtype">double</span> *loc = glue;</div>
+<div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160;            <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> k = 0; k &lt; 4; ++k ) {</div>
+<div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;                loc[k] = i * 5 * 4 + j * 4 + k;</div>
+<div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;            }</div>
+<div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;        }</div>
+<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;    } );</div>
+<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;</div>
+<div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;double, 3&gt;</a> ptr2 ( ptr1 );</div>
+<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;double, 3&gt;</a> ptr3 = ptr1;</div>
+<div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160;</div>
+<div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;    ASSERT_NO_FATAL_FAILURE (</div>
+<div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; 3; ++i ) {</div>
+<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> j = 0; j &lt; 5; ++j ) {</div>
+<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;            <a class="code" href="a00001.html">adhereTo &lt;double&gt;</a> glue2 ( ptr2[i][j] );</div>
+<div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;            <span class="keywordtype">double</span> *loc2 = glue2;</div>
+<div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;            <a class="code" href="a00001.html">adhereTo &lt;double&gt;</a> glue3 ( ptr3[i][j] );</div>
+<div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;            <span class="keywordtype">double</span> *loc3 = glue3;</div>
+<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;</div>
+<div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;            <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> k = 0; k &lt; 4; ++k ) {</div>
+<div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;                ASSERT_EQ ( i * 5 * 4 + j * 4 + k, loc2[k] );</div>
+<div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160;                ASSERT_EQ ( i * 5 * 4 + j * 4 + k, loc3[k] );</div>
+<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;            }</div>
+<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;        }</div>
+<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;    } );</div>
+<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;}</div>
+<div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;</div>
+<div class="line"><a name="l00952"></a><span class="lineno"><a class="line" href="a00091.html#a3d9512de8648bd4680902a4999028b5f">  952</a></span>&#160;<a class="code" href="a00091.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a>;</div>
+<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160;</div>
 <div class="ttc" id="a00091_html_a01fd81f2b165cd8ece606bb0e29b2b33"><div class="ttname"><a href="a00091.html#a01fd81f2b165cd8ece606bb0e29b2b33">IGNORE_TEST_WARNINGS</a></div><div class="ttdeci">IGNORE_TEST_WARNINGS</div><div class="ttdef"><b>Definition:</b> <a href="a00091_source.html#l00021">testManagedPtr.cpp:21</a></div></div>
 <div class="ttc" id="a00044_html"><div class="ttname"><a href="a00044.html">dummyManagedMemory.h</a></div></div>
 <div class="ttc" id="a00018_html_a4158747bb03019659afc34d0120be28c"><div class="ttname"><a href="a00018.html#a4158747bb03019659afc34d0120be28c">rambrain::managedMemory::setOutOfSwapIsFatal</a></div><div class="ttdeci">bool setOutOfSwapIsFatal(bool fatal=true)</div><div class="ttdoc">set policy what to do when out of memory in both ram and swap </div><div class="ttdef"><b>Definition:</b> <a href="a00053_source.html#l00177">managedMemory.cpp:177</a></div></div>
-<div class="ttc" id="a00091_html_a3d9512de8648bd4680902a4999028b5f"><div class="ttname"><a href="a00091.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a></div><div class="ttdeci">RESTORE_WARNINGS</div><div class="ttdef"><b>Definition:</b> <a href="a00091_source.html#l00912">testManagedPtr.cpp:912</a></div></div>
+<div class="ttc" id="a00091_html_a3d9512de8648bd4680902a4999028b5f"><div class="ttname"><a href="a00091.html#a3d9512de8648bd4680902a4999028b5f">RESTORE_WARNINGS</a></div><div class="ttdeci">RESTORE_WARNINGS</div><div class="ttdef"><b>Definition:</b> <a href="a00091_source.html#l00952">testManagedPtr.cpp:952</a></div></div>
 <div class="ttc" id="a00012_html_a4af8f20c97014389124277ceefc082b2"><div class="ttname"><a href="a00012.html#a4af8f20c97014389124277ceefc082b2">destructorTracker::num_instances</a></div><div class="ttdeci">static int num_instances</div><div class="ttdef"><b>Definition:</b> <a href="a00091_source.html#l00544">testManagedPtr.cpp:544</a></div></div>
 <div class="ttc" id="a00001_html"><div class="ttname"><a href="a00001.html">rambrain::adhereTo</a></div><div class="ttdoc">Main class to fetch memory that is managed by rambrain for actual usage. </div><div class="ttdef"><b>Definition:</b> <a href="a00058_source.html#l00048">managedPtr.h:48</a></div></div>
 <div class="ttc" id="a00023_html"><div class="ttname"><a href="a00023.html">rambrain::memoryException</a></div><div class="ttdoc">Exception for errors with the memory. </div><div class="ttdef"><b>Definition:</b> <a href="a00045_source.html#l00087">exceptions.h:87</a></div></div>
@@ -983,7 +1020,7 @@ $(document).ready(function(){initNavTree('a00091_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00091.html">testManagedPtr.cpp</a></li>
-    <li class="footer">Generated on Mon Feb 1 2016 01:43:36 for rambrain by
+    <li class="footer">Generated on Tue Feb 2 2016 01:43:40 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

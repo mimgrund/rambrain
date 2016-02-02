@@ -129,6 +129,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a89953e72c68a643d4e1b969f7950e42a"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="a00020.html#a89953e72c68a643d4e1b969f7950e42a">managedPtr</a> (unsigned int <a class="el" href="a00020.html#a26129af0148deeb44e329af737ea1650">n_elem</a>, ctor_args...Args)</td></tr>
 <tr class="memdesc:a89953e72c68a643d4e1b969f7950e42a"><td class="mdescLeft">&#160;</td><td class="mdescRight">instantiates <a class="el" href="a00020.html" title="Main class to allocate memory that is managed by the rambrain memory defaultManager. ">managedPtr</a> containing n_elem elements in the current dimension and passes Args as arguments to the constructor of these  <a href="#a89953e72c68a643d4e1b969f7950e42a">More...</a><br /></td></tr>
 <tr class="separator:a89953e72c68a643d4e1b969f7950e42a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54cd4e818a35dd120bbb0a3289b392c8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a54cd4e818a35dd120bbb0a3289b392c8">managedPtr</a> ()</td></tr>
+<tr class="memdesc:a54cd4e818a35dd120bbb0a3289b392c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">with no arguments given, instantiates an array with one element  <a href="#a54cd4e818a35dd120bbb0a3289b392c8">More...</a><br /></td></tr>
+<tr class="separator:a54cd4e818a35dd120bbb0a3289b392c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28f7b2f70057705050caccb4ddce5f51"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00020.html#a28f7b2f70057705050caccb4ddce5f51">~managedPtr</a> ()</td></tr>
 <tr class="memdesc:a28f7b2f70057705050caccb4ddce5f51"><td class="mdescLeft">&#160;</td><td class="mdescRight">destructor  <a href="#a28f7b2f70057705050caccb4ddce5f51">More...</a><br /></td></tr>
 <tr class="separator:a28f7b2f70057705050caccb4ddce5f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,6 +241,35 @@ template&lt;typename... ctor_args&gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a54cd4e818a35dd120bbb0a3289b392c8"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T, int dim = 1&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00020.html">rambrain::managedPtr</a>&lt; T, dim &gt;::<a class="el" href="a00020.html">managedPtr</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>with no arguments given, instantiates an array with one element </p>
+
+<p>Definition at line <a class="el" href="a00058_source.html#l00100">100</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a28f7b2f70057705050caccb4ddce5f51"></a>
 <div class="memitem">
 <div class="memproto">
@@ -263,7 +295,7 @@ template&lt;class T, int dim = 1&gt; </div>
 
 <p>destructor </p>
 
-<p>Definition at line <a class="el" href="a00058_source.html#l00100">100</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00058_source.html#l00103">103</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -294,7 +326,7 @@ template&lt;class T, int dim = 1&gt; </div>
 
 <p>assignment operator </p>
 
-<p>Definition at line <a class="el" href="a00058_source.html#l00105">105</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00058_source.html#l00108">108</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -324,7 +356,7 @@ template&lt;class T, int dim = 1&gt; </div>
 
 <p>simple getter for this dimension </p>
 
-<p>Definition at line <a class="el" href="a00058_source.html#l00116">116</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00058_source.html#l00119">119</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -354,7 +386,7 @@ template&lt;class T, int dim = 1&gt; </div>
 
 <p>simple getter for this dimension </p>
 
-<p>Definition at line <a class="el" href="a00058_source.html#l00121">121</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00058_source.html#l00124">124</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -379,7 +411,7 @@ template&lt;class T, int dim = 1&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00058_source.html#l00126">126</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00058_source.html#l00129">129</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -403,7 +435,7 @@ template&lt;class T, int dim = 1&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00058_source.html#l00127">127</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
+<p>Definition at line <a class="el" href="a00058_source.html#l00130">130</a> of file <a class="el" href="a00058_source.html">managedPtr.h</a>.</p>
 
 </div>
 </div>
@@ -417,7 +449,7 @@ template&lt;class T, int dim = 1&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="a00095.html">rambrain</a></li><li class="navelem"><a class="el" href="a00020.html">managedPtr</a></li>
-    <li class="footer">Generated on Mon Feb 1 2016 01:43:40 for rambrain by
+    <li class="footer">Generated on Tue Feb 2 2016 01:43:43 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
