@@ -358,7 +358,7 @@
                 <section title="operator=" ref="a00020.html#a11cc7b9a98dda932d2ea917861ab4fbe" />
                 <section title="operator[]" ref="a00020.html#a7b0a07a9438ff51db7409bc0bbba7d95" />
                 <section title="operator[]" ref="a00020.html#ad4e60b360a957198c57e04b1296d7008" />
-                <section title="n_elem" ref="a00020.html#a26129af0148deeb44e329af737ea1650" />
+                <section title="n_elem" ref="a00020.html#aed1590462b762b9641494abcc5f84f1e" />
                 <section title="subPtrs" ref="a00020.html#aa811e6094b6acc3f1329d26ad010c1fb" />
               </section>
               <section title="managedPtr&lt; T, 1 &gt;" ref="a00021.html">
@@ -973,7 +973,7 @@
                   <section title="operator=" ref="a00020.html#a11cc7b9a98dda932d2ea917861ab4fbe" />
                   <section title="operator[]" ref="a00020.html#a7b0a07a9438ff51db7409bc0bbba7d95" />
                   <section title="operator[]" ref="a00020.html#ad4e60b360a957198c57e04b1296d7008" />
-                  <section title="n_elem" ref="a00020.html#a26129af0148deeb44e329af737ea1650" />
+                  <section title="n_elem" ref="a00020.html#aed1590462b762b9641494abcc5f84f1e" />
                   <section title="subPtrs" ref="a00020.html#aa811e6094b6acc3f1329d26ad010c1fb" />
                 </section>
                 <section title="managedMemory" ref="a00018.html">
@@ -1114,7 +1114,7 @@
                   <section title="operator=" ref="a00020.html#a11cc7b9a98dda932d2ea917861ab4fbe" />
                   <section title="operator[]" ref="a00020.html#a7b0a07a9438ff51db7409bc0bbba7d95" />
                   <section title="operator[]" ref="a00020.html#ad4e60b360a957198c57e04b1296d7008" />
-                  <section title="n_elem" ref="a00020.html#a26129af0148deeb44e329af737ea1650" />
+                  <section title="n_elem" ref="a00020.html#aed1590462b762b9641494abcc5f84f1e" />
                   <section title="subPtrs" ref="a00020.html#aa811e6094b6acc3f1329d26ad010c1fb" />
                 </section>
                 <section title="managedPtr&lt; T, 1 &gt;" ref="a00021.html">
@@ -2314,7 +2314,7 @@
       <keyword name="operator=" id="rambrain::managedPtr::operator=" ref="a00020.html#a11cc7b9a98dda932d2ea917861ab4fbe" />
       <keyword name="operator[]" id="rambrain::managedPtr::operator[]" ref="a00020.html#a7b0a07a9438ff51db7409bc0bbba7d95" />
       <keyword name="operator[]" id="rambrain::managedPtr::operator[]" ref="a00020.html#ad4e60b360a957198c57e04b1296d7008" />
-      <keyword name="n_elem" id="rambrain::managedPtr::n_elem" ref="a00020.html#a26129af0148deeb44e329af737ea1650" />
+      <keyword name="n_elem" id="rambrain::managedPtr::n_elem" ref="a00020.html#aed1590462b762b9641494abcc5f84f1e" />
       <keyword name="subPtrs" id="rambrain::managedPtr::subPtrs" ref="a00020.html#aa811e6094b6acc3f1329d26ad010c1fb" />
       <keyword name="rambrain::managedPtr&lt; T, 1 &gt;" id="rambrain::managedPtr&lt; T, 1 &gt;" ref="a00021.html" />
       <keyword name="managedPtr" id="rambrain::managedPtr&lt; T, 1 &gt;::managedPtr" ref="a00021.html#a206132a9dea91db034caa7d1693edad8" />

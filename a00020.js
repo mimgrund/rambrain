@@ -7,6 +7,6 @@ var a00020 =
     [ "operator=", "a00020.html#a11cc7b9a98dda932d2ea917861ab4fbe", null ],
     [ "operator[]", "a00020.html#a7b0a07a9438ff51db7409bc0bbba7d95", null ],
     [ "operator[]", "a00020.html#ad4e60b360a957198c57e04b1296d7008", null ],
-    [ "n_elem", "a00020.html#a26129af0148deeb44e329af737ea1650", null ],
+    [ "n_elem", "a00020.html#aed1590462b762b9641494abcc5f84f1e", null ],
     [ "subPtrs", "a00020.html#aa811e6094b6acc3f1329d26ad010c1fb", null ]
 ];
