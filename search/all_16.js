@@ -13,7 +13,7 @@ var searchData=
   ['_7emanagedptr',['~managedPtr',['../a00020.html#a28f7b2f70057705050caccb4ddce5f51',1,'rambrain::managedPtr::~managedPtr()'],['../a00021.html#a404cbe16c037620cbe8c4296d5164ace',1,'rambrain::managedPtr&lt; T, 1 &gt;::~managedPtr()']]],
   ['_7emanagedswap',['~managedSwap',['../a00022.html#a70fa001b0161095d2298620ecc5d5838',1,'rambrain::managedSwap']]],
   ['_7ememoryexception',['~memoryException',['../a00023.html#a4b7c072943dfc4739f96ccbd6de78a70',1,'rambrain::memoryException']]],
-  ['_7eperformancetest',['~performanceTest',['../a00027.html#a1aa7ebeb97071e17de8319d001b54a78',1,'performanceTest&lt;&gt;::~performanceTest()'],['../a00026.html#a8c8ab2f1aea9a9d1fed6f5a929cc26e1',1,'performanceTest&lt; T, U...&gt;::~performanceTest()']]],
+  ['_7eperformancetest',['~performanceTest',['../a00027.html#a1aa7ebeb97071e17de8319d001b54a78',1,'performanceTest&lt;&gt;::~performanceTest()'],['../a00026.html#ac687cdec4fa593d7a45f3067775d2520',1,'performanceTest&lt; T, U... &gt;::~performanceTest()']]],
   ['_7erambrainconfig',['~rambrainConfig',['../a00028.html#a50356f5e6333c5094970bf201bcca578',1,'rambrain::rambrainglobals::rambrainConfig']]],
   ['_7erambrainexception',['~rambrainException',['../a00029.html#adc8b99eedc8c84ace511f44dbd46d531',1,'rambrain::rambrainException']]],
   ['_7erambrainglobalcriticalsectioncontrol',['~rambrainGlobalCriticalSectionControl',['../a00030.html#ae4e628e1cade22e5e3ad1de7f34127bb',1,'rambrain::rambrainGlobalCriticalSectionControl']]],

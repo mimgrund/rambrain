@@ -3,7 +3,7 @@ var searchData=
   ['pagefilelocation',['pageFileLocation',['../a00024.html#a63f9ce789a7c5f351afed6acae0966ec',1,'rambrain::pageFileLocation']]],
   ['parseconfigblock',['parseConfigBlock',['../a00008.html#a89ebde62397d8fdda601543eb2eb110a',1,'rambrain::configReader']]],
   ['parseconfigfile',['parseConfigFile',['../a00008.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f',1,'rambrain::configReader']]],
-  ['performancetest',['performanceTest',['../a00027.html#a81c06be2541b0d13ef5a0f44d0eac5de',1,'performanceTest&lt;&gt;::performanceTest()'],['../a00026.html#a99e85e5057fdf41735f0321966beec4a',1,'performanceTest&lt; T, U...&gt;::performanceTest()']]],
+  ['performancetest',['performanceTest',['../a00027.html#a81c06be2541b0d13ef5a0f44d0eac5de',1,'performanceTest&lt;&gt;::performanceTest()'],['../a00026.html#a1f351dc1a51adff0be548b21e4cc3b56',1,'performanceTest&lt; T, U... &gt;::performanceTest()']]],
   ['pffree',['pffree',['../a00017.html#aa374304a0bb8c91ffad076d8f4538f81',1,'rambrain::managedFileSwap']]],
   ['pfmalloc',['pfmalloc',['../a00017.html#aa70fd5427bc3a4cb49d1a6b3c685aad7',1,'rambrain::managedFileSwap']]],
   ['plottiminghitmissinfos',['plotTimingHitMissInfos',['../a00027.html#a9f3adf5d354ca9694d951a1e65198631',1,'performanceTest&lt;&gt;']]],

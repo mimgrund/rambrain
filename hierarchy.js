@@ -39,8 +39,8 @@ var hierarchy =
     ] ],
     [ "rambrain::pageFileLocation", "a00024.html", null ],
     [ "performanceTest< U >", "a00025.html", null ],
-    [ "performanceTest< U...>", "a00025.html", [
-      [ "performanceTest< T, U...>", "a00026.html", null ]
+    [ "performanceTest< U... >", "a00025.html", [
+      [ "performanceTest< T, U... >", "a00026.html", null ]
     ] ],
     [ "performanceTest<>", "a00027.html", null ],
     [ "rambrain::rambrainglobals::rambrainConfig", "a00028.html", null ],

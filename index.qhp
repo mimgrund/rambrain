@@ -23,7 +23,7 @@
             <section title="Enumerator" ref="namespacemembers_eval.html" />
           </section>
         </section>
-        <section title="Classes">
+        <section title="Classes" ref="annotated.html">
           <section title="Class List" ref="annotated.html">
             <section title="rambrain" ref="a00095.html">
               <section title="rambrainglobals" ref="a00096.html">
@@ -491,10 +491,10 @@
               <section title="arr" ref="a00012.html#ab22b67c578f8d64f8aa8aedd968da207" />
             </section>
             <section title="performanceTest" ref="a00025.html" />
-            <section title="performanceTest&lt; T, U...&gt;" ref="a00026.html">
-              <section title="performanceTest" ref="a00026.html#a99e85e5057fdf41735f0321966beec4a" />
-              <section title="~performanceTest" ref="a00026.html#a8c8ab2f1aea9a9d1fed6f5a929cc26e1" />
-              <section title="parameter" ref="a00026.html#ace2b7b732cc8bfdc7e41750d6cbd17ba" />
+            <section title="performanceTest&lt; T, U... &gt;" ref="a00026.html">
+              <section title="performanceTest" ref="a00026.html#a1f351dc1a51adff0be548b21e4cc3b56" />
+              <section title="~performanceTest" ref="a00026.html#ac687cdec4fa593d7a45f3067775d2520" />
+              <section title="parameter" ref="a00026.html#a8879c8144178ccf7e2c8c7f74af738c1" />
             </section>
             <section title="performanceTest&lt;&gt;" ref="a00027.html">
               <section title="performanceTest" ref="a00027.html#a81c06be2541b0d13ef5a0f44d0eac5de" />
@@ -603,8 +603,8 @@
             </section>
             <section title="rambrain::pageFileLocation" ref="a00024.html" />
             <section title="performanceTest&lt; U &gt;" ref="a00025.html" />
-            <section title="performanceTest&lt; U...&gt;" ref="a00025.html">
-              <section title="performanceTest&lt; T, U...&gt;" ref="a00026.html" />
+            <section title="performanceTest&lt; U... &gt;" ref="a00025.html">
+              <section title="performanceTest&lt; T, U... &gt;" ref="a00026.html" />
             </section>
             <section title="performanceTest&lt;&gt;" ref="a00027.html" />
             <section title="rambrain::rambrainglobals::rambrainConfig" ref="a00028.html" />
@@ -1333,10 +1333,10 @@
                   <section title="plotParts" ref="a00027.html#aa41228b97e1b171503ca8032057bb41c" />
                   <section title="plotTimingStats" ref="a00027.html#aebef6431ba821a8476cf4322add3bcf0" />
                 </section>
-                <section title="performanceTest&lt; T, U...&gt;" ref="a00026.html">
-                  <section title="performanceTest" ref="a00026.html#a99e85e5057fdf41735f0321966beec4a" />
-                  <section title="~performanceTest" ref="a00026.html#a8c8ab2f1aea9a9d1fed6f5a929cc26e1" />
-                  <section title="parameter" ref="a00026.html#ace2b7b732cc8bfdc7e41750d6cbd17ba" />
+                <section title="performanceTest&lt; T, U... &gt;" ref="a00026.html">
+                  <section title="performanceTest" ref="a00026.html#a1f351dc1a51adff0be548b21e4cc3b56" />
+                  <section title="~performanceTest" ref="a00026.html#ac687cdec4fa593d7a45f3067775d2520" />
+                  <section title="parameter" ref="a00026.html#a8879c8144178ccf7e2c8c7f74af738c1" />
                 </section>
                 <section title="ONEPARAMTEST" ref="a00075.html#ad5a2738040da91b1f1e276de80a20c41" />
                 <section title="ONEPARAMTEST" ref="a00075.html#a91ccfa32e1077397cb5c96de476c65c1" />
@@ -1692,10 +1692,10 @@
       <keyword name="num_instances" id="destructorTracker::num_instances" ref="a00012.html#a4af8f20c97014389124277ceefc082b2" />
       <keyword name="arr" id="destructorTracker::arr" ref="a00012.html#ab22b67c578f8d64f8aa8aedd968da207" />
       <keyword name="performanceTest" id="performanceTest" ref="a00025.html" />
-      <keyword name="performanceTest&lt; T, U...&gt;" id="performanceTest&lt; T, U...&gt;" ref="a00026.html" />
-      <keyword name="performanceTest" id="performanceTest&lt; T, U...&gt;::performanceTest" ref="a00026.html#a99e85e5057fdf41735f0321966beec4a" />
-      <keyword name="~performanceTest" id="performanceTest&lt; T, U...&gt;::~performanceTest" ref="a00026.html#a8c8ab2f1aea9a9d1fed6f5a929cc26e1" />
-      <keyword name="parameter" id="performanceTest&lt; T, U...&gt;::parameter" ref="a00026.html#ace2b7b732cc8bfdc7e41750d6cbd17ba" />
+      <keyword name="performanceTest&lt; T, U... &gt;" id="performanceTest&lt; T, U... &gt;" ref="a00026.html" />
+      <keyword name="performanceTest" id="performanceTest&lt; T, U... &gt;::performanceTest" ref="a00026.html#a1f351dc1a51adff0be548b21e4cc3b56" />
+      <keyword name="~performanceTest" id="performanceTest&lt; T, U... &gt;::~performanceTest" ref="a00026.html#ac687cdec4fa593d7a45f3067775d2520" />
+      <keyword name="parameter" id="performanceTest&lt; T, U... &gt;::parameter" ref="a00026.html#a8879c8144178ccf7e2c8c7f74af738c1" />
       <keyword name="performanceTest&lt;&gt;" id="performanceTest&lt;&gt;" ref="a00027.html" />
       <keyword name="performanceTest" id="performanceTest&lt;&gt;::performanceTest" ref="a00027.html#a81c06be2541b0d13ef5a0f44d0eac5de" />
       <keyword name="~performanceTest" id="performanceTest&lt;&gt;::~performanceTest" ref="a00027.html#a1aa7ebeb97071e17de8319d001b54a78" />

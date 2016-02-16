@@ -4,7 +4,7 @@ var a00075 =
     [ "testParameter", "a00034.html", "a00034" ],
     [ "performanceTest", "a00025.html", null ],
     [ "performanceTest<>", "a00027.html", "a00027" ],
-    [ "performanceTest< T, U...>", "a00026.html", "a00026" ],
+    [ "performanceTest< T, U... >", "a00026.html", "a00026" ],
     [ "ONEPARAMTEST", "a00075.html#ad5a2738040da91b1f1e276de80a20c41", null ],
     [ "ONEPARAMTEST", "a00075.html#a91ccfa32e1077397cb5c96de476c65c1", null ],
     [ "TWOPARAMTEST", "a00075.html#af5ca33e1ddc335f5e8438d775535b0d0", null ],
