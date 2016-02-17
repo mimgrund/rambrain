@@ -732,11 +732,11 @@ bool cyclicManagedMemory::checkCycle()
         memerror = true;
     }
     if ( tobef != memory_tobefreed ) {
-        errmsgf ( "To-Be-Freed bytes are not counted correctly, claimed %lu but found %lu", memory_used, usedBytes );
+        errmsgf ( "To-Be-Freed bytes are not counted correctly, claimed %lu but found %lu", memory_tobefreed, tobef );
         memerror = true;
     }
     if ( swappedBytes != swap->getUsedSwap() ) {
-        errmsgf ( "Swapped bytes are not counted correctly, claimed %lu but found %lu", memory_used, usedBytes );
+        errmsgf ( "Swapped bytes are not counted correctly, claimed %lu but found %lu", swap->getUsedSwap(), swappedBytes );
         memerror = true;
     }
 
