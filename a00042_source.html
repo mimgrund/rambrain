@@ -842,11 +842,11 @@ $(document).ready(function(){initNavTree('a00042_source.html','');});
 <div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;        memerror = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;    }</div>
 <div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;    <span class="keywordflow">if</span> ( tobef != <a class="code" href="a00018.html#af10f7cc8ddb9da7d3b92af1b4309cf5c">memory_tobefreed</a> ) {</div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;        errmsgf ( <span class="stringliteral">&quot;To-Be-Freed bytes are not counted correctly, claimed %lu but found %lu&quot;</span>, <a class="code" href="a00018.html#aef5adf85cd78d5de48654f3c16ae4cf5">memory_used</a>, usedBytes );</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;        errmsgf ( <span class="stringliteral">&quot;To-Be-Freed bytes are not counted correctly, claimed %lu but found %lu&quot;</span>, <a class="code" href="a00018.html#af10f7cc8ddb9da7d3b92af1b4309cf5c">memory_tobefreed</a>, tobef );</div>
 <div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;        memerror = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;    }</div>
 <div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;    <span class="keywordflow">if</span> ( swappedBytes != <a class="code" href="a00018.html#a0c06638da1cf9f0d828f1af4000dbe68">swap</a>-&gt;<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() ) {</div>
-<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        errmsgf ( <span class="stringliteral">&quot;Swapped bytes are not counted correctly, claimed %lu but found %lu&quot;</span>, <a class="code" href="a00018.html#aef5adf85cd78d5de48654f3c16ae4cf5">memory_used</a>, usedBytes );</div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;        errmsgf ( <span class="stringliteral">&quot;Swapped bytes are not counted correctly, claimed %lu but found %lu&quot;</span>, <a class="code" href="a00018.html#a0c06638da1cf9f0d828f1af4000dbe68">swap</a>-&gt;<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>(), swappedBytes );</div>
 <div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;        memerror = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;    }</div>
 <div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;</div>
@@ -1356,7 +1356,7 @@ $(document).ready(function(){initNavTree('a00042_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00042.html">cyclicManagedMemory.cpp</a></li>
-    <li class="footer">Generated on Wed Feb 17 2016 01:42:13 for rambrain by
+    <li class="footer">Generated on Thu Feb 18 2016 01:42:25 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>
