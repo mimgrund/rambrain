@@ -33,10 +33,8 @@ namespace rambrain
 class dummyManagedMemory : public managedMemory
 {
 public:
-    dummyManagedMemory() : managedMemory ( new managedDummySwap ( 0 ), 0 ) {}
-    virtual ~dummyManagedMemory() {
-        delete swap;
-    }
+    dummyManagedMemory ( bool replaceDefault = true ) : managedMemory ( &mswap, 0, replaceDefault ), mswap ( 0 ) {}
+    virtual ~dummyManagedMemory() {}
 
 protected:
     inline virtual swapErrorCode swapOut ( global_bytesize ) {
@@ -68,6 +66,8 @@ protected:
         Throw ( memoryException ( "No memory manager in place." ) );
     }
 
+private:
+    managedDummySwap mswap;
 };
 
 }
