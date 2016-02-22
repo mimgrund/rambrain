@@ -33,7 +33,7 @@ namespace rambrain
 class dummyManagedMemory : public managedMemory
 {
 public:
-    dummyManagedMemory ( bool replaceDefault = true ) : managedMemory ( &mswap, 0, replaceDefault ), mswap ( 0 ) {}
+    dummyManagedMemory ( ) : managedMemory ( &mswap, 0 ), mswap ( 0 ) {}
     virtual ~dummyManagedMemory() {}
 
 protected:
