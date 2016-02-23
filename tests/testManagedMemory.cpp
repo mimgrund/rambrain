@@ -63,4 +63,54 @@ TEST ( managedMemory, DISABLED_VersionInfo )
     managedMemory::versionInfo();
 }
 
+/**
+ * @test Check if multiple managers are allocated and deleted (in the right order), that we can fallback to the original manager
+ */
+TEST ( managedMemory, Unit_FallbackToDefaultManagerChain )
+{
+    managedMemory *fallbackManager = managedMemory::defaultManager;
 
+    dummyManagedMemory *man1 = new dummyManagedMemory();
+    managedDummySwap *swap2 = new managedDummySwap ( 10 );
+    cyclicManagedMemory *man2 = new cyclicManagedMemory ( swap2, 10 );
+    dummyManagedMemory *man3 = new dummyManagedMemory();
+
+    ASSERT_EQ ( man3, managedMemory::defaultManager );
+
+    delete man3;
+    ASSERT_EQ ( man2, managedMemory::defaultManager );
+
+    delete man2;
+    delete swap2;
+    ASSERT_EQ ( man1, managedMemory::defaultManager );
+
+    delete man1;
+    ASSERT_EQ ( fallbackManager, managedMemory::defaultManager );
+}
+
+/**
+ * @test Check what happens to the default manager if we delete a chain of managers in the wrong order
+ */
+TEST ( managedMemory, Unit_FallbackToDefaultManagerChainWrongOrder )
+{
+    managedMemory *fallbackManager = managedMemory::defaultManager;
+
+    dummyManagedMemory *man1 = new dummyManagedMemory();
+    managedDummySwap *swap2 = new managedDummySwap ( 10 );
+    cyclicManagedMemory *man2 = new cyclicManagedMemory ( swap2, 10 );
+    dummyManagedMemory *man3 = new dummyManagedMemory();
+
+    ASSERT_EQ ( man3, managedMemory::defaultManager );
+
+    delete man3;
+    ASSERT_EQ ( man2, managedMemory::defaultManager );
+
+    delete man1;
+    ASSERT_EQ ( man2, managedMemory::defaultManager );
+
+    delete man2;
+    delete swap2;
+    ASSERT_EQ ( man1, managedMemory::defaultManager );
+
+    // The state of the system is now broken, since man1 does not exist anymore; Can never fall back to fallbackManager
+}
