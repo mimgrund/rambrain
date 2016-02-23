@@ -26,14 +26,26 @@
 
 namespace rambrain
 {
+/// @brief A dummy class to get rid of initialization problems
+class managedDummySwapContainer
+{
+protected:
+    managedDummySwap mswap;
+public:
+    managedDummySwapContainer() : mswap ( 0 ) {}
+    virtual ~managedDummySwapContainer() {}
+};
+
+
+
 
 /** @brief a dummy managed Memory that basically does nothing and throws on everything.
  *  @note there is no productive use of this class, it only serves testing purposes
  **/
-class dummyManagedMemory : public managedMemory
+class dummyManagedMemory : private managedDummySwapContainer , public managedMemory
 {
 public:
-    dummyManagedMemory ( ) : managedMemory ( &mswap, 0 ), mswap ( 0 ) {}
+    dummyManagedMemory () : managedDummySwapContainer () , managedMemory ( &mswap, 0 ) {}
     virtual ~dummyManagedMemory() {}
 
 protected:
@@ -66,8 +78,6 @@ protected:
         Throw ( memoryException ( "No memory manager in place." ) );
     }
 
-private:
-    managedDummySwap mswap;
 };
 
 }
