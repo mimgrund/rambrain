@@ -91,7 +91,7 @@ TEST ( managedMemory, Unit_FallbackToDefaultManagerChain )
 /**
  * @test Check what happens to the default manager if we delete a chain of managers in the wrong order
  */
-TEST ( managedMemory, Unit_FallbackToDefaultManagerChainWrongOrder )
+TEST ( managedMemory, DISABLED_Unit_FallbackToDefaultManagerChainWrongOrder )
 {
     managedMemory *fallbackManager = managedMemory::defaultManager;
 
