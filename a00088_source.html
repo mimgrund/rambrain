@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>rambrain: /home/rambrainbuild/docubrain/tests/testManagedDummySwap.cpp Source File</title>
+<title>rambrain: /home/rambrainbuild/docubrain/tests/testFilterHandling.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('a00088_source.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">testManagedDummySwap.cpp</div>  </div>
+<div class="title">testFilterHandling.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00088.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*   rambrain - a dynamical physical memory extender</span></div>
@@ -127,197 +127,29 @@ $(document).ready(function(){initNavTree('a00088_source.html','');});
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> *   along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;gtest/gtest.h&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00043.html">cyclicManagedMemory.h</a>&quot;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00058.html">managedPtr.h</a>&quot;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00050.html">managedDummySwap.h</a>&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00045.html">exceptions.h</a>&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">using namespace </span><a class="code" href="a00095.html">rambrain</a>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef TESTFILTERHANDLING_H</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define TESTFILTERHANDLING_H</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;istream&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="a00088.html#a3c889a158897141b6a22b22dce7b0624">   32</a></span>&#160;<a class="code" href="a00088.html#a3c889a158897141b6a22b22dce7b0624">TEST</a> ( <a class="code" href="a00016.html">managedDummySwap</a>, Unit_ManualSwapping )</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dblamount = 100;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dblsize = dblamount * <span class="keyword">sizeof</span> ( double );</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> swapmem = dblsize * 10;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="a00016.html">managedDummySwap</a> swap ( swapmem );</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="a00011.html">cyclicManagedMemory</a> mem ( &amp;swap, 10 * <a class="code" href="a00095.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">kib</a> ); <span class="comment">//Need this as default memory manager will get corrupted without (memory claims...);</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    ASSERT_EQ ( 0u, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#ifdef PARENTAL_CONTROL</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="a00019.html">managedMemoryChunk</a> *chunk = <span class="keyword">new</span> <a class="code" href="a00019.html">managedMemoryChunk</a> ( 0, 1 );</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="a00019.html">managedMemoryChunk</a> *chunk = <span class="keyword">new</span> <a class="code" href="a00019.html">managedMemoryChunk</a> ( 1 );</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    chunk-&gt;<a class="code" href="a00019.html#a8975c39c838ab14956b4aca36f3a4220">status</a> = <a class="code" href="a00095.html#a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9">MEM_ALLOCATED</a>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    chunk-&gt;<a class="code" href="a00019.html#a93b6f29ed6ba24437927e0a279e3eb2c">locPtr</a> =  malloc ( dblsize );</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    chunk-&gt;<a class="code" href="a00019.html#a723a8b947225aff2b938d964552c066d">size</a> = dblsize;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    swap.<a class="code" href="a00016.html#a68f0a0932f20d582f34609d7501d2540">swapOut</a> ( chunk );</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    ASSERT_EQ ( dblsize, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    swap.<a class="code" href="a00016.html#a14896f18954ee493b8ede046b0bf8a74">swapIn</a> ( chunk );</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    ASSERT_EQ ( 0u, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    free ( chunk-&gt;<a class="code" href="a00019.html#a93b6f29ed6ba24437927e0a279e3eb2c">locPtr</a> );</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">delete</span> chunk;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00088.html#a48b8d09f310a5993ee0b858268554a66">   69</a></span>&#160;<a class="code" href="a00088.html#a3c889a158897141b6a22b22dce7b0624">TEST</a> ( <a class="code" href="a00016.html">managedDummySwap</a>, Unit_ManualMultiSwapping )</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dblamount = 100;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dblsize = dblamount * <span class="keyword">sizeof</span> ( double );</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> swapmem = dblsize * 10;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <a class="code" href="a00016.html">managedDummySwap</a> swap ( swapmem );</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <a class="code" href="a00011.html">cyclicManagedMemory</a> mem ( &amp;swap, 10 * <a class="code" href="a00095.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">kib</a> ); <span class="comment">//Need this as default memory manager will get corrupted without (memory claims...);</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    ASSERT_EQ ( 0u, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <a class="code" href="a00019.html">managedMemoryChunk</a> *chunks[2];</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; 2; ++i ) {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#ifdef PARENTAL_CONTROL</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        chunks[i] = <span class="keyword">new</span> <a class="code" href="a00019.html">managedMemoryChunk</a> ( 0, i + 1 );</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        chunks[i] = <span class="keyword">new</span> <a class="code" href="a00019.html">managedMemoryChunk</a> ( i + 1 );</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        chunks[i]-&gt;status = <a class="code" href="a00095.html#a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9">MEM_ALLOCATED</a>;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        chunks[i]-&gt;locPtr =  malloc ( dblsize );</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        chunks[i]-&gt;size = dblsize;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    swap.<a class="code" href="a00016.html#a68f0a0932f20d582f34609d7501d2540">swapOut</a> ( chunks, 2 );</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    ASSERT_EQ ( 2 * dblsize, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    swap.<a class="code" href="a00016.html#a14896f18954ee493b8ede046b0bf8a74">swapIn</a> ( chunks, 2 );</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    ASSERT_EQ ( 0u, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">int</span> i = 0; i &lt; 2; ++i ) {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        <span class="keywordflow">if</span> ( chunks[i]-&gt;status == <a class="code" href="a00095.html#a2aa4b6f9186dc50dad74cf1abd3799c2af195d1470572e586d7a445d4675dc831">MEM_SWAPPED</a> ) {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;            free ( chunks[i]-&gt;swapBuf );</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            free ( chunks[i]-&gt;locPtr );</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keyword">delete</span> chunks[i];</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
-<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="a00088.html#ac915c82710e977f2390fca9a07a0810f">  117</a></span>&#160;<a class="code" href="a00088.html#a3c889a158897141b6a22b22dce7b0624">TEST</a> ( <a class="code" href="a00016.html">managedDummySwap</a>, Unit_ManualSwappingDelete )</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;{</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dblamount = 100;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dblsize = dblamount * <span class="keyword">sizeof</span> ( double );</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> swapmem = dblsize * 10;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <a class="code" href="a00016.html">managedDummySwap</a> swap ( swapmem );</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <a class="code" href="a00011.html">cyclicManagedMemory</a> mem ( &amp;swap, 10 * <a class="code" href="a00095.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">kib</a> ); <span class="comment">//Need this as default memory manager will get corrupted without (memory claims...);</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    ASSERT_EQ ( 0u, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#ifdef PARENTAL_CONTROL</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <a class="code" href="a00019.html">managedMemoryChunk</a> *chunk = <span class="keyword">new</span> <a class="code" href="a00019.html">managedMemoryChunk</a> ( 0, 1 );</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <a class="code" href="a00019.html">managedMemoryChunk</a> *chunk = <span class="keyword">new</span> <a class="code" href="a00019.html">managedMemoryChunk</a> ( 1 );</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    chunk-&gt;<a class="code" href="a00019.html#a8975c39c838ab14956b4aca36f3a4220">status</a> = <a class="code" href="a00095.html#a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9">MEM_ALLOCATED</a>;</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    chunk-&gt;<a class="code" href="a00019.html#a93b6f29ed6ba24437927e0a279e3eb2c">locPtr</a> =  malloc ( dblsize );</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    chunk-&gt;<a class="code" href="a00019.html#a723a8b947225aff2b938d964552c066d">size</a> = dblsize;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    swap.<a class="code" href="a00016.html#a68f0a0932f20d582f34609d7501d2540">swapOut</a> ( chunk );</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    ASSERT_EQ ( dblsize, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    swap.<a class="code" href="a00016.html#adf2ae06ec74196be21414fa9d3aab3b9">swapDelete</a> ( chunk );</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    ASSERT_EQ ( 0u, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keyword">delete</span> chunk;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;</div>
-<div class="line"><a name="l00152"></a><span class="lineno"><a class="line" href="a00088.html#a0855c443c53c36b2d8dfcc9d78f4ab58">  152</a></span>&#160;<a class="code" href="a00088.html#a3c889a158897141b6a22b22dce7b0624">TEST</a> ( <a class="code" href="a00016.html">managedDummySwap</a>, Unit_SwapSize )</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;{</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dblamount = 100;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> dblsize = dblamount * <span class="keyword">sizeof</span> ( double );</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> swapmem = dblsize * 10;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> memsize = dblsize * 1.5;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="a00016.html">managedDummySwap</a> swap ( swapmem );</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <a class="code" href="a00011.html">cyclicManagedMemory</a> manager ( &amp;swap, memsize );</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    ASSERT_EQ ( 0u, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;double&gt;</a> *ptr1 = <span class="keyword">new</span> <a class="code" href="a00020.html">managedPtr&lt;double&gt;</a> ( dblamount );</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    ASSERT_EQ ( 0u, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    ptr1-&gt;setUse();</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    ASSERT_EQ ( 0u, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    ptr1-&gt;unsetUse();</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <a class="code" href="a00020.html">managedPtr&lt;double&gt;</a> *ptr2 = <span class="keyword">new</span> <a class="code" href="a00020.html">managedPtr&lt;double&gt;</a> ( dblamount );</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    ASSERT_EQ ( dblsize, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    ptr2-&gt;setUse();</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    ASSERT_EQ ( dblsize, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    ptr2-&gt;unsetUse();</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    ASSERT_EQ ( dblsize, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keyword">delete</span> ptr1;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    ASSERT_EQ ( swapmem, swap.<a class="code" href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">getSwapSize</a>() );</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    ASSERT_EQ ( 0u, swap.<a class="code" href="a00022.html#abc670034d0999286b20f190067a9e6ab">getUsedSwap</a>() );</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keyword">delete</span> ptr2;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;}</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;</div>
-<div class="ttc" id="a00022_html_abc670034d0999286b20f190067a9e6ab"><div class="ttname"><a href="a00022.html#abc670034d0999286b20f190067a9e6ab">rambrain::managedSwap::getUsedSwap</a></div><div class="ttdeci">virtual global_bytesize getUsedSwap() const </div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00060_source.html#l00086">managedSwap.h:86</a></div></div>
-<div class="ttc" id="a00016_html_a68f0a0932f20d582f34609d7501d2540"><div class="ttname"><a href="a00016.html#a68f0a0932f20d582f34609d7501d2540">rambrain::managedDummySwap::swapOut</a></div><div class="ttdeci">virtual global_bytesize swapOut(managedMemoryChunk **chunklist, unsigned int nchunks)</div><div class="ttdoc">Trigger swap out of the chunks pointed to by chunklist. </div><div class="ttdef"><b>Definition:</b> <a href="a00049_source.html#l00065">managedDummySwap.cpp:65</a></div></div>
-<div class="ttc" id="a00050_html"><div class="ttname"><a href="a00050.html">managedDummySwap.h</a></div></div>
-<div class="ttc" id="a00016_html_adf2ae06ec74196be21414fa9d3aab3b9"><div class="ttname"><a href="a00016.html#adf2ae06ec74196be21414fa9d3aab3b9">rambrain::managedDummySwap::swapDelete</a></div><div class="ttdeci">virtual void swapDelete(managedMemoryChunk *chunk)</div><div class="ttdoc">Mark chunk as deleted. </div><div class="ttdef"><b>Definition:</b> <a href="a00049_source.html#l00111">managedDummySwap.cpp:111</a></div></div>
-<div class="ttc" id="a00043_html"><div class="ttname"><a href="a00043.html">cyclicManagedMemory.h</a></div></div>
-<div class="ttc" id="a00022_html_a97a51bb407ee14b54621e1f3b7e0fe6c"><div class="ttname"><a href="a00022.html#a97a51bb407ee14b54621e1f3b7e0fe6c">rambrain::managedSwap::getSwapSize</a></div><div class="ttdeci">virtual global_bytesize getSwapSize() const </div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00060_source.html#l00082">managedSwap.h:82</a></div></div>
-<div class="ttc" id="a00095_html"><div class="ttname"><a href="a00095.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00026">common.h:26</a></div></div>
-<div class="ttc" id="a00019_html_a723a8b947225aff2b938d964552c066d"><div class="ttname"><a href="a00019.html#a723a8b947225aff2b938d964552c066d">rambrain::managedMemoryChunk::size</a></div><div class="ttdeci">global_bytesize size</div><div class="ttdoc">Size of actual object in bytes. </div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00067">managedMemoryChunk.h:67</a></div></div>
-<div class="ttc" id="a00058_html"><div class="ttname"><a href="a00058.html">managedPtr.h</a></div></div>
-<div class="ttc" id="a00095_html_a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9"><div class="ttname"><a href="a00095.html#a2aa4b6f9186dc50dad74cf1abd3799c2a2160c41528d92587bc39d15f394e4ae9">rambrain::MEM_ALLOCATED</a></div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00032">managedMemoryChunk.h:32</a></div></div>
-<div class="ttc" id="a00020_html"><div class="ttname"><a href="a00020.html">rambrain::managedPtr</a></div><div class="ttdoc">Main class to allocate memory that is managed by the rambrain memory defaultManager. </div><div class="ttdef"><b>Definition:</b> <a href="a00054_source.html#l00054">managedMemory.h:54</a></div></div>
-<div class="ttc" id="a00011_html"><div class="ttname"><a href="a00011.html">rambrain::cyclicManagedMemory</a></div><div class="ttdoc">scheduler working with a double linked cycle. Details see paper. </div><div class="ttdef"><b>Definition:</b> <a href="a00043_source.html#l00050">cyclicManagedMemory.h:50</a></div></div>
-<div class="ttc" id="a00095_html_ac2c0fb2cc8161166cbd060cb2b85aaf1"><div class="ttname"><a href="a00095.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">rambrain::kib</a></div><div class="ttdeci">const global_bytesize kib</div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00067">common.h:67</a></div></div>
-<div class="ttc" id="a00045_html"><div class="ttname"><a href="a00045.html">exceptions.h</a></div></div>
-<div class="ttc" id="a00019_html_a8975c39c838ab14956b4aca36f3a4220"><div class="ttname"><a href="a00019.html#a8975c39c838ab14956b4aca36f3a4220">rambrain::managedMemoryChunk::status</a></div><div class="ttdeci">memoryStatus status</div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00064">managedMemoryChunk.h:64</a></div></div>
-<div class="ttc" id="a00016_html"><div class="ttname"><a href="a00016.html">rambrain::managedDummySwap</a></div><div class="ttdoc">A dummy swap that just copies swapped out chunks to a different location in ram. </div><div class="ttdef"><b>Definition:</b> <a href="a00050_source.html#l00031">managedDummySwap.h:31</a></div></div>
-<div class="ttc" id="a00095_html_a2aa4b6f9186dc50dad74cf1abd3799c2af195d1470572e586d7a445d4675dc831"><div class="ttname"><a href="a00095.html#a2aa4b6f9186dc50dad74cf1abd3799c2af195d1470572e586d7a445d4675dc831">rambrain::MEM_SWAPPED</a></div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00033">managedMemoryChunk.h:33</a></div></div>
-<div class="ttc" id="a00016_html_a14896f18954ee493b8ede046b0bf8a74"><div class="ttname"><a href="a00016.html#a14896f18954ee493b8ede046b0bf8a74">rambrain::managedDummySwap::swapIn</a></div><div class="ttdeci">virtual global_bytesize swapIn(managedMemoryChunk **chunklist, unsigned int nchunks)</div><div class="ttdoc">Trigger swap in of the chunks pointed to by chunklist. </div><div class="ttdef"><b>Definition:</b> <a href="a00049_source.html#l00101">managedDummySwap.cpp:101</a></div></div>
-<div class="ttc" id="a00088_html_a3c889a158897141b6a22b22dce7b0624"><div class="ttname"><a href="a00088.html#a3c889a158897141b6a22b22dce7b0624">TEST</a></div><div class="ttdeci">TEST(managedDummySwap, Unit_ManualSwapping)</div><div class="ttdef"><b>Definition:</b> <a href="a00088_source.html#l00032">testManagedDummySwap.cpp:32</a></div></div>
-<div class="ttc" id="a00019_html"><div class="ttname"><a href="a00019.html">rambrain::managedMemoryChunk</a></div><div class="ttdoc">manages all managed Chunks of raw memory </div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00054">managedMemoryChunk.h:54</a></div></div>
-<div class="ttc" id="a00019_html_a93b6f29ed6ba24437927e0a279e3eb2c"><div class="ttname"><a href="a00019.html#a93b6f29ed6ba24437927e0a279e3eb2c">rambrain::managedMemoryChunk::locPtr</a></div><div class="ttdeci">void * locPtr</div><div class="ttdoc">pointer to the actual data in RAM </div><div class="ttdef"><b>Definition:</b> <a href="a00056_source.html#l00066">managedMemoryChunk.h:66</a></div></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">using namespace </span><a class="code" href="a00098.html">std</a>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">string</span> <a class="code" href="a00088.html#a76a5c70a77dbaf343c31e03122a4b5f8">combineFilter</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;generalFilter, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;customFilter );</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif // TESTFILTERHANDLING_H</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="ttc" id="a00088_html_a76a5c70a77dbaf343c31e03122a4b5f8"><div class="ttname"><a href="a00088.html#a76a5c70a77dbaf343c31e03122a4b5f8">combineFilter</a></div><div class="ttdeci">string combineFilter(const string &amp;generalFilter, const string &amp;customFilter)</div><div class="ttdoc">Helper function to combine test filters for gtest. </div></div>
+<div class="ttc" id="a00098_html"><div class="ttname"><a href="a00098.html">std</a></div><div class="ttdoc">STL namespace. </div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00088.html">testManagedDummySwap.cpp</a></li>
-    <li class="footer">Generated on Sun Feb 21 2016 01:45:10 for rambrain by
+    <li class="navelem"><a class="el" href="dir_59425e443f801f1f2fd8bbe4959a3ccf.html">tests</a></li><li class="navelem"><a class="el" href="a00088.html">testFilterHandling.h</a></li>
+    <li class="footer">Generated on Wed Feb 24 2016 01:42:15 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

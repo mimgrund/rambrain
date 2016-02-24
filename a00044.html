@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>rambrain: /home/rambrainbuild/docubrain/src/dummyManagedMemory.h File Reference</title>
+<title>rambrain: /home/rambrainbuild/docubrain/src/cyclicManagedMemory.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -106,9 +106,10 @@ $(document).ready(function(){initNavTree('a00044.html','');});
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
-<div class="title">dummyManagedMemory.h File Reference</div>  </div>
+<div class="title">cyclicManagedMemory.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -116,22 +117,47 @@ $(document).ready(function(){initNavTree('a00044.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00013.html">rambrain::dummyManagedMemory</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">a dummy managed Memory that basically does nothing and throws on everything.  <a href="a00013.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00010.html">rambrain::cyclicAtime</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">structure created by scheduler to track access times of memoryChunks  <a href="a00010.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00004.html">rambrain::backlog_value</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00003.html">rambrain::backlog_entry</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00011.html">rambrain::cyclicManagedMemory</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">scheduler working with a double linked cycle. Details see paper.  <a href="a00011.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00005.html">rambrain::cyclicManagedMemory::chain</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:a00095"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00095.html">rambrain</a></td></tr>
+<tr class="memitem:a00096"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00096.html">rambrain</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a4cdc0267899330e6591a194bf1ed7e10"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00096.html#a4cdc0267899330e6591a194bf1ed7e10">rambrain::backlog_action</a> { <br />
+&#160;&#160;<a class="el" href="a00096.html#a4cdc0267899330e6591a194bf1ed7e10a3f7f96aed572274daf6c11c75e32f9aa">rambrain::UNKNOWN</a>, 
+<a class="el" href="a00096.html#a4cdc0267899330e6591a194bf1ed7e10acb5b44087af18a36e025564050293c9a">rambrain::REGISTER</a>, 
+<a class="el" href="a00096.html#a4cdc0267899330e6591a194bf1ed7e10a7dba7d45a75c4b97cb5534d1e35f3d70">rambrain::DELETE</a>, 
+<a class="el" href="a00096.html#a4cdc0267899330e6591a194bf1ed7e10a14884cb2294fb72c2ca59712c176d8da">rambrain::SWAPOUT</a>, 
+<br />
+&#160;&#160;<a class="el" href="a00096.html#a4cdc0267899330e6591a194bf1ed7e10aadee48d9a0a32277a0ba4077fbe2b07b">rambrain::SWAPIN</a>, 
+<a class="el" href="a00096.html#a4cdc0267899330e6591a194bf1ed7e10a1bb83fbeebedfcfe83860a1ec7d5de0f">rambrain::DECAY</a>, 
+<a class="el" href="a00096.html#a4cdc0267899330e6591a194bf1ed7e10a0187a3729e6633161cc9670cccd7e2cd">rambrain::TOUCH</a>, 
+<a class="el" href="a00096.html#a4cdc0267899330e6591a194bf1ed7e10a93f181e6d7bf92bebcb95a73fd50c62b">rambrain::CHECK</a>
+<br />
+ }<tr class="separator:a4cdc0267899330e6591a194bf1ed7e10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00044.html">dummyManagedMemory.h</a></li>
-    <li class="footer">Generated on Sun Feb 21 2016 01:45:10 for rambrain by
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00044.html">cyclicManagedMemory.h</a></li>
+    <li class="footer">Generated on Wed Feb 24 2016 01:42:15 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

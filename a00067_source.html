@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>rambrain: /home/rambrainbuild/docubrain/src/timer.cpp Source File</title>
+<title>rambrain: /home/rambrainbuild/docubrain/src/regexmatcher.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('a00067_source.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">timer.cpp</div>  </div>
+<div class="title">regexmatcher.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00067.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*   rambrain - a dynamical physical memory extender</span></div>
@@ -127,82 +127,66 @@ $(document).ready(function(){initNavTree('a00067_source.html','');});
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> *   along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00068.html">timer.h</a>&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00095.html">rambrain</a></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;timer_t <a class="code" href="a00036.html#a59277ee2347b98ad2b255ee898079da7">Timer::timerid</a>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">struct </span>sigevent Timer::sev;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;struct itimerspec <a class="code" href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">Timer::its</a>;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef REGEXMATCHER_H</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define REGEXMATCHER_H</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00040.html">common.h</a>&quot;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">using namespace </span><a class="code" href="a00098.html">std</a>;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;bool <a class="code" href="a00036.html#ac6ba857b6f43eb3998d15b78f505b312">Timer::initialised</a> = false;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;bool <a class="code" href="a00036.html#aa17bc507bfb17a2978f80bf8228c5c7f">Timer::running</a> = false;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00096.html">rambrain</a></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="a00036.html#a2c383399b9ca73789a3bb5625632b9dd">   32</a></span>&#160;<a class="code" href="a00036.html#a2c383399b9ca73789a3bb5625632b9dd">Timer::Timer</a>()</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="a00036.html#a2b4fa3e4a1e2ef1b1edeffa577717d5d">   36</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00036.html#a2b4fa3e4a1e2ef1b1edeffa577717d5d">Timer::startTimer</a> ( <span class="keywordtype">long</span> seconds, <span class="keywordtype">long</span> nanoseconds )</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">if</span> ( !<a class="code" href="a00036.html#ac6ba857b6f43eb3998d15b78f505b312">initialised</a> ) {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <a class="code" href="a00036.html#ab9c2a3fb72f25c0ee936c4023cb55ffa">initialiseTimer</a>();</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="a00036.html#aa17bc507bfb17a2978f80bf8228c5c7f">running</a> ) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        <a class="code" href="a00036.html#ad432a370227d8794c716e252d615c9d9">stopTimer</a>();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_value.tv_sec = seconds;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_value.tv_nsec = nanoseconds;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_interval.tv_sec = <a class="code" href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_value.tv_sec;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <a class="code" href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_interval.tv_nsec = <a class="code" href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>.it_value.tv_nsec;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    timer_settime ( <a class="code" href="a00036.html#a59277ee2347b98ad2b255ee898079da7">timerid</a>, 0, &amp;<a class="code" href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>, NULL );</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="a00036.html#aa17bc507bfb17a2978f80bf8228c5c7f">running</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="a00036.html#ad432a370227d8794c716e252d615c9d9">   56</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00036.html#ad432a370227d8794c716e252d615c9d9">Timer::stopTimer</a>()</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;{</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="a00036.html#aa17bc507bfb17a2978f80bf8228c5c7f">running</a> ) {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        memset ( ( <span class="keywordtype">void</span> * ) &amp;<a class="code" href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>, 0, <span class="keyword">sizeof</span> ( <a class="code" href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a> ) );</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        timer_settime ( <a class="code" href="a00036.html#a59277ee2347b98ad2b255ee898079da7">timerid</a>, 0, &amp;<a class="code" href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">its</a>, NULL );</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="a00036.html#aa17bc507bfb17a2978f80bf8228c5c7f">running</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="a00036.html#ab9c2a3fb72f25c0ee936c4023cb55ffa">   66</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00036.html#ab9c2a3fb72f25c0ee936c4023cb55ffa">Timer::initialiseTimer</a>()</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <a class="code" href="a00036.html#aa01c05838ff7a702f7509fe45e8a6c87">sev</a>.sigev_notify = SIGEV_SIGNAL;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="a00036.html#aa01c05838ff7a702f7509fe45e8a6c87">sev</a>.sigev_signo = SIGUSR1;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <a class="code" href="a00036.html#aa01c05838ff7a702f7509fe45e8a6c87">sev</a>.sigev_value.sival_ptr = &amp;<a class="code" href="a00036.html#a59277ee2347b98ad2b255ee898079da7">timerid</a>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    timer_create ( CLOCK_REALTIME, &amp;<a class="code" href="a00036.html#aa01c05838ff7a702f7509fe45e8a6c87">sev</a>, &amp;<a class="code" href="a00036.html#a59277ee2347b98ad2b255ee898079da7">timerid</a> );</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <a class="code" href="a00036.html#ac6ba857b6f43eb3998d15b78f505b312">initialised</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="ttc" id="a00036_html_ad432a370227d8794c716e252d615c9d9"><div class="ttname"><a href="a00036.html#ad432a370227d8794c716e252d615c9d9">rambrain::Timer::stopTimer</a></div><div class="ttdeci">static void stopTimer()</div><div class="ttdoc">Stop the timer. </div><div class="ttdef"><b>Definition:</b> <a href="a00067_source.html#l00056">timer.cpp:56</a></div></div>
-<div class="ttc" id="a00068_html"><div class="ttname"><a href="a00068.html">timer.h</a></div></div>
-<div class="ttc" id="a00036_html_ab9c2a3fb72f25c0ee936c4023cb55ffa"><div class="ttname"><a href="a00036.html#ab9c2a3fb72f25c0ee936c4023cb55ffa">rambrain::Timer::initialiseTimer</a></div><div class="ttdeci">static void initialiseTimer()</div><div class="ttdoc">Set up the timer. </div><div class="ttdef"><b>Definition:</b> <a href="a00067_source.html#l00066">timer.cpp:66</a></div></div>
-<div class="ttc" id="a00095_html"><div class="ttname"><a href="a00095.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00026">common.h:26</a></div></div>
-<div class="ttc" id="a00036_html_a2b4fa3e4a1e2ef1b1edeffa577717d5d"><div class="ttname"><a href="a00036.html#a2b4fa3e4a1e2ef1b1edeffa577717d5d">rambrain::Timer::startTimer</a></div><div class="ttdeci">static void startTimer(long seconds, long nanoseconds)</div><div class="ttdoc">Start the timer. </div><div class="ttdef"><b>Definition:</b> <a href="a00067_source.html#l00036">timer.cpp:36</a></div></div>
-<div class="ttc" id="a00036_html_a05d8a8b45ca6ca0fc8586dc45e397eb6"><div class="ttname"><a href="a00036.html#a05d8a8b45ca6ca0fc8586dc45e397eb6">rambrain::Timer::its</a></div><div class="ttdeci">static struct itimerspec its</div><div class="ttdef"><b>Definition:</b> <a href="a00068_source.html#l00072">timer.h:72</a></div></div>
-<div class="ttc" id="a00036_html_a59277ee2347b98ad2b255ee898079da7"><div class="ttname"><a href="a00036.html#a59277ee2347b98ad2b255ee898079da7">rambrain::Timer::timerid</a></div><div class="ttdeci">static timer_t timerid</div><div class="ttdef"><b>Definition:</b> <a href="a00068_source.html#l00070">timer.h:70</a></div></div>
-<div class="ttc" id="a00036_html_ac6ba857b6f43eb3998d15b78f505b312"><div class="ttname"><a href="a00036.html#ac6ba857b6f43eb3998d15b78f505b312">rambrain::Timer::initialised</a></div><div class="ttdeci">static bool initialised</div><div class="ttdef"><b>Definition:</b> <a href="a00068_source.html#l00074">timer.h:74</a></div></div>
-<div class="ttc" id="a00036_html_aa01c05838ff7a702f7509fe45e8a6c87"><div class="ttname"><a href="a00036.html#aa01c05838ff7a702f7509fe45e8a6c87">rambrain::Timer::sev</a></div><div class="ttdeci">static struct sigevent sev</div><div class="ttdef"><b>Definition:</b> <a href="a00068_source.html#l00071">timer.h:71</a></div></div>
-<div class="ttc" id="a00036_html_a2c383399b9ca73789a3bb5625632b9dd"><div class="ttname"><a href="a00036.html#a2c383399b9ca73789a3bb5625632b9dd">rambrain::Timer::Timer</a></div><div class="ttdeci">Timer()</div><div class="ttdoc">Create a new timer. </div><div class="ttdef"><b>Definition:</b> <a href="a00067_source.html#l00032">timer.cpp:32</a></div></div>
-<div class="ttc" id="a00036_html_aa17bc507bfb17a2978f80bf8228c5c7f"><div class="ttname"><a href="a00036.html#aa17bc507bfb17a2978f80bf8228c5c7f">rambrain::Timer::running</a></div><div class="ttdeci">static bool running</div><div class="ttdef"><b>Definition:</b> <a href="a00068_source.html#l00074">timer.h:74</a></div></div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="a00032.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00032.html">regexMatcher</a></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00032.html#acf6754e0f0df10007f5494899ed31229">   44</a></span>&#160;    <span class="keyword">enum</span> <a class="code" href="a00032.html#acf6754e0f0df10007f5494899ed31229">matchType</a> {</div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="a00032.html#acf6754e0f0df10007f5494899ed31229afa1a394563a55a77a4ac5b8541014aae">   45</a></span>&#160;        integer = 1 &lt;&lt; 0,</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="a00032.html#acf6754e0f0df10007f5494899ed31229a4afe10bda6318109694a35c63aff6548">   46</a></span>&#160;        floating = 1 &lt;&lt; 1,</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="a00032.html#acf6754e0f0df10007f5494899ed31229a2b6e9b3cb4427fe84fcf45206b171541">   47</a></span>&#160;        units = 1 &lt;&lt; 2,</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="a00032.html#acf6754e0f0df10007f5494899ed31229aa15d1f01ef23a45322aefd07f50a01d2">   48</a></span>&#160;        text = 1 &lt;&lt; 3,</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="a00032.html#acf6754e0f0df10007f5494899ed31229a739b8234cc4fbb693505aaa2e52d3418">   49</a></span>&#160;        alphanumtext = 1 &lt;&lt; 4,</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="a00032.html#acf6754e0f0df10007f5494899ed31229aedd5494c164e4328406e8581c7543137">   50</a></span>&#160;        <span class="keywordtype">boolean</span> = 1 &lt;&lt; 5,</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="a00032.html#acf6754e0f0df10007f5494899ed31229abe0c58d0bd558595fc803e9b44f6fc74">   51</a></span>&#160;        swapfilename = 1 &lt;&lt; 6 </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    };</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="a00032.html">regexMatcher</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">bool</span> matchConfigBlock ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;blockname = <span class="stringliteral">&quot;default&quot;</span> ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    pair&lt;string, string&gt; matchKeyEqualsValue ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str, <span class="keywordtype">int</span> valueType = alphanumtext ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    pair&lt;string, string&gt; matchKeyEqualsValue ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;key, <span class="keywordtype">int</span> valueType = alphanumtext ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    pair&lt;double, string&gt; splitDoubleValueUnit ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    pair&lt;long long int, string&gt; splitIntegerValueUnit ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordtype">string</span> substituteHomeDir ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;source, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;homedir ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keywordtype">string</span> createRegexMatching ( <span class="keywordtype">int</span> type ) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;};</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="preprocessor">#endif // REGEXMATCHER_H</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="ttc" id="a00096_html"><div class="ttname"><a href="a00096.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00026">common.h:26</a></div></div>
+<div class="ttc" id="a00032_html"><div class="ttname"><a href="a00032.html">rambrain::regexMatcher</a></div><div class="ttdoc">Class to handle regex matching used for parsing configuration files. </div><div class="ttdef"><b>Definition:</b> <a href="a00067_source.html#l00035">regexmatcher.h:35</a></div></div>
+<div class="ttc" id="a00040_html"><div class="ttname"><a href="a00040.html">common.h</a></div></div>
+<div class="ttc" id="a00098_html"><div class="ttname"><a href="a00098.html">std</a></div><div class="ttdoc">STL namespace. </div></div>
+<div class="ttc" id="a00032_html_acf6754e0f0df10007f5494899ed31229"><div class="ttname"><a href="a00032.html#acf6754e0f0df10007f5494899ed31229">rambrain::regexMatcher::matchType</a></div><div class="ttdeci">matchType</div><div class="ttdoc">An enum to caracterise what shall be matched in a specific case; flaggy. </div><div class="ttdef"><b>Definition:</b> <a href="a00067_source.html#l00044">regexmatcher.h:44</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00067.html">timer.cpp</a></li>
-    <li class="footer">Generated on Sun Feb 21 2016 01:45:10 for rambrain by
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00067.html">regexmatcher.h</a></li>
+    <li class="footer">Generated on Wed Feb 24 2016 01:42:15 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

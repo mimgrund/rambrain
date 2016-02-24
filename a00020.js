@@ -1,12 +1,16 @@
 var a00020 =
 [
-    [ "managedPtr", "a00020.html#a22c6004a0362a28ee4b6de4fca2ccff2", null ],
-    [ "managedPtr", "a00020.html#a89953e72c68a643d4e1b969f7950e42a", null ],
-    [ "managedPtr", "a00020.html#a54cd4e818a35dd120bbb0a3289b392c8", null ],
-    [ "~managedPtr", "a00020.html#a28f7b2f70057705050caccb4ddce5f51", null ],
-    [ "operator=", "a00020.html#a11cc7b9a98dda932d2ea917861ab4fbe", null ],
-    [ "operator[]", "a00020.html#a7b0a07a9438ff51db7409bc0bbba7d95", null ],
-    [ "operator[]", "a00020.html#ad4e60b360a957198c57e04b1296d7008", null ],
-    [ "n_elem", "a00020.html#aed1590462b762b9641494abcc5f84f1e", null ],
-    [ "subPtrs", "a00020.html#aa811e6094b6acc3f1329d26ad010c1fb", null ]
+    [ "managedMemoryChunk", "a00020.html#a7dd543c33ae52938801cf2071ca087ca", null ],
+    [ "managedMemoryChunk", "a00020.html#abe796a36e96c24fbf51ae1088a624711", null ],
+    [ "child", "a00020.html#a7363a8d7ddfc6be817b5a5baf1024643", null ],
+    [ "id", "a00020.html#a969f806af9b4f51d947bfd57fe484a4a", null ],
+    [ "locPtr", "a00020.html#a93b6f29ed6ba24437927e0a279e3eb2c", null ],
+    [ "next", "a00020.html#a91bec338566ce6719ddd5088ce5cb89a", null ],
+    [ "parent", "a00020.html#a3dc6f2eaa0510349bfda1b426871e82c", null ],
+    [ "preemptiveLoaded", "a00020.html#af0f0d159f94b3d17ee6f31ae7f87086a", null ],
+    [ "schedBuf", "a00020.html#aef6cad33161b8ec5ddb75b46516822e8", null ],
+    [ "size", "a00020.html#a723a8b947225aff2b938d964552c066d", null ],
+    [ "status", "a00020.html#a8975c39c838ab14956b4aca36f3a4220", null ],
+    [ "swapBuf", "a00020.html#a1b41888b2048d7cf6cad4089e3f85b2d", null ],
+    [ "useCnt", "a00020.html#a0464c7125ccfd3a3b5760bf9c67d86eb", null ]
 ];

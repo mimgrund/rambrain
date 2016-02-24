@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>rambrain: /home/rambrainbuild/docubrain/src/cyclicManagedMemory.cpp File Reference</title>
+<title>rambrain: /home/rambrainbuild/docubrain/src/configreader.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,32 +105,52 @@ $(document).ready(function(){initNavTree('a00042.html','');});
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
-<div class="title">cyclicManagedMemory.cpp File Reference</div>  </div>
+<div class="title">configreader.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><a href="a00042_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:a00095"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00095.html">rambrain</a></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00007.html">rambrain::configLineBase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for config lines.  <a href="a00007.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00006.html">rambrain::configLine&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for config key value pairs represented by a line in a config file.  <a href="a00006.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00009.html">rambrain::configuration</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main struct to save configuration variables.  <a href="a00009.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00008.html">rambrain::configReader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reader class to read in and properly parse config files.  <a href="a00008.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a52b3cc8a71f3ed69ed3b7b2e5f440fdc"><td class="memItemLeft" align="right" valign="top">global_bytesize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00095.html#a52b3cc8a71f3ed69ed3b7b2e5f440fdc">rambrain::min_elements</a> = 0</td></tr>
-<tr class="separator:a52b3cc8a71f3ed69ed3b7b2e5f440fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:a00096"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00096.html">rambrain</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a7d53dd1748d5012cafa91aa982c7cd35"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00096.html#a7d53dd1748d5012cafa91aa982c7cd35">rambrain::swapPolicy</a> { <a class="el" href="a00096.html#a7d53dd1748d5012cafa91aa982c7cd35acec315e3d0975e5cc2811d5d8725f149">rambrain::swapPolicy::fixed</a>, 
+<a class="el" href="a00096.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04">rambrain::swapPolicy::autoextendable</a>, 
+<a class="el" href="a00096.html#a7d53dd1748d5012cafa91aa982c7cd35afe88c03a1958b4259f0c51d68eed3213">rambrain::swapPolicy::interactive</a>
+ }<tr class="memdesc:a7d53dd1748d5012cafa91aa982c7cd35"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enumeration to regulate how the swap should define when it approaches it's set boundary.  <a href="a00096.html#a7d53dd1748d5012cafa91aa982c7cd35">More...</a><br /></td></tr>
+<tr class="separator:a7d53dd1748d5012cafa91aa982c7cd35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00042.html">cyclicManagedMemory.cpp</a></li>
-    <li class="footer">Generated on Sun Feb 21 2016 01:45:10 for rambrain by
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00042.html">configreader.h</a></li>
+    <li class="footer">Generated on Wed Feb 24 2016 01:42:15 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

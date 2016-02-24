@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>rambrain: /home/rambrainbuild/docubrain/src/regexmatcher.cpp Source File</title>
+<title>rambrain: /home/rambrainbuild/docubrain/src/rambrainconfig.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('a00065_source.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">regexmatcher.cpp</div>  </div>
+<div class="title">rambrainconfig.h</div>  </div>
 </div><!--header-->
 <div class="contents">
 <a href="a00065.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*   rambrain - a dynamical physical memory extender</span></div>
@@ -127,145 +127,91 @@ $(document).ready(function(){initNavTree('a00065_source.html','');});
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"> *   along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00066.html">regexmatcher.h</a>&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#ifndef INITIALISATION_H</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define INITIALISATION_H</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifdef USE_XPRESSIVE</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;boost/xpressive/xpressive.hpp&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#define COMPILE_RGX(name, rx) sregex name = sregex::compile ( rx )</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">using namespace </span><a class="code" href="a00094.html">boost::xpressive</a>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00042.html">configreader.h</a>&quot;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00061.html">managedSwap.h</a>&quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00055.html">managedMemory.h</a>&quot;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="a00040.html">common.h</a>&quot;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00096.html">rambrain</a></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;regex&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define COMPILE_RGX(name, rx) regex name( rx )</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">namespace </span>rambrainglobals</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">namespace </span><a class="code" href="a00095.html">rambrain</a></div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="a00029.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="a00029.html">rambrainConfig</a></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="a00031.html#a85bbcde8ed2102552f5aa6fc521594da">   40</a></span>&#160;regexMatcher::regexMatcher()</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;}</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="a00031.html#a952ca26ade04a532e24f85dbb2c748e4">   44</a></span>&#160;<span class="keywordtype">bool</span> regexMatcher::matchConfigBlock ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;blockname )<span class="keyword"> const</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">const</span> COMPILE_RGX ( rgx, <span class="stringliteral">&quot;\\s*\\[&quot;</span> + blockname + <span class="stringliteral">&quot;\\]\\s*&quot;</span> );</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordflow">return</span> regex_match ( str, rgx );</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;pair&lt;string, string&gt; regexMatcher::matchKeyEqualsValue ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str, <span class="keywordtype">int</span> valueType )<span class="keyword"> const</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordflow">return</span> matchKeyEqualsValue ( str, <span class="stringliteral">&quot;[a-zA-Z]+&quot;</span>, valueType );</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;pair&lt;string, string&gt; regexMatcher::matchKeyEqualsValue ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;key, <span class="keywordtype">int</span> valueType )<span class="keyword"> const</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    pair&lt;string, string&gt; res;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    smatch match;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">const</span> COMPILE_RGX ( rgx, <span class="stringliteral">&quot;\\s*(&quot;</span> + key + <span class="stringliteral">&quot;)\\s*=\\s*(&quot;</span> + createRegexMatching ( valueType ) + <span class="stringliteral">&quot;)\\s*&quot;</span> );</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordflow">if</span> ( regex_match ( str, match, rgx ) ) {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        res.first = match[1];</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        res.second = match[2];</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="a00029.html#adf79cce9ad6dde113f1a25c7f28978cc">rambrainConfig</a>();</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="a00029.html#a50356f5e6333c5094970bf201bcca578">~rambrainConfig</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00029.html#ad149f44c7ec45aa83d741fd0a08e7811">reinit</a> ( <span class="keywordtype">bool</span> reread = <span class="keyword">true</span> );</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="a00029.html#a61be05dcf94bd052199b719c0d3efc81">   62</a></span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code" href="a00029.html#a61be05dcf94bd052199b719c0d3efc81">setCustomConfigPath</a> ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;path ) {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="a00029.html#a48f1f953b1c2c97c7a2a9864bcd6935d">config</a>.<a class="code" href="a00008.html#aaa1bed466c323f77900c34dc435a6aef">setCustomConfigPath</a> ( path );</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">return</span> res;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;}</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00031.html#a9c7cf7261cd1af242d3792cb622f34e4">   69</a></span>&#160;<span class="keywordtype">string</span> regexMatcher::createRegexMatching ( <span class="keywordtype">int</span> type )<span class="keyword"> const</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    stringstream ss;</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="a00029.html#aa7f91003d897ef82e6b255c4affb9f00">   69</a></span>&#160;    <span class="keyword">inline</span> <span class="keyword">const</span> <a class="code" href="a00009.html">configuration</a> &amp;<a class="code" href="a00029.html#aa7f91003d897ef82e6b255c4affb9f00">getConfig</a>() {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="a00029.html#a48f1f953b1c2c97c7a2a9864bcd6935d">config</a>.<a class="code" href="a00008.html#aa9d982624f5495cdb3af2e4a216f4ecd">getConfig</a>();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">if</span> ( type &amp; swapfilename ) {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">string</span> ant = <span class="stringliteral">&quot;[\\/\\.0-9a-zA-Z-_\\\\]&quot;</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        ss &lt;&lt; <span class="stringliteral">&quot;~?&quot;</span> &lt;&lt; ant &lt;&lt; <span class="stringliteral">&quot;+\\%d&quot;</span> &lt;&lt; ant &lt;&lt; <span class="stringliteral">&quot;*\\%d&quot;</span> &lt;&lt; ant &lt;&lt; <span class="stringliteral">&quot;*&quot;</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">if</span> ( type &amp; <span class="keywordtype">boolean</span> ) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            ss  &lt;&lt; <span class="stringliteral">&quot;true|True|TRUE|false|False|FALSE&quot;</span>;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="keywordflow">if</span> ( type &amp; integer ) {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                ss &lt;&lt; <span class="stringliteral">&quot;|\\d+&quot;</span>;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            ss &lt;&lt; <span class="stringliteral">&quot;[&quot;</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">if</span> ( type &amp; integer || type &amp; floating ) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                ss &lt;&lt; <span class="stringliteral">&quot;0-9&quot;</span>;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">if</span> ( type &amp; text ) {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                ss &lt;&lt; <span class="stringliteral">&quot;a-zA-Z&quot;</span>;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            }</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">if</span> ( type &amp; alphanumtext ) {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                ss &lt;&lt; <span class="stringliteral">&quot;\\/\\.0-9a-zA-Z-_\\%\\\\&quot;</span>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            }</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            ss &lt;&lt; <span class="stringliteral">&quot;]+&quot;</span>;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            <span class="keywordflow">if</span> ( type &amp; floating ) {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                ss &lt;&lt; <span class="stringliteral">&quot;\\.?\\d*f?&quot;</span>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            <span class="keywordflow">if</span> ( type &amp; units ) {</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                ss &lt;&lt; <span class="stringliteral">&quot;\\s*[a-zA-Z]*&quot;</span>;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            }</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        }</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keywordflow">return</span> ss.str();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00029.html#a55f24943ba147e71eee649812bec31e3">resizeMemory</a> ( <a class="code" href="a00096.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> memory );</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00029.html#a33b6e5764cb838b06e0cb624f47bdf67">resizeSwap</a> ( <a class="code" href="a00096.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> memory );</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00029.html#a8e0134e8c212da14a0fb6b60611ee2d7">init</a>();</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="a00029.html#a3e4485000b2a061fb75d85f68d06017d">clean</a>();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="a00029.html#a48f1f953b1c2c97c7a2a9864bcd6935d">   93</a></span>&#160;    <a class="code" href="a00008.html">configReader</a> <a class="code" href="a00029.html#a48f1f953b1c2c97c7a2a9864bcd6935d">config</a>;</div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="a00029.html#a8352178ea447b0e8551dc40c5fccd002">   94</a></span>&#160;    <a class="code" href="a00023.html">managedSwap</a> *<a class="code" href="a00029.html#a8352178ea447b0e8551dc40c5fccd002">swap</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="a00029.html#a5eb6bc46d8a484fbc983476bef89e74f">   95</a></span>&#160;    <a class="code" href="a00019.html">managedMemory</a> *<a class="code" href="a00029.html#a5eb6bc46d8a484fbc983476bef89e74f">manager</a>;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">extern</span> <a class="code" href="a00029.html">rambrainConfig</a> <a class="code" href="a00097.html#ad02508d72047bc55a38eda857e4816c1">config</a>;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="a00031.html#addb28ec0da837148b315a76d3e86d3dc">  106</a></span>&#160;pair&lt;double, string&gt; regexMatcher::splitDoubleValueUnit ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str )<span class="keyword"> const</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    pair&lt;double, string&gt; res;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keyword">const</span> COMPILE_RGX ( rgx, <span class="stringliteral">&quot;([0-9]+\\.?\\d*f?)\\s*([a-zA-Z]*)&quot;</span> );</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    smatch match;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordflow">if</span> ( regex_match ( str, match, rgx ) ) {</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        res.first = atof ( static_cast&lt;string&gt; ( match[1] ).c_str() );</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">if</span> ( match.size() &gt; 2 ) {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            res.second = match[2];</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    }</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keywordflow">return</span> res;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="a00031.html#a05b70b65e3965866b3d9dfbdcacad5d6">  122</a></span>&#160;pair&lt;long long, string&gt; regexMatcher::splitIntegerValueUnit ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;str )<span class="keyword"> const</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    pair&lt;unsigned long long, string&gt; res;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keyword">const</span> COMPILE_RGX ( rgx, <span class="stringliteral">&quot;([0-9]+)\\s*([a-zA-Z]*)&quot;</span> );</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    smatch match;</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">if</span> ( regex_match ( str, match, rgx ) ) {</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        res.first = atoll ( static_cast&lt;string&gt; ( match[1] ).c_str() );</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <span class="keywordflow">if</span> ( match.length() &gt; 2 ) {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            res.second = match[2];</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    }</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordflow">return</span> res;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;}</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
-<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="a00031.html#a2fe1eeb1a8a33964f7211daeeaf12891">  138</a></span>&#160;<span class="keywordtype">string</span> regexMatcher::substituteHomeDir ( <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;source, <span class="keyword">const</span> <span class="keywordtype">string</span> &amp;homedir )<span class="keyword"> const</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keyword">const</span> COMPILE_RGX ( rgx, <span class="stringliteral">&quot;~&quot;</span> );</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordtype">string</span> res = regex_replace ( source, rgx, homedir );</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordflow">return</span> res;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;}</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
-<div class="ttc" id="a00095_html"><div class="ttname"><a href="a00095.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00039_source.html#l00026">common.h:26</a></div></div>
-<div class="ttc" id="a00066_html"><div class="ttname"><a href="a00066.html">regexmatcher.h</a></div></div>
-<div class="ttc" id="a00094_html"><div class="ttname"><a href="a00094.html">xpressive</a></div></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#endif // INITIALISATION_H</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="ttc" id="a00029_html_a55f24943ba147e71eee649812bec31e3"><div class="ttname"><a href="a00029.html#a55f24943ba147e71eee649812bec31e3">rambrain::rambrainglobals::rambrainConfig::resizeMemory</a></div><div class="ttdeci">void resizeMemory(global_bytesize memory)</div><div class="ttdoc">Simple setter. </div><div class="ttdef"><b>Definition:</b> <a href="a00064_source.html#l00055">rambrainconfig.cpp:55</a></div></div>
+<div class="ttc" id="a00029_html_a33b6e5764cb838b06e0cb624f47bdf67"><div class="ttname"><a href="a00029.html#a33b6e5764cb838b06e0cb624f47bdf67">rambrain::rambrainglobals::rambrainConfig::resizeSwap</a></div><div class="ttdeci">void resizeSwap(global_bytesize memory)</div><div class="ttdoc">Simple setter. </div><div class="ttdef"><b>Definition:</b> <a href="a00064_source.html#l00062">rambrainconfig.cpp:62</a></div></div>
+<div class="ttc" id="a00029_html_aa7f91003d897ef82e6b255c4affb9f00"><div class="ttname"><a href="a00029.html#aa7f91003d897ef82e6b255c4affb9f00">rambrain::rambrainglobals::rambrainConfig::getConfig</a></div><div class="ttdeci">const configuration &amp; getConfig()</div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00069">rambrainconfig.h:69</a></div></div>
+<div class="ttc" id="a00042_html"><div class="ttname"><a href="a00042.html">configreader.h</a></div></div>
+<div class="ttc" id="a00029_html_a50356f5e6333c5094970bf201bcca578"><div class="ttname"><a href="a00029.html#a50356f5e6333c5094970bf201bcca578">rambrain::rambrainglobals::rambrainConfig::~rambrainConfig</a></div><div class="ttdeci">~rambrainConfig()</div><div class="ttdoc">Destructs the throught the config initiated swap and manager. </div><div class="ttdef"><b>Definition:</b> <a href="a00064_source.html#l00041">rambrainconfig.cpp:41</a></div></div>
+<div class="ttc" id="a00023_html"><div class="ttname"><a href="a00023.html">rambrain::managedSwap</a></div><div class="ttdoc">Class that serves as a backend to managedMemory to actual write/read managedMemoryChunks to/from hard...</div><div class="ttdef"><b>Definition:</b> <a href="a00061_source.html#l00035">managedSwap.h:35</a></div></div>
+<div class="ttc" id="a00096_html"><div class="ttname"><a href="a00096.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00026">common.h:26</a></div></div>
+<div class="ttc" id="a00055_html"><div class="ttname"><a href="a00055.html">managedMemory.h</a></div></div>
+<div class="ttc" id="a00029_html_a5eb6bc46d8a484fbc983476bef89e74f"><div class="ttname"><a href="a00029.html#a5eb6bc46d8a484fbc983476bef89e74f">rambrain::rambrainglobals::rambrainConfig::manager</a></div><div class="ttdeci">managedMemory * manager</div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00095">rambrainconfig.h:95</a></div></div>
+<div class="ttc" id="a00029_html_a8e0134e8c212da14a0fb6b60611ee2d7"><div class="ttname"><a href="a00029.html#a8e0134e8c212da14a0fb6b60611ee2d7">rambrain::rambrainglobals::rambrainConfig::init</a></div><div class="ttdeci">void init()</div><div class="ttdef"><b>Definition:</b> <a href="a00064_source.html#l00069">rambrainconfig.cpp:69</a></div></div>
+<div class="ttc" id="a00096_html_abe2d051306a69fb21f8a17946b4e93ed"><div class="ttname"><a href="a00096.html#abe2d051306a69fb21f8a17946b4e93ed">rambrain::global_bytesize</a></div><div class="ttdeci">uint64_t global_bytesize</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00065">common.h:65</a></div></div>
+<div class="ttc" id="a00008_html_aa9d982624f5495cdb3af2e4a216f4ecd"><div class="ttname"><a href="a00008.html#aa9d982624f5495cdb3af2e4a216f4ecd">rambrain::configReader::getConfig</a></div><div class="ttdeci">configuration &amp; getConfig()</div><div class="ttdoc">Simple getter. </div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00192">configreader.h:192</a></div></div>
+<div class="ttc" id="a00009_html"><div class="ttname"><a href="a00009.html">rambrain::configuration</a></div><div class="ttdoc">Main struct to save configuration variables. </div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00131">configreader.h:131</a></div></div>
+<div class="ttc" id="a00029_html_adf79cce9ad6dde113f1a25c7f28978cc"><div class="ttname"><a href="a00029.html#adf79cce9ad6dde113f1a25c7f28978cc">rambrain::rambrainglobals::rambrainConfig::rambrainConfig</a></div><div class="ttdeci">rambrainConfig()</div><div class="ttdoc">Construct a new config handling class. </div><div class="ttdef"><b>Definition:</b> <a href="a00064_source.html#l00035">rambrainconfig.cpp:35</a></div></div>
+<div class="ttc" id="a00061_html"><div class="ttname"><a href="a00061.html">managedSwap.h</a></div></div>
+<div class="ttc" id="a00029_html_a3e4485000b2a061fb75d85f68d06017d"><div class="ttname"><a href="a00029.html#a3e4485000b2a061fb75d85f68d06017d">rambrain::rambrainglobals::rambrainConfig::clean</a></div><div class="ttdeci">void clean()</div><div class="ttdef"><b>Definition:</b> <a href="a00064_source.html#l00088">rambrainconfig.cpp:88</a></div></div>
+<div class="ttc" id="a00029_html_a61be05dcf94bd052199b719c0d3efc81"><div class="ttname"><a href="a00029.html#a61be05dcf94bd052199b719c0d3efc81">rambrain::rambrainglobals::rambrainConfig::setCustomConfigPath</a></div><div class="ttdeci">void setCustomConfigPath(const string &amp;path)</div><div class="ttdoc">Simple setter. </div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00062">rambrainconfig.h:62</a></div></div>
+<div class="ttc" id="a00029_html_a48f1f953b1c2c97c7a2a9864bcd6935d"><div class="ttname"><a href="a00029.html#a48f1f953b1c2c97c7a2a9864bcd6935d">rambrain::rambrainglobals::rambrainConfig::config</a></div><div class="ttdeci">configReader config</div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00093">rambrainconfig.h:93</a></div></div>
+<div class="ttc" id="a00029_html"><div class="ttname"><a href="a00029.html">rambrain::rambrainglobals::rambrainConfig</a></div><div class="ttdoc">Main class for handling configuration throughout the library and for the user. </div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00037">rambrainconfig.h:37</a></div></div>
+<div class="ttc" id="a00097_html_ad02508d72047bc55a38eda857e4816c1"><div class="ttname"><a href="a00097.html#ad02508d72047bc55a38eda857e4816c1">rambrain::rambrainglobals::config</a></div><div class="ttdeci">rambrainConfig config</div><div class="ttdoc">You will find the object in managedMemory.cpp as we have to define it in some &#39;used&#39; file in the link...</div><div class="ttdef"><b>Definition:</b> <a href="a00054_source.html#l00036">managedMemory.cpp:36</a></div></div>
+<div class="ttc" id="a00029_html_ad149f44c7ec45aa83d741fd0a08e7811"><div class="ttname"><a href="a00029.html#ad149f44c7ec45aa83d741fd0a08e7811">rambrain::rambrainglobals::rambrainConfig::reinit</a></div><div class="ttdeci">void reinit(bool reread=true)</div><div class="ttdoc">Reinitialises the system. </div><div class="ttdef"><b>Definition:</b> <a href="a00064_source.html#l00046">rambrainconfig.cpp:46</a></div></div>
+<div class="ttc" id="a00029_html_a8352178ea447b0e8551dc40c5fccd002"><div class="ttname"><a href="a00029.html#a8352178ea447b0e8551dc40c5fccd002">rambrain::rambrainglobals::rambrainConfig::swap</a></div><div class="ttdeci">managedSwap * swap</div><div class="ttdef"><b>Definition:</b> <a href="a00065_source.html#l00094">rambrainconfig.h:94</a></div></div>
+<div class="ttc" id="a00040_html"><div class="ttname"><a href="a00040.html">common.h</a></div></div>
+<div class="ttc" id="a00008_html_aaa1bed466c323f77900c34dc435a6aef"><div class="ttname"><a href="a00008.html#aaa1bed466c323f77900c34dc435a6aef">rambrain::configReader::setCustomConfigPath</a></div><div class="ttdeci">void setCustomConfigPath(const string &amp;path)</div><div class="ttdoc">Simple setter. </div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00185">configreader.h:185</a></div></div>
+<div class="ttc" id="a00008_html"><div class="ttname"><a href="a00008.html">rambrain::configReader</a></div><div class="ttdoc">Reader class to read in and properly parse config files. </div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00163">configreader.h:163</a></div></div>
+<div class="ttc" id="a00019_html"><div class="ttname"><a href="a00019.html">rambrain::managedMemory</a></div><div class="ttdoc">Backend class to handle raw memory and interaction/storage with managedSwap. </div><div class="ttdef"><b>Definition:</b> <a href="a00055_source.html#l00068">managedMemory.h:68</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00065.html">regexmatcher.cpp</a></li>
-    <li class="footer">Generated on Sun Feb 21 2016 01:45:10 for rambrain by
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00065.html">rambrainconfig.h</a></li>
+    <li class="footer">Generated on Wed Feb 24 2016 01:42:15 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

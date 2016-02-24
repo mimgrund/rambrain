@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>rambrain: rambrain::rambrainglobals::rambrainConfig Class Reference</title>
+<title>rambrain: performanceTest&lt;&gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -108,105 +108,183 @@ $(document).ready(function(){initNavTree('a00028.html','');});
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="a00139.html">List of all members</a>  </div>
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
+<a href="a00106.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">rambrain::rambrainglobals::rambrainConfig Class Reference</div>  </div>
+<div class="title">performanceTest&lt;&gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Main class for handling configuration throughout the library and for the user.  
+<p>Base class for all performance tests which itself does not contain any parameters.  
  <a href="a00028.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="a00064_source.html">rambrainconfig.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00076_source.html">performanceTestClasses.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adf79cce9ad6dde113f1a25c7f28978cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#adf79cce9ad6dde113f1a25c7f28978cc">rambrainConfig</a> ()</td></tr>
-<tr class="memdesc:adf79cce9ad6dde113f1a25c7f28978cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new config handling class.  <a href="#adf79cce9ad6dde113f1a25c7f28978cc">More...</a><br /></td></tr>
-<tr class="separator:adf79cce9ad6dde113f1a25c7f28978cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50356f5e6333c5094970bf201bcca578"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a50356f5e6333c5094970bf201bcca578">~rambrainConfig</a> ()</td></tr>
-<tr class="memdesc:a50356f5e6333c5094970bf201bcca578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructs the throught the config initiated swap and manager.  <a href="#a50356f5e6333c5094970bf201bcca578">More...</a><br /></td></tr>
-<tr class="separator:a50356f5e6333c5094970bf201bcca578"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad149f44c7ec45aa83d741fd0a08e7811"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ad149f44c7ec45aa83d741fd0a08e7811">reinit</a> (bool reread=true)</td></tr>
-<tr class="memdesc:ad149f44c7ec45aa83d741fd0a08e7811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitialises the system.  <a href="#ad149f44c7ec45aa83d741fd0a08e7811">More...</a><br /></td></tr>
-<tr class="separator:ad149f44c7ec45aa83d741fd0a08e7811"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61be05dcf94bd052199b719c0d3efc81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a61be05dcf94bd052199b719c0d3efc81">setCustomConfigPath</a> (const string &amp;path)</td></tr>
-<tr class="memdesc:a61be05dcf94bd052199b719c0d3efc81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple setter.  <a href="#a61be05dcf94bd052199b719c0d3efc81">More...</a><br /></td></tr>
-<tr class="separator:a61be05dcf94bd052199b719c0d3efc81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7f91003d897ef82e6b255c4affb9f00"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="a00009.html">configuration</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#aa7f91003d897ef82e6b255c4affb9f00">getConfig</a> ()</td></tr>
-<tr class="memdesc:aa7f91003d897ef82e6b255c4affb9f00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple getter.  <a href="#aa7f91003d897ef82e6b255c4affb9f00">More...</a><br /></td></tr>
-<tr class="separator:aa7f91003d897ef82e6b255c4affb9f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55f24943ba147e71eee649812bec31e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a55f24943ba147e71eee649812bec31e3">resizeMemory</a> (<a class="el" href="a00095.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> memory)</td></tr>
-<tr class="memdesc:a55f24943ba147e71eee649812bec31e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple setter.  <a href="#a55f24943ba147e71eee649812bec31e3">More...</a><br /></td></tr>
-<tr class="separator:a55f24943ba147e71eee649812bec31e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33b6e5764cb838b06e0cb624f47bdf67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a33b6e5764cb838b06e0cb624f47bdf67">resizeSwap</a> (<a class="el" href="a00095.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a> memory)</td></tr>
-<tr class="memdesc:a33b6e5764cb838b06e0cb624f47bdf67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple setter.  <a href="#a33b6e5764cb838b06e0cb624f47bdf67">More...</a><br /></td></tr>
-<tr class="separator:a33b6e5764cb838b06e0cb624f47bdf67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81c06be2541b0d13ef5a0f44d0eac5de"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a81c06be2541b0d13ef5a0f44d0eac5de">performanceTest</a> (const char *<a class="el" href="a00028.html#a6c0cdc27e3ec70a86bd6e17d3d60295b">name</a>)</td></tr>
+<tr class="memdesc:a81c06be2541b0d13ef5a0f44d0eac5de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new performance test.  <a href="#a81c06be2541b0d13ef5a0f44d0eac5de">More...</a><br /></td></tr>
+<tr class="separator:a81c06be2541b0d13ef5a0f44d0eac5de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1aa7ebeb97071e17de8319d001b54a78"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a1aa7ebeb97071e17de8319d001b54a78">~performanceTest</a> ()</td></tr>
+<tr class="memdesc:a1aa7ebeb97071e17de8319d001b54a78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup.  <a href="#a1aa7ebeb97071e17de8319d001b54a78">More...</a><br /></td></tr>
+<tr class="separator:a1aa7ebeb97071e17de8319d001b54a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d18105b6ab2e38eba1bf24991878fe9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a4d18105b6ab2e38eba1bf24991878fe9">runTests</a> (unsigned int repetitions, const string &amp;path=&quot;./&quot;)</td></tr>
+<tr class="memdesc:a4d18105b6ab2e38eba1bf24991878fe9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run this performance test with all given parameter variations and handle data collection and plotting.  <a href="#a4d18105b6ab2e38eba1bf24991878fe9">More...</a><br /></td></tr>
+<tr class="separator:a4d18105b6ab2e38eba1bf24991878fe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac40365c2bfb2743cf84d862939754383"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ac40365c2bfb2743cf84d862939754383">actualTestMethod</a> (<a class="el" href="a00034.html">tester</a> &amp;test, char **arguments, int &amp;offset, unsigned int argumentscount)=0</td></tr>
+<tr class="memdesc:ac40365c2bfb2743cf84d862939754383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains the actual test code.  <a href="#ac40365c2bfb2743cf84d862939754383">More...</a><br /></td></tr>
+<tr class="separator:ac40365c2bfb2743cf84d862939754383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b6096462a0afb17f57bcae34e654c9b"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a5b6096462a0afb17f57bcae34e654c9b">getComment</a> ()=0</td></tr>
+<tr class="memdesc:a5b6096462a0afb17f57bcae34e654c9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple getter.  <a href="#a5b6096462a0afb17f57bcae34e654c9b">More...</a><br /></td></tr>
+<tr class="separator:a5b6096462a0afb17f57bcae34e654c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a8e0134e8c212da14a0fb6b60611ee2d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a8e0134e8c212da14a0fb6b60611ee2d7">init</a> ()</td></tr>
-<tr class="separator:a8e0134e8c212da14a0fb6b60611ee2d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e4485000b2a061fb75d85f68d06017d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a3e4485000b2a061fb75d85f68d06017d">clean</a> ()</td></tr>
-<tr class="separator:a3e4485000b2a061fb75d85f68d06017d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:af2bc6250cc03ce3e69542c88336fb68f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#af2bc6250cc03ce3e69542c88336fb68f">runRegisteredTests</a> (unsigned int repetitions, const string &amp;path=&quot;./&quot;)</td></tr>
+<tr class="memdesc:af2bc6250cc03ce3e69542c88336fb68f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run all registered (and enabled) performance tests with all given parameter variations for each test.  <a href="#af2bc6250cc03ce3e69542c88336fb68f">More...</a><br /></td></tr>
+<tr class="separator:af2bc6250cc03ce3e69542c88336fb68f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab420b9d61d4c7e975a63c3cd4b4c21ac"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ab420b9d61d4c7e975a63c3cd4b4c21ac">enableTest</a> (const string &amp;<a class="el" href="a00028.html#a6c0cdc27e3ec70a86bd6e17d3d60295b">name</a>, bool <a class="el" href="a00028.html#aab3749315fc4f0280d2158a80440da24">enabled</a>)</td></tr>
+<tr class="memdesc:ab420b9d61d4c7e975a63c3cd4b4c21ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/Disable a specific test case.  <a href="#ab420b9d61d4c7e975a63c3cd4b4c21ac">More...</a><br /></td></tr>
+<tr class="separator:ab420b9d61d4c7e975a63c3cd4b4c21ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a866eb0195bf1a726dd40d1a8513a8179"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a866eb0195bf1a726dd40d1a8513a8179">enableAllTests</a> (bool <a class="el" href="a00028.html#aab3749315fc4f0280d2158a80440da24">enabled</a>)</td></tr>
+<tr class="memdesc:a866eb0195bf1a726dd40d1a8513a8179"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/Disable all known test cases.  <a href="#a866eb0195bf1a726dd40d1a8513a8179">More...</a><br /></td></tr>
+<tr class="separator:a866eb0195bf1a726dd40d1a8513a8179"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e249ba8874d4f1ffe55dce7cdd4c3cf"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a6e249ba8874d4f1ffe55dce7cdd4c3cf">unregisterTest</a> (const string &amp;<a class="el" href="a00028.html#a6c0cdc27e3ec70a86bd6e17d3d60295b">name</a>)</td></tr>
+<tr class="memdesc:a6e249ba8874d4f1ffe55dce7cdd4c3cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Completely remove a test case from the setup.  <a href="#a6e249ba8874d4f1ffe55dce7cdd4c3cf">More...</a><br /></td></tr>
+<tr class="separator:a6e249ba8874d4f1ffe55dce7cdd4c3cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6860e272518523075001baea0c31be15"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a6860e272518523075001baea0c31be15">dumpTestInfo</a> ()</td></tr>
+<tr class="memdesc:a6860e272518523075001baea0c31be15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write infos about all registered test cases to stdout.  <a href="#a6860e272518523075001baea0c31be15">More...</a><br /></td></tr>
+<tr class="separator:a6860e272518523075001baea0c31be15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7e6b8d0ac947d531131fdc359569515"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ae7e6b8d0ac947d531131fdc359569515">runRespectiveTest</a> (const string &amp;<a class="el" href="a00028.html#a6c0cdc27e3ec70a86bd6e17d3d60295b">name</a>, <a class="el" href="a00034.html">tester</a> &amp;myTester, unsigned int repetitions, char **arguments, int &amp;offset, int argumentscount)</td></tr>
+<tr class="memdesc:ae7e6b8d0ac947d531131fdc359569515"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a specific test case several times.  <a href="#ae7e6b8d0ac947d531131fdc359569515">More...</a><br /></td></tr>
+<tr class="separator:ae7e6b8d0ac947d531131fdc359569515"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab244a26d06ae360803ba8e53bfd4cce1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ab244a26d06ae360803ba8e53bfd4cce1">setDisplayPlots</a> (bool display)</td></tr>
+<tr class="memdesc:ab244a26d06ae360803ba8e53bfd4cce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the generated plots shall be immediately displayed.  <a href="#ab244a26d06ae360803ba8e53bfd4cce1">More...</a><br /></td></tr>
+<tr class="separator:ab244a26d06ae360803ba8e53bfd4cce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a48f1f953b1c2c97c7a2a9864bcd6935d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00008.html">configReader</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a48f1f953b1c2c97c7a2a9864bcd6935d">config</a></td></tr>
-<tr class="separator:a48f1f953b1c2c97c7a2a9864bcd6935d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8352178ea447b0e8551dc40c5fccd002"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00022.html">managedSwap</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a8352178ea447b0e8551dc40c5fccd002">swap</a></td></tr>
-<tr class="separator:a8352178ea447b0e8551dc40c5fccd002"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5eb6bc46d8a484fbc983476bef89e74f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00018.html">managedMemory</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a5eb6bc46d8a484fbc983476bef89e74f">manager</a></td></tr>
-<tr class="separator:a5eb6bc46d8a484fbc983476bef89e74f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a0e7a9f0e693563cdc8445d44c5cffa2e"><td class="memItemLeft" align="right" valign="top">virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a0e7a9f0e693563cdc8445d44c5cffa2e">getStepsForParam</a> (unsigned int varryParam)</td></tr>
+<tr class="memdesc:a0e7a9f0e693563cdc8445d44c5cffa2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the amount of steps for parameter variation.  <a href="#a0e7a9f0e693563cdc8445d44c5cffa2e">More...</a><br /></td></tr>
+<tr class="separator:a0e7a9f0e693563cdc8445d44c5cffa2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab488d9038dfd99cb8c8429b92b1e135e"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ab488d9038dfd99cb8c8429b92b1e135e">getParamsString</a> (int varryParam, unsigned int step, const string &amp;delimiter=&quot; &quot;)</td></tr>
+<tr class="memdesc:ab488d9038dfd99cb8c8429b92b1e135e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a string using the current parameter values.  <a href="#ab488d9038dfd99cb8c8429b92b1e135e">More...</a><br /></td></tr>
+<tr class="separator:ab488d9038dfd99cb8c8429b92b1e135e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a745002c6704317f16e622eeddc62f1b9"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a745002c6704317f16e622eeddc62f1b9">getTestOutfile</a> (int varryParam, unsigned int step)</td></tr>
+<tr class="memdesc:a745002c6704317f16e622eeddc62f1b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a string for an outfilename using the current parameter values.  <a href="#a745002c6704317f16e622eeddc62f1b9">More...</a><br /></td></tr>
+<tr class="separator:a745002c6704317f16e622eeddc62f1b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37ca5b138f6d1081dc5307b3f39f7b6c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a37ca5b138f6d1081dc5307b3f39f7b6c">resultToTempFile</a> (int varryParam, unsigned int step, ofstream &amp;file)</td></tr>
+<tr class="memdesc:a37ca5b138f6d1081dc5307b3f39f7b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read in average timing results from a test and write the important data to a file.  <a href="#a37ca5b138f6d1081dc5307b3f39f7b6c">More...</a><br /></td></tr>
+<tr class="separator:a37ca5b138f6d1081dc5307b3f39f7b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75e206bba7717292e80e80cd7363bb78"><td class="memItemLeft" align="right" valign="top">virtual vector&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a75e206bba7717292e80e80cd7363bb78">splitString</a> (const string &amp;in, char delimiter)</td></tr>
+<tr class="memdesc:a75e206bba7717292e80e80cd7363bb78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Split a string into a list of substrings.  <a href="#a75e206bba7717292e80e80cd7363bb78">More...</a><br /></td></tr>
+<tr class="separator:a75e206bba7717292e80e80cd7363bb78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8455221e3d4a16318c34a8ff105e4c2d"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a8455221e3d4a16318c34a8ff105e4c2d">generateGnuplotScript</a> (const string &amp;infile, const string &amp;<a class="el" href="a00028.html#a6c0cdc27e3ec70a86bd6e17d3d60295b">name</a>, const string &amp;xlabel, const string &amp;ylabel, const string &amp;title, bool log, int paramColumn)</td></tr>
+<tr class="memdesc:a8455221e3d4a16318c34a8ff105e4c2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a gnuplot script for swapstats output plotting.  <a href="#a8455221e3d4a16318c34a8ff105e4c2d">More...</a><br /></td></tr>
+<tr class="separator:a8455221e3d4a16318c34a8ff105e4c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02a95813139752770f04edcba371697e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a02a95813139752770f04edcba371697e">handleTimingInfos</a> (int varryParam, unsigned int step, unsigned int repetitions)</td></tr>
+<tr class="memdesc:a02a95813139752770f04edcba371697e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the timing informations and produces a plot.  <a href="#a02a95813139752770f04edcba371697e">More...</a><br /></td></tr>
+<tr class="separator:a02a95813139752770f04edcba371697e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f1b46e9c7015ae6305f61da3fb004ff"><td class="memItemLeft" align="right" valign="top">virtual vector&lt; vector&lt; string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a6f1b46e9c7015ae6305f61da3fb004ff">getRelevantTimingParts</a> (ifstream &amp;in, unsigned long long start, unsigned long long end)</td></tr>
+<tr class="memdesc:a6f1b46e9c7015ae6305f61da3fb004ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract timing information from a file.  <a href="#a6f1b46e9c7015ae6305f61da3fb004ff">More...</a><br /></td></tr>
+<tr class="separator:a6f1b46e9c7015ae6305f61da3fb004ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88ec453061bf604956080097f1e814cf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a88ec453061bf604956080097f1e814cf">timingInfosToFile</a> (ofstream &amp;out, const vector&lt; vector&lt; string &gt;&gt; &amp;relevantTimingParts, unsigned long long &amp;starttime)</td></tr>
+<tr class="memdesc:a88ec453061bf604956080097f1e814cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes timing information to a file.  <a href="#a88ec453061bf604956080097f1e814cf">More...</a><br /></td></tr>
+<tr class="separator:a88ec453061bf604956080097f1e814cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a201253a5fbf43fa25fd396b7d52b6cec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a201253a5fbf43fa25fd396b7d52b6cec">plotTimingInfos</a> (ofstream &amp;gnutemp, const string &amp;outname, const string &amp;dataFile, unsigned int measurements, unsigned int repetitions, bool linesPoints)</td></tr>
+<tr class="memdesc:a201253a5fbf43fa25fd396b7d52b6cec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plot timing information.  <a href="#a201253a5fbf43fa25fd396b7d52b6cec">More...</a><br /></td></tr>
+<tr class="separator:a201253a5fbf43fa25fd396b7d52b6cec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f3adf5d354ca9694d951a1e65198631"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a9f3adf5d354ca9694d951a1e65198631">plotTimingHitMissInfos</a> (ofstream &amp;gnutemp, const string &amp;outname, const string &amp;dataFile, unsigned int measurements, unsigned int repetitions, bool linesPoints)</td></tr>
+<tr class="memdesc:a9f3adf5d354ca9694d951a1e65198631"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plot timed hit/miss information.  <a href="#a9f3adf5d354ca9694d951a1e65198631">More...</a><br /></td></tr>
+<tr class="separator:a9f3adf5d354ca9694d951a1e65198631"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac466a95714020a7bbed1f7cbcf0ae272"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#ac466a95714020a7bbed1f7cbcf0ae272">generateMyGnuplotPlotPart</a> (const string &amp;file, int paramColumn)=0</td></tr>
+<tr class="memdesc:ac466a95714020a7bbed1f7cbcf0ae272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a gnuplot script for plotting test results.  <a href="#ac466a95714020a7bbed1f7cbcf0ae272">More...</a><br /></td></tr>
+<tr class="separator:ac466a95714020a7bbed1f7cbcf0ae272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a6c0cdc27e3ec70a86bd6e17d3d60295b"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a6c0cdc27e3ec70a86bd6e17d3d60295b">name</a></td></tr>
+<tr class="separator:a6c0cdc27e3ec70a86bd6e17d3d60295b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab3749315fc4f0280d2158a80440da24"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#aab3749315fc4f0280d2158a80440da24">enabled</a> = true</td></tr>
+<tr class="separator:aab3749315fc4f0280d2158a80440da24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7da28b9356f3201600c71c16afcf6030"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="a00036.html">testParameterBase</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a7da28b9356f3201600c71c16afcf6030">parameters</a></td></tr>
+<tr class="separator:a7da28b9356f3201600c71c16afcf6030"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa41228b97e1b171503ca8032057bb41c"><td class="memItemLeft" align="right" valign="top">vector&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#aa41228b97e1b171503ca8032057bb41c">plotParts</a></td></tr>
+<tr class="separator:aa41228b97e1b171503ca8032057bb41c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebef6431ba821a8476cf4322add3bcf0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#aebef6431ba821a8476cf4322add3bcf0">plotTimingStats</a> = true</td></tr>
+<tr class="separator:aebef6431ba821a8476cf4322add3bcf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:a46c7d278bada9167cf57fa39c680f7ac"><td class="memItemLeft" align="right" valign="top">static map&lt; string, <a class="el" href="a00026.html">performanceTest</a>&lt;&gt; * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a46c7d278bada9167cf57fa39c680f7ac">testClasses</a></td></tr>
+<tr class="separator:a46c7d278bada9167cf57fa39c680f7ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74cccef6126a3c18b81d1fd36a8fe709"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00028.html#a74cccef6126a3c18b81d1fd36a8fe709">displayPlots</a></td></tr>
+<tr class="separator:a74cccef6126a3c18b81d1fd36a8fe709"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Main class for handling configuration throughout the library and for the user. </p>
+<div class="textblock"><h3>template&lt;&gt;<br />
+class performanceTest&lt;&gt;</h3>
 
-<p>Definition at line <a class="el" href="a00064_source.html#l00037">37</a> of file <a class="el" href="a00064_source.html">rambrainconfig.h</a>.</p>
+<p>Base class for all performance tests which itself does not contain any parameters. </p>
+
+<p>Definition at line <a class="el" href="a00076_source.html#l00145">145</a> of file <a class="el" href="a00076_source.html">performanceTestClasses.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="adf79cce9ad6dde113f1a25c7f28978cc"></a>
+<a class="anchor" id="a81c06be2541b0d13ef5a0f44d0eac5de"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">rambrain::rambrainglobals::rambrainConfig::rambrainConfig </td>
+          <td class="memname"><a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::<a class="el" href="a00026.html">performanceTest</a> </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Construct a new config handling class. </p>
-<p>Reads in the config and sets up the system. </p><dl class="section note"><dt>Note</dt><dd>Do not do this yourself, rather use the supplied instance <a class="el" href="a00096.html#ad02508d72047bc55a38eda857e4816c1" title="You will find the object in managedMemory.cpp as we have to define it in some &#39;used&#39; file in the link...">rambrainglobals::config</a> </dd></dl>
-
-<p>Definition at line <a class="el" href="a00063_source.html#l00035">35</a> of file <a class="el" href="a00063_source.html">rambrainconfig.cpp</a>.</p>
+<p>Create a new performance test. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The test's name </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="a50356f5e6333c5094970bf201bcca578"></a>
+<a class="anchor" id="a1aa7ebeb97071e17de8319d001b54a78"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">rambrain::rambrainglobals::rambrainConfig::~rambrainConfig </td>
+          <td class="memname">virtual <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::~<a class="el" href="a00026.html">performanceTest</a> </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Destructs the throught the config initiated swap and manager. </p>
+<p>Cleanup. </p>
 
-<p>Definition at line <a class="el" href="a00063_source.html#l00041">41</a> of file <a class="el" href="a00063_source.html">rambrainconfig.cpp</a>.</p>
+<p>Definition at line <a class="el" href="a00076_source.html#l00157">157</a> of file <a class="el" href="a00076_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a3e4485000b2a061fb75d85f68d06017d"></a>
+<a class="anchor" id="ac40365c2bfb2743cf84d862939754383"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -214,25 +292,56 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::clean </td>
+          <td class="memname">virtual void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::actualTestMethod </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="a00034.html">tester</a> &amp;&#160;</td>
+          <td class="paramname"><em>test</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>arguments</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>argumentscount</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Clean up the system and delete instances </p>
 
-<p>Definition at line <a class="el" href="a00063_source.html#l00088">88</a> of file <a class="el" href="a00063_source.html">rambrainconfig.cpp</a>.</p>
+<p>Contains the actual test code. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">test</td><td>The tester class for timing collection </td></tr>
+    <tr><td class="paramname">arguments</td><td>The parameters to pass to the test </td></tr>
+    <tr><td class="paramname">offset</td><td>At which index the parameters start in the arguments array; Will be incremented to point behind the parameters </td></tr>
+    <tr><td class="paramname">argumentscount</td><td>How many parameters </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a class="anchor" id="aa7f91003d897ef82e6b255c4affb9f00"></a>
+<a class="anchor" id="a6860e272518523075001baea0c31be15"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -240,7 +349,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="a00009.html">configuration</a>&amp; rambrain::rambrainglobals::rambrainConfig::getConfig </td>
+          <td class="memname">static void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::dumpTestInfo </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -248,18 +357,240 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write infos about all registered test cases to stdout. </p>
+
+</div>
+</div>
+<a class="anchor" id="a866eb0195bf1a726dd40d1a8513a8179"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::enableAllTests </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable/Disable all known test cases. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enabled</td><td>Enable or disable </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab420b9d61d4c7e975a63c3cd4b4c21ac"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::enableTest </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enable/Disable a specific test case. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>It's name </td></tr>
+    <tr><td class="paramname">enabled</td><td>Enable or disable </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a8455221e3d4a16318c34a8ff105e4c2d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual string <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::generateGnuplotScript </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>infile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>xlabel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>ylabel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>title</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>log</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>paramColumn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Generate a gnuplot script for swapstats output plotting. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">infile</td><td>Name of the file where the data is stored </td></tr>
+    <tr><td class="paramname">name</td><td>Name of the output file </td></tr>
+    <tr><td class="paramname">xlabel</td><td>Label of the x axis </td></tr>
+    <tr><td class="paramname">ylabel</td><td>Label of the y axis </td></tr>
+    <tr><td class="paramname">title</td><td>Title of the plot </td></tr>
+    <tr><td class="paramname">log</td><td>If plot shall be in logscale </td></tr>
+    <tr><td class="paramname">paramColumn</td><td>Column of the temp file to plot </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The gnuplot script </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="a00028.html#a37ca5b138f6d1081dc5307b3f39f7b6c" title="Read in average timing results from a test and write the important data to a file. ">resultToTempFile</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac466a95714020a7bbed1f7cbcf0ae272"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual string <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::generateMyGnuplotPlotPart </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>paramColumn</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a gnuplot script for plotting test results. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">file</td><td>Infile name </td></tr>
+    <tr><td class="paramname">paramColumn</td><td>Which column to plot as x axis </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The script </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5b6096462a0afb17f57bcae34e654c9b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual string <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::getComment </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>Simple getter. </p>
 
-<p>Definition at line <a class="el" href="a00064_source.html#l00069">69</a> of file <a class="el" href="a00064_source.html">rambrainconfig.h</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a8e0134e8c212da14a0fb6b60611ee2d7"></a>
+<a class="anchor" id="ab488d9038dfd99cb8c8429b92b1e135e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -267,92 +598,230 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::init </td>
+          <td class="memname">virtual string <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::getParamsString </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>varryParam</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>step</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>delimiter</em> = <code>&quot;&#160;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create a string using the current parameter values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">varryParam</td><td>Which parameter is stepped through </td></tr>
+    <tr><td class="paramname">step</td><td>Which step it is at the moment </td></tr>
+    <tr><td class="paramname">delimiter</td><td>A delimiter between the parts </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The string </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6f1b46e9c7015ae6305f61da3fb004ff"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual vector&lt;vector&lt;string&gt; &gt; <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::getRelevantTimingParts </td>
+          <td>(</td>
+          <td class="paramtype">ifstream &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long long&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long long&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Extract timing information from a file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td>The file </td></tr>
+    <tr><td class="paramname">start</td><td>Start time </td></tr>
+    <tr><td class="paramname">end</td><td>End time </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The relevant data </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a0e7a9f0e693563cdc8445d44c5cffa2e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual unsigned int <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::getStepsForParam </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>varryParam</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Initialise the system </p>
 
-<p>Definition at line <a class="el" href="a00063_source.html#l00069">69</a> of file <a class="el" href="a00063_source.html">rambrainconfig.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ad149f44c7ec45aa83d741fd0a08e7811"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::reinit </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>reread</em> = <code>true</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Reinitialises the system. </p>
+<p>Get the amount of steps for parameter variation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">reread</td><td>If the / a config file should be rereaad before resetting up the main classes </td></tr>
+    <tr><td class="paramname">varryParam</td><td>Which parameter is asked </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The steps </dd></dl>
+
+<p>Definition at line <a class="el" href="a00076_source.html#l00233">233</a> of file <a class="el" href="a00076_source.html">performanceTestClasses.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a745002c6704317f16e622eeddc62f1b9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual string <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::getTestOutfile </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>varryParam</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>step</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a string for an outfilename using the current parameter values. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">varryParam</td><td>Which parameter is stepped through </td></tr>
+    <tr><td class="paramname">step</td><td>Which step it is at the moment </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The string </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a02a95813139752770f04edcba371697e"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::handleTimingInfos </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>varryParam</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>step</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>repetitions</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Handles the timing informations and produces a plot. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">varryParam</td><td>Which parameter is stepped through </td></tr>
+    <tr><td class="paramname">step</td><td>Which step it is at the moment </td></tr>
+    <tr><td class="paramname">repetitions</td><td>The amount of repetitions </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="a00063_source.html#l00046">46</a> of file <a class="el" href="a00063_source.html">rambrainconfig.cpp</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a55f24943ba147e71eee649812bec31e3"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::resizeMemory </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00095.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
-          <td class="paramname"><em>memory</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Simple setter. </p>
-
-<p>Definition at line <a class="el" href="a00063_source.html#l00055">55</a> of file <a class="el" href="a00063_source.html">rambrainconfig.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a33b6e5764cb838b06e0cb624f47bdf67"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::resizeSwap </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00095.html#abe2d051306a69fb21f8a17946b4e93ed">global_bytesize</a>&#160;</td>
-          <td class="paramname"><em>memory</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Simple setter. </p>
-<dl class="section warning"><dt>Warning</dt><dd>Currently only extending may be supported, ergo this means to reinitiate the main classes and to throw away the old ones deleting all existing managed pointers </dd></dl>
-
-<p>Definition at line <a class="el" href="a00063_source.html#l00062">62</a> of file <a class="el" href="a00063_source.html">rambrainconfig.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a61be05dcf94bd052199b719c0d3efc81"></a>
+<a class="anchor" id="a9f3adf5d354ca9694d951a1e65198631"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -360,28 +829,511 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void rambrain::rambrainglobals::rambrainConfig::setCustomConfigPath </td>
+          <td class="memname">virtual void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::plotTimingHitMissInfos </td>
+          <td>(</td>
+          <td class="paramtype">ofstream &amp;&#160;</td>
+          <td class="paramname"><em>gnutemp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>outname</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>dataFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>measurements</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>repetitions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>linesPoints</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Plot timed hit/miss information. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gnutemp</td><td>Outfile for gnuplot script </td></tr>
+    <tr><td class="paramname">outname</td><td>Name of resulting file </td></tr>
+    <tr><td class="paramname">dataFile</td><td>Name of data file </td></tr>
+    <tr><td class="paramname">measurements</td><td>Amount of measurements </td></tr>
+    <tr><td class="paramname">repetitions</td><td>Amount of repetitions </td></tr>
+    <tr><td class="paramname">linesPoints</td><td>If points shall be added on top of lines for data points </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a201253a5fbf43fa25fd396b7d52b6cec"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::plotTimingInfos </td>
+          <td>(</td>
+          <td class="paramtype">ofstream &amp;&#160;</td>
+          <td class="paramname"><em>gnutemp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>outname</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>dataFile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>measurements</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>repetitions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>linesPoints</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Plot timing information. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gnutemp</td><td>Outfile for gnuplot script </td></tr>
+    <tr><td class="paramname">outname</td><td>Name of resulting file </td></tr>
+    <tr><td class="paramname">dataFile</td><td>Name of data file </td></tr>
+    <tr><td class="paramname">measurements</td><td>Amount of measurements </td></tr>
+    <tr><td class="paramname">repetitions</td><td>Amount of repetitions </td></tr>
+    <tr><td class="paramname">linesPoints</td><td>If points shall be added on top of lines for data points </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a37ca5b138f6d1081dc5307b3f39f7b6c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::resultToTempFile </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>varryParam</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>step</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ofstream &amp;&#160;</td>
+          <td class="paramname"><em>file</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read in average timing results from a test and write the important data to a file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">varryParam</td><td>Which parameter is stepped through </td></tr>
+    <tr><td class="paramname">step</td><td>Which step it is at the moment </td></tr>
+    <tr><td class="paramname">file</td><td>The outfile </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="af2bc6250cc03ce3e69542c88336fb68f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::runRegisteredTests </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>repetitions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>path</em> = <code>&quot;./&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Run all registered (and enabled) performance tests with all given parameter variations for each test. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">repetitions</td><td>The amount of repetitions for each test </td></tr>
+    <tr><td class="paramname">path</td><td>Where the performancetests binary is </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ae7e6b8d0ac947d531131fdc359569515"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::runRespectiveTest </td>
           <td>(</td>
           <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="a00034.html">tester</a> &amp;&#160;</td>
+          <td class="paramname"><em>myTester</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>repetitions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>arguments</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramname"><em>offset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>argumentscount</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Run a specific test case several times. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>It's name </td></tr>
+    <tr><td class="paramname">myTester</td><td>The tester class for timing collection </td></tr>
+    <tr><td class="paramname">repetitions</td><td>How often to repeat the test </td></tr>
+    <tr><td class="paramname">arguments</td><td>The parameters to pass to the test </td></tr>
+    <tr><td class="paramname">offset</td><td>At which index the parameters start in the arguments array; Will be incremented to point behind the parameters </td></tr>
+    <tr><td class="paramname">argumentscount</td><td>How many parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Success </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4d18105b6ab2e38eba1bf24991878fe9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::runTests </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>repetitions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>path</em> = <code>&quot;./&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Run this performance test with all given parameter variations and handle data collection and plotting. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">repetitions</td><td>The amount of repetitions for each test </td></tr>
+    <tr><td class="paramname">path</td><td>Where the performancetests binary is </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab244a26d06ae360803ba8e53bfd4cce1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::setDisplayPlots </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>display</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Simple setter. </p>
+<p>If the generated plots shall be immediately displayed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">display</td><td>Display on or off </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Default is false </dd></dl>
 
-<p>Definition at line <a class="el" href="a00064_source.html#l00062">62</a> of file <a class="el" href="a00064_source.html">rambrainconfig.h</a>.</p>
+<p>Definition at line <a class="el" href="a00076_source.html#l00223">223</a> of file <a class="el" href="a00076_source.html">performanceTestClasses.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a75e206bba7717292e80e80cd7363bb78"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual vector&lt;string&gt; <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::splitString </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>delimiter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Split a string into a list of substrings. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td>The string </td></tr>
+    <tr><td class="paramname">delimiter</td><td>Which delimiter to use for splitting </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The list </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a88ec453061bf604956080097f1e814cf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::timingInfosToFile </td>
+          <td>(</td>
+          <td class="paramtype">ofstream &amp;&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const vector&lt; vector&lt; string &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>relevantTimingParts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long long &amp;&#160;</td>
+          <td class="paramname"><em>starttime</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Writes timing information to a file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">out</td><td>The file </td></tr>
+    <tr><td class="paramname">relevantTimingParts</td><td>The relevant timing data </td></tr>
+    <tr><td class="paramname">starttime</td><td>Start time; Will be changed to first time in data if zero beforehand </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a6e249ba8874d4f1ffe55dce7cdd4c3cf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::unregisterTest </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Completely remove a test case from the setup. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>It's name </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a48f1f953b1c2c97c7a2a9864bcd6935d"></a>
+<a class="anchor" id="a74cccef6126a3c18b81d1fd36a8fe709"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -389,21 +1341,21 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00008.html">configReader</a> rambrain::rambrainglobals::rambrainConfig::config</td>
+          <td class="memname">bool <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::displayPlots</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00064_source.html#l00093">93</a> of file <a class="el" href="a00064_source.html">rambrainconfig.h</a>.</p>
+<p>Definition at line <a class="el" href="a00076_source.html#l00335">335</a> of file <a class="el" href="a00076_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a5eb6bc46d8a484fbc983476bef89e74f"></a>
+<a class="anchor" id="aab3749315fc4f0280d2158a80440da24"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -411,21 +1363,21 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00018.html">managedMemory</a>* rambrain::rambrainglobals::rambrainConfig::manager</td>
+          <td class="memname">bool <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::enabled = true</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00064_source.html#l00095">95</a> of file <a class="el" href="a00064_source.html">rambrainconfig.h</a>.</p>
+<p>Definition at line <a class="el" href="a00076_source.html#l00331">331</a> of file <a class="el" href="a00076_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a8352178ea447b0e8551dc40c5fccd002"></a>
+<a class="anchor" id="a6c0cdc27e3ec70a86bd6e17d3d60295b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -433,31 +1385,118 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00022.html">managedSwap</a>* rambrain::rambrainglobals::rambrainConfig::swap</td>
+          <td class="memname">const char* <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::name</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="a00064_source.html#l00094">94</a> of file <a class="el" href="a00064_source.html">rambrainconfig.h</a>.</p>
+<p>Definition at line <a class="el" href="a00076_source.html#l00330">330</a> of file <a class="el" href="a00076_source.html">performanceTestClasses.h</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00064_source.html">rambrainconfig.h</a></li>
-<li>/home/rambrainbuild/docubrain/src/<a class="el" href="a00063_source.html">rambrainconfig.cpp</a></li>
+<a class="anchor" id="a7da28b9356f3201600c71c16afcf6030"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;<a class="el" href="a00036.html">testParameterBase</a> *&gt; <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::parameters</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00076_source.html#l00332">332</a> of file <a class="el" href="a00076_source.html">performanceTestClasses.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa41228b97e1b171503ca8032057bb41c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">vector&lt;string&gt; <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::plotParts</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00076_source.html#l00334">334</a> of file <a class="el" href="a00076_source.html">performanceTestClasses.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aebef6431ba821a8476cf4322add3bcf0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::plotTimingStats = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00076_source.html#l00336">336</a> of file <a class="el" href="a00076_source.html">performanceTestClasses.h</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a46c7d278bada9167cf57fa39c680f7ac"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">map&lt;string, <a class="el" href="a00026.html">performanceTest</a>&lt;&gt; *&gt; <a class="el" href="a00026.html">performanceTest</a>&lt;&gt;::testClasses</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="a00076_source.html#l00333">333</a> of file <a class="el" href="a00076_source.html">performanceTestClasses.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>/home/rambrainbuild/docubrain/tests/<a class="el" href="a00076_source.html">performanceTestClasses.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00095.html">rambrain</a></li><li class="navelem"><a class="el" href="a00096.html">rambrainglobals</a></li><li class="navelem"><a class="el" href="a00028.html">rambrainConfig</a></li>
-    <li class="footer">Generated on Sun Feb 21 2016 01:45:13 for rambrain by
+    <li class="navelem"><a class="el" href="a00028.html">performanceTest&lt;&gt;</a></li>
+    <li class="footer">Generated on Wed Feb 24 2016 01:42:15 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

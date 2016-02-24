@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.10"/>
-<title>rambrain: /home/rambrainbuild/docubrain/src/git_info.h File Reference</title>
+<title>rambrain: /home/rambrainbuild/docubrain/src/exceptions.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -105,61 +105,45 @@ $(document).ready(function(){initNavTree('a00046.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#var-members">Variables</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
-<div class="title">git_info.h File Reference</div>  </div>
+<div class="title">exceptions.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><a href="a00046_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:a7f5007ab114a0895060f2e6437200ea9"><td class="memItemLeft" align="right" valign="top">const unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a7f5007ab114a0895060f2e6437200ea9">gitCommit</a> []</td></tr>
-<tr class="separator:a7f5007ab114a0895060f2e6437200ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73155ddd51dc782d33249917cd27ae19"><td class="memItemLeft" align="right" valign="top">const unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00046.html#a73155ddd51dc782d33249917cd27ae19">gitDiff</a> [] = {0x00, 0x00}</td></tr>
-<tr class="separator:a73155ddd51dc782d33249917cd27ae19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00030.html">rambrain::rambrainException</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exception base class for this library.  <a href="a00030.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00015.html">rambrain::incompleteSetupException</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exception class for cases of an incomplete setup.  <a href="a00015.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00024.html">rambrain::memoryException</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exception for errors with the memory.  <a href="a00024.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00038.html">rambrain::unexpectedStateException</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An exception for when something totally unexpected happened.  <a href="a00038.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00039.html">rambrain::unfinishedCodeException</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An exception class for when code is used which is not fully finished developping.  <a href="a00039.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:a00096"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00096.html">rambrain</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Variable Documentation</h2>
-<a class="anchor" id="a7f5007ab114a0895060f2e6437200ea9"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const unsigned char gitCommit[]</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {  0x63, 0x6f, 0x6d, 0x6d, 0x69, 0x74, 0x20, 0x62, 0x36, 0x63, 0x37, 0x33,</div>
-<div class="line">  0x35, 0x39, 0x63, 0x38, 0x36, 0x37, 0x38, 0x63, 0x37, 0x35, 0x35, 0x62,</div>
-<div class="line">  0x62, 0x65, 0x31, 0x61, 0x61, 0x36, 0x64, 0x32, 0x38, 0x32, 0x38, 0x64,</div>
-<div class="line">  0x37, 0x37, 0x39, 0x66, 0x61, 0x39, 0x32, 0x65, 0x36, 0x66, 0x36, 0x0a,0x00}</div>
-</div><!-- fragment -->
-<p>Definition at line <a class="el" href="a00046_source.html#l00001">1</a> of file <a class="el" href="a00046_source.html">git_info.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a73155ddd51dc782d33249917cd27ae19"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const unsigned char gitDiff[] = {0x00, 0x00}</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="a00046_source.html#l00005">5</a> of file <a class="el" href="a00046_source.html">git_info.h</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00046.html">git_info.h</a></li>
-    <li class="footer">Generated on Sun Feb 21 2016 01:45:10 for rambrain by
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00046.html">exceptions.h</a></li>
+    <li class="footer">Generated on Wed Feb 24 2016 01:42:15 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>

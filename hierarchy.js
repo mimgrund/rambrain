@@ -17,39 +17,42 @@ var hierarchy =
     [ "rambrain::cyclicAtime", "a00010.html", null ],
     [ "destructorTracker", "a00012.html", null ],
     [ "std::exception", null, [
-      [ "rambrain::rambrainException", "a00029.html", [
+      [ "rambrain::rambrainException", "a00030.html", [
         [ "rambrain::incompleteSetupException", "a00015.html", null ],
-        [ "rambrain::memoryException", "a00023.html", null ],
-        [ "rambrain::unexpectedStateException", "a00037.html", null ],
-        [ "rambrain::unfinishedCodeException", "a00038.html", null ]
+        [ "rambrain::memoryException", "a00024.html", null ],
+        [ "rambrain::unexpectedStateException", "a00038.html", null ],
+        [ "rambrain::unfinishedCodeException", "a00039.html", null ]
       ] ]
     ] ],
     [ "rambrain::glob_off_union", "a00014.html", null ],
-    [ "rambrain::managedMemory", "a00018.html", [
+    [ "rambrain::managedDummySwapContainer", "a00017.html", [
+      [ "rambrain::dummyManagedMemory", "a00013.html", null ]
+    ] ],
+    [ "rambrain::managedMemory", "a00019.html", [
       [ "rambrain::cyclicManagedMemory", "a00011.html", null ],
       [ "rambrain::dummyManagedMemory", "a00013.html", null ]
     ] ],
-    [ "rambrain::managedMemoryChunk", "a00019.html", null ],
-    [ "rambrain::managedPtr< T, dim >", "a00020.html", null ],
-    [ "rambrain::managedPtr< T >", "a00020.html", null ],
-    [ "rambrain::managedPtr< T, 1 >", "a00021.html", null ],
-    [ "rambrain::managedSwap", "a00022.html", [
+    [ "rambrain::managedMemoryChunk", "a00020.html", null ],
+    [ "rambrain::managedPtr< T, dim >", "a00021.html", null ],
+    [ "rambrain::managedPtr< T >", "a00021.html", null ],
+    [ "rambrain::managedPtr< T, 1 >", "a00022.html", null ],
+    [ "rambrain::managedSwap", "a00023.html", [
       [ "rambrain::managedDummySwap", "a00016.html", null ],
-      [ "rambrain::managedFileSwap", "a00017.html", null ]
+      [ "rambrain::managedFileSwap", "a00018.html", null ]
     ] ],
-    [ "rambrain::pageFileLocation", "a00024.html", null ],
-    [ "performanceTest< U >", "a00025.html", null ],
-    [ "performanceTest< U... >", "a00025.html", [
-      [ "performanceTest< T, U... >", "a00026.html", null ]
+    [ "rambrain::pageFileLocation", "a00025.html", null ],
+    [ "performanceTest< U >", "a00026.html", null ],
+    [ "performanceTest< U... >", "a00026.html", [
+      [ "performanceTest< T, U... >", "a00027.html", null ]
     ] ],
-    [ "performanceTest<>", "a00027.html", null ],
-    [ "rambrain::rambrainglobals::rambrainConfig", "a00028.html", null ],
-    [ "rambrain::rambrainGlobalCriticalSectionControl", "a00030.html", null ],
-    [ "rambrain::regexMatcher", "a00031.html", null ],
-    [ "rambrain::swapFileDesc", "a00032.html", null ],
-    [ "tester", "a00033.html", null ],
-    [ "testParameterBase", "a00035.html", [
-      [ "testParameter< T >", "a00034.html", null ]
+    [ "performanceTest<>", "a00028.html", null ],
+    [ "rambrain::rambrainglobals::rambrainConfig", "a00029.html", null ],
+    [ "rambrain::rambrainGlobalCriticalSectionControl", "a00031.html", null ],
+    [ "rambrain::regexMatcher", "a00032.html", null ],
+    [ "rambrain::swapFileDesc", "a00033.html", null ],
+    [ "tester", "a00034.html", null ],
+    [ "testParameterBase", "a00036.html", [
+      [ "testParameter< T >", "a00035.html", null ]
     ] ],
-    [ "rambrain::Timer", "a00036.html", null ]
+    [ "rambrain::Timer", "a00037.html", null ]
 ];
