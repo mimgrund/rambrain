@@ -263,6 +263,12 @@ bool configReader::parseConfigBlock ( istream &stream, vector<configLineBase *> 
         } else {
             bool matched = false;
 
+            //Extract until a comment sign
+            size_t comment = line.find_first_of ( '#' );
+            if ( comment != line.npos ) {
+                line = line.substr ( 0, comment );
+            }
+
             for ( auto it = config.configOptions.begin(); it != config.configOptions.end(); ++it ) {
                 configLineBase *cl = *it;
                 std::pair<string, string> match = regex.matchKeyEqualsValue ( line, cl->name, cl->matchType );

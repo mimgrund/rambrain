@@ -77,7 +77,7 @@ TEST ( configReader, Unit_IgnoreCommentLines )
     ofstream out ( "testconfig.conf" );
     out << "[default]" << std::endl;
     out << "#memoryManager = somethingstupid" << std::endl;
-    out << "memoryManager = dummyManagedMemory" << std::endl;
+    out << "memoryManager = dummyManagedMemory#evenmorestupid" << std::endl;
     out << "#memoryManager = somethingstupid" << std::endl;
     out << " # memoryManager = somethingmorestupid" << std::endl;
     out.close();
