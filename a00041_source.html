@@ -372,58 +372,64 @@ $(document).ready(function(){initNavTree('a00041_source.html','');});
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;        } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;            <span class="keywordtype">bool</span> matched = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="keywordflow">for</span> ( <span class="keyword">auto</span> it = <a class="code" href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">config</a>.<a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.begin(); it != <a class="code" href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">config</a>.<a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.end(); ++it ) {</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;                <a class="code" href="a00007.html">configLineBase</a> *cl = *it;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;                std::pair&lt;string, string&gt; match = <a class="code" href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">regex</a>.<a class="code" href="a00032.html#a4c3ce2c7a2beff16c71fbf5c33396356">matchKeyEqualsValue</a> ( line, cl-&gt;<a class="code" href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">name</a>, cl-&gt;<a class="code" href="a00007.html#a41ed3e2e03f420e02d4397093f26f4f0">matchType</a> );</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                <span class="keywordflow">if</span> ( match.first == cl-&gt;<a class="code" href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">name</a> ) {</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;                    matched = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;            <span class="comment">//Extract until a comment sign</span></div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;            <span class="keywordtype">size_t</span> comment = line.find_first_of ( <span class="charliteral">&#39;#&#39;</span> );</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;            <span class="keywordflow">if</span> ( comment != line.npos ) {</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;                line = line.substr ( 0, comment );</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;            }</div>
 <div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;                    <span class="keywordflow">if</span> ( find ( readLines.begin(), readLines.end(), cl ) == readLines.end() ) { <span class="comment">// Only if this config option has not been read yet</span></div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                        readLines.push_back ( cl );</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                        cl-&gt;<a class="code" href="a00007.html#af88430bdeb79e2a68dc902517318acde">setValue</a> ( match.second );</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                    }</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;                }</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;            }</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;            <span class="keywordflow">if</span> ( !matched ) {</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                warnmsgf ( <span class="stringliteral">&quot;Could not parse config line: %s\n&quot;</span>, line.c_str() );</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            }</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        }</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    }</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;            <span class="keywordflow">for</span> ( <span class="keyword">auto</span> it = <a class="code" href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">config</a>.<a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.begin(); it != <a class="code" href="a00008.html#a4a8db69407e604d2ea6b18e8ae2e40ce">config</a>.<a class="code" href="a00009.html#a60063ca6099263b106e5434bc0d5ed0b">configOptions</a>.end(); ++it ) {</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;                <a class="code" href="a00007.html">configLineBase</a> *cl = *it;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;                std::pair&lt;string, string&gt; match = <a class="code" href="a00008.html#a78ab5e3dcf141f66f4916d9a84ec6566">regex</a>.<a class="code" href="a00032.html#a4c3ce2c7a2beff16c71fbf5c33396356">matchKeyEqualsValue</a> ( line, cl-&gt;<a class="code" href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">name</a>, cl-&gt;<a class="code" href="a00007.html#a41ed3e2e03f420e02d4397093f26f4f0">matchType</a> );</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;                <span class="keywordflow">if</span> ( match.first == cl-&gt;<a class="code" href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">name</a> ) {</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;                    matched = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;                    <span class="keywordflow">if</span> ( find ( readLines.begin(), readLines.end(), cl ) == readLines.end() ) { <span class="comment">// Only if this config option has not been read yet</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;                        readLines.push_back ( cl );</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;                        cl-&gt;<a class="code" href="a00007.html#af88430bdeb79e2a68dc902517318acde">setValue</a> ( match.second );</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;                        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;                    }</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;                }</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;            }</div>
 <div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;}</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;</div>
-<div class="line"><a name="l00289"></a><span class="lineno"><a class="line" href="a00008.html#aa2aee2bca7966d89aae6d822e829de71">  289</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="a00008.html#aa2aee2bca7966d89aae6d822e829de71">configReader::getApplicationName</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    <span class="keywordtype">char</span> exe[1024];</div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keywordtype">int</span> ret;</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    ret = readlink ( <span class="stringliteral">&quot;/proc/self/exe&quot;</span>, exe, <span class="keyword">sizeof</span> ( exe ) - 1 );</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="keywordflow">if</span> ( ret == -1 ) {</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    }</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    exe[ret] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;            <span class="keywordflow">if</span> ( !matched ) {</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;                warnmsgf ( <span class="stringliteral">&quot;Could not parse config line: %s\n&quot;</span>, line.c_str() );</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;            }</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;        }</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    }</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;}</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;</div>
+<div class="line"><a name="l00295"></a><span class="lineno"><a class="line" href="a00008.html#aa2aee2bca7966d89aae6d822e829de71">  295</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="a00008.html#aa2aee2bca7966d89aae6d822e829de71">configReader::getApplicationName</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="keywordtype">char</span> exe[1024];</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    <span class="keywordtype">int</span> ret;</div>
 <div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    <span class="keywordtype">string</span> fullName ( exe );</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> found = fullName.find_last_of ( <span class="stringliteral">&quot;/\\&quot;</span> );</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="keywordflow">return</span> fullName.substr ( found + 1 );</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;}</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;    ret = readlink ( <span class="stringliteral">&quot;/proc/self/exe&quot;</span>, exe, <span class="keyword">sizeof</span> ( exe ) - 1 );</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    <span class="keywordflow">if</span> ( ret == -1 ) {</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    }</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    exe[ret] = <span class="charliteral">&#39;\0&#39;</span>;</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;</div>
-<div class="line"><a name="l00306"></a><span class="lineno"><a class="line" href="a00008.html#ae8449af2304dd8fec6cad2d9835e8205">  306</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="a00008.html#ae8449af2304dd8fec6cad2d9835e8205">configReader::getHomeDir</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keyword">struct </span>passwd *pw = getpwuid ( getuid() );</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keywordflow">return</span> pw-&gt;pw_dir;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keywordtype">string</span> fullName ( exe );</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> found = fullName.find_last_of ( <span class="stringliteral">&quot;/\\&quot;</span> );</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keywordflow">return</span> fullName.substr ( found + 1 );</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;}</div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
-<div class="line"><a name="l00312"></a><span class="lineno"><a class="line" href="a00008.html#a845d458a102985a9721ebb322cbb5346">  312</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00008.html#a845d458a102985a9721ebb322cbb5346">configReader::stripLeadingTrailingWhitespace</a> ( <span class="keywordtype">string</span> &amp;str )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno"><a class="line" href="a00008.html#ae8449af2304dd8fec6cad2d9835e8205">  312</a></span>&#160;<span class="keywordtype">string</span> <a class="code" href="a00008.html#ae8449af2304dd8fec6cad2d9835e8205">configReader::getHomeDir</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    str.erase ( str.begin(), std::find_if ( str.begin(), str.end(), std::not1 ( std::ptr_fun&lt;int, int&gt; ( std::isspace ) ) ) );</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    str.erase ( std::find_if ( str.rbegin(), str.rend(), std::not1 ( std::ptr_fun&lt;int, int&gt; ( std::isspace ) ) ).base(), str.end() );</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keyword">struct </span>passwd *pw = getpwuid ( getuid() );</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keywordflow">return</span> pw-&gt;pw_dir;</div>
 <div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;}</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;}</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;</div>
+<div class="line"><a name="l00318"></a><span class="lineno"><a class="line" href="a00008.html#a845d458a102985a9721ebb322cbb5346">  318</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="a00008.html#a845d458a102985a9721ebb322cbb5346">configReader::stripLeadingTrailingWhitespace</a> ( <span class="keywordtype">string</span> &amp;str )<span class="keyword"> const</span></div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    str.erase ( str.begin(), std::find_if ( str.begin(), str.end(), std::not1 ( std::ptr_fun&lt;int, int&gt; ( std::isspace ) ) ) );</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    str.erase ( std::find_if ( str.rbegin(), str.rend(), std::not1 ( std::ptr_fun&lt;int, int&gt; ( std::isspace ) ) ).base(), str.end() );</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;}</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;}</div>
 <div class="ttc" id="a00008_html_a145f0d48de3953c9f188a6f8dee8e51f"><div class="ttname"><a href="a00008.html#a145f0d48de3953c9f188a6f8dee8e51f">rambrain::configReader::customConfigPath</a></div><div class="ttdeci">string customConfigPath</div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00261">configreader.h:261</a></div></div>
 <div class="ttc" id="a00006_html_a8e8a478e0ac8347db173dc73761cb099"><div class="ttname"><a href="a00006.html#a8e8a478e0ac8347db173dc73761cb099">rambrain::configLine::setValue</a></div><div class="ttdeci">virtual void setValue(const string &amp;str)</div><div class="ttdoc">Reset the value from a string. </div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00106">configreader.h:106</a></div></div>
 <div class="ttc" id="a00096_html_a7d53dd1748d5012cafa91aa982c7cd35"><div class="ttname"><a href="a00096.html#a7d53dd1748d5012cafa91aa982c7cd35">rambrain::swapPolicy</a></div><div class="ttdeci">swapPolicy</div><div class="ttdoc">An enumeration to regulate how the swap should define when it approaches it&#39;s set boundary...</div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00047">configreader.h:47</a></div></div>
@@ -434,7 +440,7 @@ $(document).ready(function(){initNavTree('a00041_source.html','');});
 <div class="ttc" id="a00032_html_a952ca26ade04a532e24f85dbb2c748e4"><div class="ttname"><a href="a00032.html#a952ca26ade04a532e24f85dbb2c748e4">rambrain::regexMatcher::matchConfigBlock</a></div><div class="ttdeci">bool matchConfigBlock(const string &amp;str, const string &amp;blockname=&quot;default&quot;) const </div><div class="ttdoc">Checks if a string matches the header of a configuration block. </div><div class="ttdef"><b>Definition:</b> <a href="a00066_source.html#l00044">regexmatcher.cpp:44</a></div></div>
 <div class="ttc" id="a00006_html_a7b2624523c8c1954651a40886ec989f6"><div class="ttname"><a href="a00006.html#a7b2624523c8c1954651a40886ec989f6">rambrain::configLine::value</a></div><div class="ttdeci">T value</div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00110">configreader.h:110</a></div></div>
 <div class="ttc" id="a00032_html_a05b70b65e3965866b3d9dfbdcacad5d6"><div class="ttname"><a href="a00032.html#a05b70b65e3965866b3d9dfbdcacad5d6">rambrain::regexMatcher::splitIntegerValueUnit</a></div><div class="ttdeci">pair&lt; long long int, string &gt; splitIntegerValueUnit(const string &amp;str) const </div><div class="ttdoc">Split a string containing value and possibly unit into both parts. </div><div class="ttdef"><b>Definition:</b> <a href="a00066_source.html#l00122">regexmatcher.cpp:122</a></div></div>
-<div class="ttc" id="a00008_html_a845d458a102985a9721ebb322cbb5346"><div class="ttname"><a href="a00008.html#a845d458a102985a9721ebb322cbb5346">rambrain::configReader::stripLeadingTrailingWhitespace</a></div><div class="ttdeci">void stripLeadingTrailingWhitespace(string &amp;str) const </div><div class="ttdoc">Strips any leading and trailing whitespace from a given string. </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00312">configreader.cpp:312</a></div></div>
+<div class="ttc" id="a00008_html_a845d458a102985a9721ebb322cbb5346"><div class="ttname"><a href="a00008.html#a845d458a102985a9721ebb322cbb5346">rambrain::configReader::stripLeadingTrailingWhitespace</a></div><div class="ttdeci">void stripLeadingTrailingWhitespace(string &amp;str) const </div><div class="ttdoc">Strips any leading and trailing whitespace from a given string. </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00318">configreader.cpp:318</a></div></div>
 <div class="ttc" id="a00007_html_a04d92a709d56a2d7fc570ae3c68e5bc3"><div class="ttname"><a href="a00007.html#a04d92a709d56a2d7fc570ae3c68e5bc3">rambrain::configLineBase::name</a></div><div class="ttdeci">const string name</div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00077">configreader.h:77</a></div></div>
 <div class="ttc" id="a00096_html"><div class="ttname"><a href="a00096.html">rambrain</a></div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00026">common.h:26</a></div></div>
 <div class="ttc" id="a00096_html_abe2d051306a69fb21f8a17946b4e93ed"><div class="ttname"><a href="a00096.html#abe2d051306a69fb21f8a17946b4e93ed">rambrain::global_bytesize</a></div><div class="ttdeci">uint64_t global_bytesize</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00065">common.h:65</a></div></div>
@@ -445,7 +451,7 @@ $(document).ready(function(){initNavTree('a00041_source.html','');});
 <div class="ttc" id="a00008_html_ab2ff3a0d4426d1aed5b6a4e136afcb2f"><div class="ttname"><a href="a00008.html#ab2ff3a0d4426d1aed5b6a4e136afcb2f">rambrain::configReader::parseConfigFile</a></div><div class="ttdeci">bool parseConfigFile(istream &amp;stream, vector&lt; configLineBase * &gt; &amp;readLines)</div><div class="ttdoc">Parse config file. </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00209">configreader.cpp:209</a></div></div>
 <div class="ttc" id="a00008_html_a4cc1b1f7392af7deafaa9a42dc9859fc"><div class="ttname"><a href="a00008.html#a4cc1b1f7392af7deafaa9a42dc9859fc">rambrain::configReader::streams</a></div><div class="ttdeci">ifstream streams[3]</div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00265">configreader.h:265</a></div></div>
 <div class="ttc" id="a00007_html_a41ed3e2e03f420e02d4397093f26f4f0"><div class="ttname"><a href="a00007.html#a41ed3e2e03f420e02d4397093f26f4f0">rambrain::configLineBase::matchType</a></div><div class="ttdeci">const int matchType</div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00078">configreader.h:78</a></div></div>
-<div class="ttc" id="a00008_html_ae8449af2304dd8fec6cad2d9835e8205"><div class="ttname"><a href="a00008.html#ae8449af2304dd8fec6cad2d9835e8205">rambrain::configReader::getHomeDir</a></div><div class="ttdeci">string getHomeDir() const </div><div class="ttdoc">Look up the home directory of the current user. </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00306">configreader.cpp:306</a></div></div>
+<div class="ttc" id="a00008_html_ae8449af2304dd8fec6cad2d9835e8205"><div class="ttname"><a href="a00008.html#ae8449af2304dd8fec6cad2d9835e8205">rambrain::configReader::getHomeDir</a></div><div class="ttdeci">string getHomeDir() const </div><div class="ttdoc">Look up the home directory of the current user. </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00312">configreader.cpp:312</a></div></div>
 <div class="ttc" id="a00096_html_a8525b8b73c3e1ec62bd571b3cffd1742"><div class="ttname"><a href="a00096.html#a8525b8b73c3e1ec62bd571b3cffd1742">rambrain::gig</a></div><div class="ttdeci">const global_bytesize gig</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00069">common.h:69</a></div></div>
 <div class="ttc" id="a00096_html_ac2c0fb2cc8161166cbd060cb2b85aaf1"><div class="ttname"><a href="a00096.html#ac2c0fb2cc8161166cbd060cb2b85aaf1">rambrain::kib</a></div><div class="ttdeci">const global_bytesize kib</div><div class="ttdef"><b>Definition:</b> <a href="a00040_source.html#l00067">common.h:67</a></div></div>
 <div class="ttc" id="a00008_html_abed30805ad77a7c29e92f40432152be7"><div class="ttname"><a href="a00008.html#abed30805ad77a7c29e92f40432152be7">rambrain::configReader::globalConfigPath</a></div><div class="ttdeci">const string globalConfigPath</div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00259">configreader.h:259</a></div></div>
@@ -456,7 +462,7 @@ $(document).ready(function(){initNavTree('a00041_source.html','');});
 <div class="ttc" id="a00009_html_aaa2458f8b0518cd8ecfbf0647f63d28d"><div class="ttname"><a href="a00009.html#aaa2458f8b0518cd8ecfbf0647f63d28d">rambrain::configuration::memory</a></div><div class="ttdeci">configLine&lt; global_bytesize &gt; memory</div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00139">configreader.h:139</a></div></div>
 <div class="ttc" id="a00009_html_a3ab38df7f6bf215f8101f4f914f67b14"><div class="ttname"><a href="a00009.html#a3ab38df7f6bf215f8101f4f914f67b14">rambrain::configuration::swap</a></div><div class="ttdeci">configLine&lt; string &gt; swap</div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00138">configreader.h:138</a></div></div>
 <div class="ttc" id="a00008_html_aafcdc8be421ea3e33248a7abe70dedd9"><div class="ttname"><a href="a00008.html#aafcdc8be421ea3e33248a7abe70dedd9">rambrain::configReader::readConfig</a></div><div class="ttdeci">bool readConfig()</div><div class="ttdoc">Read in and parse config. </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00157">configreader.cpp:157</a></div></div>
-<div class="ttc" id="a00008_html_aa2aee2bca7966d89aae6d822e829de71"><div class="ttname"><a href="a00008.html#aa2aee2bca7966d89aae6d822e829de71">rambrain::configReader::getApplicationName</a></div><div class="ttdeci">string getApplicationName() const </div><div class="ttdoc">Extract the current binary&#39;s name out of the /proc file system. </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00289">configreader.cpp:289</a></div></div>
+<div class="ttc" id="a00008_html_aa2aee2bca7966d89aae6d822e829de71"><div class="ttname"><a href="a00008.html#aa2aee2bca7966d89aae6d822e829de71">rambrain::configReader::getApplicationName</a></div><div class="ttdeci">string getApplicationName() const </div><div class="ttdoc">Extract the current binary&#39;s name out of the /proc file system. </div><div class="ttdef"><b>Definition:</b> <a href="a00041_source.html#l00295">configreader.cpp:295</a></div></div>
 <div class="ttc" id="a00096_html_a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04"><div class="ttname"><a href="a00096.html#a7d53dd1748d5012cafa91aa982c7cd35a2881c7de0fd1f87245c0dcc8f9602d04">rambrain::swapPolicy::autoextendable</a></div></div>
 <div class="ttc" id="a00008_html_a5362f882add89772f902c8700b0f1986"><div class="ttname"><a href="a00008.html#a5362f882add89772f902c8700b0f1986">rambrain::configReader::readSuccess</a></div><div class="ttdeci">bool readSuccess</div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00269">configreader.h:269</a></div></div>
 <div class="ttc" id="a00009_html_ae86fcffce8339717271022be71e95815"><div class="ttname"><a href="a00009.html#ae86fcffce8339717271022be71e95815">rambrain::configuration::memoryManager</a></div><div class="ttdeci">configLine&lt; string &gt; memoryManager</div><div class="ttdef"><b>Definition:</b> <a href="a00042_source.html#l00138">configreader.h:138</a></div></div>
@@ -474,7 +480,7 @@ $(document).ready(function(){initNavTree('a00041_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="a00041.html">configreader.cpp</a></li>
-    <li class="footer">Generated on Tue Mar 1 2016 01:42:22 for rambrain by
+    <li class="footer">Generated on Wed Mar 2 2016 01:42:18 for rambrain by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.10 </li>
   </ul>
