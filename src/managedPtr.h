@@ -146,7 +146,7 @@ class managedPtr<T, 1>
 {
 public:
     ///@brief copy ctor
-    managedPtr ( const managedPtr<T> &ref ) : chunk ( ref.chunk ), tracker ( ref.tracker ), n_elem ( ref.n_elem ) {
+    managedPtr ( const managedPtr<T, 1> &ref ) : chunk ( ref.chunk ), tracker ( ref.tracker ), n_elem ( ref.n_elem ) {
         rambrain_atomic_add_fetch ( tracker, 1 );
     }
 
