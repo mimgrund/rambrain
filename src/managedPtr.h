@@ -259,7 +259,7 @@ public:
     }
 
     ///@brief assignment operator
-    managedPtr<T> &operator= ( const managedPtr<T> &ref ) {
+    managedPtr<T> &operator= ( const managedPtr<T, 1> &ref ) {
         if ( chunk ) {
             if ( ref.chunk == chunk ) {
                 return *this;
@@ -423,7 +423,7 @@ public:
             data->unsetUse();
         }
         this->data = ref.data;
-        loadedReadable = ref.loadedReadble;
+        loadedReadable = ref.loadedReadable;
         loadedWritable = ref.loadedWritable;
 
         if ( loadedWritable ) {
