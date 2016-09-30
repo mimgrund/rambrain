@@ -1,0 +1,27 @@
+Installation:
+
+cd build
+cmake ..
+make
+(optionally followed by 'make install')
+
+Run:
+
+All files to link the library are generated in lib/
+These include a static and a dynamic version of the library, gtest, gmock and a header for the preprocessor defines used during compilation
+
+To run all the tests execute bin/rambrain-tests
+
+
+File Description:
+
+CMakeLists.txt, FindAIO.cmake: For cmake to generate Makefiles
+LICENSE: License file
+build: Empty folder for building to keep the main folder clean
+lib/*: Resulting files for linkage
+bin/*: Resulting files for testing
+doc/*: Doxygen config and folder where documentation is generated after 'make doc' is executed
+src/*: Source files of the library
+tests/*: Source files for testing the library
+external/*: gtest and gmock to build on the fly for testing
+scripts/*: Some shell scripts to aid development like autoformatting, generating some special headers, running tests in an automated way and so on
