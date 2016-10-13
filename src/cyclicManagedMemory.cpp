@@ -971,7 +971,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         return ERR_NOTENOUGHCANDIDATES;
     }
 
-    managedMemoryChunk *unloadlist[unload];
+    managedMemoryChunk **unloadlist = new managedMemoryChunk*[unload];
     managedMemoryChunk **unloadElem = unloadlist;
 #ifdef VERYVERBOSE
     printf ( "active = %d\n", active->chunk->id );
@@ -1005,6 +1005,7 @@ cyclicManagedMemory::swapErrorCode cyclicManagedMemory::swapOut ( rambrain::glob
         fromPos = fromPos->prev;
     }
     global_bytesize real_unloaded = swap->swapOut ( unloadlist, unload );
+    delete[] unloadlist;
     bool swapSuccess = ( real_unloaded >= mem_swap ) ; // Do not compare with unload size (false positives!)
     if ( !swapSuccess ) {
         if ( real_unloaded == 0 ) {
